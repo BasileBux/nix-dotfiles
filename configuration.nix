@@ -1,24 +1,21 @@
-{ config, lib, pkgs, inputs, username, ... }:
+{ config, lib, pkgs, inputs, settings, ... }:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-    ];
+  imports = [ ./hardware-configuration.nix ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "${username}";
+  networking.hostName = "${settings.username}-${settings.machine}";
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Amsterdam";
 
   console = {
-  	keyMap = "us";
-	font = "Lat2-Terminus16";
-	# keyMap = "fr_CH-latin1";
+    keyMap = "us";
+    # keyMap = "fr_CH-latin1";
+    font = "Lat2-Terminus16";
   };
 
   services.printing.enable = false;
@@ -27,57 +24,28 @@
   services.blueman.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${username} = {
+  users.users.${settings.username} = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    packages = with pkgs; [
-      tree
-    ];
+    packages = with pkgs; [ tree ];
     shell = pkgs.zsh;
   };
 
-  home-manager = {
-    users = {
-      "${username}" = import ./home.nix;
-    };
-  };
+  home-manager = { users = { "${settings.username}" = import ./home.nix; }; };
 
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestions.enable = true;
-    syntaxHighlighting.enable = true;
-
-    shellAliases = {
-      edit = "sudo -e";
-      rebuild = "sudo nixos-rebuild switch --flake /home/${username}/nixos#default --impure";
-    };
-
-    histSize = 10000;
-    histFile = "$HOME/.zsh_history";
-    setOptions = [
-      "HIST_IGNORE_ALL_DUPS"
-    ];
-
-    ohMyZsh = {
-      enable = true;
-      plugins = [];
-      custom = "$HOME/.config";
-      theme = "basileb";
-    };
-  };
+  programs.zsh.enable = true;
 
   programs.hyprland = {
-	enable = true;
-	xwayland.enable = true;
+    enable = true;
+    xwayland.enable = true;
   };
 
   environment.sessionVariables = {
-       XDG_CURRENT_DESKTOP = "Hyprland";
-       XDG_SESSION_TYPE = "wayland";
-       XDG_SESSION_DESKTOP = "Hyprland";
-       SUDO_EDITOR = "/run/current-system/sw/bin/nvim";
-       EDITOR = "/run/current-system/sw/bin/nvim";
+    XDG_CURRENT_DESKTOP = "Hyprland";
+    XDG_SESSION_TYPE = "wayland";
+    XDG_SESSION_DESKTOP = "Hyprland";
+    SUDO_EDITOR = "/run/current-system/sw/bin/nvim";
+    EDITOR = "/run/current-system/sw/bin/nvim";
   };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -93,10 +61,11 @@
     openssh
     upower
     ripgrep
+    unzip
+    jq
 
     # Software
     neovim
-    tmux
     btop
     nautilus
     blueman
@@ -115,7 +84,6 @@
     # Hyprland
     bibata-cursors
     hyprcursor
-    waybar
     wofi
     playerctl
     swaybg
@@ -128,8 +96,6 @@
     # Hardware specific
     supergfxctl
     asusctl
-
-    cowsay
   ];
 
   fonts.packages = with pkgs; [
@@ -184,7 +150,7 @@
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "${settings.nixosVersion}"; # Did you read the comment?
 
 }
 

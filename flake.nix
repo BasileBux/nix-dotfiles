@@ -23,22 +23,25 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
 
-      username = "basileb";
-      configPath = "/home/${username}/nixos";
-    in
-    {
-    nixosConfigurations.default = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs; inherit username; };
-      modules = [
-        "${configPath}/configuration.nix"
-        inputs.home-manager.nixosModules.home-manager
-        {
-          environment.systemPackages = [ 
-            inputs.zen-browser.packages.${system}.twilight
-            inputs.quickshell.packages.${system}.default
-          ];
-        }
-      ];
+      settings = {
+        username = "basileb";
+        configPath = "/home/${settings.username}/nixos";
+        machine = "asus";
+        nixosVersion = "25.05";
+      };
+    in {
+      nixosConfigurations.default = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs settings; };
+        modules = [
+          "${settings.configPath}/configuration.nix"
+          inputs.home-manager.nixosModules.home-manager
+          {
+            environment.systemPackages = [
+              inputs.quickshell.packages.${system}.default
+            ];
+            home-manager.extraSpecialArgs = { inherit inputs settings; };
+          }
+        ];
+      };
     };
-  };
 }
