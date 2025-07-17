@@ -120,7 +120,7 @@
         background-color: @background;
         border-radius: 6px;
         margin-top: 3px;
-        margin-left: 5px;
+        margin-left: 3px;
       }
 
       .modules-center {
@@ -135,7 +135,7 @@
         border-radius: 6px;
         padding: 0px 6px;
         margin-top: 3px;
-        margin-right: 5px;
+        margin-right: 3px;
       }
 
       window#waybar.hidden {

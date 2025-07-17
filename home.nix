@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, settings, ... }:
+{ lib, config, pkgs, inputs, settings, ... }:
 
 {
   imports = [
@@ -9,6 +9,8 @@
     ./dotfiles/waybar/waybar.nix
     ./dotfiles/zsh/zsh.nix
     ./dotfiles/hypr/hyprland.nix
+    ./dotfiles/hypr/hyprlock.nix
+    ./dotfiles/wlogout/wlogout.nix
   ];
 
   home.username = "${settings.username}";

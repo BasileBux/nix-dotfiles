@@ -41,7 +41,7 @@
       "$mainMod, N, exec, flatpak run app.zen_browser.zen"
       "$mainMod, B, exec, [float] blueman-manager"
       "$mainMod, L, exec, $scripts/wlogout.sh"
-      "SUPER, Super_L, exec, $menu" # Menu bind only on left super
+      "SUPER, Super_L, exec, wofi --show drun --prompt ' search...'" # Menu bind only on left super
 
       # Custom daily note notepad in neovim
       "$mainMod, D, exec, [float] $terminal -e sh $scripts/dailyNote.sh"
