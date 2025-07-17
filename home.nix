@@ -8,6 +8,7 @@
     ./dotfiles/tmux.nix
     ./dotfiles/waybar/waybar.nix
     ./dotfiles/zsh/zsh.nix
+    ./dotfiles/hypr/hyprland.nix
   ];
 
   home.username = "${settings.username}";

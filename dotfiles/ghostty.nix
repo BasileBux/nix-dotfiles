@@ -25,7 +25,7 @@
       window-padding-y = "4,0";
 
       keybind =
-        [ "ctrl+shift+1=increase_font_size:5" "ctrl+shift+§=reset_font_size" ];
+        [ "ctrl+shift+1=increase_font_size:5" "ctrl+shift+.=reset_font_size" ];
     };
     themes = {
       custom = {

@@ -16,9 +16,10 @@
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprland.url = "github:hyprwm/hyprland";
   };
 
-  outputs = { self, nixpkgs, zen-browser, quickshell, home-manager }@inputs:
+  outputs = { self, nixpkgs, zen-browser, quickshell, home-manager, hyprland }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};

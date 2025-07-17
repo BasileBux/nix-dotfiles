@@ -35,10 +35,8 @@
 
   programs.zsh.enable = true;
 
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
+  programs.hyprland.enable = true;
+  programs.hyprland.package = inputs.hyprland.packages.${pkgs.system}.hyprland;
 
   environment.sessionVariables = {
     XDG_CURRENT_DESKTOP = "Hyprland";
@@ -80,22 +78,10 @@
     rustc
     nodejs
     go
-
-    # Hyprland
-    bibata-cursors
-    hyprcursor
-    wofi
-    playerctl
-    swaybg
-    hypridle
-    wlogout
-    grim
-    slurp
-    hyprlock
-
-    # Hardware specific
-    supergfxctl
+  ]
+  ++ lib.optionals (settings.machine == "asus") [
     asusctl
+    supergfxctl
   ];
 
   fonts.packages = with pkgs; [
