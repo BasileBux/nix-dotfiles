@@ -22,14 +22,14 @@
 
       # Screenshot
       ''
-        $mainMod, S, exec, grim "$HOME/Pictures/Screenshots/$(date '+%d-%m-%y_%Hh%Mm%Ss').png"
+        $mainMod, S, exec, grim "$HOME/screenshots/$(date '+%d-%m-%y_%Hh%Mm%Ss').png"
       ''
       ''
-        $mainMod SHIFT, S, exec, grim -g "$(slurp)" "$HOME/Pictures/Screenshots/$(date '+%d-%m-%y_%Hh%Mm%Ss').png"
+        $mainMod SHIFT, S, exec, grim -g "$(slurp)" "$HOME/screenshots/$(date '+%d-%m-%y_%Hh%Mm%Ss').png"
       ''
 
       # Toggle hide/show waybar
-      "$mainMod, W, exec, killall -SIGUSR1 waybar"
+      "$mainMod, W, exec, pgrep waybar >/dev/null && pkill waybar"
 
       # Refresh
       "$mainMod, R, exec, $scripts/refresh.sh"
@@ -37,14 +37,13 @@
       # Apps
       "$mainMod, T, exec, $terminal"
       "$mainMod, Q, killactive,"
-      "$mainMod, E, exec, [float] $fileManager"
-      "$mainMod, N, exec, flatpak run app.zen_browser.zen"
+      "$mainMod, N, exec, zen"
       "$mainMod, B, exec, [float] blueman-manager"
-      "$mainMod, L, exec, $scripts/wlogout.sh"
+      "$mainMod, L, exec, wlogout -b 5 -c 20 --protocol layer-shell"
       "SUPER, Super_L, exec, wofi --show drun --prompt ' search...'" # Menu bind only on left super
 
       # Custom daily note notepad in neovim
-      "$mainMod, D, exec, [float] $terminal -e sh $scripts/dailyNote.sh"
+      "$mainMod, D, exec, [float] $terminal -e sh nvim ~/tmp/notes/daily-$(date +%d-%b-%Y).md"
 
       # Custom script to toggle monitors
       "$mainMod, M, exec, $scripts/monitors-toggle.sh"

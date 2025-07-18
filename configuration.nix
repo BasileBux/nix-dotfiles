@@ -69,9 +69,10 @@
     blueman
     pavucontrol
     fzf
+    yazi
 
     # Dev deps
-    gcc
+    libgcc
     cmake
     gnumake
     cargo

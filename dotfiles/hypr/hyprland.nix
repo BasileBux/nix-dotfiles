@@ -21,12 +21,12 @@
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
+    systemd.enable = true;
     settings = {
       "$mainMod" = "SUPER";
       "$scripts" = "${settings.configPath}/scripts";
       "$wallpaper" = "${settings.configPath}/dotfiles/hypr/wallpaper.png";
       "$terminal" = "ghostty";
-      "$filemanager" = "nautilus";
 
       env = [
         "HYPRCURSOR_THEME,Bibata-Modern-Classic"

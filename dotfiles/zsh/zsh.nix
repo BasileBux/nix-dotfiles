@@ -9,6 +9,9 @@
 
     shellAliases = {
       edit = "sudo -e";
+      config = ''
+        cd ${settings.configPath} && nvim -c "e configuration.nix" -c "tabnew" -c "e flake.nix" -c "tabnew" -c "e home.nix"
+      '';
       rebuild =
         "sudo nixos-rebuild switch --flake /home/${settings.username}/nixos#default --impure";
       ai = ''
