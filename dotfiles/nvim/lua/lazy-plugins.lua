@@ -14,7 +14,9 @@ require("lazy").setup({
 
 	require("config.plugins.conform"),
 
-	require("config.plugins.cmp"),
+	-- require("config.plugins.cmp"),
+	
+	require("config.plugins.blink-cmp"),
 
 	-- require("config.plugins.dap"), -- Configuration is bugged for some reason
 

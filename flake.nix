@@ -19,7 +19,8 @@
     hyprland.url = "github:hyprwm/hyprland";
   };
 
-  outputs = { self, nixpkgs, zen-browser, quickshell, home-manager, hyprland }@inputs:
+  outputs =
+    { self, nixpkgs, zen-browser, quickshell, home-manager, hyprland }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -37,9 +38,8 @@
           "${settings.configPath}/configuration.nix"
           inputs.home-manager.nixosModules.home-manager
           {
-            environment.systemPackages = [
-              inputs.quickshell.packages.${system}.default
-            ];
+            environment.systemPackages =
+              [ inputs.quickshell.packages.${system}.default ];
             home-manager.extraSpecialArgs = { inherit inputs settings; };
           }
         ];

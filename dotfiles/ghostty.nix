@@ -29,31 +29,31 @@
     };
     themes = {
       custom = {
-	palette = [
-	  "0=#000000"
-	  "1=#FD788B"
-	  "2=#20FF4F"
-	  "3=#F4CC67"
-	  "4=#68A9FF"
-	  "5=#F970CD"
-	  "6=#39FFE2"
-	  "7=#ffffff"
-	  "8=#525252"
-	  "9=#FDB0BA"
-	  "10=#25BA58"
-	  "11=#FFCA14"
-	  "12=#8CDAFF"
-	  "13=#FE97E1"
-	  "14=#A5FFFA"
-	  "15=#d4ccb9"
-	];
+        palette = [
+          "0=#000000"
+          "1=#FD788B"
+          "2=#20FF4F"
+          "3=#F4CC67"
+          "4=#68A9FF"
+          "5=#F970CD"
+          "6=#39FFE2"
+          "7=#ffffff"
+          "8=#525252"
+          "9=#FDB0BA"
+          "10=#25BA58"
+          "11=#FFCA14"
+          "12=#8CDAFF"
+          "13=#FE97E1"
+          "14=#A5FFFA"
+          "15=#d4ccb9"
+        ];
 
-	background = "#0f0f0f";
-	foreground = "#CAD3F5";
-	cursor-color = "#CAD3F5";
-	cursor-text = "#000000";
-	selection-background = "#F4DBD6";
-	selection-foreground = "#24273A";
+        background = "#0f0f0f";
+        foreground = "#CAD3F5";
+        cursor-color = "#CAD3F5";
+        cursor-text = "#000000";
+        selection-background = "#F4DBD6";
+        selection-foreground = "#24273A";
       };
     };
   };

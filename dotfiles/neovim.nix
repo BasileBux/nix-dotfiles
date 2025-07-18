@@ -1,13 +1,7 @@
 { lib, config, pkgs, inputs, settings, ... }:
 
 {
-  home.packages = with pkgs; [
-    ripgrep
-    fzf
-    gcc
-    cargo
-    rustc
-  ];
+  home.packages = with pkgs; [ ripgrep fd fzf gcc cargo rustc ];
   programs.neovim.enable = true;
   xdg.configFile = {
     "nvim" = {

@@ -30,9 +30,7 @@
             "empty" = "";
             "default" = "";
           };
-          persistent-workspaces = {
-            "*" = 5;
-          };
+          persistent-workspaces = { "*" = 5; };
         };
         "clock" = {
           tooltip-format = "{:%d-%m-%Y | %H:%M}";
@@ -90,8 +88,7 @@
           tooltip = true;
           tooltip-format = "Power menu";
           format = "";
-          on-click =
-            "${settings.configPath}/dotfiles/waybar/wlogout.sh";
+          on-click = "${settings.configPath}/dotfiles/waybar/wlogout.sh";
         };
       };
 

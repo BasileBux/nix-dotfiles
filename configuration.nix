@@ -48,39 +48,36 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs;
+    [
 
-    # Utils
-    wget
-    curl
-    git
-    alsa-utils
-    wl-clipboard
-    openssh
-    upower
-    unzip
-    jq
+      # Utils
+      wget
+      curl
+      git
+      alsa-utils
+      wl-clipboard
+      openssh
+      upower
+      unzip
+      jq
 
-    # Software
-    btop
-    nautilus
-    blueman
-    pavucontrol
-    yazi
+      # Software
+      btop
+      nautilus
+      blueman
+      pavucontrol
+      yazi
 
-    # Dev deps
-    gcc
-    cmake
-    gnumake
-    cargo
-    rustc
-    nodejs
-    go
-  ]
-  ++ lib.optionals (settings.machine == "asus") [
-    asusctl
-    supergfxctl
-  ];
+      # Dev deps
+      gcc
+      cmake
+      gnumake
+      cargo
+      rustc
+      nodejs
+      go
+    ] ++ lib.optionals (settings.machine == "asus") [ asusctl supergfxctl ];
 
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
