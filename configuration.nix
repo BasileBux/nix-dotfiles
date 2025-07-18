@@ -58,21 +58,18 @@
     wl-clipboard
     openssh
     upower
-    ripgrep
     unzip
     jq
 
     # Software
-    neovim
     btop
     nautilus
     blueman
     pavucontrol
-    fzf
     yazi
 
     # Dev deps
-    libgcc
+    gcc
     cmake
     gnumake
     cargo

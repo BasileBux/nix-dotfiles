@@ -29,7 +29,7 @@
       ''
 
       # Toggle hide/show waybar
-      "$mainMod, W, exec, pgrep waybar >/dev/null && pkill waybar"
+      "$mainMod, W, exec, pgrep -x waybar > /dev/null && pkill -x waybar || program_name &"
 
       # Refresh
       "$mainMod, R, exec, $scripts/refresh.sh"
