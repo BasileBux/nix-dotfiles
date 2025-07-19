@@ -13,8 +13,8 @@ nix-shell -p curl git --run "curl -L https://raw.githubusercontent.com/BasileBux
 or
 
 ```bash
-git clone git@github.com:BasileBux/nix-dotfiles.git nixos
+nix-shell -p git
+git clone https://github.com/BasileBux/nix-dotfiles.git nixos
 cd nixos
-nixos-rebuild switch --flake .#hostname
 sudo nixos-rebuild switch --flake /home/basileb/nixos#default --impure
 ```

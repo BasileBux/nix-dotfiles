@@ -10,8 +10,14 @@ EXTERNAL_MONITOR1="DP-1"
 NUM_MONITORS=$(hyprctl monitors all | grep Monitor | wc --lines)
 NUM_MONITORS_ACTIVE=$(hyprctl monitors | grep Monitor | wc --lines)
 
+kill_hypridle() {
+    if pgrep hypridle >/dev/null; then
+        pkill hypridle
+    fi
+}
+
 if [ $NUM_MONITORS -gt 1 ]; then
-    killall hypridle
+    kill_hypridle
     hyprctl keyword monitor "$DGPU_INTERNAL_MONITOR, disable"
     hyprctl keyword monitor "$INTEGRATED_INTERNAL_MONITOR, disable"
 

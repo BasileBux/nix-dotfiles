@@ -4,7 +4,6 @@
   wayland.windowManager.hyprland.settings.exec-once = [
     "swaybg -i $wallpaper -m fill"
     "waybar"
-    "hypridle"
     "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
     "hyprctl setcursor Bibata-Modern-Classic 22"
     "$scripts/monitors-toggle.sh"

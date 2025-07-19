@@ -68,6 +68,8 @@
       blueman
       pavucontrol
       yazi
+      eog
+      evince
 
       # Dev deps
       gcc
@@ -89,6 +91,10 @@
 
   services.asusd.enable = true;
   services.upower.enable = true;
+
+  services.udisks2.enable = true;
+  services.gvfs.enable = true;
+  services.devmon.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
