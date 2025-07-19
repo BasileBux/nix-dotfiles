@@ -194,26 +194,17 @@
       }
 
       #battery.warning {
-        color: ${colors.waybar.text};
-        background-color: ${colors.waybar.yellow};
+        color: ${colors.waybar.yellow};
         border-radius: 6px;
       }
 
       #battery.critical {
-        color: ${colors.waybar.text};
-        background-color: ${colors.waybar.red};
+        color: ${colors.waybar.red};
         border-radius: 6px;
       }
 
       #battery.charging {
-        color: ${colors.waybar.text};
-        background-color: ${colors.waybar.green};
-        border-radius: 6px;
-      }
-
-      #temperature.critical {
-        color: ${colors.waybar.text};
-        background-color: ${colors.waybar.red};
+        color: ${colors.waybar.green};
         border-radius: 6px;
       }
 

@@ -12,3 +12,5 @@ waybar &
 if pgrep swaybg >/dev/null; then
     pkill swaybg
 fi
+
+swaybg -i /home/basileb/nixos/dotfiles/hypr/wallpaper.png -m fill &

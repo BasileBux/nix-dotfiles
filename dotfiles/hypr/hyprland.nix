@@ -35,11 +35,15 @@
         "QT_QPA_PLATFORMTHEME,qt5ct"
       ];
 
-      monitor = [ ] ++ lib.optionals (settings.machine == "asus") [
-        "monitor=eDP-1, 2560x1600@120.00Hz, 0x0, 2"
-        "monitor=DP-1, 2560x1440@165.00Hz, 0x0, 1" # 27" docked
-      ] ++ lib.optionals (settings.machine == "thinkpad")
-        [ "eDP-1, 1920x1080@60.01Hz, 0x0, 1.0" ];
+      monitor = if (settings.machine == "asus") then [
+        "eDP-1, 2560x1600@120.00Hz, 0x0, 2"
+        "DP-1, 2560x1440@165.00Hz, 0x0, 1"
+        ",preferred, auto, auto, mirror, eDP-1"
+      ] else if (settings.machine == "thinkpad") then [
+        "eDP-1, 1920x1080@60.01Hz, 0x0, 1.0"
+        ",preferred, auto, auto, mirror, eDP-1"
+      ] else
+        [ ",preferred,auto,auto" ];
 
       cursor.enable_hyprcursor = true;
 
