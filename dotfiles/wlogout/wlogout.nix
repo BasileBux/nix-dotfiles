@@ -1,4 +1,4 @@
-{ lib, config, pkgs, inputs, settings, ... }:
+{ lib, config, pkgs, inputs, settings, colors, ... }:
 
 {
   programs.wlogout = {
@@ -38,8 +38,6 @@
     ];
 
     style = ''
-      @import '${settings.configPath}/dotfiles/waybar/colors.css';
-
       * {
           text-shadow: 0px 0px;
           box-shadow: 0px 0px;
@@ -48,8 +46,8 @@
       window {
           font-family: GeistMono NF Medium;
           font-size: 14pt;
-          color: @text; /* text */
-          background-color: rgba(30, 30, 46, 0.5);
+          color: ${colors.wlogout.text};
+          background-color: alpha(${colors.wlogout.background}, 0.5);
       }
 
       button {
@@ -57,15 +55,15 @@
           background-position: center;
           background-size: 25%;
           border: none;
-          background-color: rgba(30, 30, 46, 0);
+          background-color: alpha(${colors.wlogout.background}, 0.5);
           margin: 5px;
           transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
-          color: @text;
+          color: ${colors.wlogout.text};
       }
 
       button:hover {
-          background-color: @flamingo;
-          color: @mantle;
+          background-color: ${colors.wlogout.hoverBackground};
+          color: ${colors.wlogout.hoverText};
       }
 
       #logout {

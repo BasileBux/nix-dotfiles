@@ -1,4 +1,4 @@
-{ config, pkgs, settings, ... }:
+{ config, pkgs, settings, colors, ... }:
 
 {
   programs.waybar = {
@@ -94,10 +94,7 @@
 
     };
     style = ''
-      @import "${settings.configPath}/dotfiles/waybar/colors.css";
-
       * {
-        /* reference the color by using @color-name */
         border: none;
         border-radius: 0;
         font-family: GeistMono NF;
@@ -106,29 +103,27 @@
       }
 
       window#waybar {
-        /* you can also GTK3 CSS functions! */
-        /* background-color: shade(@rgbaBase, 0.9); */
         background-color: transparent;
-        border: 0px solid alpha(@crust, 0.3);
-        color: @text;
+        border: 0px solid alpha(${colors.waybar.border}, 0.3);
+        color: ${colors.waybar.text};
       }
 
       .modules-left {
-        background-color: @background;
+        background-color: alpha(${colors.waybar.background}, 0.75);
         border-radius: 6px;
         margin-top: 3px;
         margin-left: 3px;
       }
 
       .modules-center {
-        background-color: @background;
+        background-color: alpha(${colors.waybar.background}, 0.75);
         padding: 0px 10px;
         border-radius: 6px;
         margin-top: 3px;
       }
 
       .modules-right {
-        background-color: @background;
+        background-color: alpha(${colors.waybar.background}, 0.75);
         border-radius: 6px;
         padding: 0px 6px;
         margin-top: 3px;
@@ -150,21 +145,21 @@
         background: transparent;
         border-bottom: 0px solid transparent;
         min-width: 0px;
-        color: @overlay0;
+        color: ${colors.waybar.text};
       }
 
       #workspaces button.active {
-        color: @workspaces;
+        color: ${colors.waybar.accent0};
       }
 
       #workspaces button:hover {
         box-shadow: inherit;
         text-shadow: inherit;
-        color: @hover;
+        color: ${colors.waybar.accent1};
       }
 
       #workspaces button.urgent {
-        background-color: @red;
+        background-color: ${colors.waybar.red};
       }
 
       #clock,
@@ -190,7 +185,7 @@
       #cpu:hover,
       #custom-player:hover,
       #custom-wlogout:hover {
-        color: @hover;
+        color: ${colors.waybar.accent1};
       }
 
       #cpu {
@@ -199,36 +194,36 @@
       }
 
       #battery.warning {
-        color: @crust;
-        background-color: @yellow;
+        color: ${colors.waybar.text};
+        background-color: ${colors.waybar.yellow};
         border-radius: 6px;
       }
 
       #battery.critical {
-        color: @crust;
-        background-color: @red;
+        color: ${colors.waybar.text};
+        background-color: ${colors.waybar.red};
         border-radius: 6px;
       }
 
       #battery.charging {
-        color: @crust;
-        background-color: @green;
+        color: ${colors.waybar.text};
+        background-color: ${colors.waybar.green};
         border-radius: 6px;
       }
 
       #temperature.critical {
-        color: @crust;
-        background-color: @red;
+        color: ${colors.waybar.text};
+        background-color: ${colors.waybar.red};
         border-radius: 6px;
       }
 
       tooltip {
-        background-color: @trans-crust;
+        background-color: ${colors.waybar.background};
         border-radius: 3px;
       }
 
       tooltip label {
-        color: @text;
+        color: ${colors.waybar.text};
       }
     '';
   };

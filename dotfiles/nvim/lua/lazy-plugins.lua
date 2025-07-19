@@ -45,7 +45,7 @@ require("lazy").setup({
 
 	require("config.plugins.render-markdown"),
 
-	-- require("config.plugins.ccc"), -- configuration is bugged for some reason
+	require("config.plugins.ccc"), -- configuration is bugged for some reason
 
 	require("config.plugins.toggleterm"),
 

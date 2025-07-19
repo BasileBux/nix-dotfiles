@@ -25,22 +25,25 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
 
+
       settings = {
         username = "basileb";
         configPath = "/home/${settings.username}/nixos";
         machine = "asus";
         nixosVersion = "25.05";
       };
+      theme = import "${settings.configPath}/colors/colors.nix" { inherit settings; };
+      colors = theme.theme;
     in {
       nixosConfigurations.default = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs settings; };
+        specialArgs = { inherit inputs settings colors; };
         modules = [
           "${settings.configPath}/configuration.nix"
           inputs.home-manager.nixosModules.home-manager
           {
             environment.systemPackages =
               [ inputs.quickshell.packages.${system}.default ];
-            home-manager.extraSpecialArgs = { inherit inputs settings; };
+            home-manager.extraSpecialArgs = { inherit inputs settings colors; };
           }
         ];
       };

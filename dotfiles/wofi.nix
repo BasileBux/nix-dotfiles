@@ -1,4 +1,4 @@
-{ lib, config, pkgs, inputs, settings, ... }:
+{ lib, config, pkgs, inputs, settings, colors, ... }:
 
 {
   programs.wofi = {
@@ -27,9 +27,9 @@
     };
 
     style = ''
-      @import "${settings.configPath}/dotfiles/waybar/colors.css" * {
+      * {
         font-family: GeistMono NF;
-        color: @text;
+        color: ${colors.wofi.text};
       }
 
       #outer-box {
@@ -37,11 +37,11 @@
       }
 
       #window {
-        background: #181926;
+        background: ${colors.wofi.background};
         margin: auto;
         padding: 0px;
         border-radius: 14px;
-        border: 0px solid #aa2284;
+        border: 0px solid ${colors.wofi.border};
       }
 
       #input {
@@ -49,9 +49,9 @@
         margin-bottom: 15px;
         border-radius: 90px;
         border: 0px;
-        color: @text;
+        color: ${colors.wofi.text};
         font-weight: bold;
-        background: #181926;
+        background: ${colors.wofi.background};
       }
 
       #img {
@@ -63,7 +63,7 @@
       }
 
       #entry {
-        color: @text;
+        color: ${colors.wofi.text};
         margin: 0px;
         padding: 10px;
         border-radius: 7px;
@@ -71,7 +71,7 @@
       }
 
       #entry:selected {
-        background-color: #313244;
+        background-color: ${colors.wofi.selected};
         border-radius: 7px;
         margin: 0px;
         padding: 10px;
