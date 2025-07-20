@@ -1,8 +1,8 @@
 { config, pkgs, inputs, settings, lib, ... }:
 
 {
-  wayland.windowManager.hyprland.settings.windowrulev2 = [
+  wayland.windowManager.hyprland.settings.windowrule = [
     "suppressevent maximize, class:.*"
-    "float, title:^(Picture-in-Picture)$"
+    "float, title:Picture-in-Picture"
   ];
 }

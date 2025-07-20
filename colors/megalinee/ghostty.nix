@@ -7,7 +7,7 @@ in {
   cursorText = megalinee.black0;
   selectionBackground = megalinee.red1;
   selectionForeground = megalinee.black1;
-  col0 = megalinee.black0;
+  col0 = megalinee.grey1;
   col1 = megalinee.red0;
   col2 = megalinee.green0;
   col3 = megalinee.yellow0;

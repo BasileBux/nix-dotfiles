@@ -2,7 +2,7 @@
 
 {
   imports = [ inputs.zen-browser.homeModules.twilight ];
-  home.packages = [ inputs.zen-browser.packages.${pkgs.system}.twilight ];
+  home.packages = [ inputs.zen-browser.packages.${pkgs.system}.twilight-official ];
   programs.zen-browser = {
     enable = true;
     # I haven't figured this out yet

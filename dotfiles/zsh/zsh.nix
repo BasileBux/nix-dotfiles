@@ -13,7 +13,7 @@
         cd ${settings.configPath} && nvim -c "e configuration.nix" -c "tabnew" -c "e flake.nix" -c "tabnew" -c "e home.nix"
       '';
       rebuild =
-        "sudo nixos-rebuild switch --flake /home/${settings.username}/nixos#default --impure";
+        "sudo nixos-rebuild switch --flake /home/${settings.username}/nixos#default --impure && sh ${settings.configPath}/scripts/post-rebuild.sh";
       ai = ''
         nvim -c CodeCompanionChat -c "wincmd h" -c "q"
       '';

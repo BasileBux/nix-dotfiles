@@ -60,6 +60,14 @@
       upower
       unzip
       jq
+      firefox
+
+      # Codecs
+      libva
+      ffmpeg-full
+      mediastreamer
+      openh264
+      mediastreamer-openh264
 
       # Software
       btop

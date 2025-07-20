@@ -1,7 +1,7 @@
 { lib, config, pkgs, inputs, settings, ... }:
 
 {
-  imports = [ ./keybinds.nix ./startup.nix ];
+  imports = [ ./keybinds.nix ./startup.nix ./windowrules.nix ];
 
   # Dependencies for the Hyprland setup
   home.packages = with pkgs; [
