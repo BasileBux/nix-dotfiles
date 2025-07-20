@@ -50,7 +50,6 @@
 
   environment.systemPackages = with pkgs;
     [
-
       # Utils
       wget
       curl
