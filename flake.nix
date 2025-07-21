@@ -17,14 +17,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.url = "github:hyprwm/hyprland";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   outputs =
-    { self, nixpkgs, zen-browser, quickshell, home-manager, hyprland }@inputs:
+    { self, nixpkgs, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-
 
       settings = {
         username = "basileb";
@@ -32,7 +32,8 @@
         machine = "asus";
         nixosVersion = "25.05";
       };
-      theme = import "${settings.configPath}/colors/colors.nix" { inherit settings; };
+      theme =
+        import "${settings.configPath}/colors/colors.nix" { inherit settings; };
       colors = theme.theme;
     in {
       nixosConfigurations.default = nixpkgs.lib.nixosSystem {
@@ -45,6 +46,10 @@
               [ inputs.quickshell.packages.${system}.default ];
             home-manager.extraSpecialArgs = { inherit inputs settings colors; };
           }
+        ] ++ nixpkgs.lib.optionals (settings.machine == "asus") [
+          inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
+        ] ++ nixpkgs.lib.optionals (settings.machine == "thinkpad") [
+          inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480
         ];
       };
     };
