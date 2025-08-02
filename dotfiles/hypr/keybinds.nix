@@ -5,6 +5,9 @@
     binds = { allow_workspace_cycles = true; };
 
     bind = [
+      # Quickshell binds
+      "$mainMod, H, global, quickshell:toggle"
+      "$mainMod, L, global, quickshell:lock"
 
       # Media / audio
       ",XF86AudioLowerVolume, exec, $scripts/volumeControl.sh --dec"
@@ -39,7 +42,7 @@
       "$mainMod, Q, killactive,"
       "$mainMod, N, exec, zen"
       "$mainMod, B, exec, [float] blueman-manager"
-      "$mainMod, L, exec, wlogout -b 5 -c 20 --protocol layer-shell"
+      # "$mainMod, L, exec, wlogout -b 5 -c 20 --protocol layer-shell"
       "SUPER, Super_L, exec, wofi --show drun --prompt ' search...'" # Menu bind only on left super
 
       # Custom daily note notepad in neovim

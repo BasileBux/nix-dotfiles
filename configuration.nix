@@ -23,6 +23,17 @@
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
+  services.pulseaudio.enable = false;
+
+  security.rtkit.enable = true;
+
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${settings.username} = {
     isNormalUser = true;
@@ -54,16 +65,18 @@
       wget
       curl
       git
-      alsa-utils
+      pamixer
       wl-clipboard
       openssh
       upower
       unzip
       jq
       gparted
+      bluez
 
       # Codecs
       libva
+      libGL
       ffmpeg-full
       mediastreamer
       openh264
@@ -79,6 +92,10 @@
       evince
       gnome-disk-utility
       firefox
+      obs-studio
+      kdePackages.kdenlive
+      localsend
+      vesktop
 
       # Dev deps
       gcc
@@ -104,21 +121,6 @@
   services.udisks2.enable = true;
   services.gvfs.enable = true;
   services.devmon.enable = true;
-
-  fileSystems."/windows-esp" = if settings.machine == "asus" then {
-    device = "/dev/nvme0n1p1";
-    fsType = "vfat";
-    options = [ "nofail" "x-systemd.automount" ];
-  } else
-    { };
-
-  boot.loader.systemd-boot.extraEntries = if settings.machine == "asus" then {
-    "windows.conf" = ''
-      title   Windows
-      efi     /windows-esp/EFI/Microsoft/Boot/bootmgfw.efi
-    '';
-  } else
-    { };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

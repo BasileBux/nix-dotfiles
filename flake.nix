@@ -16,6 +16,7 @@
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     hyprland.url = "github:hyprwm/hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
@@ -43,7 +44,9 @@
           inputs.home-manager.nixosModules.home-manager
           {
             environment.systemPackages =
-              [ inputs.quickshell.packages.${system}.default ];
+              [ 
+                inputs.quickshell.packages.${system}.default
+              ];
             home-manager.extraSpecialArgs = { inherit inputs settings colors; };
           }
         ] ++ nixpkgs.lib.optionals (settings.machine == "asus") [
