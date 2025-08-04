@@ -40,7 +40,7 @@
       # Apps
       "$mainMod, T, exec, $terminal"
       "$mainMod, Q, killactive,"
-      "$mainMod, N, exec, zen"
+      "$mainMod, N, exec, zen-twilight"
       "$mainMod, B, exec, [float] blueman-manager"
       # "$mainMod, L, exec, wlogout -b 5 -c 20 --protocol layer-shell"
       "SUPER, Super_L, exec, wofi --show drun --prompt ' search...'" # Menu bind only on left super

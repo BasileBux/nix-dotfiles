@@ -14,7 +14,6 @@
     ./dotfiles/wlogout/wlogout.nix
     ./dotfiles/theming.nix
     ./dotfiles/wofi.nix
-    ./dotfiles/neovim.nix
   ];
 
   home.username = "${settings.username}";

@@ -1,5 +1,7 @@
 { config, lib, pkgs, inputs, settings, ... }:
-
+let
+  customSddmTheme = pkgs.callPackage ./dotfiles/sddm/custom-theme-derivation.nix {};
+in
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -49,6 +51,15 @@
   programs.hyprland.enable = true;
   programs.hyprland.package = inputs.hyprland.packages.${pkgs.system}.hyprland;
 
+  # services.displayManager = {
+  #   defaultSession = "hyprland";
+  #   sddm = {
+  #     enable = true;
+  #     wayland.enable = true;
+  #     theme = "custom";
+  #   };
+  # };
+  
   environment.sessionVariables = {
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
@@ -60,7 +71,11 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   environment.systemPackages = with pkgs;
+    let
+      themes = pkgs.callPackage ./dotfiles/sddm/custom-theme-derivation.nix {};
+    in
     [
+      themes.sddm-custom-theme
       # Utils
       wget
       curl
@@ -105,7 +120,20 @@
       rustc
       nodejs
       go
+
+      # nvim
+      neovim
+      ripgrep
+      fd
+      fzf
+      gcc
+      cargo
+      rustc
+      luarocks
+      stylua
     ] ++ lib.optionals (settings.machine == "asus") [ asusctl supergfxctl ];
+
+  programs.nix-ld.enable = true;
 
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
