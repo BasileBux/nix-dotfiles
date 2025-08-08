@@ -31,6 +31,7 @@
         username = "basileb";
         configPath = "/home/${settings.username}/nixos";
         machine = "asus";
+        swapAltSuper = false;
         nixosVersion = "25.05";
       };
       theme =
@@ -43,10 +44,10 @@
           "${settings.configPath}/configuration.nix"
           inputs.home-manager.nixosModules.home-manager
           {
-            environment.systemPackages =
-              [ 
-                inputs.quickshell.packages.${system}.default
-              ];
+            # environment.systemPackages =
+            #   [ 
+            #     inputs.quickshell.packages.${system}.default
+            #   ];
             home-manager.extraSpecialArgs = { inherit inputs settings colors; };
           }
         ] ++ nixpkgs.lib.optionals (settings.machine == "asus") [

@@ -1,8 +1,8 @@
 { config, lib, pkgs, inputs, settings, ... }:
 let
-  customSddmTheme = pkgs.callPackage ./dotfiles/sddm/custom-theme-derivation.nix {};
-in
-{
+  customSddmTheme =
+    pkgs.callPackage ./dotfiles/sddm/custom-theme-derivation.nix { };
+in {
   imports = [ ./hardware-configuration.nix ];
 
   # Use the systemd-boot EFI boot loader.
@@ -59,7 +59,7 @@ in
   #     theme = "custom";
   #   };
   # };
-  
+
   environment.sessionVariables = {
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
@@ -72,9 +72,8 @@ in
 
   environment.systemPackages = with pkgs;
     let
-      themes = pkgs.callPackage ./dotfiles/sddm/custom-theme-derivation.nix {};
-    in
-    [
+      themes = pkgs.callPackage ./dotfiles/sddm/custom-theme-derivation.nix { };
+    in [
       themes.sddm-custom-theme
       # Utils
       wget
@@ -111,6 +110,7 @@ in
       kdePackages.kdenlive
       localsend
       vesktop
+      # inputs.quickshell.packages.${pkgs.system}.default
 
       # Dev deps
       gcc
@@ -134,6 +134,13 @@ in
     ] ++ lib.optionals (settings.machine == "asus") [ asusctl supergfxctl ];
 
   programs.nix-ld.enable = true;
+
+  programs.nix-ld.libraries = with pkgs; [
+    brotli
+    zstd
+    glib
+    stdenv.cc.cc.lib
+  ];
 
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code

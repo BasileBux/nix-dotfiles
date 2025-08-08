@@ -16,6 +16,10 @@
     ./dotfiles/wofi.nix
   ];
 
+  home.packages = [
+    inputs.quickshell.packages.${pkgs.system}.default
+  ];
+
   home.username = "${settings.username}";
   home.homeDirectory = "/home/${settings.username}";
 

@@ -1,5 +1,9 @@
-{ config, pkgs, inputs, settings, ... }:
-
+{ lib, config, pkgs, inputs, settings, ... }:
+let
+  secretsPath = "${settings.configPath}/secrets.nix";
+  secretsExists = builtins.pathExists secretsPath;
+  secrets = if secretsExists then import secretsPath else {};
+in
 {
   programs.zsh = {
     enable = true;
@@ -38,4 +42,10 @@
       theme = "basileb";
     };
   };
+
+  home.sessionVariables = {
+      ANTHROPIC_API_KEY = secrets.keys.anthropicApiKey or "";
+      OPENAI_API_KEY = secrets.keys.openaiApiKey or "";
+      GEMINI_API_KEY = secrets.keys.geminiApiKey or "";
+    };
 }

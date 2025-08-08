@@ -9,7 +9,6 @@
     hyprcursor # Watch for plugin possibly
     wofi
     playerctl
-    swaybg # Watch for plugin possibly
     hypridle # Watch for plugin possibly
     wlogout
     grim
@@ -97,7 +96,7 @@
         kb_layout = "us";
         # kb_layout = "ch";
         # kb_variant = "fr";
-        kb_options = "ctrl:nocaps";
+        kb_options = "ctrl:nocaps${lib.optionalString settings.swapAltSuper ",altwin:swap_lalt_lwin"}";
         follow_mouse = 1;
         touchpad = { natural_scroll = true; };
         sensitivity = 0; # -1.0 to 1.0, 0 means no modification.

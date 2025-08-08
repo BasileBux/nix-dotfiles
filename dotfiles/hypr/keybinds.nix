@@ -8,6 +8,7 @@
       # Quickshell binds
       "$mainMod, H, global, quickshell:toggle"
       "$mainMod, L, global, quickshell:lock"
+      "$mainMod, O, global, quickshell:appLauncher"
 
       # Media / audio
       ",XF86AudioLowerVolume, exec, $scripts/volumeControl.sh --dec"
