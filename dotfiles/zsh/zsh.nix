@@ -47,5 +47,6 @@ in
       ANTHROPIC_API_KEY = secrets.keys.anthropicApiKey or "";
       OPENAI_API_KEY = secrets.keys.openaiApiKey or "";
       GEMINI_API_KEY = secrets.keys.geminiApiKey or "";
+      MOONSHOT_API_KEY = secrets.keys.moonshotApiKey or "";
     };
 }
