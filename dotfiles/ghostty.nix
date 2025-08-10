@@ -7,18 +7,19 @@
     enableZshIntegration = true;
     settings = {
       cursor-style = "block";
-      # shell-integration = "zsh";
+      shell-integration = "zsh";
       shell-integration-features = "no-cursor";
       mouse-hide-while-typing = true;
 
       font-family = "JetBrainsMono NF";
       font-style-italic = "Medium";
 
-      font-size = 14;
+      font-size = 13;
       font-feature = "-calt";
 
       # rose-pine, Abernathy, deep, tokyonight
       theme = "custom";
+      # theme = "cyberdream";
       background-opacity = 0.8;
 
       window-padding-x = "3,3";
@@ -54,6 +55,34 @@
         cursor-text = "${colors.terminal.cursorText}";
         selection-background = "${colors.terminal.selectionBackground}";
         selection-foreground = "${colors.terminal.selectionForeground}";
+      };
+
+      cyberdream = {
+        palette = [
+          "0=#16181a"
+          "1=#ff6e5e"
+          "2=#5eff6c"
+          "3=#f1ff5e"
+          "4=#5ea1ff"
+          "5=#bd5eff"
+          "6=#5ef1ff"
+          "7=#ffffff"
+          "8=#3c4048"
+          "9=#ff6e5e"
+          "10=#5eff6c"
+          "11=#f1ff5e"
+          "12=#5ea1ff"
+          "13=#bd5eff"
+          "14=#5ef1ff"
+          "15=#ffffff"
+        ];
+        # true background color is #16181a, but neovim won't render a background if the theme has the same background as the terminal
+        background = "#16181b"; 
+        foreground = "#ffffff";
+        cursor-color = "#ffffff";
+        cursor-text = "#16181a";
+        selection-background = "#3c4048";
+        selection-foreground = "#ffffff";
       };
     };
   };

@@ -1,8 +1,6 @@
 { config, lib, pkgs, inputs, settings, ... }:
-let
-  customSddmTheme =
-    pkgs.callPackage ./dotfiles/sddm/custom-theme-derivation.nix { };
-in {
+
+{
   imports = [ ./hardware-configuration.nix ];
 
   # Use the systemd-boot EFI boot loader.
@@ -51,14 +49,6 @@ in {
   programs.hyprland.enable = true;
   programs.hyprland.package = inputs.hyprland.packages.${pkgs.system}.hyprland;
 
-  # services.displayManager = {
-  #   defaultSession = "hyprland";
-  #   sddm = {
-  #     enable = true;
-  #     wayland.enable = true;
-  #     theme = "custom";
-  #   };
-  # };
 
   environment.sessionVariables = {
     XDG_CURRENT_DESKTOP = "Hyprland";
@@ -71,10 +61,7 @@ in {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   environment.systemPackages = with pkgs;
-    let
-      themes = pkgs.callPackage ./dotfiles/sddm/custom-theme-derivation.nix { };
-    in [
-      themes.sddm-custom-theme
+    [
       # Utils
       wget
       curl
@@ -110,7 +97,7 @@ in {
       kdePackages.kdenlive
       localsend
       vesktop
-      # inputs.quickshell.packages.${pkgs.system}.default
+      mpv
 
       # Dev deps
       gcc

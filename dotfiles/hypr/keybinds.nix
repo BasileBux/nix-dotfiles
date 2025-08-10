@@ -8,7 +8,6 @@
       # Quickshell binds
       "$mainMod, H, global, quickshell:toggle"
       "$mainMod, L, global, quickshell:lock"
-      "$mainMod, O, global, quickshell:appLauncher"
 
       # Media / audio
       ",XF86AudioLowerVolume, exec, $scripts/volumeControl.sh --dec"
@@ -32,9 +31,6 @@
         $mainMod SHIFT, S, exec, grim -g "$(slurp)" "$HOME/screenshots/$(date '+%d-%m-%y_%Hh%Mm%Ss').png"
       ''
 
-      # Toggle hide/show waybar
-      "$mainMod, W, exec, $scripts/toggle-waybar.sh"
-
       # Refresh
       "$mainMod, R, exec, $scripts/refresh.sh"
 
@@ -43,8 +39,6 @@
       "$mainMod, Q, killactive,"
       "$mainMod, N, exec, zen-twilight"
       "$mainMod, B, exec, [float] blueman-manager"
-      # "$mainMod, L, exec, wlogout -b 5 -c 20 --protocol layer-shell"
-      "SUPER, Super_L, exec, wofi --show drun --prompt ' search...'" # Menu bind only on left super
 
       # Custom daily note notepad in neovim
       "$mainMod, D, exec, [float] $terminal -e sh nvim ~/tmp/notes/daily-$(date +%d-%b-%Y).md"
@@ -109,6 +103,12 @@
       "$mainMod, mouse_down, workspace, e+1ER,mouse:272,exec,amongus"
       "$mainMod, mouse_up, workspace, e-1"
     ];
+
+    bindr =
+      [
+        # "$mainMod, SUPER_L, global, quickshell:appLauncher" # Doesn't work ????
+        "$mainMod, SUPER_L, exec, hyprctl dispatch global quickshell:appLauncher" # Super janky but works
+      ]; 
 
     # Mouse: left - 272, right - 273, middle - 274, back - 275, previous - 276
     bindm =

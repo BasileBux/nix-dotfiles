@@ -6,14 +6,11 @@
     ./dotfiles/zen.nix
     ./dotfiles/fastfetch/fastfetch.nix
     ./dotfiles/tmux.nix
-    ./dotfiles/waybar/waybar.nix
     ./dotfiles/zsh/zsh.nix
     ./dotfiles/hypr/hyprland.nix
     ./dotfiles/hypr/hyprlock.nix
     ./dotfiles/hypr/hypridle.nix
-    ./dotfiles/wlogout/wlogout.nix
     ./dotfiles/theming.nix
-    ./dotfiles/wofi.nix
   ];
 
   home.packages = [

@@ -6,14 +6,12 @@
   # Dependencies for the Hyprland setup
   home.packages = with pkgs; [
     bibata-cursors
-    hyprcursor # Watch for plugin possibly
-    wofi
+    hyprcursor
     playerctl
-    hypridle # Watch for plugin possibly
-    wlogout
+    hypridle
     grim
     slurp
-    hyprlock # Watch for plugin possibly
+    hyprlock
     brightnessctl
   ];
 
@@ -24,7 +22,6 @@
     settings = {
       "$mainMod" = "SUPER";
       "$scripts" = "${settings.configPath}/scripts";
-      "$wallpaper" = "${settings.configPath}/dotfiles/hypr/wallpaper.png";
       "$terminal" = "ghostty";
 
       env = [

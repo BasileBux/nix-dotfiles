@@ -44,10 +44,6 @@
           "${settings.configPath}/configuration.nix"
           inputs.home-manager.nixosModules.home-manager
           {
-            # environment.systemPackages =
-            #   [ 
-            #     inputs.quickshell.packages.${system}.default
-            #   ];
             home-manager.extraSpecialArgs = { inherit inputs settings colors; };
           }
         ] ++ nixpkgs.lib.optionals (settings.machine == "asus") [
