@@ -11,6 +11,7 @@
     ./dotfiles/hypr/hyprlock.nix
     ./dotfiles/hypr/hypridle.nix
     ./dotfiles/theming.nix
+    ./dotfiles/quickshell.nix
   ];
 
   home.packages = [
