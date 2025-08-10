@@ -1,0 +1,3 @@
+[submodule "dotfiles/quickshell"]
+	path = dotfiles/quickshell
+	url = git@github.com:BasileBux/quickshell-bar.git
