@@ -9,6 +9,7 @@ PopupWindow {
     // ref must implement the following properties:
     // - padding: int
     // - radius: int
+    // - spacing: int
     // - popupColor: color
     // - collapseAllBut: function(name) { ... }
 
@@ -103,12 +104,12 @@ PopupWindow {
                         property: "visible"
                         duration: 0
                     }
-                }
-                NumberAnimation {
-                    property: "implicitWidth"
-                    duration: 200
-                    easing.type: Easing.BezierSpline
-                    easing.bezierCurve: [0.05, 0, 0.15, 1, 1, 1] // Emphasized curve for entrance
+                    NumberAnimation {
+                        property: "implicitWidth"
+                        duration: 200
+                        easing.type: Easing.BezierSpline
+                        easing.bezierCurve: [0.05, 0, 0.15, 1, 1, 1] // Emphasized curve for entrance
+                    }
                 }
             }
         ]

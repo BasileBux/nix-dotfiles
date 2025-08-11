@@ -8,13 +8,14 @@ Item {
     anchors.fill: parent
     property int popupYpos
     required property int popupHeight
-    readonly property alias popup: popup
+    readonly property alias popup: popupLoader.popup
 
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
             popup.toggle();
+            bar.focusGrab.active = popup.shown;
         }
         onEntered: {
             hourText.color = Globals.theme.accent2;
@@ -55,23 +56,55 @@ Item {
         }
     }
 
-    Popup {
-        id: popup
-        ref: bar
-        popupWidth: 120
-        popupHeight: root.popupHeight
-        yPos: popupYpos
-        name: "Clock"
+    Loader {
+        id: popupLoader
+        sourceComponent: Globals.popup === "FloatPopup" ? floatPopupComponent : regularPopupComponent
 
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
+        property var popup: popupLoader.item
 
-            Text {
-                anchors.centerIn: parent
-                color: Globals.theme.foreground
-                font.pixelSize: Globals.fonts.medium
-                text: Qt.formatDateTime(clock.date, "dd-MM-yyyy")
+        Component {
+            id: regularPopupComponent
+            Popup {
+                id: popup
+                ref: bar
+                popupWidth: 120
+                popupHeight: root.popupHeight
+                yPos: popupYpos
+                name: "Clock"
+
+                Item {
+                    anchors.fill: parent
+
+                    Text {
+                        anchors.centerIn: parent
+                        color: Globals.theme.foreground
+                        font.pixelSize: Globals.fonts.medium
+                        text: Qt.formatDateTime(clock.date, "dd-MM-yyyy")
+                    }
+                }
+            }
+        }
+
+        Component {
+            id: floatPopupComponent
+            FloatPopup {
+                id: popup
+                ref: bar
+                popupWidth: 120
+                popupHeight: root.popupHeight
+                yPos: popupYpos
+                name: "Clock"
+
+                Item {
+                    anchors.fill: parent
+
+                    Text {
+                        anchors.centerIn: parent
+                        color: Globals.theme.foreground
+                        font.pixelSize: Globals.fonts.medium
+                        text: Qt.formatDateTime(clock.date, "dd-MM-yyyy")
+                    }
+                }
             }
         }
     }

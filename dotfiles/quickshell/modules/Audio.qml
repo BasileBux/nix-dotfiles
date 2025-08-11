@@ -10,7 +10,7 @@ Item {
     anchors.fill: parent
     required property int popupYpos
     required property int popupHeight
-    readonly property alias popup: popup
+    readonly property alias popup: popupLoader.popup
 
     ColumnLayout {
         anchors.fill: parent
@@ -53,13 +53,46 @@ Item {
         }
     }
 
-    Popup {
-        id: popup
-        ref: bar
-        name: "Audio"
-        popupHeight: root.popupHeight
-        popupWidth: 240
-        yPos: root.popupYpos
-        AudioPopup {}
+    // Popup {
+    //     id: popup
+    //     ref: bar
+    //     name: "Audio"
+    //     popupHeight: root.popupHeight
+    //     popupWidth: 240
+    //     yPos: root.popupYpos
+    //     AudioPopup {}
+    // }
+
+    Loader {
+        id: popupLoader
+        sourceComponent: Globals.popup === "FloatPopup" ? floatPopupComponent : regularPopupComponent
+
+        property var popup: popupLoader.item
+
+        Component {
+            id: regularPopupComponent
+            Popup {
+                id: popup
+                ref: bar
+                name: "Audio"
+                popupHeight: root.popupHeight
+                popupWidth: 240
+                yPos: root.popupYpos
+                AudioPopup {}
+            }
+        }
+
+        Component {
+            id: floatPopupComponent
+            FloatPopup {
+                id: popup
+                ref: bar
+                name: "Audio"
+                popupHeight: root.popupHeight
+                popupWidth: 240
+                yPos: root.popupYpos
+                AudioPopup {}
+            }
+        }
     }
 }

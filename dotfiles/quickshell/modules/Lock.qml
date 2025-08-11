@@ -6,7 +6,7 @@ import ".."
 Item {
     id: root
     anchors.fill: parent
-    readonly property alias popup: popup
+    readonly property alias popup: popupLoader.popup
 
     MouseArea {
         anchors.fill: parent
@@ -32,13 +32,36 @@ Item {
         text: " "
     }
 
-    Popup {
-        id: popup
-        ref: bar
-        name: "Lock"
-        popupHeight: bar.height * 0.4
-        popupWidth: popupHeight * 0.2 + 2 * Globals.padding
-        yPos: ref.height / 2 - popupHeight / 2
-        LockPopup {}
+    Loader {
+        id: popupLoader
+        sourceComponent: Globals.popup === "FloatPopup" ? floatPopupComponent : regularPopupComponent
+
+        property var popup: popupLoader.item
+
+        Component {
+            id: regularPopupComponent
+            Popup {
+                id: popup
+                ref: bar
+                name: "Lock"
+                popupHeight: bar.height * 0.4
+                popupWidth: popupHeight * 0.2 + 2 * Globals.padding
+                yPos: ref.height / 2 - popupHeight / 2
+                LockPopup {}
+            }
+        }
+
+        Component {
+            id: floatPopupComponent
+            FloatPopup {
+                id: popup
+                ref: bar
+                name: "Lock"
+                popupHeight: bar.height * 0.4
+                popupWidth: popupHeight * 0.2 + 2 * Globals.padding
+                yPos: ref.height / 2 - popupHeight / 2
+                LockPopup {}
+            }
+        }
     }
 }

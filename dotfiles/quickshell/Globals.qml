@@ -9,6 +9,8 @@ Singleton {
     readonly property int radius: 7
     readonly property int spacing: 6
 
+    readonly property string popup: "Popup"
+
     readonly property int barExtrema: 8
     readonly property int workspacesGap: 5
 

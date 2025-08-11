@@ -9,7 +9,8 @@ Item {
 
     required property int popupYpos
     required property int popupHeight
-    readonly property alias popup: popup
+    // readonly property alias popup: popup
+    readonly property alias popup: popupLoader.popup
 
     MouseArea {
         anchors.fill: parent
@@ -45,13 +46,36 @@ Item {
         }
     }
 
-    Popup {
-        id: popup
-        ref: bar
-        name: "Network"
-        popupHeight: 360
-        popupWidth: 400
-        yPos: popupYpos
-        NetworkPopup {}
+    Loader {
+        id: popupLoader
+        sourceComponent: Globals.popup === "FloatPopup" ? floatPopupComponent : regularPopupComponent
+        
+        property var popup: popupLoader.item
+        
+        Component {
+            id: regularPopupComponent
+            Popup {
+                id: popup
+                ref: bar
+                name: "Network"
+                popupHeight: 360
+                popupWidth: 400
+                yPos: popupYpos
+                NetworkPopup {}
+            }
+        }
+        
+        Component {
+            id: floatPopupComponent
+            FloatPopup {
+                id: popup
+                ref: bar
+                name: "Network"
+                popupHeight: 360
+                popupWidth: 400
+                yPos: popupYpos
+                NetworkPopup {}
+            }
+        }
     }
 }

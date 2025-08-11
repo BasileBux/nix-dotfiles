@@ -10,7 +10,7 @@ Item {
     anchors.fill: parent
     property int popupYpos
     required property int popupHeight
-    readonly property alias popup: popup
+    readonly property alias popup: popupLoader.popup
 
     readonly property var chargeState: UPower.displayDevice.state
     readonly property bool isCharging: chargeState == UPowerDeviceState.Charging
@@ -59,20 +59,51 @@ Item {
         }
     }
 
-    Popup {
-        id: popup
-        ref: bar
-        popupWidth: 360
-        popupHeight: root.popupHeight
-        yPos: root.popupYpos
-        name: "Battery"
+    Loader {
+        id: popupLoader
+        sourceComponent: Globals.popup === "FloatPopup" ? floatPopupComponent : regularPopupComponent
 
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            BatteryPopup {
+        property var popup: popupLoader.item
+
+        Component {
+            id: regularPopupComponent
+            Popup {
+                id: popup
+                ref: bar
                 popupWidth: 360
-                moduleRef: batteryContent
+                popupHeight: root.popupHeight
+                yPos: root.popupYpos
+                name: "Battery"
+
+                Rectangle {
+                    anchors.fill: parent
+                    color: "transparent"
+                    BatteryPopup {
+                        popupWidth: 360
+                        moduleRef: batteryContent
+                    }
+                }
+            }
+        }
+
+        Component {
+            id: floatPopupComponent
+            FloatPopup {
+                id: popup
+                ref: bar
+                popupWidth: 360
+                popupHeight: root.popupHeight
+                yPos: root.popupYpos
+                name: "Battery"
+
+                Rectangle {
+                    anchors.fill: parent
+                    color: "transparent"
+                    BatteryPopup {
+                        popupWidth: 360
+                        moduleRef: batteryContent
+                    }
+                }
             }
         }
     }
