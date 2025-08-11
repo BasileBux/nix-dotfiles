@@ -3,7 +3,7 @@ import QtQuick
 import ".."
 
 Rectangle {
-	id: toggle
+    id: toggle
     property int widgetWidth: 60
     property int widgetHeight: 30
 
@@ -29,7 +29,7 @@ Rectangle {
         id: selector
         color: toggle.selectorColor
         implicitWidth: parent.height
-        implicitHeight: parent.height 
+        implicitHeight: parent.height
         radius: Math.ceil(parent.height / 2)
     }
     states: [

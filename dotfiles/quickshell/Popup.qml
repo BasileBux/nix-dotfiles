@@ -11,8 +11,8 @@ PopupWindow {
     required property int yPos
     property bool debug: false
     property color popupColor: Globals.theme.background
-    required property int popupIndex
-    
+    required property string name
+
     default property alias content: contentContainer.data
 
     property bool shown: debug ? true : false
@@ -25,34 +25,34 @@ PopupWindow {
     anchor.rect.y: yPos
     color: "transparent"
 
-    property var collapse: function() {
+    property var collapse: function () {
         wrapper.state = "hidden";
         shown = false;
     }
 
-    property var toggle: function() {
+    property var toggle: function () {
         wrapper.state === "hidden" ? wrapper.state = "visible" : wrapper.state = "hidden";
         shown = wrapper.state === "visible";
-        ref.collapseAllBut(popupIndex);
+        ref.collapseAllBut(name);
     }
 
-    property var show: function() {
+    property var show: function () {
         wrapper.state = "visible";
         shown = true;
-        ref.collapseAllBut(popupIndex);
+        ref.collapseAllBut(name);
     }
 
     Item {
         id: wrapper
-        
+
         anchors.right: parent.right
-        
+
         implicitWidth: 0
         implicitHeight: popup.popupHeight + ref.radius * 2
-        
+
         clip: true
         state: debug ? "visible" : "hidden"
-        
+
         states: [
             State {
                 name: "hidden"
@@ -69,7 +69,7 @@ PopupWindow {
                 }
             }
         ]
-        
+
         transitions: [
             Transition {
                 from: "visible"
@@ -98,25 +98,23 @@ PopupWindow {
                         duration: 0
                     }
                 }
-                    NumberAnimation {
-                        property: "implicitWidth"
-                        duration: 200
-                        easing.type: Easing.BezierSpline
-                        easing.bezierCurve: [0.05, 0, 0.15, 1, 1, 1] // Emphasized curve for entrance
-                    }
+                NumberAnimation {
+                    property: "implicitWidth"
+                    duration: 200
+                    easing.type: Easing.BezierSpline
+                    easing.bezierCurve: [0.05, 0, 0.15, 1, 1, 1] // Emphasized curve for entrance
+                }
             }
         ]
 
-        
-
         Shape {
             id: popupShape
-            
+
             width: popup.popupWidth
             height: popup.popupHeight + ref.radius * 2
-            
+
             x: 0
-            
+
             ShapePath {
                 id: mainPopupPath
                 strokeWidth: 0
@@ -125,7 +123,7 @@ PopupWindow {
 
                 startX: popupShape.width - 1 - ref.radius
                 startY: ref.radius
-                
+
                 PathLine {
                     x: ref.radius
                     y: ref.radius
@@ -159,7 +157,7 @@ PopupWindow {
                 strokeWidth: 0
                 strokeColor: "transparent"
                 fillColor: popup.popupColor
-                
+
                 startX: popupShape.width - 1
                 startY: 0
 
@@ -197,4 +195,3 @@ PopupWindow {
         }
     }
 }
-

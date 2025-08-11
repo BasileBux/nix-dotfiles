@@ -68,11 +68,11 @@ Item {
                         toggleFunction: () => {
                             if (hypridle.hypridleState) {
                                 Quickshell.execDetached({
-                                    command: [ "systemctl", "--user", "stop", "hypridle"]
+                                    command: ["systemctl", "--user", "stop", "hypridle"]
                                 });
                             } else {
                                 Quickshell.execDetached({
-                                    command: [ "systemctl", "--user", "start", "hypridle" ]
+                                    command: ["systemctl", "--user", "start", "hypridle"]
                                 });
                             }
                             hypridle.hypridleState = !hypridle.hypridleState;

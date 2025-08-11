@@ -24,13 +24,13 @@ Item {
 
                 Widgets.Switch {
                     id: toggle
-					widgetWidth: 60
-					widgetHeight: 30
-					toggleFunction: Services.Network.toggleWifi
-					toggleState: Services.Network.wifiEnabled
+                    widgetWidth: 60
+                    widgetHeight: 30
+                    toggleFunction: Services.Network.toggleWifi
+                    toggleState: Services.Network.wifiEnabled
                     anchors {
                         left: parent.left
-						verticalCenter: parent.verticalCenter
+                        verticalCenter: parent.verticalCenter
                     }
                 }
 
@@ -43,7 +43,7 @@ Item {
                     }
                     padding: Globals.spacing
                     font.pixelSize: Globals.fonts.medium
-					text: Services.Network.wifiEnabled ? "On" : "Off"
+                    text: Services.Network.wifiEnabled ? "On" : "Off"
                 }
 
                 Text {

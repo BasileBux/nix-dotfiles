@@ -15,7 +15,7 @@ Singleton {
     readonly property string terminal: "ghostty"
     readonly property string browser: "zen-twilight"
 
-    readonly property var theme: neotoxin
+    readonly property var theme: antidote
 
     readonly property var megalinee: QtObject {
         readonly property color background: "#0a000a"
@@ -49,7 +49,7 @@ Singleton {
         readonly property color muted: "#2d3133"
         readonly property string wallpaper: "wallpapers/neotoxin.png"
     }
-    
+
     readonly property var fonts: QtObject {
         readonly property int huge: 28
         readonly property int xlarge: 24

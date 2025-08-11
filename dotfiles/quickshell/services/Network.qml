@@ -85,9 +85,9 @@ Singleton {
         id: wifiStatusProcess
         command: ["nmcli", "radio", "wifi"]
         environment: ({
-            LANG: "C",
-            LC_ALL: "C"
-        })
+                LANG: "C",
+                LC_ALL: "C"
+            })
         stdout: StdioCollector {
             onStreamFinished: {
                 root.wifiEnabled = text.trim() === "enabled";
@@ -160,7 +160,7 @@ Singleton {
                         security: net[5] || ""
                     };
                 }).filter(n => n.ssid && n.ssid.length > 0);
-                
+
                 // Group networks by SSID and prioritize connected ones
                 const networkMap = new Map();
                 for (const network of allNetworks) {
@@ -180,9 +180,9 @@ Singleton {
                         // If existing is active and new is not, keep existing
                     }
                 }
-                
+
                 const networks = Array.from(networkMap.values());
-                
+
                 const rNetworks = root.networks;
 
                 const destroyed = rNetworks.filter(rn => !networks.find(n => n.frequency === rn.frequency && n.ssid === rn.ssid && n.bssid === rn.bssid));

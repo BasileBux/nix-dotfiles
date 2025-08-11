@@ -51,7 +51,7 @@ PanelWindow {
         function submitSelection() {
             let values = launcher.filteredApplications.values;
             if (!values || values.length === 0) {
-                values = launcher.filteredApplications; 
+                values = launcher.filteredApplications;
             }
             const idx = Math.max(0, Math.min(appList.hovered, values.length - 1));
             const app = values[idx];
@@ -62,21 +62,21 @@ PanelWindow {
         function runApp(app: DesktopEntry) {
             if (app.runInTerminal) {
                 Quickshell.execDetached({
-                    command: [ Globals.terminal, "-e", ...app.command ],
-                    workingDirectory: app.workingDirectory,
+                    command: [Globals.terminal, "-e", ...app.command],
+                    workingDirectory: app.workingDirectory
                 });
                 return;
             }
             Quickshell.execDetached({
                 command: app.command,
-                workingDirectory: app.workingDirectory,
+                workingDirectory: app.workingDirectory
             });
         }
 
         function browserSearch(query: string) {
             Quickshell.execDetached({
-                command: [ Globals.browser, "-new-tab", "https://unduck.link?q=" + query.substring(1) ],
-                workingDirectory: "/",
+                command: [Globals.browser, "-new-tab", "https://unduck.link?q=" + query.substring(1)],
+                workingDirectory: "/"
             });
             root.hide();
         }
@@ -270,7 +270,8 @@ PanelWindow {
                     placeholderTextColor: Globals.theme.muted
 
                     onTextChanged: {
-                        if (text[0] === "?") return;
+                        if (text[0] === "?")
+                            return;
                         appList.hovered = 0;
                         if (!text) {
                             launcher.filteredApplications = launcher.applications;
