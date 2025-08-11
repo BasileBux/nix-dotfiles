@@ -23,6 +23,8 @@ PanelWindow {
 
     property int padding: Globals.padding
     property int radius: Globals.radius
+    property color popupColor: Globals.theme.background
+
     property var popups: [bot.lockPopup, bot.clockPopup, bot.batteryPopup, bot.wifiPopup, bot.bluetoothPopup, bot.audioPopup,]
 
     property var collapseAllBut: name => {

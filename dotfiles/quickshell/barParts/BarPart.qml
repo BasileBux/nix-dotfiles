@@ -3,7 +3,7 @@ import QtQuick
 
 Item {
     anchors.fill: parent
-    property var bar
+    required property var bar
     required property var moduleSizes
 
     function sumSizesUntil(index) {

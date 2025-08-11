@@ -4,13 +4,19 @@ import QtQuick.Shapes
 
 PopupWindow {
     id: popup
+    // Reference to the parent component that manages the popup
     required property var ref
+    // ref must implement the following properties:
+    // - padding: int
+    // - radius: int
+    // - popupColor: color
+    // - collapseAllBut: function(name) { ... }
 
     required property int popupWidth
     required property int popupHeight
     required property int yPos
     property bool debug: false
-    property color popupColor: Globals.theme.background
+    property color popupColor: ref.popupColor
     required property string name
 
     default property alias content: contentContainer.data
