@@ -24,7 +24,7 @@ Singleton {
         readonly property var ecoCommand: ["tuned-adm", "profile", "powersave"]
         readonly property var balancedCommand: ["tuned-adm", "profile", "balanced"]
         readonly property var performanceCommand: ["tuned-adm", "profile", "desktop"]
-        readonly property var hypridleStartCommand: ["pkill", "hypridle"]
-        readonly property var hypridleStopCommand: ["hypridle"]
+        readonly property var hypridleStartCommand: ["hypridle"]
+        readonly property var hypridleStopCommand: ["pkill", "hypridle"]
     }
 }
