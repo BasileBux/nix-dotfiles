@@ -1,4 +1,4 @@
-{ config, lib, pkgs, settings, ... }:
+{ config, lib, pkgs, settings, inputs, ... }:
 
 let
   quickshellSrc = builtins.path {
@@ -28,5 +28,8 @@ let
     mv "$tmp" "$file"
   '';
 in {
+  home.packages = [
+    inputs.quickshell.packages.${pkgs.system}.default
+  ];
   xdg.configFile."quickshell".source = quickshellConfigured;
 }

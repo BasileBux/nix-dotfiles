@@ -60,6 +60,8 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  nixpkgs.config.allowUnfree = true;
+
   environment.systemPackages = with pkgs;
     [
       # Utils
@@ -74,6 +76,7 @@
       jq
       gparted
       bluez
+      qt6.qtshadertools
 
       # Codecs
       libva
@@ -98,6 +101,7 @@
       localsend
       vesktop
       mpv
+      stremio
 
       # Dev deps
       gcc
