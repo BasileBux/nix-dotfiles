@@ -10,6 +10,11 @@ Item {
     id: root
     anchors.fill: parent
 
+    readonly property var shutdownCommand: ["systemctl", "poweroff"]
+    readonly property var rebootCommand: ["systemctl", "reboot"]
+    readonly property var logoutCommand: ["loginctl", "terminate-user", "$USER"]
+    readonly property var lockCommand: ["hyprlock"]
+
     focus: true
     Keys.onPressed: event => {
         if (event.key === Qt.Key_Escape) {
@@ -18,19 +23,27 @@ Item {
             return;
         }
         if (event.key === Qt.Key_S) {
-            shutdownProcess.running = true;
+            Quickshell.execDetached({
+                command: shutdownCommand,
+            });
             return;
         }
         if (event.key === Qt.Key_R) {
-            rebootProcess.running = true;
+            Quickshell.execDetached({
+                command: rebootCommand,
+            });
             return;
         }
         if (event.key === Qt.Key_O) {
-            logoutProcess.running = true;
+            Quickshell.execDetached({
+                command: logoutCommand,
+            });
             return;
         }
         if (event.key === Qt.Key_L) {
-            lockProcess.running = true;
+            Quickshell.execDetached({
+                command: lockCommand,
+            });
             return;
         }
     }
@@ -47,49 +60,28 @@ Item {
             scaleFactor: layout.scaleFactor
             iconColor: Globals.theme.foreground
             hoverColor: Globals.theme.accent2
-            process: shutdownProcess
+            command: shutdownCommand
         }
         LockItem {
             iconSource: "../icons/reboot.svg"
             scaleFactor: layout.scaleFactor
             iconColor: Globals.theme.foreground
             hoverColor: Globals.theme.accent2
-            process: rebootProcess
+            command: rebootCommand
         }
         LockItem {
             iconSource: "../icons/logout.svg"
             scaleFactor: layout.scaleFactor
             iconColor: Globals.theme.foreground
             hoverColor: Globals.theme.accent2
-            process: logoutProcess
+            command: logoutCommand
         }
         LockItem {
             iconSource: "../icons/lock.svg"
             scaleFactor: layout.scaleFactor
             iconColor: Globals.theme.foreground
             hoverColor: Globals.theme.accent2
-            process: lockProcess
+            command: lockCommand
         }
-    }
-
-    Process {
-        id: shutdownProcess
-        command: ["systemctl", "poweroff"]
-        running: false
-    }
-    Process {
-        id: rebootProcess
-        command: ["systemctl", "reboot"]
-        running: false
-    }
-    Process {
-        id: logoutProcess
-        command: ["loginctl", "terminate-user", "$USER"]
-        running: false
-    }
-    Process {
-        id: lockProcess
-        command: ["hyprlock"]
-        running: false
     }
 }

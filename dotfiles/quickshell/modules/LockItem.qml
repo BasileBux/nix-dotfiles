@@ -5,16 +5,16 @@ import QtQuick.Layouts
 import QtQuick.Controls
 
 Item {
+	id: item
 	required property var iconSource
 	required property real scaleFactor
 	required property color iconColor
 	required property color hoverColor
-	required property var process
+	required property var command
 
 	property real animActive: 0
 	Behavior on animActive { NumberAnimation { duration: 150 } }
 
-	id: item
 	Layout.alignment: Qt.AlignHCenter
 	Layout.fillWidth: true
 	Layout.fillHeight: true
@@ -33,7 +33,9 @@ Item {
 		anchors.fill: parent
 		hoverEnabled: true
 		onClicked: {
-			process.running = true;
+			Quickshell.execDetached({
+				command: item.command,
+			})
 		}
 		onEntered: {
 			button.icon.color = hoverColor;
