@@ -23,6 +23,7 @@ in
       '';
       gss = "git status";
       nvimconfig = "cd $HOME/.config/nvim && nvim -c 'e init.lua' -c 'tabnew' -c 'e lua/lazy-plugins.lua'";
+      qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim -c 'e shell.qml' -c 'tabnew' -c 'e Globals.qml'";
     };
 
     history = {

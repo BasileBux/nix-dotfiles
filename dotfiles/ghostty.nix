@@ -18,8 +18,8 @@
       font-feature = "-calt";
 
       # rose-pine, Abernathy, deep, tokyonight
-      theme = "custom";
-      # theme = "cyberdream";
+      # theme = "custom";
+      theme = "cyberdream";
       background-opacity = 0.8;
 
       window-padding-x = "3,3";

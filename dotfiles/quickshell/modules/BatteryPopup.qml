@@ -137,9 +137,9 @@ Item {
                 color: Globals.theme.accent1
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
-                implicitWidth: 5 * profiles.buttonSize
-                implicitHeight: profiles.buttonSize
-                radius: profiles.buttonSize / 2
+                implicitWidth: 5 * profiles.buttonSize + 2 * Globals.spacing
+                implicitHeight: profiles.buttonSize + Globals.spacing * 2
+                radius: profiles.buttonSize / 2 + Globals.spacing
             }
             Rectangle {
                 id: selector
