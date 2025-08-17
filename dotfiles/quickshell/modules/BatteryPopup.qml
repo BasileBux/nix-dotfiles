@@ -68,11 +68,11 @@ Item {
                         toggleFunction: () => {
                             if (hypridle.hypridleState) {
                                 Quickshell.execDetached({
-                                    command: ["systemctl", "--user", "stop", "hypridle"]
+                                    command: Machines.current.hypridleStopCommand,
                                 });
                             } else {
                                 Quickshell.execDetached({
-                                    command: ["systemctl", "--user", "start", "hypridle"]
+                                    command: Machines.current.hypridleStartCommand,
                                 });
                             }
                             hypridle.hypridleState = !hypridle.hypridleState;
@@ -102,7 +102,7 @@ Item {
                     name: "eco"
                     PropertyChanges {
                         selector.x: root.width / 2 - selector.width / 2 - profiles.buttonSize * 2
-                        ecoButton.icon.color: Globals.theme.background
+                        ecoButton.icon.color: Globals.theme.accent1
                     }
                 },
                 State {
@@ -116,7 +116,7 @@ Item {
                     name: "performance"
                     PropertyChanges {
                         selector.x: root.width / 2 - selector.width / 2 + profiles.buttonSize * 2
-                        performanceButton.icon.color: Globals.theme.background
+                        performanceButton.icon.color: Globals.theme.accent1
                     }
                 }
             ]

@@ -13,6 +13,8 @@ Singleton {
         readonly property var ecoCommand: ["asusctl", "profile", "-P", "Quiet"]
         readonly property var balancedCommand: ["asusctl", "profile", "-P", "Balanced"]
         readonly property var performanceCommand: ["asusctl", "profile", "-P", "Performance"]
+        readonly property var hypridleStartCommand: ["systemctl", "--user", "start", "hypridle"]
+        readonly property var hypridleStopCommand: ["systemctl", "--user", "stop", "hypridle"]
     }
 
     readonly property var thinkpad: QtObject {
@@ -22,5 +24,7 @@ Singleton {
         readonly property var ecoCommand: ["tuned-adm", "profile", "powersave"]
         readonly property var balancedCommand: ["tuned-adm", "profile", "balanced"]
         readonly property var performanceCommand: ["tuned-adm", "profile", "desktop"]
+        readonly property var hypridleStartCommand: ["pkill", "hypridle"]
+        readonly property var hypridleStopCommand: ["hypridle"]
     }
 }
