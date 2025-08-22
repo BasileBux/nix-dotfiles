@@ -13,17 +13,15 @@ in
 
     shellAliases = {
       edit = "sudo -e";
-      config = ''
-        cd ${settings.configPath} && nvim -c "e configuration.nix" -c "tabnew" -c "e flake.nix" -c "tabnew" -c "e home.nix"
-      '';
+      config = "cd ${settings.configPath} && nvim configuration.nix";
       rebuild =
         "sudo nixos-rebuild switch --flake /home/${settings.username}/nixos#default --impure && sh ${settings.configPath}/scripts/post-rebuild.sh";
       ai = ''
         nvim -c CodeCompanionChat -c "wincmd h" -c "q"
       '';
       gss = "git status";
-      nvimconfig = "cd $HOME/.config/nvim && nvim -c 'e init.lua' -c 'tabnew' -c 'e lua/lazy-plugins.lua'";
-      qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim -c 'e shell.qml' -c 'tabnew' -c 'e Globals.qml'";
+      nvimconfig = "cd $HOME/.config/nvim && nvim init.lua";
+      qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
     };
 
     history = {

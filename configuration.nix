@@ -7,6 +7,10 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelModules = [ "mt7921e" ];
+  hardware.enableRedistributableFirmware = true;
+
   networking.hostName = "${settings.username}-${settings.machine}";
   networking.networkmanager.enable = true;
 
@@ -37,7 +41,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${settings.username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "docker" ];
     packages = with pkgs; [ tree ];
     shell = pkgs.zsh;
   };
@@ -56,6 +60,15 @@
     XDG_SESSION_DESKTOP = "Hyprland";
     SUDO_EDITOR = "/run/current-system/sw/bin/nvim";
     EDITOR = "/run/current-system/sw/bin/nvim";
+  };
+
+  # Docker
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
   };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -111,6 +124,12 @@
       rustc
       nodejs
       go
+      clang
+      python3
+      git-lfs
+
+      # Cli tools
+      bat
 
       # nvim
       neovim
@@ -122,6 +141,7 @@
       rustc
       luarocks
       stylua
+      clang-tools
     ] ++ lib.optionals (settings.machine == "asus") [ asusctl supergfxctl ];
 
   programs.nix-ld.enable = true;

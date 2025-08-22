@@ -48,7 +48,6 @@
 
       # Windows managing
       "$mainMod, F, fullscreen,"
-      "$mainMod, up, togglefloating,"
       "$mainMod SHIFT, F, togglefloating," # Active window float
       "$mainMod, Z, togglesplit," # dwindle
 
@@ -57,8 +56,8 @@
       "$mainMod, right, movefocus, r"
       "$mainMod, up, movefocus, u"
       "$mainMod, down, movefocus, d"
-      "$mainMod, k, movefocus, r"
-      "$mainMod, j, movefocus, l"
+      "$mainMod, k, workspace, +1"
+      "$mainMod, j, workspace, -1"
 
       # Move windows
       "$mainMod CTRL, left, movewindow, l"
@@ -96,8 +95,9 @@
       "$mainMod SHIFT, K, movetoworkspace, +1"
 
       # Cycle through existing workspaces with mainMod + <-comma/period->
-      "$mainMod, period, workspace, +1"
-      "$mainMod, comma, workspace, -1"
+      "$mainMod, period, movefocus, l"
+      "$mainMod, comma, movefocus, r"
+
 
       # Scroll through existing workspaces with mainMod + scroll
       "$mainMod, mouse_down, workspace, e+1ER,mouse:272,exec,amongus"
