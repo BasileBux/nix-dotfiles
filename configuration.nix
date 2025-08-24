@@ -8,7 +8,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelModules = [ "mt7921e" ];
+  boot.kernelModules = [ "mt7921e" "kvm-amd" ];
   hardware.enableRedistributableFirmware = true;
 
   networking.hostName = "${settings.username}-${settings.machine}";
@@ -41,7 +41,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${settings.username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" ];
+    extraGroups = [ "wheel" "docker" "kvm" "adbusers" ];
     packages = with pkgs; [ tree ];
     shell = pkgs.zsh;
   };
@@ -70,6 +70,8 @@
       setSocketVariable = true;
     };
   };
+
+  programs.adb.enable = true;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
