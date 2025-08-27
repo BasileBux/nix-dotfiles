@@ -44,6 +44,7 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             color: Globals.theme.foreground
             font.pointSize: Globals.fonts.large
+            font.family: Globals.theme.fontFamily
             text: Qt.formatDateTime(clock.date, "hh")
         }
 
@@ -52,6 +53,7 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             color: Globals.theme.foreground
             font.pointSize: Globals.fonts.large
+            font.family: Globals.theme.fontFamily
             text: Qt.formatDateTime(clock.date, "mm")
         }
     }
@@ -79,6 +81,7 @@ Item {
                         anchors.centerIn: parent
                         color: Globals.theme.foreground
                         font.pixelSize: Globals.fonts.medium
+                        font.family: Globals.theme.fontFamily
                         text: Qt.formatDateTime(clock.date, "dd-MM-yyyy")
                     }
                 }
@@ -102,6 +105,7 @@ Item {
                         anchors.centerIn: parent
                         color: Globals.theme.foreground
                         font.pixelSize: Globals.fonts.medium
+                        font.family: Globals.theme.fontFamily
                         text: Qt.formatDateTime(clock.date, "dd-MM-yyyy")
                     }
                 }

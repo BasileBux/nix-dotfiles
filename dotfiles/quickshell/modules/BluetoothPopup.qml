@@ -37,6 +37,7 @@ Item {
                     anchors.centerIn: parent
                     color: Globals.theme.background
                     font.pointSize: Globals.fonts.xsmall
+                    font.family: Globals.theme.fontFamily
                     text: "Search"
                 }
                 MouseArea {
@@ -107,6 +108,7 @@ Item {
                 id: nameText
                 color: device.connected ? Globals.theme.accent1 : Globals.theme.foreground
                 font.pixelSize: Globals.fonts.medium
+                font.family: Globals.theme.fontFamily
                 anchors {
                     top: parent.top
                     topMargin: Globals.padding * 3
@@ -131,6 +133,7 @@ Item {
                 id: batteryText
                 color: Globals.theme.foreground
                 font.pixelSize: Globals.fonts.small
+                font.family: Globals.theme.fontFamily
                 anchors {
                     left: parent.left
                     leftMargin: Globals.spacing
@@ -149,6 +152,7 @@ Item {
                 visible: device.bonded
                 color: Globals.theme.foreground
                 font.pointSize: Globals.fonts.xlarge
+                font.family: Globals.theme.fontFamily
                 font.bold: true
                 text: ""
 

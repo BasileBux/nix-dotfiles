@@ -32,6 +32,7 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             color: Globals.theme.foreground
             font.pixelSize: Globals.fonts.medium
+            font.family: Globals.theme.fontFamily
             text: Services.Audio.volume === NaN ? "0%" : (Services.Audio.volume * 100).toFixed(0) + "%"
         }
     }

@@ -23,6 +23,7 @@ Singleton {
         readonly property color border: "#4C566A"
         readonly property color muted: "#3b033b"
         readonly property string wallpaper: "wallpapers/megalinee.png"
+        readonly property string fontFamily: "JetBrainsMono NF"
     }
 
     readonly property var antidote: QtObject {
@@ -34,6 +35,7 @@ Singleton {
         readonly property color border: "#b2bef7"
         readonly property color muted: "#C8D0EE"
         readonly property string wallpaper: "wallpapers/antidote.png"
+        readonly property string fontFamily: "JetBrainsMono NF"
     }
 
     readonly property var neotoxin: QtObject {
@@ -45,6 +47,7 @@ Singleton {
         readonly property color border: "#3b3f40"
         readonly property color muted: "#2d3133"
         readonly property string wallpaper: "wallpapers/neotoxin.png"
+        readonly property string fontFamily: "JetBrainsMono NF"
     }
 
     readonly property var aquaEterna: QtObject {
@@ -56,6 +59,7 @@ Singleton {
         readonly property color border: "#b2bef7"
         readonly property color muted: "#929db0"
         readonly property string wallpaper: "./wallpapers/aqua-eterna.png"
+        readonly property string fontFamily: "JetBrainsMono NF"
     }
 
     readonly property var commandPrompt: QtObject {
@@ -67,6 +71,7 @@ Singleton {
         readonly property color border: "#b2bef7"
         readonly property color muted: "#8f85d3"
         readonly property string wallpaper: "./wallpapers/commandpropmpt.png"
+        readonly property string fontFamily: "JetBrainsMono NF"
     }
 
     readonly property var submerged: QtObject {
@@ -78,6 +83,7 @@ Singleton {
         readonly property color border: "#78838A"
         readonly property color muted: "#6e8287"
         readonly property string wallpaper: "./wallpapers/submerged.png"
+        readonly property string fontFamily: "JetBrainsMono NF"
     }
 
     readonly property var takaZero: QtObject {
@@ -89,6 +95,7 @@ Singleton {
         readonly property color border: "#2C3342"
         readonly property color muted: "#182736"
         readonly property string wallpaper: "./wallpapers/taka-zero.png"
+        readonly property string fontFamily: "JetBrainsMono NF"
     }
 
     readonly property var xXd1mensionXx: QtObject {
@@ -100,6 +107,7 @@ Singleton {
         readonly property color border: "#BDDAFF"
         readonly property color muted: "#91b6e6"
         readonly property string wallpaper: "./wallpapers/xXd1mensionXx.jpg"
+        readonly property string fontFamily: "JetBrainsMono NF"
     }
 
     readonly property var coplandOS: QtObject {
@@ -111,6 +119,7 @@ Singleton {
         readonly property color border: "#7EA2E0"
         readonly property color muted: "#4c73b5"
         readonly property string wallpaper: "./wallpapers/copland-os.png"
+        readonly property string fontFamily: "JetBrainsMono NF"
     }
 
     readonly property var shootingStar: QtObject {
@@ -122,6 +131,7 @@ Singleton {
         readonly property color border: "#707070"
         readonly property color muted: "#464646"
         readonly property string wallpaper: "./wallpapers/shooting-star.jpg"
+        readonly property string fontFamily: "JetBrainsMono NF"
     }
 
     readonly property var astralinsang: QtObject {
@@ -133,5 +143,6 @@ Singleton {
         readonly property color border: "#b2bef7"
         readonly property color muted: "#929db0"
         readonly property string wallpaper: "./wallpapers/astralinsang.jpg"
+        readonly property string fontFamily: "JetBrainsMono NF"
     }
 }

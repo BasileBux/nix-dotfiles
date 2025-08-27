@@ -26,6 +26,7 @@ BarPart {
             left: parent.left
             right: parent.right
             bottom: parent.bottom
+            bottomMargin: Globals.spacing
         }
         Item {
             id: audioModule

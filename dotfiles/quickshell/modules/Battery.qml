@@ -47,6 +47,7 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             color: isCharging ? "#20FF4F" : root.isLow ? "#FD788B" : Globals.theme.foreground
             font.pointSize: Globals.fonts.xlarge
+            font.family: Globals.theme.fontFamily
             text: root.isDocked ? "󰇅" : root.isCharging ? "󰂄" : (root.isLow ? "󰁺" : (root.percentage >= 0.90 ? "󰁹" : (root.percentage >= 0.80 ? "󰂂" : (root.percentage >= 0.70 ? "󰂁" : (root.percentage >= 0.60 ? "󰂀" : (root.percentage >= 0.50 ? "󰁿" : (root.percentage >= 0.40 ? "󰁾" : (root.percentage >= 0.30 ? "󰁽" : (root.percentage >= 0.20 ? "󰁼" : "󰁻")))))))))
         }
 
@@ -55,6 +56,7 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             color: root.isCharging ? "#20FF4F" : root.isLow ? "#FD788B" : Globals.theme.foreground
             font.pointSize: Globals.fonts.small
+            font.family: Globals.theme.fontFamily
             text: (root.percentage * 100).toFixed(0) + "%"
         }
     }

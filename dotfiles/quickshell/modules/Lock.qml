@@ -1,12 +1,30 @@
 import Quickshell
 import Quickshell.Io
 import QtQuick
+import QtQuick.Controls
 import ".."
 
 Item {
     id: root
     anchors.fill: parent
     readonly property alias popup: popupLoader.popup
+
+    Button {
+        id: lockIcon
+        // anchors.fill: parent
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+        }
+        background: Rectangle {
+            color: "transparent"
+        }
+        icon.source: "../icons/shutdown.svg"
+        icon.color: Globals.theme.foreground
+        icon.width: parent.height * 0.9
+        icon.height: parent.height * 0.9
+    }
 
     MouseArea {
         anchors.fill: parent
@@ -16,20 +34,11 @@ Item {
             bar.focusGrab.active = popup.shown;
         }
         onEntered: {
-            lockText.color = Globals.theme.accent2;
+            lockIcon.icon.color = Globals.theme.accent2;
         }
         onExited: {
-            lockText.color = Globals.theme.foreground;
+            lockIcon.icon.color = Globals.theme.foreground;
         }
-    }
-
-    Text {
-        id: lockText
-        horizontalAlignment: Text.AlignHCenter
-        anchors.fill: parent
-        color: Globals.theme.foreground
-        font.pixelSize: Globals.fonts.xlarge
-        text: " "
     }
 
     Loader {

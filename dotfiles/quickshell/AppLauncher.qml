@@ -231,6 +231,7 @@ PanelWindow {
                         leftPadding: Globals.spacing * 2
                         color: appList.hovered === index ? Globals.theme.background : Globals.theme.foreground
                         font.pixelSize: Globals.fonts.medium
+                        font.family: Globals.theme.fontFamily
                         text: appItem.app.name || "Unknown App"
                     }
                 }

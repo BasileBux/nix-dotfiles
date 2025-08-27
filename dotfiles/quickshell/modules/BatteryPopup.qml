@@ -38,6 +38,7 @@ Item {
                     color: Globals.theme.foreground
                     font.pointSize: Globals.fonts.small
                     font.bold: true
+                    font.family: Globals.theme.fontFamily
                     Layout.bottomMargin: -Globals.spacing
                 }
 
@@ -68,11 +69,11 @@ Item {
                         toggleFunction: () => {
                             if (hypridle.hypridleState) {
                                 Quickshell.execDetached({
-                                    command: Machines.current.hypridleStopCommand,
+                                    command: Machines.current.hypridleStopCommand
                                 });
                             } else {
                                 Quickshell.execDetached({
-                                    command: Machines.current.hypridleStartCommand,
+                                    command: Machines.current.hypridleStartCommand
                                 });
                             }
                             hypridle.hypridleState = !hypridle.hypridleState;
@@ -83,6 +84,7 @@ Item {
                         id: toggleText
                         color: Globals.theme.foreground
                         font.pixelSize: Globals.fonts.medium
+                        font.family: Globals.theme.fontFamily
                         text: (hypridle.hypridleState ? "On" : "Off") + " - hypridle"
                     }
                 }
