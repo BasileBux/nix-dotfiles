@@ -48,5 +48,6 @@ in
       GEMINI_API_KEY = secrets.keys.geminiApiKey or "";
       MOONSHOT_API_KEY = secrets.keys.moonshotApiKey or "";
       TAVILY_API_KEY = secrets.keys.tavilyApiKey or "";
+      XAI_API_KEY = secrets.keys.xaiApiKey or "";
     };
 }

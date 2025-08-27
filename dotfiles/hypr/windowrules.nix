@@ -4,5 +4,11 @@
   wayland.windowManager.hyprland.settings.windowrule = [
     "suppressevent maximize, class:.*"
     "float, title:Picture-in-Picture"
+    "float, title:quickshell"
+
+    # Might be useful later
+    # "noblur, title:quickshell"
+    # "noshadow, title:quickshell"
+    # "noborder, title:quickshell"
   ];
 }
