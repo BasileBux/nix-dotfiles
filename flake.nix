@@ -47,7 +47,7 @@
             home-manager.extraSpecialArgs = { inherit inputs settings colors; };
           }
         ] ++ nixpkgs.lib.optionals (settings.machine == "asus") [
-            inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
+            # inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
         ] ++ nixpkgs.lib.optionals (settings.machine == "thinkpad") [
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480
         ];

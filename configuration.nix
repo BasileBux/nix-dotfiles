@@ -117,6 +117,7 @@
       vesktop
       mpv
       stremio
+      neovide
 
       # Dev deps
       gcc
