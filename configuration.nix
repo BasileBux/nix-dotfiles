@@ -9,7 +9,12 @@
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = [ "mt7921e" "kvm-amd" ];
+  boot.initrd.kernelModules = [ "mt7921e" "amdgpu" ];
   hardware.enableRedistributableFirmware = true;
+
+  boot.kernelParams = [] ++ lib.optionals (settings.machine == "asus") [
+    "video=DP-1:2560x1440@165"
+  ];
 
   networking.hostName = "${settings.username}-${settings.machine}";
   networking.networkmanager.enable = true;
@@ -77,6 +82,10 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "qtwebengine-5.15.19"
+  ];
+
   environment.systemPackages = with pkgs;
     [
       # Utils
@@ -91,7 +100,7 @@
       jq
       gparted
       bluez
-      qt6.qtshadertools
+      # qt6.qtshadertools
 
       # Codecs
       libva
@@ -119,6 +128,7 @@
       stremio
       neovide
 
+
       # Dev deps
       gcc
       cmake
@@ -130,6 +140,8 @@
       clang
       python3
       git-lfs
+      texlive.combined.scheme-full
+      jdk
 
       # Cli tools
       bat
@@ -145,7 +157,30 @@
       luarocks
       stylua
       clang-tools
-    ] ++ lib.optionals (settings.machine == "asus") [ asusctl supergfxctl ];
+      tree-sitter
+      imagemagick
+      ghostscript
+    ] ++ lib.optionals (settings.machine == "asus") [ 
+      asusctl
+      supergfxctl
+      radeontop
+      powertop
+      pciutils
+      ryzenadj
+      nvtopPackages.amd
+      (writeShellScriptBin "asusrog-dgpu-disable" ''
+        echo 1 | sudo tee /sys/devices/platform/asus-nb-wmi/dgpu_disable
+        echo 0 | sudo tee /sys/bus/pci/rescan
+        echo 1 | sudo tee /sys/devices/platform/asus-nb-wmi/dgpu_disable
+        echo "please logout and login again to use integrated graphics"
+      '')
+      (writeShellScriptBin "asusrog-dgpu-enable" ''
+        echo 0 |sudo tee /sys/devices/platform/asus-nb-wmi/dgpu_disable
+        echo 1 |sudo tee /sys/bus/pci/rescan
+        echo 0 |sudo tee /sys/devices/platform/asus-nb-wmi/dgpu_disable
+        echo "please reboot to use discrete graphics"
+      '')
+    ];
 
   programs.nix-ld.enable = true;
 
@@ -156,6 +191,18 @@
     stdenv.cc.cc.lib
   ];
 
+
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [] ++ lib.optionals (settings.machine == "asus") [
+      rocmPackages.clr.icd
+      clinfo
+      amdvlk
+    ];
+  };
+  hardware.amdgpu.initrd.enable = true;
+
+
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
@@ -163,6 +210,15 @@
     nerd-fonts.go-mono
     nerd-fonts.gohufont
   ];
+
+  services.supergfxd = {
+    enable = settings.machine == "asus";
+    settings = {
+      mode = "Integrated";
+      always_reboot = false;
+      no_logind = false;
+    };
+};
 
   services.asusd.enable = true;
   services.upower.enable = true;

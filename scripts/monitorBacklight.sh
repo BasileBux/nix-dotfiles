@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-max=255
-min=8
-steps=17
+max=62451
+min=10
+steps=5000
 
 # Run brightnessctl -l and store the output in a variable
 devices=$(brightnessctl -l)

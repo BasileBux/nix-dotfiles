@@ -22,6 +22,7 @@ in
       gss = "git status";
       nvimconfig = "cd $HOME/.config/nvim && nvim init.lua";
       qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
+      up = "sudo nix flake update && rebuild --upgrade";
     };
 
     history = {

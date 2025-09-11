@@ -32,7 +32,8 @@
       ];
 
       monitor = if (settings.machine == "asus") then [
-        "eDP-1, 2560x1600@120.00Hz, 0x0, 2"
+        "eDP-1, 2560x1600@120.00Hz, 0x0, 1.6"
+        "eDP-2, 2560x1600@60.00Hz, 0x0, 1.6"
         "DP-1, 2560x1440@165.00Hz, 0x0, 1"
         ",preferred, auto, auto, mirror, eDP-1"
       ] else if (settings.machine == "thinkpad") then [
