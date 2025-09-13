@@ -56,7 +56,9 @@ Item {
                 popupHeight: bar.height * 0.4
                 popupWidth: popupHeight * 0.2 + 2 * Globals.padding
                 yPos: ref.height / 2 - popupHeight / 2
-                LockPopup {}
+                LockPopup {
+                    lock: bar.lock
+                }
             }
         }
 
@@ -69,7 +71,9 @@ Item {
                 popupHeight: bar.height * 0.4
                 popupWidth: popupHeight * 0.2 + 2 * Globals.padding
                 yPos: ref.height / 2 - popupHeight / 2
-                LockPopup {}
+                LockPopup {
+                    lock: bar.lock
+                }
             }
         }
     }

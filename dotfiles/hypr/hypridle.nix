@@ -6,7 +6,8 @@
     settings = {
       general = {
         ignore_dbus_inhibit = false;
-        lock_cmd = "pidof hyprlock || hyprlock";
+        # lock_cmd = "pidof hyprlock || hyprlock";
+        lock_cmd = "hyprctl dispatch global quickshell:lock-screen";
         before_sleep_cmd = "loginctl lock-session";
         after_sleep_cmd = "hyprctl dispatch dpms on";
       };

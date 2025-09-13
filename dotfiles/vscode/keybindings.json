@@ -1,0 +1,89 @@
+[
+    // focus toggle on terminal pane
+    {
+        "key": "ctrl+shift+t",
+        "command": "workbench.action.togglePanel"
+    },
+    // toggle sidebar and focus to it
+    {
+        "command": "runCommands",
+        "key": "ctrl+alt+y",
+        "args": {
+            "commands": [
+                "workbench.action.toggleSidebarVisibility",
+                "workbench.files.action.focusFilesExplorer"
+            ]
+        },
+        "when": "editorTextFocus"
+    },
+    {
+        "command": "runCommands",
+        "key": "ctrl+alt+y",
+        "args": {
+            "commands": [
+                "workbench.action.toggleSidebarVisibility",
+                "workbench.action.focusActiveEditorGroup"
+            ]
+        },
+        "when": "!editorTextFocus"
+    },
+    // toggle extras (basically almost full ui)
+    {
+        "command": "runCommands",
+        "key": "ctrl+alt+w",
+        "args": {
+            "commands": [
+                "workbench.action.toggleActivityBarVisibility",
+                "toggle.toggleCustomTitleBar"
+            ]
+        }
+    },
+    // toggle harpoon list
+    {
+        "command": "harpoon-vscode.showList",
+        "key": "ctrl+e",
+    },
+    // toggle tabs
+    {
+        "command": "workbench.action.hideEditorTabs",
+        "key": "ctrl+alt+x",
+        "when": "editorTabsVisible"
+    },
+    {
+        "command": "workbench.action.showMultipleEditorTabs",
+        "key": "ctrl+alt+x",
+        "when": "!editorTabsVisible"
+    },
+    // move lines up / down
+    {
+        "key": "alt+j",
+        "command": "editor.action.moveLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly && vim.active"
+    },
+    {
+        "key": "alt+k",
+        "command": "editor.action.moveLinesUpAction",
+        "when": "editorTextFocus && !editorReadonly && vim.active"
+    },
+    // file explorer navigation / actions
+    {
+        "key": "n",
+        "command": "explorer.newFile",
+        "when": "filesExplorerFocus && !inputFocus"
+    },
+    {
+        "command": "renameFile",
+        "key": "r",
+        "when": "filesExplorerFocus && !inputFocus"
+    },
+    {
+        "key": "shift+n",
+        "command": "explorer.newFolder",
+        "when": "explorerViewletFocus"
+    },
+    {
+        "command": "deleteFile",
+        "key": "d",
+        "when": "filesExplorerFocus && !inputFocus"
+    }
+]

@@ -10,7 +10,7 @@ Item {
 	required property real scaleFactor
 	required property color iconColor
 	required property color hoverColor
-	required property var command
+	required property var exec
 
 	property real animActive: 0
 	Behavior on animActive { NumberAnimation { duration: 150 } }
@@ -33,9 +33,7 @@ Item {
 		anchors.fill: parent
 		hoverEnabled: true
 		onClicked: {
-			Quickshell.execDetached({
-				command: item.command,
-			})
+			item.exec();
 		}
 		onEntered: {
 			button.icon.color = hoverColor;

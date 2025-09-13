@@ -12,6 +12,7 @@
     ./dotfiles/hypr/hypridle.nix
     ./dotfiles/theming.nix
     ./dotfiles/quickshell.nix
+    ./dotfiles/vscode.nix
   ];
 
   home.username = "${settings.username}";

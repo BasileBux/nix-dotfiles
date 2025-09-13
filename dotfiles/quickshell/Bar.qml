@@ -19,6 +19,8 @@ PanelWindow {
         bottom: true
     }
 
+    required property var lock
+
     property var focusGrab: focusGrab
 
     property int padding: Globals.padding

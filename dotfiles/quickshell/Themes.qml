@@ -58,7 +58,7 @@ Singleton {
         readonly property color accent3: "#5F6587"
         readonly property color border: "#b2bef7"
         readonly property color muted: "#929db0"
-        readonly property string wallpaper: "./wallpapers/aqua-eterna.png"
+        readonly property string wallpaper: "wallpapers/aqua-eterna.png"
         readonly property string fontFamily: "JetBrainsMono NF"
     }
 
@@ -70,7 +70,7 @@ Singleton {
         readonly property color accent3: "#5F7ED9"
         readonly property color border: "#b2bef7"
         readonly property color muted: "#8f85d3"
-        readonly property string wallpaper: "./wallpapers/commandpropmpt.png"
+        readonly property string wallpaper: "wallpapers/commandpropmpt.png"
         readonly property string fontFamily: "JetBrainsMono NF"
     }
 
@@ -82,7 +82,7 @@ Singleton {
         readonly property color accent3: "#70C8FE"
         readonly property color border: "#78838A"
         readonly property color muted: "#6e8287"
-        readonly property string wallpaper: "./wallpapers/submerged.png"
+        readonly property string wallpaper: "wallpapers/submerged.png"
         readonly property string fontFamily: "JetBrainsMono NF"
     }
 
@@ -94,7 +94,7 @@ Singleton {
         readonly property color accent3: "#39576E"
         readonly property color border: "#2C3342"
         readonly property color muted: "#182736"
-        readonly property string wallpaper: "./wallpapers/taka-zero.png"
+        readonly property string wallpaper: "wallpapers/taka-zero.png"
         readonly property string fontFamily: "JetBrainsMono NF"
     }
 
@@ -106,7 +106,7 @@ Singleton {
         readonly property color accent3: "#DDBC69"
         readonly property color border: "#BDDAFF"
         readonly property color muted: "#91b6e6"
-        readonly property string wallpaper: "./wallpapers/xXd1mensionXx.jpg"
+        readonly property string wallpaper: "wallpapers/xXd1mensionXx.jpg"
         readonly property string fontFamily: "JetBrainsMono NF"
     }
 
@@ -118,7 +118,7 @@ Singleton {
         readonly property color accent3: "#0A266B"
         readonly property color border: "#7EA2E0"
         readonly property color muted: "#4c73b5"
-        readonly property string wallpaper: "./wallpapers/copland-os.png"
+        readonly property string wallpaper: "wallpapers/copland-os.png"
         readonly property string fontFamily: "JetBrainsMono NF"
     }
 
@@ -130,7 +130,7 @@ Singleton {
         readonly property color accent3: "#F079F2"
         readonly property color border: "#707070"
         readonly property color muted: "#464646"
-        readonly property string wallpaper: "./wallpapers/shooting-star.jpg"
+        readonly property string wallpaper: "wallpapers/shooting-star.jpg"
         readonly property string fontFamily: "JetBrainsMono NF"
     }
 
@@ -142,7 +142,7 @@ Singleton {
         readonly property color accent3: "#575E8C"
         readonly property color border: "#b2bef7"
         readonly property color muted: "#929db0"
-        readonly property string wallpaper: "./wallpapers/astralinsang.jpg"
+        readonly property string wallpaper: "wallpapers/astralinsang.jpg"
         readonly property string fontFamily: "JetBrainsMono NF"
     }
 }

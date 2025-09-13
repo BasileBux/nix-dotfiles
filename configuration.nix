@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, settings, ... }:
+{ config, lib, pkgs, inputs, settings, secrets, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -81,6 +81,7 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = (_: true);
 
   nixpkgs.config.permittedInsecurePackages = [
     "qtwebengine-5.15.19"
@@ -127,6 +128,8 @@
       mpv
       stremio
       neovide
+      openvpn
+      kitty
 
 
       # Dev deps
@@ -170,7 +173,7 @@
       nvtopPackages.amd
       (writeShellScriptBin "asusrog-dgpu-disable" ''
         echo 1 | sudo tee /sys/devices/platform/asus-nb-wmi/dgpu_disable
-        echo 0 | sudo tee /sys/bus/pci/rescan
+        echo 1 | sudo tee /sys/bus/pci/rescan
         echo 1 | sudo tee /sys/devices/platform/asus-nb-wmi/dgpu_disable
         echo "please logout and login again to use integrated graphics"
       '')
@@ -226,6 +229,16 @@
   services.udisks2.enable = true;
   services.gvfs.enable = true;
   services.devmon.enable = true;
+
+  services.openvpn.servers.hs_ch = {
+    config = "config /home/${settings.username}/.config/openvpn/HotspotShield_CH_v4.ovpn";
+    autoStart = false;
+    authUserPass = {
+      username = secrets.hotspotshield.username or "";
+      password = secrets.hotspotshield.password or "";
+    };
+    updateResolvConf = true;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

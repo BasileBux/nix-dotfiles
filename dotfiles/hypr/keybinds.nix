@@ -8,6 +8,7 @@
       # Quickshell binds
       "$mainMod, H, global, quickshell:toggle"
       "$mainMod, L, global, quickshell:lock"
+      "$mainMod, R, global, quickshell:reload"
 
       # Media / audio
       ",XF86AudioLowerVolume, exec, $scripts/volumeControl.sh --dec"
@@ -32,7 +33,7 @@
       ''
 
       # Refresh
-      "$mainMod, R, exec, $scripts/refresh.sh"
+      # "$mainMod, R, exec, $scripts/refresh.sh"
 
       # Apps
       "$mainMod, T, exec, $terminal"

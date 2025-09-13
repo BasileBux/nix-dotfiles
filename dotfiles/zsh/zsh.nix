@@ -1,9 +1,5 @@
-{ lib, config, pkgs, inputs, settings, ... }:
-let
-  secretsPath = "${settings.configPath}/secrets.nix";
-  secretsExists = builtins.pathExists secretsPath;
-  secrets = if secretsExists then import secretsPath else {};
-in
+{ lib, config, pkgs, inputs, settings, secrets, ... }:
+
 {
   programs.zsh = {
     enable = true;
@@ -23,6 +19,11 @@ in
       nvimconfig = "cd $HOME/.config/nvim && nvim init.lua";
       qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
       up = "sudo nix flake update && rebuild --upgrade";
+
+      # VPN
+      startvpn = "sudo systemctl start openvpn-hs_ch";
+      stopvpn = "sudo systemctl stop openvpn-hs_ch";
+      vpnstatus = "systemctl status openvpn-hs_ch";
     };
 
     history = {

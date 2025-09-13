@@ -10,10 +10,28 @@ Item {
     id: root
     anchors.fill: parent
 
-    readonly property var shutdownCommand: ["systemctl", "poweroff"]
-    readonly property var rebootCommand: ["systemctl", "reboot"]
-    readonly property var logoutCommand: ["loginctl", "terminate-user", "$USER"]
-    readonly property var lockCommand: ["hyprlock"]
+    required property var lock 
+
+    function shutdown() {
+        Quickshell.execDetached({
+            command: ["systemctl", "poweroff"]
+        });
+    }
+    function reboot() {
+        Quickshell.execDetached({
+            command: ["systemctl", "reboot"]
+        });
+    }
+    function logout() {
+        Quickshell.execDetached({
+            command: ["loginctl", "terminate-user", "$USER"]
+        });
+    }
+    function lockScreen() {
+        lock.locked = true;
+    }
+
+
 
     focus: true
     Keys.onPressed: event => {
@@ -23,27 +41,19 @@ Item {
             return;
         }
         if (event.key === Qt.Key_S) {
-            Quickshell.execDetached({
-                command: shutdownCommand,
-            });
+            shutdown();
             return;
         }
         if (event.key === Qt.Key_R) {
-            Quickshell.execDetached({
-                command: rebootCommand,
-            });
+            reboot();
             return;
         }
         if (event.key === Qt.Key_O) {
-            Quickshell.execDetached({
-                command: logoutCommand,
-            });
+            logout();
             return;
         }
         if (event.key === Qt.Key_L) {
-            Quickshell.execDetached({
-                command: lockCommand,
-            });
+            lockScreen();
             return;
         }
     }
@@ -60,28 +70,28 @@ Item {
             scaleFactor: layout.scaleFactor
             iconColor: Globals.theme.foreground
             hoverColor: Globals.theme.accent2
-            command: shutdownCommand
+            exec: root.shutdown
         }
         LockItem {
             iconSource: "../icons/reboot.svg"
             scaleFactor: layout.scaleFactor
             iconColor: Globals.theme.foreground
             hoverColor: Globals.theme.accent2
-            command: rebootCommand
+            exec: root.reboot
         }
         LockItem {
             iconSource: "../icons/logout.svg"
             scaleFactor: layout.scaleFactor
             iconColor: Globals.theme.foreground
             hoverColor: Globals.theme.accent2
-            command: logoutCommand
+            exec: root.logout
         }
         LockItem {
             iconSource: "../icons/lock.svg"
             scaleFactor: layout.scaleFactor
             iconColor: Globals.theme.foreground
             hoverColor: Globals.theme.accent2
-            command: lockCommand
+            exec: root.lockScreen
         }
     }
 }

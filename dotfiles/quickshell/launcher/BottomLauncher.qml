@@ -6,6 +6,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Shapes
 import QtQuick.Controls
+import ".."
 
 PanelWindow {
     id: root
@@ -388,6 +389,13 @@ PanelWindow {
                 return;
             }
             root.hide();
+        }
+    }
+    GlobalShortcut {
+        name: "reload"
+        onPressed: {
+            launcher.applications = DesktopEntries.applications.values.filter(app => !app.noDisplay);
+            launcher.filteredApplications = launcher.applications;
         }
     }
 

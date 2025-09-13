@@ -50,7 +50,7 @@ Item {
                         var ret = Math.floor(time / 3600) + "h" + Math.floor((time % 3600) / 60);
                         return ret;
                     }
-                    text: root.moduleRef.isDocked ? "No battery change" : widgetRef.isCharging ? "Battery full in: " + timeTo : "Battery empty in: " + timeTo
+                    text: root.moduleRef.isDocked ? "No battery change" : root.moduleRef.isCharging ? "Battery full in: " + timeTo : "Battery empty in: " + timeTo
                     color: Globals.theme.foreground
                     font.pointSize: Globals.fonts.small
                 }
@@ -145,7 +145,7 @@ Item {
             }
             Rectangle {
                 id: selector
-                color: Globals.theme.accent2
+                color: Globals.theme.background
                 anchors.verticalCenter: parent.verticalCenter
                 implicitWidth: profiles.buttonSize
                 implicitHeight: profiles.buttonSize
@@ -172,7 +172,7 @@ Item {
                         icon.source: "../icons/leaf.svg"
                         icon.width: parent.implicitWidth * 0.75
                         icon.height: parent.implicitWidth * 0.75
-                        icon.color: Globals.theme.muted
+                        icon.color: Globals.theme.background
                     }
                     MouseArea {
                         anchors.fill: parent
@@ -197,7 +197,7 @@ Item {
                         icon.source: "../icons/balance.svg"
                         icon.width: parent.implicitWidth * 0.8
                         icon.height: parent.implicitWidth * 0.8
-                        icon.color: Globals.theme.muted
+                        icon.color: Globals.theme.background
                     }
                     MouseArea {
                         anchors.fill: parent
@@ -222,7 +222,7 @@ Item {
                         icon.source: "../icons/rocket.svg"
                         icon.width: parent.implicitWidth * 0.65
                         icon.height: parent.implicitWidth * 0.65
-                        icon.color: Globals.theme.muted
+                        icon.color: Globals.theme.background
                     }
                     MouseArea {
                         anchors.fill: parent

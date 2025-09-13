@@ -31,20 +31,26 @@
         username = "basileb";
         configPath = "/home/${settings.username}/nixos";
         machine = "asus";
-        swapAltSuper = true;
+        swapAltSuper = false;
         nixosVersion = "25.05";
       };
+
+      secretsPath = "${settings.configPath}/secrets.nix";
+      secretsExists = builtins.pathExists secretsPath;
+      secrets = if secretsExists then import secretsPath else {};
+
       theme =
         import "${settings.configPath}/colors/colors.nix" { inherit settings; };
       colors = theme.theme;
     in {
       nixosConfigurations.default = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs settings colors; };
+        specialArgs = { inherit inputs settings colors secrets; };
         modules = [
           "${settings.configPath}/configuration.nix"
           inputs.home-manager.nixosModules.home-manager
           {
-            home-manager.extraSpecialArgs = { inherit inputs settings colors; };
+            home-manager.extraSpecialArgs = { inherit inputs settings colors secrets; };
+            home-manager.useGlobalPkgs = true;
           }
         ] ++ nixpkgs.lib.optionals (settings.machine == "asus") [
             inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
