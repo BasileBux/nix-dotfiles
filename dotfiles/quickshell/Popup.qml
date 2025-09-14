@@ -28,8 +28,7 @@ PopupWindow {
     implicitWidth: popupWidth
     implicitHeight: popupHeight + ref.radius * 2
 
-    // anchor.rect.x: -width + ref.padding + 1
-    anchor.rect.x: -width + ref.padding + 2
+    anchor.rect.x: -width + ref.padding + 1
     anchor.rect.y: yPos
     color: "transparent"
 

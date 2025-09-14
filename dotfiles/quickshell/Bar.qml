@@ -28,7 +28,7 @@ PanelWindow {
     property int spacing: Globals.spacing
     property color popupColor: Globals.theme.background
 
-    property var popups: [bot.lockPopup, bot.clockPopup, bot.batteryPopup, bot.wifiPopup, bot.bluetoothPopup, bot.audioPopup,]
+    property var popups: [bot.lockPopup, bot.clockPopup, bot.batteryPopup, bot.wifiPopup, bot.bluetoothPopup, bot.audioPopup]
 
     property var collapseAllBut: name => {
         for (var i = 0; i < root.popups.length; i++) {
@@ -105,21 +105,29 @@ PanelWindow {
                 return;
             if (bot.lockPopup.shown) {
                 bot.lockPopup.collapse();
-                focusGrab.active = false;
+                lockFocusGrab.active = false;
                 return;
             }
             bot.lockPopup.show();
-            focusGrab.active = true;
+            lockFocusGrab.active = true;
         }
     }
 
     HyprlandFocusGrab {
         id: focusGrab
-        windows: [root, ...root.popups]
+        windows: [root, bot.clockPopup, bot.batteryPopup, bot.wifiPopup, bot.bluetoothPopup, bot.audioPopup]
         onCleared: {
             root.popups.forEach(function (popup) {
                 popup.collapse();
             });
+        }
+    }
+
+    HyprlandFocusGrab {
+        id: lockFocusGrab
+        windows: [bot.lockPopup]
+        onCleared: {
+            bot.lockPopup.collapse();
         }
     }
 }

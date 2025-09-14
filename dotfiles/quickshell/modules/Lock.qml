@@ -11,7 +11,6 @@ Item {
 
     Button {
         id: lockIcon
-        // anchors.fill: parent
         anchors {
             top: parent.top
             left: parent.left
@@ -31,7 +30,7 @@ Item {
         hoverEnabled: true
         onClicked: {
             popup.toggle();
-            bar.focusGrab.active = popup.shown;
+            lockFocusGrab.active = popup.shown;
         }
         onEntered: {
             lockIcon.icon.color = Globals.theme.accent2;

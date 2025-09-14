@@ -37,7 +37,7 @@ Item {
     Keys.onPressed: event => {
         if (event.key === Qt.Key_Escape) {
             popup.collapse();
-            focusGrab.active = false;
+            lockFocusGrab.active = false;
             return;
         }
         if (event.key === Qt.Key_S) {

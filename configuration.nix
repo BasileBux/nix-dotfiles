@@ -101,6 +101,7 @@
       jq
       gparted
       bluez
+      bc
       # qt6.qtshadertools
 
       # Codecs
