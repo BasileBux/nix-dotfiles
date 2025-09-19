@@ -20,3 +20,21 @@ sudo cp /etc/nixos/hardware-configuration.nix .
 sudo nixos-rebuild switch --flake /home/basileb/nixos#default --impure
 ```
 
+For certain things, you might need a `secrets.nix` file in the root of the repo:
+
+```secrets.nix
+{
+  keys = {
+    anthropicApiKey = "";
+    openaiApiKey = "";
+    geminiApiKey = "";
+    moonshotApiKey = "";
+    tavilyApiKey = "";
+    xaiApiKey = "";
+  };
+  hotspotshield = {
+    username = "";
+    password = "";
+  };
+}
+```
