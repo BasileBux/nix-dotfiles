@@ -5,6 +5,7 @@
     "suppressevent maximize, class:.*"
     "float, title:Picture-in-Picture"
     "float, title:quickshell"
+    "float, class:Emulator"
 
     # Might be useful later
     # "noblur, title:quickshell"

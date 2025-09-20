@@ -17,13 +17,16 @@
       '';
       gss = "git status";
       nvimconfig = "cd $HOME/.config/nvim && nvim init.lua";
-      qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
+      qsconfig =
+        "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
       up = "sudo nix flake update && rebuild --upgrade";
 
       # VPN
-      startvpn = "sudo systemctl start openvpn-hs_ch";
-      stopvpn = "sudo systemctl stop openvpn-hs_ch";
+      vpnstart = "sudo systemctl start openvpn-hs_ch";
+      vpnstop = "sudo systemctl stop openvpn-hs_ch";
       vpnstatus = "systemctl status openvpn-hs_ch";
+
+      playground = "/home/${settings.username}/playground-cli/playground";
     };
 
     history = {
@@ -45,11 +48,11 @@
   };
 
   home.sessionVariables = {
-      ANTHROPIC_API_KEY = secrets.keys.anthropicApiKey or "";
-      OPENAI_API_KEY = secrets.keys.openaiApiKey or "";
-      GEMINI_API_KEY = secrets.keys.geminiApiKey or "";
-      MOONSHOT_API_KEY = secrets.keys.moonshotApiKey or "";
-      TAVILY_API_KEY = secrets.keys.tavilyApiKey or "";
-      XAI_API_KEY = secrets.keys.xaiApiKey or "";
-    };
+    ANTHROPIC_API_KEY = secrets.keys.anthropicApiKey or "";
+    OPENAI_API_KEY = secrets.keys.openaiApiKey or "";
+    GEMINI_API_KEY = secrets.keys.geminiApiKey or "";
+    MOONSHOT_API_KEY = secrets.keys.moonshotApiKey or "";
+    TAVILY_API_KEY = secrets.keys.tavilyApiKey or "";
+    XAI_API_KEY = secrets.keys.xaiApiKey or "";
+  };
 }

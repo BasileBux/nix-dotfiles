@@ -1,5 +1,5 @@
 {
-	description = "Android development shell with Android Studio on NixOS";
+	description = "Android developmen shell with Android Studio on NixOS";
 
 	inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -42,7 +42,7 @@
 					})
 
 					(pkgs.writeShellScriptBin "emu" ''
-						run-test-emulator
+						run-test-emulator > /dev/null 2>&1 &
 					'')
 					(pkgs.writeShellScriptBin "as" ''
 						android-studio

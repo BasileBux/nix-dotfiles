@@ -16,6 +16,8 @@
 
       font-size = 13;
       font-feature = "-calt";
+      working-directory = "home";
+      window-inherit-working-directory = false;
 
       # rose-pine, Abernathy, deep, tokyonight
       # theme = "custom";
@@ -81,7 +83,7 @@
           "15=#ffffff"
         ];
         # true background color is #16181a, but neovim won't render a background if the theme has the same background as the terminal
-        background = "#16181b"; 
+        background = "#16181b";
         foreground = "#ffffff";
         cursor-color = "#ffffff";
         cursor-text = "#16181a";

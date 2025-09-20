@@ -99,17 +99,15 @@
       "$mainMod, period, movefocus, l"
       "$mainMod, comma, movefocus, r"
 
-
       # Scroll through existing workspaces with mainMod + scroll
       "$mainMod, mouse_down, workspace, e+1ER,mouse:272,exec,amongus"
       "$mainMod, mouse_up, workspace, e-1"
     ];
 
-    bindr =
-      [
-        # "$mainMod, SUPER_L, global, quickshell:appLauncher" # Doesn't work ????
-        "$mainMod, SUPER_L, exec, hyprctl dispatch global quickshell:appLauncher" # Super janky but works
-      ]; 
+    bindr = [
+      # "$mainMod, SUPER_L, global, quickshell:appLauncher" # Doesn't work ????
+      "$mainMod, SUPER_L, exec, hyprctl dispatch global quickshell:appLauncher" # Super janky but works
+    ];
 
     # Mouse: left - 272, right - 273, middle - 274, back - 275, previous - 276
     bindm =

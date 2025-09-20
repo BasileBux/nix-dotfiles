@@ -25,14 +25,14 @@
     { self, nixpkgs, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs-unstable = nixpkgs.legacyPackages.${system};
 
       settings = {
         username = "basileb";
         configPath = "/home/${settings.username}/nixos";
         machine = "asus";
         swapAltSuper = false;
-        nixosVersion = "25.05";
+        nixosVersion = "25.05"; # DO NOT CHANGE THIS EVER
       };
 
       secretsPath = "${settings.configPath}/secrets.nix";
@@ -44,12 +44,12 @@
       colors = theme.theme;
     in {
       nixosConfigurations.default = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs settings colors secrets; };
+        specialArgs = { inherit inputs pkgs-unstable settings colors secrets; };
         modules = [
           "${settings.configPath}/configuration.nix"
           inputs.home-manager.nixosModules.home-manager
           {
-            home-manager.extraSpecialArgs = { inherit inputs settings colors secrets; };
+            home-manager.extraSpecialArgs = { inherit inputs pkgs-unstable settings colors secrets; };
             home-manager.useGlobalPkgs = true;
           }
         ] ++ nixpkgs.lib.optionals (settings.machine == "asus") [

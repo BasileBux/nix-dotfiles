@@ -32,7 +32,7 @@
       ];
 
       monitor = if (settings.machine == "asus") then [
-        "eDP-1, 2560x1600@120.00Hz, 0x0, 1.6"
+        "eDP-1, 2560x1600@60.00Hz, 0x0, 1.6"
         "eDP-2, 2560x1600@60.00Hz, 0x0, 1.6"
         "DP-1, 2560x1440@165.00Hz, 0x0, 1"
         ",preferred, auto, auto, mirror, eDP-1"
@@ -93,7 +93,9 @@
       input = {
         kb_layout = "us,ch";
         kb_variant = ",fr";
-        kb_options = "grp:alt_shift_toggle,ctrl:nocaps${lib.optionalString settings.swapAltSuper ",altwin:swap_lalt_lwin"}";
+        kb_options = "grp:alt_shift_toggle,ctrl:nocaps${
+            lib.optionalString settings.swapAltSuper ",altwin:swap_lalt_lwin"
+          }";
         follow_mouse = 1;
         touchpad = { natural_scroll = true; };
         sensitivity = 0; # -1.0 to 1.0, 0 means no modification.

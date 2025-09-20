@@ -1,4 +1,4 @@
-{ config, lib, pkgs, settings, inputs, ... }:
+{ config, lib, pkgs, pkgs-unstable, settings, inputs, ... }:
 
 let
   quickshellSrc = builtins.path {
@@ -29,7 +29,8 @@ let
   '';
 in {
   home.packages = [
-    inputs.quickshell.packages.${pkgs.system}.default
+    # inputs.quickshell.packages.${pkgs.system}.default
+    pkgs-unstable.quickshell
   ];
   xdg.configFile."quickshell".source = quickshellConfigured;
 }
