@@ -29,6 +29,11 @@
       cursor_trail = 1;
       cursor_trail_decay = "0.1 0.4";
 
+      # Scrollback.nvim plugin: github.com/mikesmithgh/kitty-scrollback.nvim
+      allow_remote_control = "socket-only";
+      listen_on = "unix:/tmp/kitty";
+      action_alias = "kitty_scrollback_nvim kitten /home/basileb/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py";
+
       color0 = "#16181a";
       color1 = "#ff6e5e";
       color2 = "#5eff6c";
@@ -55,6 +60,7 @@
     };
     keybindings = {
       "ctrl+shift+." = "change_font_size all 0";
+      "kitty_mod+h" = "kitty_scrollback_nvim";
     };
   };
 }
