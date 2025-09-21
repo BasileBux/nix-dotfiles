@@ -13,6 +13,7 @@
     ./dotfiles/theming.nix
     ./dotfiles/quickshell.nix
     ./dotfiles/vscode.nix
+    ./dotfiles/kitty.nix
   ];
 
   home.username = "${settings.username}";

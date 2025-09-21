@@ -22,7 +22,8 @@
     settings = {
       "$mainMod" = "SUPER";
       "$scripts" = "${settings.configPath}/scripts";
-      "$terminal" = "ghostty";
+      # "$terminal" = "ghostty";
+      "$terminal" = "kitty";
 
       env = [
         "HYPRCURSOR_THEME,Bibata-Modern-Classic"

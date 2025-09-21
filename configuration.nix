@@ -124,7 +124,6 @@
       # stremio # Uses qtwebengine-5.15.19 which is insecure
       neovide
       openvpn
-      kitty
 
       # Dev deps
       gcc

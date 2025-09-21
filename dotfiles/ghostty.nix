@@ -12,7 +12,6 @@
       mouse-hide-while-typing = true;
 
       font-family = "JetBrainsMono NF";
-      font-style-italic = "Medium";
 
       font-size = 13;
       font-feature = "-calt";
