@@ -88,7 +88,9 @@
         preserve_split = true;
       };
       xwayland.force_zero_scaling = true;
-      gestures.workspace_swipe = true;
+      gesture = [
+        "3, horizontal, workspace"
+      ];
 
       input = {
         kb_layout = "us,ch";
