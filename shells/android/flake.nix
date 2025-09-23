@@ -1,5 +1,5 @@
 {
-	description = "Android developmen shell with Android Studio on NixOS";
+	description = "Reusable Android development shell with Android Studio on NixOS";
 
 	inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -16,17 +16,16 @@
 				};
 			};
 
-			packageName = "ch.heigvd.iict.daa.template";
-			activityName = "MainActivity";
-			apkPath = "./app/build/outputs/apk/debug/app-debug.apk";
-		in {
-			devShells.${system}.default = pkgs.mkShell {
+			# Function to create the dev shell with parameters
+			makeAndroidShell = { 
+				packageName ? "ch.heigvd.iict.daa.template", 
+				activityName ? "MainActivity", 
+				apkPath ? "./app/build/outputs/apk/debug/app-debug.apk" 
+			}: pkgs.mkShell {
 				buildInputs = [
 					pkgs.android-studio
 					pkgs.android-tools
-					pkgs.android-studio
 					pkgs.jdk17
-					pkgs.android-tools # adb, fastboot
 					pkgs.gradle
 					pkgs.git
 
@@ -34,7 +33,7 @@
 					(pkgs.androidenv.emulateApp {
 						name = "android-emulate";
 						platformVersion = "36";
-						abiVersion = "x86_64"; # armeabi-v7a, mips, x86_64
+						abiVersion = "x86_64";
 						systemImageType = "google_apis_playstore";
 						app = apkPath;
 						package = packageName;
@@ -67,8 +66,17 @@
 					export QT_QPA_PLATFORM=xcb
 
 					echo "Android dev shell ready."
+					echo "Package: ${packageName}"
+					echo "Activity: ${activityName}"
+					echo "APK Path: ${apkPath}"
 					exec zsh
 				'';
 			};
+		in {
+			# Default shell with default parameters
+			devShells.${system}.default = makeAndroidShell {};
+			
+			# Expose the function for use in other flakes
+			lib.makeAndroidShell = makeAndroidShell;
 		};
 }
