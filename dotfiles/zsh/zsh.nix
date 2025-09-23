@@ -54,5 +54,6 @@
     MOONSHOT_API_KEY = secrets.keys.moonshotApiKey or "";
     TAVILY_API_KEY = secrets.keys.tavilyApiKey or "";
     XAI_API_KEY = secrets.keys.xaiApiKey or "";
+    GITHUB_TOKEN = secrets.github-token or "";
   };
 }

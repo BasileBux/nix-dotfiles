@@ -32,7 +32,7 @@
       # Scrollback.nvim plugin: github.com/mikesmithgh/kitty-scrollback.nvim
       allow_remote_control = "socket-only";
       listen_on = "unix:/tmp/kitty";
-      action_alias = "kitty_scrollback_nvim kitten /home/basileb/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py";
+      action_alias = "kitty_scrollback_nvim kitten /home/${settings.username}/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py";
 
       color0 = "#16181a";
       color1 = "#ff6e5e";

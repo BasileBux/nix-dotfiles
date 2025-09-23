@@ -36,6 +36,7 @@
       mode = "Integrated";
       always_reboot = false;
       no_logind = false;
+      hotplug_type = "Asus";
     };
   };
   services.asusd.enable = true;

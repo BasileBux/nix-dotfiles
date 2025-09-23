@@ -33,7 +33,7 @@
       ''
 
       # Refresh
-      # "$mainMod, R, exec, $scripts/refresh.sh"
+      "$mainMod, R, exec, $scripts/reload.sh"
 
       # Apps
       "$mainMod, T, exec, $terminal"
@@ -65,6 +65,11 @@
       "$mainMod CTRL, right, movewindow, r"
       "$mainMod CTRL, up, movewindow, u"
       "$mainMod CTRL, down, movewindow, d"
+
+      "$mainMod CTRL, h, movewindow, l"
+      "$mainMod CTRL, j, movewindow, d"
+      "$mainMod CTRL, k, movewindow, u"
+      "$mainMod CTRL, l, movewindow, r"
 
       # Switch workspaces with mainMod + [0-9]
       "$mainMod, 1, workspace, 1"

@@ -7,7 +7,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
+  boot.kernelPackages = pkgs.linuxPackages_6_6;
   boot.kernelModules = [ "mt7921e" ];
   boot.initrd.kernelModules = [ "mt7921e" ];
   hardware.enableRedistributableFirmware = true;
@@ -71,6 +71,11 @@
   };
 
   virtualisation.vmware.host.enable = true;
+
+  # Temporary, for testing
+  # virtualisation.virtualbox.host.enable = true;
+  # users.extraGroups.vboxusers.members = [ settings.username ];
+  # virtualisation.virtualbox.host.enableExtensionPack = true;
 
   programs.adb.enable = true;
 
