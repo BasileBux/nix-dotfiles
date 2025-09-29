@@ -9,7 +9,7 @@
 
     shellAliases = {
       edit = "sudo -e";
-      config = "cd ${settings.configPath} && nvim configuration.nix";
+      config = "cd ${settings.configPath} && nvim flake.nix";
       rebuild =
         "sudo nixos-rebuild switch --flake /home/${settings.username}/nixos#default --impure && sh ${settings.configPath}/scripts/post-rebuild.sh";
       ai = ''

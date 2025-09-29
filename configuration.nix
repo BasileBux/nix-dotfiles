@@ -7,7 +7,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_6_6;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = [ "mt7921e" ];
   boot.initrd.kernelModules = [ "mt7921e" ];
   hardware.enableRedistributableFirmware = true;
@@ -129,9 +129,11 @@
       # stremio # Uses qtwebengine-5.15.19 which is insecure
       neovide
       openvpn
+      ghidra
 
       # Dev deps
       gcc
+      gcc_multi
       cmake
       gnumake
       cargo

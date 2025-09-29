@@ -1,7 +1,8 @@
 { config, lib, pkgs, pkgs-unstable, inputs, settings, secrets, ... }:
 
 {
-  boot.kernelParams = [ "video=DP-1:2560x1440@165" ];
+  boot.kernelParams = [ "video=DP-1:2560x1440@165" "amdgpu.runpm=0" ];
+  boot.supportedFilesystems = [ "ntfs" ];
 
   environment.systemPackages = with pkgs; [
     asusctl
