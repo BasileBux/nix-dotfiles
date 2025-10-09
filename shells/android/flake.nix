@@ -54,6 +54,7 @@
 					'')
 					(pkgs.writeShellScriptBin "reload" ''
 						./gradlew :app:assembleDebug
+						adb shell input keyevent 4
 						adb install -r ${apkPath}
 						adb shell am start -n ${packageName}/${packageName}.${activityName}
 					'')
