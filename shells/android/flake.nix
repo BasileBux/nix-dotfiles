@@ -23,7 +23,8 @@
 				apkPath ? "./app/build/outputs/apk/debug/app-debug.apk" 
 			}: pkgs.mkShell {
 				buildInputs = [
-					pkgs.android-studio
+						# pkgs.android-studio
+					(pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.android-studio [ "ideavie" ])
 					pkgs.android-tools
 					pkgs.jdk17
 					pkgs.gradle
