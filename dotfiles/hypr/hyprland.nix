@@ -15,6 +15,8 @@
     brightnessctl
   ];
 
+  services.swaync.enable = true;
+
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
@@ -22,7 +24,6 @@
     settings = {
       "$mainMod" = "SUPER";
       "$scripts" = "${settings.configPath}/scripts";
-      # "$terminal" = "ghostty";
       "$terminal" = "kitty";
 
       env = [
@@ -33,9 +34,8 @@
       ];
 
       monitor = if (settings.machine == "asus") then [
-        "eDP-1, 2560x1600@60.00Hz, 0x0, 1.6"
-        "eDP-2, 2560x1600@60.00Hz, 0x0, 1.6"
-        "DP-1, 2560x1440@165.00Hz, 0x0, 1"
+        "desc:Thermotrex Corporation TL140ADXP01, 2560x1600@60.00Hz, 0x0, 1.6"
+        "DP-1, 2560x1440@165.00Hz, auto, 1"
         ",preferred, auto, auto, mirror, eDP-1"
       ] else if (settings.machine == "thinkpad") then [
         "eDP-1, 1920x1080@60.01Hz, 0x0, 1.0"
@@ -68,20 +68,18 @@
           passes = 1;
         };
         dim_inactive = true;
-        dim_strength = 0.1;
+        dim_strength = 0.2;
       };
       animations = {
         enabled = true;
-        # Custom animations really fast
-        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
+        bezier = [ "pop, 0.39, 0.575, 0.565, 1" "linear, 0.5, 0.5, 0.5, 0.5" ];
         animation = [
-
-          "windows, 1, 5, myBezier, popin 80%"
-          "windowsOut, 1, 4, default, popin 70%"
-          "border, 1, 3, default"
-          "borderangle, 1, 8, default"
-          "fade, 1, 6, default"
-          "workspaces, 1, 1.7, myBezier, fade"
+          "windows, 1, 2, pop, popin 80%"
+          "windowsOut, 1, 3, default, popin 70%"
+          "fade, 0"
+          "workspaces, 1, 0.6, linear, slide"
+          "specialWorkspaceIn, 1, 1.2, linear, slidevert top"
+          "specialWorkspaceOut, 1, 1.2, linear, slidevert bottom"
         ];
       };
       dwindle = {
@@ -89,9 +87,7 @@
         preserve_split = true;
       };
       xwayland.force_zero_scaling = true;
-      gesture = [
-        "3, horizontal, workspace"
-      ];
+      gesture = [ "3, horizontal, workspace" ];
 
       input = {
         kb_layout = "us,ch";
@@ -104,7 +100,7 @@
         sensitivity = 0; # -1.0 to 1.0, 0 means no modification.
 
         repeat_delay = 250;
-        repeat_rate = 30;
+        repeat_rate = 35;
       };
 
       device = [

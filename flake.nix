@@ -12,17 +12,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    quickshell = {
-      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     hyprland.url = "github:hyprwm/hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    agenix.url = "github:ryantm/agenix";
   };
 
-  outputs =
-    { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs-unstable = nixpkgs.legacyPackages.${system};
@@ -37,7 +32,7 @@
 
       secretsPath = "${settings.configPath}/secrets.nix";
       secretsExists = builtins.pathExists secretsPath;
-      secrets = if secretsExists then import secretsPath else {};
+      secrets = if secretsExists then import secretsPath else { };
 
       theme =
         import "${settings.configPath}/colors/colors.nix" { inherit settings; };
@@ -49,14 +44,16 @@
           "${settings.configPath}/configuration.nix"
           inputs.home-manager.nixosModules.home-manager
           {
-            home-manager.extraSpecialArgs = { inherit inputs pkgs-unstable settings colors secrets; };
+            home-manager.extraSpecialArgs = {
+              inherit inputs pkgs-unstable settings colors secrets;
+            };
             home-manager.useGlobalPkgs = true;
           }
-        ] ++ nixpkgs.lib.optionals (settings.machine == "asus") [
-            # inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
-        ] ++ nixpkgs.lib.optionals (settings.machine == "thinkpad") [
-          inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480
-        ];
+          inputs.agenix.nixosModules.default
+        ] ++ nixpkgs.lib.optionals (settings.machine == "asus")
+          [ inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402 ]
+          ++ nixpkgs.lib.optionals (settings.machine == "thinkpad")
+          [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480 ];
       };
     };
 }

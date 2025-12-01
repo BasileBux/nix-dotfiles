@@ -1,4 +1,4 @@
-{ config, pkgs, colors, ... }:
+{ config, pkgs, colors, settings, ... }:
 
 {
   programs.ghostty = {
@@ -11,7 +11,8 @@
       shell-integration-features = "no-cursor";
       mouse-hide-while-typing = true;
 
-      font-family = "JetBrainsMono NF";
+      # font-family = "JetBrainsMono NF";
+      font-family = "Berkeley Mono";
 
       font-size = 13;
       font-feature = "-calt";
@@ -30,7 +31,7 @@
         [ "ctrl+shift+1=increase_font_size:5" "ctrl+shift+.=reset_font_size" ];
 
       custom-shader = [
-        # "/home/basileb/tmp/ghostty-shaders/bloom.glsl"
+        "${settings.configPath}/dotfiles/misc/ghostty-cursor-warp.glsl"
       ];
     };
     themes = {

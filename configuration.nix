@@ -51,7 +51,8 @@
   programs.zsh.enable = true;
 
   programs.hyprland.enable = true;
-  programs.hyprland.package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+  programs.hyprland.package =
+    inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
 
   environment.sessionVariables = {
     XDG_CURRENT_DESKTOP = "Hyprland";
@@ -59,23 +60,13 @@
     XDG_SESSION_DESKTOP = "Hyprland";
     SUDO_EDITOR = "/run/current-system/sw/bin/nvim";
     EDITOR = "/run/current-system/sw/bin/nvim";
+    NIXOS_OZONE_WL = "1";
   };
 
   # Docker
-  virtualisation.docker = {
-    enable = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
-  };
+  virtualisation.docker = { enable = true; };
 
   virtualisation.vmware.host.enable = true;
-
-  # Temporary, for testing
-  # virtualisation.virtualbox.host.enable = true;
-  # users.extraGroups.vboxusers.members = [ settings.username ];
-  # virtualisation.virtualbox.host.enableExtensionPack = true;
 
   programs.adb.enable = true;
 
@@ -95,20 +86,25 @@
       openssh
       upower
       unzip
+      zip
       jq
       gparted
       bluez
       bc
       bat
       btop
+      file
+      patchelf
+      man-pages
+      man-pages-posix
+      inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
+      appimage-run
 
       # Codecs
       libva
       libGL
       ffmpeg-full
-      mediastreamer
       openh264
-      mediastreamer-openh264
 
       # Software
       nautilus
@@ -119,6 +115,7 @@
       evince
       gnome-disk-utility
       firefox
+      ungoogled-chromium
       obs-studio
       kdePackages.kdenlive
       localsend
@@ -130,6 +127,13 @@
       neovide
       openvpn
       ghidra
+      zed-editor
+      libreoffice
+      typst
+      steam
+      sage
+      gnome-calculator
+      pinta
 
       # Dev deps
       gcc
@@ -148,6 +152,8 @@
       git-lfs
       texlive.combined.scheme-full
       jdk
+      gdb
+      bun
 
       # nvim
       ripgrep
@@ -162,7 +168,11 @@
       tree-sitter
       imagemagick
       ghostscript
-    ] ++ (with pkgs-unstable; [ neovim ]);
+
+      freerdp
+    ] ++ [
+      pkgs-unstable.neovim # pkgs-unstable.winboat
+    ];
 
   programs.nix-ld.enable = true;
 
@@ -182,14 +192,18 @@
   services.gvfs.enable = true;
   services.devmon.enable = true;
 
+  age.identityPaths = [
+    "/home/${settings.username}/.ssh/id_ed25519"
+    "/home/${settings.username}/.ssh/basileb"
+  ];
+  age.secrets.hotspotshield-credentials.file =
+    ./secrets/hotspotshield-credentials.age;
+
   services.openvpn.servers.hs_ch = {
     config =
       "config /home/${settings.username}/.config/openvpn/HotspotShield_CH_v4.ovpn";
     autoStart = false;
-    authUserPass = {
-      username = secrets.hotspotshield.username or "";
-      password = secrets.hotspotshield.password or "";
-    };
+    authUserPass = config.age.secrets.hotspotshield-credentials.path;
     updateResolvConf = true;
   };
 
@@ -204,7 +218,8 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
+  programs.ssh.startAgent = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

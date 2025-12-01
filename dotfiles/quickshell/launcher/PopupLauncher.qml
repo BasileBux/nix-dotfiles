@@ -8,7 +8,7 @@ import QtQuick.Shapes
 import QtQuick.Controls
 import ".."
 
-// Bottom of the screen and popout animation from bottom
+// Center of the screen, no animation so super snappy
 
 PanelWindow {
     id: root
@@ -18,10 +18,6 @@ PanelWindow {
 
     aboveWindows: true
     exclusionMode: ExclusionMode.Ignore
-
-    anchors {
-        bottom: true
-    }
 
     function show() {
         launcher.state = "visible";
@@ -140,6 +136,7 @@ PanelWindow {
                 PropertyChanges {
                     root.visible: false
                     launcher.implicitHeight: 0
+                    launcher.opacity: 0.0
                 }
             },
             State {
@@ -147,6 +144,7 @@ PanelWindow {
                 PropertyChanges {
                     root.visible: true
                     launcher.implicitHeight: Globals.launcherHeight
+                    launcher.opacity: 1.0
                 }
             }
         ]
@@ -156,12 +154,6 @@ PanelWindow {
                 from: "visible"
                 to: "hidden"
                 SequentialAnimation {
-                    NumberAnimation {
-                        target: launcher
-                        property: "implicitHeight"
-                        duration: launcher.animationDuration
-                        easing.type: Easing.InOutQuad
-                    }
                     NumberAnimation {
                         target: root
                         property: "visible"
@@ -178,12 +170,6 @@ PanelWindow {
                         property: "visible"
                         duration: 0
                     }
-                    NumberAnimation {
-                        target: launcher
-                        property: "implicitHeight"
-                        duration: launcher.animationDuration
-                        easing.type: Easing.InOutQuad
-                    }
                 }
             }
         ]
@@ -196,7 +182,7 @@ PanelWindow {
                 color: appList.hovered === index ? Globals.theme.accent1 : "transparent"
                 property DesktopEntry app: modelData
                 implicitHeight: 60
-                implicitWidth: launcher.implicitWidth - Globals.spacing * 6
+                implicitWidth: launcher.implicitWidth - Globals.radius * 4
                 radius: Globals.radius
 
                 MouseArea {
@@ -332,20 +318,7 @@ PanelWindow {
                 strokeColor: "transparent"
                 fillColor: Globals.theme.background
                 startX: 0
-                startY: launcherBackground.height
-
-                PathArc {
-                    relativeX: Globals.radius
-                    relativeY: -(Globals.radius)
-                    radiusX: Globals.radius
-                    radiusY: Globals.radius
-                    direction: PathArc.Counterclockwise
-                }
-
-                PathLine {
-                    relativeX: 0
-                    relativeY: -(launcherBackground.height - Globals.radius * 2)
-                }
+                startY: Globals.radius
 
                 PathArc {
                     relativeX: Globals.radius
@@ -356,7 +329,7 @@ PanelWindow {
                 }
 
                 PathLine {
-                    relativeX: launcherBackground.width - Globals.radius * 4
+                    relativeX: (launcherBackground.width)
                     relativeY: 0
                 }
 
@@ -374,11 +347,24 @@ PanelWindow {
                 }
 
                 PathArc {
-                    relativeX: Globals.radius
+                    relativeX: -(Globals.radius)
                     relativeY: Globals.radius
                     radiusX: Globals.radius
                     radiusY: Globals.radius
-                    direction: PathArc.Counterclockwise
+                    direction: PathArc.Clockwise
+                }
+
+                PathLine {
+                    relativeX: -(launcherBackground.width)
+                    relativeY: 0
+                }
+
+                PathArc {
+                    relativeX: -(Globals.radius)
+                    relativeY: -(Globals.radius)
+                    radiusX: Globals.radius
+                    radiusY: Globals.radius
+                    direction: PathArc.Clockwise
                 }
             }
         }

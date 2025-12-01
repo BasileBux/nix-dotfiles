@@ -25,7 +25,7 @@ in {
       enable = true;
       plugins = [ ];
       custom = "${settings.configPath}/dotfiles/zsh";
-      theme = "basileb";
+      theme = "new";
     };
   };
 
@@ -37,5 +37,6 @@ in {
     TAVILY_API_KEY = secrets.keys.tavilyApiKey or "";
     XAI_API_KEY = secrets.keys.xaiApiKey or "";
     GITHUB_TOKEN = secrets.github-token or "";
+    TYPSTDIR = "$HOME/.local/share/typst/packages";
   };
 }

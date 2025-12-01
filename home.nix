@@ -14,6 +14,7 @@
     ./dotfiles/quickshell.nix
     ./dotfiles/vscode.nix
     ./dotfiles/kitty.nix
+    ./dotfiles/mime-apps.nix
   ];
 
   home.username = "${settings.username}";
@@ -26,16 +27,18 @@
   programs.git = {
     enable = true;
     lfs.enable = true;
-    userName = "BasileBux";
-    userEmail = "basile.buxtorf@ik.me";
+
+    settings = {
+      user = {
+        name = "BasileBux";
+        email = "basile.buxtorf@ik.me";
+        signingkey = "/home/${settings.username}/.ssh/id_ed25519.pub";
+      };
+    };
 
     signing = {
       format = "ssh";
       signByDefault = true;
-    };
-
-    extraConfig = {
-      user.signingkey = "/home/${settings.username}/.ssh/id_ed25519.pub";
     };
   };
 }

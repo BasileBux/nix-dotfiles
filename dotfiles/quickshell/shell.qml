@@ -9,7 +9,8 @@ ShellRoot {
     Bar {
         lock: lock
     }
-    BottomLauncher {}
+    // BottomLauncher {}
+    PopupLauncher {}
     Lock {
         id: lock
     }

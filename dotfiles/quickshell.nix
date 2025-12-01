@@ -29,7 +29,6 @@ let
   '';
 in {
   home.packages = [
-    # inputs.quickshell.packages.${pkgs.system}.default
     pkgs-unstable.quickshell
   ];
   xdg.configFile."quickshell".source = quickshellConfigured;

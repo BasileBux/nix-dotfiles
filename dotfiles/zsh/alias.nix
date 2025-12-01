@@ -4,6 +4,8 @@
   config = "cd ${settings.configPath} && nvim flake.nix";
   rebuild =
     "sudo nixos-rebuild switch --flake /home/${settings.username}/nixos#default --impure && sh ${settings.configPath}/scripts/post-rebuild.sh";
+  up = "sudo nix flake update && rebuild --upgrade";
+  qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
 
   # neovim
   nvimconfig = "cd $HOME/.config/nvim && nvim init.lua";
@@ -15,13 +17,19 @@
   gss = "git status";
   gd = "nvim -c 'DiffviewOpen' -c 'tabclose 1'";
 
-  qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
-  up = "sudo nix flake update && rebuild --upgrade";
-
   # VPN
   vpnstart = "sudo systemctl start openvpn-hs_ch";
   vpnstop = "sudo systemctl stop openvpn-hs_ch";
   vpnstatus = "systemctl status openvpn-hs_ch";
 
   playground = "/home/${settings.username}/playground-cli/playground";
+  ubuntu = "${settings.configPath}/scripts/vmware-ubuntu.sh";
+
+  vim = "nvim";
+  top = "btop";
+
+  cp = "cp --recursive --verbose";
+  mv = "mv --verbose";
+  rm = "rm --recursive --verbose";
+  sl = "ls";
 }

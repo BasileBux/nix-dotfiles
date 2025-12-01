@@ -24,7 +24,7 @@ Item {
     }
     function logout() {
         Quickshell.execDetached({
-            command: ["loginctl", "terminate-user", "$USER"]
+            command: ["loginctl", "terminate-user", Quickshell.env("USER")]
         });
     }
     function lockScreen() {
@@ -35,7 +35,7 @@ Item {
 
     focus: true
     Keys.onPressed: event => {
-        if (event.key === Qt.Key_Escape) {
+        if (event.key === Qt.Key_Escape || (event.key === Qt.Key_BracketLeft && (event.modifiers & Qt.ControlModifier))) {
             popup.collapse();
             lockFocusGrab.active = false;
             return;

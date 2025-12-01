@@ -1,7 +1,7 @@
 { lib, config, pkgs, inputs, settings, ... }:
 
 {
-  home.packages = with pkgs; [ dconf gsettings-desktop-schemas glib ];
+  home.packages = with pkgs; [ dconf gsettings-desktop-schemas glib gnome-themes-extra ];
 
   gtk = {
     enable = true;
@@ -31,6 +31,7 @@
     enable = true;
     platformTheme.name = "gtk";
     style.name = "adwaita-dark";
+    style.package = pkgs.libsForQt5.qtstyleplugins;
   };
 
   # Environment variables for dark theme
@@ -49,11 +50,14 @@
   };
 
   # Optional: dconf settings for additional dark mode support
-  dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      gtk-theme = "Adwaita-dark";
-      color-scheme = "prefer-dark";
-      gtk-application-prefer-dark-theme = true;
+  dconf = {
+    enable = true;
+    settings = {
+      "org/gnome/desktop/interface" = {
+        gtk-theme = "Adwaita-dark";
+        color-scheme = "prefer-dark";
+        gtk-application-prefer-dark-theme = true;
+      };
     };
   };
 }

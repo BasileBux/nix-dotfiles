@@ -42,7 +42,7 @@ PanelWindow {
         id: keyboardBinds
         focus: true
         Keys.onPressed: event => {
-            if (event.key === Qt.Key_Escape) {
+            if (event.key === Qt.Key_Escape || (event.key === Qt.Key_BracketLeft && (event.modifiers & Qt.ControlModifier))) {
                 root.popups.forEach(function (popup) {
                     popup.collapse();
                 });

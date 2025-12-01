@@ -85,7 +85,7 @@ Rectangle {
 				background: Rectangle {
 					color: Globals.theme.accent1
 					border.color: "transparent"
-					radius: 25
+					radius: Globals.radius
 					border.width: 0
 				}
 
