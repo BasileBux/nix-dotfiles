@@ -154,6 +154,7 @@
       jdk
       gdb
       bun
+      openssl
 
       # nvim
       ripgrep
@@ -184,6 +185,7 @@
     nerd-fonts.geist-mono
     nerd-fonts.go-mono
     nerd-fonts.gohufont
+    hanken-grotesk
   ];
 
   services.upower.enable = true;
