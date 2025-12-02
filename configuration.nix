@@ -18,10 +18,11 @@
   time.timeZone = "Europe/Amsterdam";
 
   console = {
-    keyMap = "us";
-    # keyMap = "fr_CH-latin1";
     font = "Lat2-Terminus16";
+    earlySetup = true;
+    useXkbConfig = true;
   };
+  services.xserver.xkb.options = "ctrl:nocaps";
 
   services.printing.enable = false;
 
