@@ -12,7 +12,7 @@
     };
 
     settings = {
-      # font_family = "JetBrainsMono NF";
+      # JetBrainsMono NF, Google Sans Code, Berkeley Mono
       font_family = "Berkeley Mono";
       disable_ligatures = "always";
 

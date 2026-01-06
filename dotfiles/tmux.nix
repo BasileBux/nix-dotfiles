@@ -7,12 +7,13 @@
     baseIndex = 1;
     keyMode = "vi";
     mouse = true;
+    prefix = "C-a";
 
     extraConfig = ''
       set -ga terminal-overrides ",screen-256color*:Tc"
 
-      unbind C-b
-      bind-key C-a send-prefix
+      # unbind C-b
+      # bind-key C-a send-prefix
 
       # Reload config
       bind r source-file ~/.config/tmux/tmux.conf

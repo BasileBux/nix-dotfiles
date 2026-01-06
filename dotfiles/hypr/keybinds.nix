@@ -14,11 +14,12 @@
       "$mainMod, C, exec, playerctl next"
 
       ''
-        $mainMod, S, exec, grim "$HOME/screenshots/$(date '+%d-%m-%y_%Hh%Mm%Ss').png"
+        $mainMod, S, exec, grim - | wl-copy
       ''
       ''
-        $mainMod SHIFT, S, exec, grim -g "$(slurp -d)" $HOME/screenshots/$(date '+%d-%m-%y_%Hh%Mm%Ss').png
+        $mainMod SHIFT, S, exec, grim -g "$(slurp -d)" - | wl-copy
       ''
+
 
       "$mainMod ALT, R, exec, $scripts/reload.sh"
 

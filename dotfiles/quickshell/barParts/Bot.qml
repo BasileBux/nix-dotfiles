@@ -32,7 +32,7 @@ BarPart {
             id: audioModule
             Layout.fillWidth: true
             property int index: 5
-            property int popupHeight: 50
+            property int popupHeight: 285
             implicitHeight: root.moduleSizes[index]
             Modules.Audio {
                 id: audioContent

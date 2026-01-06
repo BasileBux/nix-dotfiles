@@ -24,6 +24,8 @@
   };
   services.xserver.xkb.options = "ctrl:nocaps";
 
+  services.flatpak.enable = true;
+
   services.printing.enable = false;
 
   hardware.bluetooth.enable = true;
@@ -135,13 +137,13 @@
       sage
       gnome-calculator
       pinta
+      winboat
 
       # Dev deps
       gcc
       gcc_multi
       cmake
       gnumake
-      cargo
       rustc
       rustfmt
       rust-analyzer
@@ -157,6 +159,9 @@
       bun
       openssl
 
+      radicle-node
+      radicle-desktop
+
       # nvim
       ripgrep
       fd
@@ -170,10 +175,9 @@
       tree-sitter
       imagemagick
       ghostscript
-
-      freerdp
+      qutebrowser
     ] ++ [
-      pkgs-unstable.neovim # pkgs-unstable.winboat
+      pkgs-unstable.neovim
     ];
 
   programs.nix-ld.enable = true;

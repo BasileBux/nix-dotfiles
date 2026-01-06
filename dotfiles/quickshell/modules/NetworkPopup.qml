@@ -87,15 +87,8 @@ Item {
 
                     MouseArea {
                         anchors.fill: parent
-                        hoverEnabled: true
                         onClicked: {
                             Services.Network.rescanWifi();
-                        }
-                        onEntered: {
-                            rescanText.color = Globals.theme.accent2;
-                        }
-                        onExited: {
-                            rescanText.color = Globals.theme.foreground;
                         }
                     }
                 }
@@ -116,13 +109,6 @@ Item {
 
                 MouseArea {
                     anchors.fill: parent
-                    hoverEnabled: true
-                    onEntered: {
-                        networkText.color = Globals.theme.accent2;
-                    }
-                    onExited: {
-                        networkText.color = item.active ? Globals.theme.accent1 : Globals.theme.foreground;
-                    }
                     onClicked: {
                         if (item.active) {
                             Services.Network.disconnectFromNetwork();

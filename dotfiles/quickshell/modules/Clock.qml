@@ -12,18 +12,9 @@ Item {
 
     MouseArea {
         anchors.fill: parent
-        hoverEnabled: true
         onClicked: {
             popup.toggle();
             bar.focusGrab.active = popup.shown;
-        }
-        onEntered: {
-            hourText.color = Globals.theme.accent2;
-            minuteText.color = Globals.theme.accent2;
-        }
-        onExited: {
-            hourText.color = Globals.theme.foreground;
-            minuteText.color = Globals.theme.foreground;
         }
     }
 

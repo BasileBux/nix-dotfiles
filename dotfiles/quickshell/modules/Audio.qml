@@ -33,36 +33,17 @@ Item {
             color: Globals.theme.foreground
             font.pixelSize: Globals.fonts.medium
             font.family: Globals.theme.fontFamily
-            text: Services.Audio.volume === NaN ? "0%" : (Services.Audio.volume * 100).toFixed(0) + "%"
+            text: Services.Audio.volume === (0/0) ? "0%" : (Services.Audio.volume * 100).toFixed(0) + "%"
         }
     }
 
     MouseArea {
         anchors.fill: parent
-        hoverEnabled: true
         onClicked: {
             popup.toggle();
             bar.focusGrab.active = popup.shown;
         }
-        onEntered: {
-            audioIcon.icon.color = Globals.theme.accent2;
-            volumeText.color = Globals.theme.accent2;
-        }
-        onExited: {
-            audioIcon.icon.color = Globals.theme.foreground;
-            volumeText.color = Globals.theme.foreground;
-        }
     }
-
-    // Popup {
-    //     id: popup
-    //     ref: bar
-    //     name: "Audio"
-    //     popupHeight: root.popupHeight
-    //     popupWidth: 240
-    //     yPos: root.popupYpos
-    //     AudioPopup {}
-    // }
 
     Loader {
         id: popupLoader
@@ -77,7 +58,7 @@ Item {
                 ref: bar
                 name: "Audio"
                 popupHeight: root.popupHeight
-                popupWidth: 240
+                popupWidth: 440
                 yPos: root.popupYpos
                 AudioPopup {}
             }
@@ -90,7 +71,7 @@ Item {
                 ref: bar
                 name: "Audio"
                 popupHeight: root.popupHeight
-                popupWidth: 240
+                popupWidth: 440
                 yPos: root.popupYpos
                 AudioPopup {}
             }

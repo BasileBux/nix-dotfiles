@@ -11,7 +11,7 @@
       shell-integration-features = "no-cursor";
       mouse-hide-while-typing = true;
 
-      # font-family = "JetBrainsMono NF";
+      # JetBrainsMono NF, Google Sans Code, Berkeley Mono
       font-family = "Berkeley Mono";
 
       font-size = 13;

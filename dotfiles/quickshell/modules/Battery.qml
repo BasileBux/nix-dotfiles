@@ -20,20 +20,9 @@ Item {
 
     MouseArea {
         anchors.fill: parent
-        hoverEnabled: true
         onClicked: {
             popup.toggle();
             bar.focusGrab.active = popup.shown;
-        }
-        onEntered: {
-            var color = root.isCharging ? "#00cc2c" : root.isLow ? "#fc3654" : Globals.theme.accent2;
-            iconText.color = color;
-            percentageText.color = color;
-        }
-        onExited: {
-            var color = root.isCharging ? "#20FF4F" : isLow ? "#FD788B" : Globals.theme.foreground;
-            iconText.color = color;
-            percentageText.color = color;
         }
     }
 

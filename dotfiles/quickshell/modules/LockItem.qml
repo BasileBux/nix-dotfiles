@@ -36,11 +36,9 @@ Item {
 			item.exec();
 		}
 		onEntered: {
-			button.icon.color = hoverColor;
 			animActive = 1;
 		}
 		onExited: {
-			button.icon.color = iconColor;
 			animActive = 0;
 		}
 	}

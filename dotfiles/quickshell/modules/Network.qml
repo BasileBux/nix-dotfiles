@@ -40,16 +40,9 @@ Item {
 
     MouseArea {
         anchors.fill: parent
-        hoverEnabled: true
         onClicked: {
             popup.toggle();
             bar.focusGrab.active = popup.shown;
-        }
-        onEntered: {
-            networkIcon.icon.color = Globals.theme.accent2;
-        }
-        onExited: {
-            networkIcon.icon.color = Globals.theme.foreground;
         }
     }
 

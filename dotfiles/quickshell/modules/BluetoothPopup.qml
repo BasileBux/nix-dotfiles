@@ -119,14 +119,7 @@ Item {
 
                 MouseArea {
                     anchors.fill: parent
-                    hoverEnabled: true
                     onClicked: clickDevice(device, nameText)
-                    onEntered: {
-                        nameText.color = Globals.theme.accent2;
-                    }
-                    onExited: {
-                        nameText.color = device.connected ? Globals.theme.accent1 : Globals.theme.foreground;
-                    }
                 }
             }
             Text {
@@ -158,14 +151,7 @@ Item {
 
                 MouseArea {
                     anchors.fill: parent
-                    hoverEnabled: true
                     onClicked: device.forget()
-                    onEntered: {
-                        forgetText.color = Globals.theme.accent2;
-                    }
-                    onExited: {
-                        forgetText.color = Globals.theme.foreground;
-                    }
                 }
             }
         }

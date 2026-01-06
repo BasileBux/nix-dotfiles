@@ -13,6 +13,7 @@
     slurp
     hyprlock
     brightnessctl
+    hyprpolkitagent
   ];
 
   services.swaync.enable = true;
@@ -35,13 +36,16 @@
 
       monitor = if (settings.machine == "asus") then [
         "desc:Thermotrex Corporation TL140ADXP01, 2560x1600@60.00Hz, 0x0, 1.6"
-        "DP-1, 2560x1440@165.00Hz, auto, 1"
+        "DP-1, 2560x1440@165.00Hz, auto, 1" # No HDR
+        # "DP-1, 2560x1440@165.00Hz, auto, 1, bitdepth, 10, cm, hdr,sdrbrightness,1.2,sdrsaturation,1.2" # With HDR
         ",preferred, auto, auto, mirror, eDP-1"
       ] else if (settings.machine == "thinkpad") then [
         "eDP-1, 1920x1080@60.01Hz, 0x0, 1.0"
         ",preferred, auto, auto, mirror, eDP-1"
       ] else
         [ ",preferred,auto,auto" ];
+
+      experimental = { xx_color_management_v4 = true; };
 
       cursor.enable_hyprcursor = true;
 
