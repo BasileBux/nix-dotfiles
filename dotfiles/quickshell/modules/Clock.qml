@@ -9,6 +9,7 @@ Item {
     property int popupYpos
     required property int popupHeight
     readonly property alias popup: popupLoader.popup
+    readonly property int fontSize: Globals.fonts.small
 
     MouseArea {
         anchors.fill: parent
@@ -24,17 +25,16 @@ Item {
     }
     ColumnLayout {
         id: layout
-        spacing: -10
-
+        spacing: -6
         anchors {
             fill: parent
         }
-
         Text {
             id: hourText
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillHeight: true
             color: Globals.theme.foreground
-            font.pointSize: Globals.fonts.large
+            font.pointSize: root.fontSize
             font.family: Globals.theme.fontFamily
             text: Qt.formatDateTime(clock.date, "hh")
         }
@@ -42,8 +42,9 @@ Item {
         Text {
             id: minuteText
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillHeight: true
             color: Globals.theme.foreground
-            font.pointSize: Globals.fonts.large
+            font.pointSize: root.fontSize
             font.family: Globals.theme.fontFamily
             text: Qt.formatDateTime(clock.date, "mm")
         }

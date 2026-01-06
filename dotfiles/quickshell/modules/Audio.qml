@@ -14,7 +14,7 @@ Item {
 
     ColumnLayout {
         anchors.fill: parent
-        spacing: 0
+        spacing: -5
         Button {
             id: audioIcon
             Layout.alignment: Qt.AlignHCenter
@@ -31,9 +31,9 @@ Item {
             id: volumeText
             Layout.alignment: Qt.AlignHCenter
             color: Globals.theme.foreground
-            font.pixelSize: Globals.fonts.medium
+            font.pixelSize: Globals.fonts.xsmall + 1 // Weird as fuck but font rendering seems to be fucked
             font.family: Globals.theme.fontFamily
-            text: Services.Audio.volume === (0/0) ? "0%" : (Services.Audio.volume * 100).toFixed(0) + "%"
+            text: Services.Audio.volume === (0 / 0) ? "0%" : (Services.Audio.volume * 100).toFixed(0) + "%"
         }
     }
 

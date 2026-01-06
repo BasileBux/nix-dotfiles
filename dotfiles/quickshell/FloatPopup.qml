@@ -28,7 +28,7 @@ PopupWindow {
     implicitWidth: popupWidth
     implicitHeight: popupHeight + ref.radius * 2
 
-    anchor.rect.x: -width + ref.padding + 1 - (ref.spacing * 2)
+    anchor.rect.x: -width + ref.padding - ref.spacing
     anchor.rect.y: yPos
     color: "transparent"
 
@@ -129,8 +129,8 @@ PopupWindow {
                     fill: parent
                     margins: ref.padding
                 }
-                anchors.topMargin: ref.radius * 2
-                anchors.bottomMargin: ref.radius * 2
+                anchors.topMargin: ref.radius
+                anchors.bottomMargin: ref.radius
             }
         }
     }

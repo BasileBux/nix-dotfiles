@@ -36,7 +36,7 @@ Item {
                     implicitWidth: height
                     radius: Globals.radius
                     Image {
-                        source: preferedPlayer === null ? "../icons/track-art-placehoder.png" : preferedPlayer.trackArtUrl
+                        source: preferedPlayer === null || preferedPlayer.trackArtUrl == "" ? "../icons/track-art-placehoder.png" : preferedPlayer.trackArtUrl
                         anchors.fill: parent
                         fillMode: Image.PreserveAspectCrop
                         asynchronous: true
@@ -66,7 +66,7 @@ Item {
                     Text {
                         id: trackArtist
                         Layout.fillWidth: true
-                        text: preferedPlayer === null ? "" : (preferedPlayer.trackArtist === "" ? "Who?" : preferedPlayer.trackArtist)
+                        text: preferedPlayer === null ? "" : (preferedPlayer.trackArtist === "" ? "Unknown Artist" : preferedPlayer.trackArtist)
                         font.pixelSize: 16
                         font.family: Globals.theme.fontFamily
                         horizontalAlignment: Text.AlignLeft
@@ -81,7 +81,7 @@ Item {
                         font.pixelSize: 14
                         font.family: Globals.theme.fontFamily
                         horizontalAlignment: Text.AlignLeft
-                        color: Globals.theme.muted
+                        color: Globals.theme.border
                         elide: Text.ElideRight
                         wrapMode: Text.NoWrap
                     }
@@ -203,7 +203,7 @@ Item {
                 anchors.fill: parent
                 from: 0
                 value: root.preferedPlayer === null || !root.preferedPlayer.positionSupported ? 0 : root.preferedPlayer.position
-                to: root.preferedPlayer.lengthSupported ? root.preferedPlayer.length : 0
+                to: root.preferedPlayer !== null && root.preferedPlayer.lengthSupported ? root.preferedPlayer.length : 0
                 enabled: root.preferedPlayer !== null && root.preferedPlayer.positionSupported && root.preferedPlayer.canSeek
                 onMoved:
                 // Seek

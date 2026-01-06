@@ -6,7 +6,7 @@ import "../modules" as Modules
 
 BarPart {
     id: root
-    moduleSizes: [30, 60, 60, 35, 40, 60]
+    moduleSizes: [25, 40, 42, 28, 30, 39]
 
     property alias batteryPopup: batteryContent.popup
     property alias clockPopup: clockContent.popup
@@ -21,7 +21,7 @@ BarPart {
 
     ColumnLayout {
         id: layout
-        spacing: Globals.spacing
+        spacing: Globals.barIconSpacing
         anchors {
             left: parent.left
             right: parent.right
@@ -44,7 +44,7 @@ BarPart {
             id: bluetoothModule
             Layout.fillWidth: true
             property int index: 4
-            property int popupHeight: 400
+            property int popupHeight: 300
             implicitHeight: root.moduleSizes[index]
             Modules.Bluetooth {
                 id: bluetoothContent

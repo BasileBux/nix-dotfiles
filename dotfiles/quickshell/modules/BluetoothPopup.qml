@@ -30,7 +30,7 @@ Item {
                     bottom: parent.bottom
                 }
                 implicitWidth: 86
-                radius: width / 2
+                radius: Globals.radius
                 color: Globals.theme.accent1
                 Text {
                     id: searchText
@@ -101,7 +101,7 @@ Item {
         Item {
             id: item
             property var device: modelData
-            implicitHeight: 45
+            implicitHeight: device.batteryAvailable ? 38 : 20
             implicitWidth: parent.width
 
             Text {
@@ -111,7 +111,6 @@ Item {
                 font.family: Globals.theme.fontFamily
                 anchors {
                     top: parent.top
-                    topMargin: Globals.padding * 3
                     left: parent.left
                     leftMargin: Globals.spacing
                 }
@@ -130,7 +129,7 @@ Item {
                 anchors {
                     left: parent.left
                     leftMargin: Globals.spacing
-                    bottom: parent.bottom
+                    top: nameText.bottom
                 }
                 text: device.batteryAvailable ? "Battery: " + (device.battery * 100).toFixed(0) + "%" : ""
             }
@@ -139,12 +138,12 @@ Item {
                 anchors {
                     right: parent.right
                     rightMargin: Globals.spacing
-                    verticalCenter: parent.verticalCenter
-                    topMargin: Globals.padding * 3
+                    top: parent.top
+                    topMargin: -3
                 }
                 visible: device.bonded
                 color: Globals.theme.foreground
-                font.pointSize: Globals.fonts.xlarge
+                font.pointSize: Globals.fonts.medium
                 font.family: Globals.theme.fontFamily
                 font.bold: true
                 text: ""

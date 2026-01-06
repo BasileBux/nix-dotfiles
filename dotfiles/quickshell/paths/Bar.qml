@@ -12,54 +12,38 @@ Shape {
         strokeWidth: 0
         strokeColor: "transparent"
         fillColor: Globals.theme.background
-        startX: root.padding + root.radius
-        startY: root.padding
-
-        PathArc {
-            relativeX: -(root.radius)
-            relativeY: root.radius
-            radiusX: root.radius
-            radiusY: root.radius
-            direction: PathArc.Counterclockwise
-        }
-
-        PathLine {
-            relativeX: 0
-            relativeY: root.height - (root.padding * 2 + root.radius * 2)
-        }
+        startX: -(root.padding)
+        startY: 0
 
         PathArc {
             relativeX: root.radius
             relativeY: root.radius
             radiusX: root.radius
             radiusY: root.radius
-            direction: PathArc.Counterclockwise
+            direction: PathArc.Clockwise
         }
 
         PathLine {
-            relativeX: root.width - (root.padding * 2 + root.radius * 2)
+            relativeX: 0
+            relativeY: root.height - (root.radius * 2)
+        }
+
+        PathArc {
+            relativeX: -(root.radius)
+            relativeY: root.radius
+            radiusX: root.radius
+            radiusY: root.radius
+            direction: PathArc.Clockwise
+        }
+
+        PathLine {
+            relativeX: root.width + root.padding
             relativeY: 0
         }
 
-        PathArc {
-            relativeX: root.radius
-            relativeY: -(root.radius)
-            radiusX: root.radius
-            radiusY: root.radius
-            direction: PathArc.Counterclockwise
-        }
-
         PathLine {
             relativeX: 0
-            relativeY: -(root.height - (root.padding * 2 + root.radius * 2))
-        }
-
-        PathArc {
-            relativeX: -(root.radius)
-            relativeY: -(root.radius)
-            radiusX: root.radius
-            radiusY: root.radius
-            direction: PathArc.Counterclockwise
+            relativeY: -(root.height)
         }
     }
 }

@@ -28,14 +28,14 @@ Item {
 
     ColumnLayout {
         id: layout
-        spacing: -8
+        spacing: -5
         anchors.fill: parent
 
         Text {
             id: iconText
             Layout.alignment: Qt.AlignHCenter
             color: isCharging ? "#20FF4F" : root.isLow ? "#FD788B" : Globals.theme.foreground
-            font.pointSize: Globals.fonts.xlarge
+            font.pointSize: Globals.fonts.large
             font.family: Globals.theme.fontFamily
             text: root.isDocked ? "󰇅" : root.isCharging ? "󰂄" : (root.isLow ? "󰁺" : (root.percentage >= 0.90 ? "󰁹" : (root.percentage >= 0.80 ? "󰂂" : (root.percentage >= 0.70 ? "󰂁" : (root.percentage >= 0.60 ? "󰂀" : (root.percentage >= 0.50 ? "󰁿" : (root.percentage >= 0.40 ? "󰁾" : (root.percentage >= 0.30 ? "󰁽" : (root.percentage >= 0.20 ? "󰁼" : "󰁻")))))))))
         }
@@ -44,7 +44,7 @@ Item {
             id: percentageText
             Layout.alignment: Qt.AlignHCenter
             color: root.isCharging ? "#20FF4F" : root.isLow ? "#FD788B" : Globals.theme.foreground
-            font.pointSize: Globals.fonts.small
+            font.pointSize: Globals.fonts.tiny
             font.family: Globals.theme.fontFamily
             text: (root.percentage * 100).toFixed(0) + "%"
         }

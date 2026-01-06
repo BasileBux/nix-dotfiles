@@ -11,32 +11,22 @@ Item {
 
     Button {
         id: lockIcon
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
+        anchors.fill: parent
+
         background: Rectangle {
             color: "transparent"
         }
         icon.source: "../icons/shutdown.svg"
         icon.color: Globals.theme.foreground
-        icon.width: parent.height * 0.9
-        icon.height: parent.height * 0.9
+        icon.width: parent.height
+        icon.height: parent.height
     }
 
     MouseArea {
         anchors.fill: parent
-        hoverEnabled: true
         onClicked: {
             popup.toggle();
             lockFocusGrab.active = popup.shown;
-        }
-        onEntered: {
-            lockIcon.icon.color = Globals.theme.accent2;
-        }
-        onExited: {
-            lockIcon.icon.color = Globals.theme.foreground;
         }
     }
 

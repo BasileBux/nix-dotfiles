@@ -45,7 +45,7 @@ Item {
                 ref: bar
                 name: "Bluetooth"
                 popupHeight: root.popupHeight
-                popupWidth: 400
+                popupWidth: 330
                 yPos: popupYpos
 
                 BluetoothPopup {
@@ -61,7 +61,7 @@ Item {
                 ref: bar
                 name: "Bluetooth"
                 popupHeight: root.popupHeight
-                popupWidth: 400
+                popupWidth: 330
                 yPos: popupYpos
 
                 BluetoothPopup {

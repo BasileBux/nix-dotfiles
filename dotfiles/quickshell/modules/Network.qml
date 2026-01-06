@@ -14,16 +14,12 @@ Item {
 
     Button {
         id: networkIcon
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
+        anchors.fill: parent
         background: Rectangle {
             color: "transparent"
         }
-        icon.width: parent.width * 0.5
-        icon.height: parent.width * 0.5
+        icon.width: parent.width * 0.6
+        icon.height: parent.width * 0.6
         icon.color: Globals.theme.foreground
         icon.source: {
             if (Services.Network.scanning || !Services.Network.startupFinished)
@@ -58,7 +54,7 @@ Item {
                 id: popup
                 ref: bar
                 name: "Network"
-                popupHeight: 360
+                popupHeight: root.popupHeight
                 popupWidth: 400
                 yPos: popupYpos
                 NetworkPopup {}
@@ -71,7 +67,7 @@ Item {
                 id: popup
                 ref: bar
                 name: "Network"
-                popupHeight: 360
+                popupHeight: root.popupHeight
                 popupWidth: 400
                 yPos: popupYpos
                 NetworkPopup {}

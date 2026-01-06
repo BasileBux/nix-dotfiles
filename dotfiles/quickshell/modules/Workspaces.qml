@@ -12,9 +12,10 @@ Item {
     signal workspaceAdded(workspace: HyprlandWorkspace)
     property int workspaceCount: 0
 
-    property color inactiveColor: Globals.theme.foreground
-    property color focusedColor: Globals.theme.accent1
-    property color activeColor: Globals.theme.accent3
+    readonly property color inactiveColor: Globals.theme.foreground
+    readonly property color focusedColor: Globals.theme.accent1
+    readonly property color activeColor: Globals.theme.accent3
+    readonly property int dotSize: 8
 
     ColumnLayout {
         spacing: Globals.workspacesGap
@@ -24,12 +25,12 @@ Item {
             top: parent.top
         }
         Repeater {
-            model: 10
+            model: 6
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             Item {
                 id: workspaceItem
-                height: 8
+                height: root.dotSize
                 Layout.fillWidth: true
 
                 required property int index
@@ -61,8 +62,8 @@ Item {
                         horizontalCenter: parent.horizontalCenter
                     }
                     color: workspaceItem.exists ? workspaceItem.active ? focusedColor : activeColor : inactiveColor
-                    width: Globals.barWidth * 0.4
-                    scale: 1 + animActive * 0.30
+                    implicitWidth: root.dotSize
+                    scale: 1 + animActive * 0.10
                     radius: 15
                 }
 

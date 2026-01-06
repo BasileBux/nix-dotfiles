@@ -58,8 +58,8 @@ PanelWindow {
         uniformCellSizes: true
         anchors.fill: parent
         Rectangle {
-            width: Globals.barWidth - 2 * Globals.padding
-            Layout.alignment: Qt.AlignHCenter
+            implicitWidth: Globals.barWidth - Globals.radius / 2
+            Layout.alignment: Qt.AlignRight
             Layout.topMargin: Globals.barExtrema * 2
             Layout.fillHeight: true
             color: "transparent"
@@ -68,8 +68,8 @@ PanelWindow {
             }
         }
         Rectangle {
-            width: Globals.barWidth - 2 * Globals.padding
-            Layout.alignment: Qt.AlignHCenter
+            implicitWidth: Globals.barWidth - 2
+            Layout.alignment: Qt.AlignRight
             Layout.fillHeight: true
             color: "transparent"
             BarParts.Mid {
@@ -77,8 +77,8 @@ PanelWindow {
             }
         }
         Rectangle {
-            width: Globals.barWidth - 2 * Globals.padding
-            Layout.alignment: Qt.AlignHCenter
+            implicitWidth: Globals.barWidth - Globals.radius / 2
+            Layout.alignment: Qt.AlignRight
             Layout.bottomMargin: Globals.barExtrema * 2
             Layout.fillHeight: true
             color: "transparent"
