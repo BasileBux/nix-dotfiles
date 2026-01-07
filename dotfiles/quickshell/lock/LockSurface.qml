@@ -83,7 +83,7 @@ Rectangle {
 				color: Globals.theme.foreground
 
 				background: Rectangle {
-					color: Globals.theme.accent1
+					color: Globals.theme.accent3
 					border.color: "transparent"
 					radius: Globals.radius
 					border.width: 0
@@ -108,7 +108,7 @@ Rectangle {
 		}
 
 		Label {
-			color: Globals.theme.accent3
+			color: Globals.theme.accent1
 			visible: root.context.showFailure
 			font.pixelSize: Globals.fonts.medium
 			text: "Incorrect password"

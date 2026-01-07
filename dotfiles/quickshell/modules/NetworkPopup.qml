@@ -24,8 +24,8 @@ Item {
 
                 Widgets.Switch {
                     id: toggle
-                    widgetWidth: 60
-                    widgetHeight: 30
+                    widgetWidth: 50
+                    widgetHeight: widgetWidth / 2
                     toggleFunction: Services.Network.toggleWifi
                     toggleState: Services.Network.wifiEnabled
                     anchors {
@@ -77,7 +77,6 @@ Item {
                 implicitHeight: 30
                 Text {
                     id: rescanText
-                    // leftPadding: Globals.spacing
                     anchors.bottom: parent.bottom
                     color: Globals.theme.foreground
                     font.pixelSize: Globals.fonts.large
@@ -125,14 +124,14 @@ Item {
                     font.family: Globals.theme.fontFamily
                     anchors {
                         left: parent.left
-                        // leftMargin: Globals.spacing
                         verticalCenter: parent.verticalCenter
                     }
+                    elide: Text.ElideRight
                     text: item.ssid
                 }
                 Text {
                     id: securityText
-                    color: Globals.theme.foreground
+                    color: Globals.theme.muted
                     font.pixelSize: Globals.fonts.small
                     font.family: Globals.theme.fontFamily
                     anchors {

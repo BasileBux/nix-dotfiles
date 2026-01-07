@@ -9,6 +9,7 @@ Item {
     id: root
     anchors.fill: parent
     property int popupYpos
+    required property int popupWidth
     required property int popupHeight
     readonly property alias popup: popupLoader.popup
 
@@ -61,7 +62,7 @@ Item {
             Popup {
                 id: popup
                 ref: bar
-                popupWidth: 360
+                popupWidth: root.popupWidth
                 popupHeight: root.popupHeight
                 yPos: root.popupYpos
                 name: "Battery"
@@ -70,7 +71,7 @@ Item {
                     anchors.fill: parent
                     color: "transparent"
                     BatteryPopup {
-                        popupWidth: 360
+                        popupWidth: root.popupWidth
                         moduleRef: batteryContent
                     }
                 }
@@ -82,7 +83,7 @@ Item {
             FloatPopup {
                 id: popup
                 ref: bar
-                popupWidth: 360
+                popupWidth: root.popupWidth
                 popupHeight: root.popupHeight
                 yPos: root.popupYpos
                 name: "Battery"
@@ -91,7 +92,7 @@ Item {
                     anchors.fill: parent
                     color: "transparent"
                     BatteryPopup {
-                        popupWidth: 360
+                        popupWidth: root.popupWidth
                         moduleRef: batteryContent
                     }
                 }

@@ -37,9 +37,11 @@ Item {
 		}
 		onEntered: {
 			animActive = 1;
+			button.icon.color = hoverColor;
 		}
 		onExited: {
 			animActive = 0;
+			button.icon.color = iconColor;
 		}
 	}
 }

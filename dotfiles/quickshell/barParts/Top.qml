@@ -16,14 +16,14 @@ BarPart {
             top: parent.top
         }
         uniformCellSizes: false
-        Item {
-            id: workspacesModule
-            Layout.fillWidth: true
-            implicitHeight: moduleSizes[0]
-            Modules.Workspaces {
-                id: workspacesContent
-                popupYpos: bar.height - (moduleSizes[0] / 2 + Globals.radius)
-            }
-        }
+        // Item {
+        //     id: workspacesModule
+        //     Layout.fillWidth: true
+        //     implicitHeight: moduleSizes[0]
+        //     Modules.Workspaces {
+        //         id: workspacesContent
+        //         popupYpos: bar.height - (moduleSizes[0] / 2 + Globals.radius)
+        //     }
+        // }
     }
 }

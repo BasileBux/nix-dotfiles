@@ -10,6 +10,7 @@ Item {
 
     required property int popupYpos
     required property int popupHeight
+    required property int popupWidth
     readonly property alias popup: popupLoader.popup
 
     Button {
@@ -45,7 +46,7 @@ Item {
                 ref: bar
                 name: "Bluetooth"
                 popupHeight: root.popupHeight
-                popupWidth: 330
+                popupWidth: root.popupWidth
                 yPos: popupYpos
 
                 BluetoothPopup {
@@ -61,7 +62,7 @@ Item {
                 ref: bar
                 name: "Bluetooth"
                 popupHeight: root.popupHeight
-                popupWidth: 330
+                popupWidth: root.popupWidth
                 yPos: popupYpos
 
                 BluetoothPopup {

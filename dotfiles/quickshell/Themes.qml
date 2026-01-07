@@ -45,7 +45,7 @@ Singleton {
         readonly property color accent2: "#3A4E29"
         readonly property color accent3: "#f0f556"
         readonly property color border: "#3b3f40"
-        readonly property color muted: "#2d3133"
+        readonly property color muted: "#3F4445"
         readonly property string wallpaper: "wallpapers/neotoxin.png"
         readonly property string fontFamily: "JetBrainsMono NF"
     }
@@ -143,6 +143,19 @@ Singleton {
         readonly property color border: "#b2bef7"
         readonly property color muted: "#929db0"
         readonly property string wallpaper: "wallpapers/astralinsang.jpg"
+        readonly property string fontFamily: "JetBrainsMono NF"
+    }
+
+    // This theme is wallpaper agnostic, change the wallpaper
+    readonly property var none: QtObject {
+        readonly property color background: "#000000"
+        readonly property color foreground: "#F2F2F2"
+        readonly property color accent1: "#8D1111"
+        readonly property color accent2: "#843939"
+        readonly property color accent3: "#707070"
+        readonly property color border: "#BFBFBF"
+        readonly property color muted: "#464646"
+        readonly property string wallpaper: "wallpapers/xXd1mensionXx.jpg"
         readonly property string fontFamily: "JetBrainsMono NF"
     }
 }

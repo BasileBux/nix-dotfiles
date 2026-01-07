@@ -10,6 +10,7 @@ Item {
 
     required property int popupYpos
     required property int popupHeight
+    required property int popupWidth
     readonly property alias popup: popupLoader.popup
 
     Button {
@@ -55,7 +56,7 @@ Item {
                 ref: bar
                 name: "Network"
                 popupHeight: root.popupHeight
-                popupWidth: 400
+                popupWidth: root.popupWidth
                 yPos: popupYpos
                 NetworkPopup {}
             }
@@ -68,7 +69,7 @@ Item {
                 ref: bar
                 name: "Network"
                 popupHeight: root.popupHeight
-                popupWidth: 400
+                popupWidth: root.popupWidth
                 yPos: popupYpos
                 NetworkPopup {}
             }

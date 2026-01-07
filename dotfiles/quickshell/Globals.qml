@@ -11,7 +11,7 @@ Singleton {
     readonly property int barIconSpacing: 2
 
     // FloatPopup, Popup
-    readonly property string popup: "FloatPopup"
+    readonly property string popup: "Popup"
 
     readonly property int barExtrema: 4
     readonly property int workspacesGap: 5
@@ -19,7 +19,7 @@ Singleton {
     readonly property string terminal: "ghostty"
     readonly property string browser: "zen-twilight"
 
-    readonly property var theme: Themes.astralinsang
+    readonly property var theme: Themes.neotoxin
 
     readonly property var fonts: QtObject {
         readonly property int huge: 28

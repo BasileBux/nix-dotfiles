@@ -10,6 +10,7 @@ Item {
     anchors.fill: parent
     required property int popupYpos
     required property int popupHeight
+    required property int popupWidth
     readonly property alias popup: popupLoader.popup
 
     ColumnLayout {
@@ -58,7 +59,7 @@ Item {
                 ref: bar
                 name: "Audio"
                 popupHeight: root.popupHeight
-                popupWidth: 440
+                popupWidth: root.popupWidth
                 yPos: root.popupYpos
                 AudioPopup {}
             }
@@ -71,7 +72,7 @@ Item {
                 ref: bar
                 name: "Audio"
                 popupHeight: root.popupHeight
-                popupWidth: 440
+                popupWidth: root.popupWidth
                 yPos: root.popupYpos
                 AudioPopup {}
             }

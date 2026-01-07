@@ -17,7 +17,7 @@ Item {
         rightMargin: Globals.spacing
     }
 
-    property int popupWidth
+    required property int popupWidth
     property var moduleRef
 
     ColumnLayout {
@@ -43,7 +43,7 @@ Item {
                 }
 
                 Text {
-                    id: currentProfileText
+                    id: currentChangeRate
                     Layout.alignment: Qt.AlignTop
                     property string timeTo: {
                         var time = root.moduleRef.isCharging ? UPower.displayDevice.timeToFull : UPower.displayDevice.timeToEmpty;
@@ -64,8 +64,8 @@ Item {
 
                     Widgets.Switch {
                         id: hypridleSwitch
-                        widgetWidth: 40
-                        widgetHeight: 20
+                        widgetWidth: 50
+                        widgetHeight: widgetWidth / 2
                         toggleFunction: () => {
                             if (hypridle.hypridleState) {
                                 Quickshell.execDetached({
@@ -85,6 +85,7 @@ Item {
                         color: Globals.theme.foreground
                         font.pixelSize: Globals.fonts.medium
                         font.family: Globals.theme.fontFamily
+                        leftPadding: Globals.spacing
                         text: (hypridle.hypridleState ? "On" : "Off") + " - hypridle"
                     }
                 }
@@ -93,7 +94,7 @@ Item {
 
         Item {
             id: powerProfile
-            implicitHeight: 80
+            implicitHeight: profiles.buttonSize + Globals.padding * 4
             Layout.fillWidth: true
 
             property string currentProfile
@@ -103,7 +104,7 @@ Item {
                 State {
                     name: "eco"
                     PropertyChanges {
-                        selector.x: root.width / 2 - selector.width / 2 - profiles.buttonSize * 2
+                        selector.x: root.width / 2 - selector.width / 2 - profiles.buttonSize - profiles.buttonSpacing
                         ecoButton.icon.color: Globals.theme.accent1
                     }
                 },
@@ -117,7 +118,7 @@ Item {
                 State {
                     name: "performance"
                     PropertyChanges {
-                        selector.x: root.width / 2 - selector.width / 2 + profiles.buttonSize * 2
+                        selector.x: root.width / 2 - selector.width / 2 + profiles.buttonSize + profiles.buttonSpacing
                         performanceButton.icon.color: Globals.theme.accent1
                     }
                 }
@@ -139,8 +140,8 @@ Item {
                 color: Globals.theme.accent1
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
-                implicitWidth: 5 * profiles.buttonSize + 2 * Globals.spacing
-                implicitHeight: profiles.buttonSize + Globals.spacing * 2
+                implicitWidth: 3 * profiles.buttonSize + 2 * profiles.buttonSpacing + 2 * Globals.padding
+                implicitHeight: profiles.buttonSize + Globals.padding * 2
                 radius: profiles.buttonSize / 2 + Globals.spacing
             }
             Rectangle {
@@ -155,8 +156,9 @@ Item {
                 id: profiles
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
-                property int buttonSize: 50
-                spacing: buttonSize
+                property int buttonSize: 40
+                property int buttonSpacing: buttonSize * 0.5
+                spacing: buttonSpacing
                 uniformCellSizes: true
                 Item {
                     id: eco

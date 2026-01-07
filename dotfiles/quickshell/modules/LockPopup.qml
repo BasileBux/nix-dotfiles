@@ -64,33 +64,34 @@ Item {
         spacing: Globals.spacing
         uniformCellSizes: true
         property real scaleFactor: 0.5
+        property color hoverColor: Globals.theme.accent1
 
         LockItem {
             iconSource: "../icons/shutdown.svg"
             scaleFactor: layout.scaleFactor
             iconColor: Globals.theme.foreground
-            hoverColor: Globals.theme.accent2
+            hoverColor: layout.hoverColor
             exec: root.shutdown
         }
         LockItem {
             iconSource: "../icons/reboot.svg"
             scaleFactor: layout.scaleFactor
             iconColor: Globals.theme.foreground
-            hoverColor: Globals.theme.accent2
+            hoverColor: layout.hoverColor
             exec: root.reboot
         }
         LockItem {
             iconSource: "../icons/logout.svg"
             scaleFactor: layout.scaleFactor
             iconColor: Globals.theme.foreground
-            hoverColor: Globals.theme.accent2
+            hoverColor: layout.hoverColor
             exec: root.logout
         }
         LockItem {
             iconSource: "../icons/lock.svg"
             scaleFactor: layout.scaleFactor
             iconColor: Globals.theme.foreground
-            hoverColor: Globals.theme.accent2
+            hoverColor: layout.hoverColor
             exec: root.lockScreen
         }
     }

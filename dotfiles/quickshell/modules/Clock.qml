@@ -8,6 +8,7 @@ Item {
     anchors.fill: parent
     property int popupYpos
     required property int popupHeight
+    required property int popupWidth
     readonly property alias popup: popupLoader.popup
     readonly property int fontSize: Globals.fonts.small
 
@@ -61,7 +62,7 @@ Item {
             Popup {
                 id: popup
                 ref: bar
-                popupWidth: 120
+                popupWidth: root.popupWidth
                 popupHeight: root.popupHeight
                 yPos: popupYpos
                 name: "Clock"
@@ -85,7 +86,7 @@ Item {
             FloatPopup {
                 id: popup
                 ref: bar
-                popupWidth: 120
+                popupWidth: root.popupWidth
                 popupHeight: root.popupHeight
                 yPos: popupYpos
                 name: "Clock"

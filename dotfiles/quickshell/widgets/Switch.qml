@@ -10,7 +10,7 @@ Rectangle {
     required property var toggleFunction
     required property bool toggleState
 
-    property color bgColorOn: Globals.theme.accent3
+    property color bgColorOn: Globals.theme.accent1
     property color bgColorOff: Globals.theme.muted
     property color selectorColor: Globals.theme.border
 

@@ -81,7 +81,7 @@ Item {
                         font.pixelSize: 14
                         font.family: Globals.theme.fontFamily
                         horizontalAlignment: Text.AlignLeft
-                        color: Globals.theme.border
+                        color: Globals.theme.muted
                         elide: Text.ElideRight
                         wrapMode: Text.NoWrap
                     }

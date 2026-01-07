@@ -21,7 +21,7 @@ Item {
 
         Item {
             Layout.fillWidth: true
-            implicitHeight: 36
+            implicitHeight: 32
             Rectangle {
                 id: searchButton
                 anchors {
@@ -29,7 +29,7 @@ Item {
                     top: parent.top
                     bottom: parent.bottom
                 }
-                implicitWidth: 86
+                implicitWidth: 76
                 radius: Globals.radius
                 color: Globals.theme.accent1
                 Text {
@@ -42,7 +42,6 @@ Item {
                 }
                 MouseArea {
                     anchors.fill: parent
-                    hoverEnabled: true
                     onClicked: {
                         if (!searching) {
                             searching = true;
@@ -55,12 +54,6 @@ Item {
                         searchButton.color = Globals.theme.accent3;
                         Bluetooth.defaultAdapter.pairable = false;
                         Bluetooth.defaultAdapter.discovering = false;
-                    }
-                    onEntered: {
-                        searchButton.color = Globals.theme.accent2;
-                    }
-                    onExited: {
-                        searchButton.color = !searching ? Globals.theme.accent1 : Globals.theme.accent3;
                     }
                 }
             }
@@ -123,7 +116,7 @@ Item {
             }
             Text {
                 id: batteryText
-                color: Globals.theme.foreground
+                color: Globals.theme.muted
                 font.pixelSize: Globals.fonts.small
                 font.family: Globals.theme.fontFamily
                 anchors {
