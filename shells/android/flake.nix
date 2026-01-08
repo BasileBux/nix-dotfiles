@@ -27,7 +27,7 @@
             pkgs.jdk17
             pkgs.gradle
             pkgs.git
-            (pkgs.writeShellScriptBin "as"
+            (pkgs.writeShellScriptBin "astu"
               "android-studio $1 > /dev/null 2>&1 &")
 
             # Emulator ran with the `run-test-emulator` command
