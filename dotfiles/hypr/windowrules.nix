@@ -2,16 +2,14 @@
 
 {
   wayland.windowManager.hyprland.settings.windowrule = [
-    "suppressevent maximize, class:.*"
-    "float, title:Picture-in-Picture"
-    "float, title:quickshell"
-    "float, class:Emulator"
+    # "suppressevent maximize, class:.*"
+    "match:title Picture-in-Picture, float true"
+    "match:title quickshell, float true"
+    "match:class Emulator, float true"
 
-    # "workspace special:sagepopup, float, size 45% 35%, move 50% 5%, title:sagepopup"
-    "workspace special:sagepopup, title:^(sagepopup)$"
-    "float, title:^(sagepopup)$"
-    "size 60% 30%, title:^(sagepopup)$"
-    "move 20% 2%, title:^(sagepopup)$"
+    "match:title sagepopup, float true"
+    "match:title sagepopup, size (monitor_w*0.6) (monitor_h*0.3)"
+    "match:title sagepopup, move (monitor_w*0.2) (monitor_h*0.02)"
     # move 50-(60/2)=20% horizontally to center
 
     # Might be useful later

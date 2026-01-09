@@ -71,8 +71,6 @@
 
   virtualisation.vmware.host.enable = true;
 
-  programs.adb.enable = true;
-
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nixpkgs.config.allowUnfree = true;
@@ -130,7 +128,7 @@
       neovide
       openvpn
       ghidra
-      zed-editor
+      # zed-editor
       libreoffice
       typst
       steam
