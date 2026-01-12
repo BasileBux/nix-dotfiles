@@ -1,6 +1,9 @@
 { config, lib, pkgs, pkgs-unstable, inputs, settings, secrets, ... }:
 
-{
+let
+  helium-browser =
+    import ./custom-packages/helium-browser.nix { inherit pkgs; };
+in {
   imports = [ ./hardware-configuration.nix ]
     ++ lib.optionals (settings.machine == "asus") [ ./hosts/asus-g14.nix ];
 
@@ -66,6 +69,11 @@
     NIXOS_OZONE_WL = "1";
   };
 
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
   # Docker
   virtualisation.docker = { enable = true; };
 
@@ -116,7 +124,7 @@
       evince
       gnome-disk-utility
       firefox
-      ungoogled-chromium
+      helium-browser
       obs-studio
       kdePackages.kdenlive
       localsend
@@ -174,9 +182,7 @@
       imagemagick
       ghostscript
       qutebrowser
-    ] ++ [
-      pkgs-unstable.neovim
-    ];
+    ] ++ [ pkgs-unstable.neovim ];
 
   programs.nix-ld.enable = true;
 
