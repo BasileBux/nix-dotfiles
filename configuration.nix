@@ -1,9 +1,6 @@
 { config, lib, pkgs, pkgs-unstable, inputs, settings, secrets, ... }:
 
-let
-  helium-browser =
-    import ./custom-packages/helium-browser.nix { inherit pkgs; };
-in {
+{
   imports = [ ./hardware-configuration.nix ]
     ++ lib.optionals (settings.machine == "asus") [ ./hosts/asus-g14.nix ];
 
@@ -124,7 +121,7 @@ in {
       evince
       gnome-disk-utility
       firefox
-      helium-browser
+      (pkgs.callPackage ./custom-packages/helium-browser.nix { })
       obs-studio
       kdePackages.kdenlive
       localsend
