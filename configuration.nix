@@ -204,16 +204,6 @@
     "/home/${settings.username}/.ssh/id_ed25519"
     "/home/${settings.username}/.ssh/basileb"
   ];
-  age.secrets.hotspotshield-credentials.file =
-    ./secrets/hotspotshield-credentials.age;
-
-  services.openvpn.servers.hs_ch = {
-    config =
-      "config /home/${settings.username}/.config/openvpn/HotspotShield_CH_v4.ovpn";
-    autoStart = false;
-    authUserPass = config.age.secrets.hotspotshield-credentials.path;
-    updateResolvConf = true;
-  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
