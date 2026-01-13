@@ -94,7 +94,7 @@
       input = {
         kb_layout = "us,ch";
         kb_variant = ",fr";
-        kb_options = "grp:alt_shift_toggle,ctrl:nocaps${
+        kb_options = "grp:alt_space_toggle,ctrl:nocaps${
             lib.optionalString settings.swapAltSuper ",altwin:swap_lalt_lwin"
           }";
         follow_mouse = 1;

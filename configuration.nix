@@ -22,7 +22,11 @@
     earlySetup = true;
     useXkbConfig = true;
   };
-  services.xserver.xkb.options = "ctrl:nocaps";
+  services.xserver.xkb = {
+    layout = "us,ch";
+    variant = ",fr";
+    options = "grp:alt_space_toggle,ctrl:nocaps";
+  };
 
   services.flatpak.enable = true;
 
@@ -52,6 +56,14 @@
   home-manager = { users = { "${settings.username}" = import ./home.nix; }; };
 
   programs.zsh.enable = true;
+
+  # Cachix for Hyprland binaries
+  nix.settings = {
+    substituters = [ "https://hyprland.cachix.org" ];
+    trusted-substituters = [ "https://hyprland.cachix.org" ];
+    trusted-public-keys =
+      [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+  };
 
   programs.hyprland.enable = true;
   programs.hyprland.package =
@@ -129,11 +141,10 @@
       mpv
       vlc
       qbittorrent
-      # stremio # Uses qtwebengine-5.15.19 which is insecure
       neovide
       openvpn
-      ghidra
-      # zed-editor
+      ghidra-bin
+      zed-editor
       libreoffice
       typst
       steam

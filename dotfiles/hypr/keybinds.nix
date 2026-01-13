@@ -40,7 +40,7 @@
       "$mainMod, slash, togglespecialworkspace, junk"
       "$mainMod CTRL, slash, movetoworkspacesilent, special:junk"
 
-      "$mainMod ALT, G, exec, hyprctl keyword input:kb_options 'grp:alt_shift_toggle,ctrl:nocaps,altwin:swap_lalt_lwin'"
+      "$mainMod ALT, G, exec, hyprctl keyword input:kb_options 'grp:alt_space_toggle,ctrl:nocaps,altwin:swap_lalt_lwin'"
 
       "$mainMod, F, fullscreen,"
       "$mainMod SHIFT, F, togglefloating,"
