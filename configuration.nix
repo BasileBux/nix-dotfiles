@@ -48,7 +48,7 @@
 
   users.users.${settings.username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" "kvm" "adbusers" ];
+    extraGroups = [ "wheel" "docker" "kvm" "adbusers" "wireshark" ];
     packages = with pkgs; [ tree ];
     shell = pkgs.zsh;
   };
@@ -81,6 +81,12 @@
   programs.appimage = {
     enable = true;
     binfmt = true;
+  };
+
+  programs.wireshark = {
+    enable = true;
+    usbmon.enable = true;
+    dumpcap.enable = true;
   };
 
   # Docker
@@ -152,6 +158,7 @@
       gnome-calculator
       pinta
       winboat
+      wireshark
 
       # Dev deps
       gcc
