@@ -29,10 +29,16 @@
 
       "$mainMod ALT, D, exec, [float] $terminal -e sh nvim ~/tmp/notes/daily-$(date +%d-%b-%Y).md"
 
+      # Sage math workspace
       "$mainMod, semicolon, togglespecialworkspace, sagepopup"
 
-      "$mainMod, apostrophe, togglespecialworkspace, junk"
-      "$mainMod CTRL, apostrophe, movetoworkspacesilent, special:junk"
+      # Scratch buffer workspace
+      "$mainMod, apostrophe, togglespecialworkspace, scratch"
+      "$mainMod CTRL, apostrophe, movetoworkspace, special:scratch"
+
+      # Junk workspace
+      "$mainMod, slash, togglespecialworkspace, junk"
+      "$mainMod CTRL, slash, movetoworkspacesilent, special:junk"
 
       "$mainMod ALT, G, exec, hyprctl keyword input:kb_options 'grp:alt_shift_toggle,ctrl:nocaps,altwin:swap_lalt_lwin'"
 
