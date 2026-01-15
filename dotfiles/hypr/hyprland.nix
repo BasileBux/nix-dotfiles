@@ -55,9 +55,9 @@
       general = {
         gaps_in = 1;
         gaps_out = 3;
-        border_size = 0;
-        "col.active_border" = "0xb9aa2284"; # 0x99fe97e1
-        "col.inactive_border" = "0x00000000"; # 0xff363a4f
+        border_size = 2;
+        "col.active_border" = "0xA9464646";
+        "col.inactive_border" = "0x00000000";
         layout = "dwindle";
         allow_tearing = false;
       };
