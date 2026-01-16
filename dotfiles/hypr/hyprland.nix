@@ -115,6 +115,16 @@
           name = "elan-touchscreen";
           enabled = false;
         }
+        {
+          name = "logitech-pro-x-wireless-1";
+          sensitivity = -0.2;
+          accel_profile = "flat";
+        }
+        {
+          name = "logitech-pro-x-wireless-2";
+          sensitivity = -0.2;
+          accel_profile = "flat";
+        }
       ];
     };
   };
