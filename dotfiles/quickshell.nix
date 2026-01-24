@@ -28,8 +28,6 @@ let
     mv "$tmp" "$file"
   '';
 in {
-  home.packages = [
-    pkgs-unstable.quickshell
-  ];
+  home.packages = [ pkgs-unstable.quickshell pkgs.kdePackages.qt5compat ];
   xdg.configFile."quickshell".source = quickshellConfigured;
 }

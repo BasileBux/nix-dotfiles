@@ -25,7 +25,7 @@
     # "noborder, title:quickshell"
   ];
   wayland.windowManager.hyprland.settings.workspace = [
-    "special:sagepopup, on-created-empty:ghostty --title='sagepopup' -e sage"
-    "special:scratch, on-created-empty:ghostty --title='scratch' -e sh nvim ~/tmp/notes/daily-$(date +%d-%b-%Y).md"
+    "special:sagepopup, on-created-empty:kitty --title='sagepopup' -e sage"
+    "special:scratch, on-created-empty:kitty --title='scratch' -e sh nvim ~/tmp/notes/daily-$(date +%d-%b-%Y).md"
   ];
 }

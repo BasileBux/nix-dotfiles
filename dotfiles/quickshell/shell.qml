@@ -2,6 +2,7 @@ import Quickshell
 import QtQuick
 import "launcher"
 import "lock"
+import "notification"
 
 ShellRoot {
     id: shellRoot
@@ -9,6 +10,7 @@ ShellRoot {
     Bar {
         lock: lock
     }
+    // Notification {}
     // BottomLauncher {}
     PopupLauncher {}
     Lock {
