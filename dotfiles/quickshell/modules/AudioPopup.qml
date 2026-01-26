@@ -26,7 +26,7 @@ Item {
         Item {
             id: trackInfo
             Layout.fillWidth: true
-            implicitHeight: 190
+            implicitHeight: root.height * (2/3)
             RowLayout {
                 anchors.fill: parent
                 spacing: Globals.spacing
@@ -94,7 +94,7 @@ Item {
         }
         Item {
             Layout.fillWidth: true
-            implicitHeight: 40
+            implicitHeight: root.height * (8/57)
             RowLayout {
                 id: controls
                 // Layout.fillHeight: true

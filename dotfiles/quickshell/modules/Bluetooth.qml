@@ -15,7 +15,10 @@ Item {
 
     Button {
         id: bluetoothIcon
-        anchors.fill: parent
+        anchors {
+            fill: parent
+            rightMargin: 2 // Slightest adjustment
+        }
         background: Rectangle {
             color: "transparent"
         }

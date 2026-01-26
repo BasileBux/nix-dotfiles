@@ -15,7 +15,10 @@ Item {
 
     Button {
         id: networkIcon
-        anchors.fill: parent
+        anchors {
+            fill: parent
+            rightMargin: 1 // Slightest adjustment
+        }
         background: Rectangle {
             color: "transparent"
         }
@@ -26,7 +29,7 @@ Item {
             if (Services.Network.scanning || !Services.Network.startupFinished)
                 return "../icons/search.svg";
             if (Services.Network.ethernetConnected)
-                return "../icons/ethernet.svg";
+                return "../icons/globe.svg";
             if (!Services.Network.wifiEnabled)
                 return "../icons/wifi-off.svg";
             if (Services.Network.active)

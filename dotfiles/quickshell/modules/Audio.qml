@@ -22,9 +22,9 @@ Item {
             background: Rectangle {
                 color: "transparent"
             }
-            icon.source: Services.Audio.muted ? "../icons/muted.svg" : "../icons/audio.svg"
-            icon.width: parent.width * 0.5
-            icon.height: parent.width * 0.5
+            icon.source: Services.Audio.muted ? "../icons/muted.svg" : "../icons/speaker.svg"
+            icon.width: parent.width * 0.45
+            icon.height: parent.width * 0.45
             icon.color: Globals.theme.foreground
         }
 

@@ -6,7 +6,7 @@ import "../modules" as Modules
 
 BarPart {
     id: root
-    moduleSizes: [25, 40, 42, 28, 30, 39]
+    moduleSizes: [25, 40, 50, 28, 30, 39]
 
     property alias batteryPopup: batteryContent.popup
     property alias clockPopup: clockContent.popup
@@ -32,8 +32,8 @@ BarPart {
             id: audioModule
             Layout.fillWidth: true
             property int index: 5
-            property int popupHeight: 285
-            property int popupWidth: 440
+            property int popupHeight: 185
+            property int popupWidth: 340
             implicitHeight: root.moduleSizes[index]
             Modules.Audio {
                 id: audioContent

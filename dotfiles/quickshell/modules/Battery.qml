@@ -3,6 +3,7 @@ import Quickshell.Io
 import Quickshell.Services.UPower
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls
 import ".."
 
 Item {
@@ -25,6 +26,7 @@ Item {
             popup.toggle();
             bar.focusGrab.active = popup.shown;
         }
+        z: 1000
     }
 
     ColumnLayout {
@@ -32,13 +34,32 @@ Item {
         spacing: -5
         anchors.fill: parent
 
-        Text {
-            id: iconText
+        Item {
             Layout.alignment: Qt.AlignHCenter
-            color: isCharging ? "#20FF4F" : root.isLow ? "#FD788B" : Globals.theme.foreground
-            font.pointSize: Globals.fonts.large
-            font.family: Globals.theme.fontFamily
-            text: root.isDocked ? "󰇅" : root.isCharging ? "󰂄" : (root.isLow ? "󰁺" : (root.percentage >= 0.90 ? "󰁹" : (root.percentage >= 0.80 ? "󰂂" : (root.percentage >= 0.70 ? "󰂁" : (root.percentage >= 0.60 ? "󰂀" : (root.percentage >= 0.50 ? "󰁿" : (root.percentage >= 0.40 ? "󰁾" : (root.percentage >= 0.30 ? "󰁽" : (root.percentage >= 0.20 ? "󰁼" : "󰁻")))))))))
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            Rectangle {
+                id: chargeOverlay
+                width: batteryIcon.width * 0.34
+                height: batteryIcon.height * (root.percentage) * 0.64
+                color: root.isCharging ? "#20FF4F" : root.isLow ? "#FD788B" : "green"
+                x: batteryIcon.width / 2 - width / 2
+                y: batteryIcon.height - height - batteryIcon.height * 0.2
+                radius: 2
+            }
+
+            Button {
+                id: batteryIcon
+                anchors.fill: parent
+                background: Rectangle {
+                    color: "transparent"
+                }
+                icon.source: "../icons/battery-vertical.svg"
+                icon.width: parent.width
+                icon.height: parent.width
+                icon.color: Globals.theme.foreground
+            }
         }
 
         Text {

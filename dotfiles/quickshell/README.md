@@ -9,6 +9,8 @@ This configuration was made from scratch but highliy inspired by the [celestia-s
 configuration. I used the latter as a reference to learn quickshell and some more
 obscure ways to use it.
 
+A lot of the icons used in this configuration come from https://www.svgrepo.com/collection/framework7-line-icons/
+
 ### Wallpapers
 
 This repo also contains some wallpapers I took from various sources which I will

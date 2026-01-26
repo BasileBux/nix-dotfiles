@@ -16,7 +16,7 @@ Item {
         background: Rectangle {
             color: "transparent"
         }
-        icon.source: "../icons/shutdown.svg"
+        icon.source: "../icons/power.svg"
         icon.color: Globals.theme.foreground
         icon.width: parent.height
         icon.height: parent.height
