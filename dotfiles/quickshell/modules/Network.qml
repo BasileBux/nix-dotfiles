@@ -17,7 +17,7 @@ Item {
         id: networkIcon
         anchors {
             fill: parent
-            rightMargin: 1 // Slightest adjustment
+            // rightMargin: 1 // Slightest adjustment
         }
         background: Rectangle {
             color: "transparent"

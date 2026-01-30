@@ -28,5 +28,10 @@ me know):
 - copland-os.png: [KANPEKI](https://www.newgrounds.com/art/view/kanpeki/copland-os-tachibana-wallpaper-neo-y2k-remake)
 - shooting-star.png: [Ibon](https://x.com/birdfrogdraws)
 - megalinee.png: unknown
+- game-anime-forest.jpg: unknown
+- meet-in-the-stars.jpeg: unknown
+- rodeur-bleu-upscaled-4x.jpg: unknown
+- rodeur-rouge-upscaled-4x.jpg: unknown
+- snowy-mountain.jpeg: unknown
 
 I got some of these from: [Desktop generation](https://x.com/dsktpGeneration/status/1838629270349815861)

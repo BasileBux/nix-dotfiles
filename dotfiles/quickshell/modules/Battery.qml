@@ -45,7 +45,7 @@ Item {
                 height: batteryIcon.height * (root.percentage) * 0.64
                 color: root.isCharging ? "#20FF4F" : root.isLow ? "#FD788B" : "green"
                 x: batteryIcon.width / 2 - width / 2
-                y: batteryIcon.height - height - batteryIcon.height * 0.2
+                y: batteryIcon.height - height - batteryIcon.height * 0.2 + 1
                 radius: 2
             }
 

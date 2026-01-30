@@ -17,7 +17,7 @@ Item {
         id: bluetoothIcon
         anchors {
             fill: parent
-            rightMargin: 2 // Slightest adjustment
+            // rightMargin: 2 // Slightest adjustment
         }
         background: Rectangle {
             color: "transparent"

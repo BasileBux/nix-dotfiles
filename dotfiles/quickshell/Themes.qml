@@ -36,7 +36,6 @@ Singleton {
         readonly property color border: "#BFBFBF"
         readonly property color muted: "#464646"
         readonly property string wallpaper: "wallpapers/xXd1mensionXx.jpg"
-        readonly property string fontFamily: "JetBrainsMono NF"
     }
 
     readonly property var legacy: QtObject {
@@ -168,6 +167,7 @@ Singleton {
         readonly property color sharedForeground: "#F2F2F2"
         readonly property color sharedBorder: "#BFBFBF"
         readonly property color sharedMuted: "#464646"
+        readonly property string sharedFontFamily: "DM Sans"
 
         readonly property var antidote: QtObject {
             readonly property color background: modern.sharedBackground
@@ -178,7 +178,7 @@ Singleton {
             readonly property color border: modern.sharedBorder
             readonly property color muted: modern.sharedMuted
             readonly property string wallpaper: "wallpapers/antidote.png"
-            readonly property string fontFamily: "JetBrainsMono NF"
+            readonly property string fontFamily: modern.sharedFontFamily
         }
 
         readonly property var neotoxin: QtObject {
@@ -190,7 +190,7 @@ Singleton {
             readonly property color border: modern.sharedBorder
             readonly property color muted: modern.sharedMuted
             readonly property string wallpaper: "wallpapers/neotoxin.png"
-            readonly property string fontFamily: "JetBrainsMono NF"
+            readonly property string fontFamily: modern.sharedFontFamily
         }
 
         readonly property var aquaEterna: QtObject {
@@ -202,7 +202,7 @@ Singleton {
             readonly property color border: modern.sharedBorder
             readonly property color muted: modern.sharedMuted
             readonly property string wallpaper: "wallpapers/aqua-eterna.png"
-            readonly property string fontFamily: "JetBrainsMono NF"
+            readonly property string fontFamily: modern.sharedFontFamily
         }
 
         readonly property var commandPrompt: QtObject {
@@ -214,7 +214,7 @@ Singleton {
             readonly property color border: modern.sharedBorder
             readonly property color muted: modern.sharedMuted
             readonly property string wallpaper: "wallpapers/commandpropmpt.png"
-            readonly property string fontFamily: "JetBrainsMono NF"
+            readonly property string fontFamily: modern.sharedFontFamily
         }
 
         readonly property var submerged: QtObject {
@@ -226,7 +226,7 @@ Singleton {
             readonly property color border: modern.sharedBorder
             readonly property color muted: modern.sharedMuted
             readonly property string wallpaper: "wallpapers/submerged.png"
-            readonly property string fontFamily: "JetBrainsMono NF"
+            readonly property string fontFamily: modern.sharedFontFamily
         }
 
         readonly property var takaZero: QtObject {
@@ -238,7 +238,7 @@ Singleton {
             readonly property color border: modern.sharedBorder
             readonly property color muted: modern.sharedMuted
             readonly property string wallpaper: "wallpapers/taka-zero.png"
-            readonly property string fontFamily: "JetBrainsMono NF"
+            readonly property string fontFamily: modern.sharedFontFamily
         }
 
         readonly property var xXd1mensionXx: QtObject {
@@ -250,7 +250,7 @@ Singleton {
             readonly property color border: modern.sharedBorder
             readonly property color muted: modern.sharedMuted
             readonly property string wallpaper: "wallpapers/xXd1mensionXx.jpg"
-            readonly property string fontFamily: "JetBrainsMono NF"
+            readonly property string fontFamily: modern.sharedFontFamily
         }
 
         readonly property var coplandOS: QtObject {
@@ -262,7 +262,7 @@ Singleton {
             readonly property color border: modern.sharedBorder
             readonly property color muted: modern.sharedMuted
             readonly property string wallpaper: "wallpapers/copland-os.png"
-            readonly property string fontFamily: "JetBrainsMono NF"
+            readonly property string fontFamily: modern.sharedFontFamily
         }
 
         readonly property var shootingStar: QtObject {
@@ -274,7 +274,7 @@ Singleton {
             readonly property color border: modern.sharedBorder
             readonly property color muted: modern.sharedMuted
             readonly property string wallpaper: "wallpapers/shooting-star.jpg"
-            readonly property string fontFamily: "JetBrainsMono NF"
+            readonly property string fontFamily: modern.sharedFontFamily
         }
 
         readonly property var astralinsang: QtObject {
@@ -286,7 +286,67 @@ Singleton {
             readonly property color border: modern.sharedBorder
             readonly property color muted: modern.sharedMuted
             readonly property string wallpaper: "wallpapers/astralinsang.jpg"
-            readonly property string fontFamily: "JetBrainsMono NF"
+            readonly property string fontFamily: modern.sharedFontFamily
+        }
+
+        readonly property var gameAnimeForest: QtObject {
+            readonly property color background: modern.sharedBackground
+            readonly property color foreground: modern.sharedForeground
+            readonly property color accent1: "#51A65E"
+            readonly property color accent2: "#367345"
+            readonly property color accent3: "#1E402D"
+            readonly property color border: modern.sharedBorder
+            readonly property color muted: modern.sharedMuted
+            readonly property string wallpaper: "wallpapers/game-anime-forest.jpg"
+            readonly property string fontFamily: modern.sharedFontFamily
+        }
+
+        readonly property var meetInTheStars: QtObject {
+            readonly property color background: modern.sharedBackground
+            readonly property color foreground: modern.sharedForeground
+            readonly property color accent1: "#3DBCD9"
+            readonly property color accent2: "#115D8C"
+            readonly property color accent3: "#071359"
+            readonly property color border: modern.sharedBorder
+            readonly property color muted: modern.sharedMuted
+            readonly property string wallpaper: "wallpapers/meet-in-the-stars.jpeg"
+            readonly property string fontFamily: modern.sharedFontFamily
+        }
+
+        readonly property var rodeurBleu: QtObject {
+            readonly property color background: modern.sharedBackground
+            readonly property color foreground: modern.sharedForeground
+            readonly property color accent1: "#164059"
+            readonly property color accent2: "#113859"
+            readonly property color accent3: "#071359"
+            readonly property color border: modern.sharedBorder
+            readonly property color muted: modern.sharedMuted
+            readonly property string wallpaper: "wallpapers/rodeur-bleu-upscaled-4x.jpg"
+            readonly property string fontFamily: modern.sharedFontFamily
+        }
+
+        readonly property var rodeurRouge: QtObject {
+            readonly property color background: modern.sharedBackground
+            readonly property color foreground: modern.sharedForeground
+            readonly property color accent1: "#F25244"
+            readonly property color accent2: "#A6464E"
+            readonly property color accent3: "#D98F89"
+            readonly property color border: modern.sharedBorder
+            readonly property color muted: modern.sharedMuted
+            readonly property string wallpaper: "wallpapers/rodeur-rouge-upscaled-4x.jpg"
+            readonly property string fontFamily: modern.sharedFontFamily
+        }
+
+        readonly property var snowyMountain: QtObject {
+            readonly property color background: modern.sharedBackground
+            readonly property color foreground: modern.sharedForeground
+            readonly property color accent1: "#1C66A6"
+            readonly property color accent2: "#6394BF"
+            readonly property color accent3: "#172940"
+            readonly property color border: modern.sharedBorder
+            readonly property color muted: modern.sharedMuted
+            readonly property string wallpaper: "./wallpapers/snowy-mountain.jpeg"
+            readonly property string fontFamily: modern.sharedFontFamily
         }
     }
 }

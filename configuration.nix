@@ -159,6 +159,7 @@
       pinta
       winboat
       wireshark
+      thunderbird
 
       # Dev deps
       gcc
@@ -196,7 +197,6 @@
       tree-sitter
       imagemagick
       ghostscript
-      qutebrowser
     ] ++ [ pkgs-unstable.neovim ];
 
   programs.nix-ld.enable = true;
@@ -209,7 +209,8 @@
     nerd-fonts.geist-mono
     nerd-fonts.go-mono
     nerd-fonts.gohufont
-    hanken-grotesk
+    inter
+    dm-sans
   ];
 
   services.upower.enable = true;
