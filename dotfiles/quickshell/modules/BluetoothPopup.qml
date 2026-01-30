@@ -45,13 +45,13 @@ Item {
                     onClicked: {
                         if (!searching) {
                             searching = true;
-                            searchButton.color = Globals.theme.accent1;
+                            searchButton.color = Globals.theme.accent3;
                             Bluetooth.defaultAdapter.pairable = true;
                             Bluetooth.defaultAdapter.discovering = true;
                             return;
                         }
                         searching = false;
-                        searchButton.color = Globals.theme.accent3;
+                        searchButton.color = Globals.theme.accent1;
                         Bluetooth.defaultAdapter.pairable = false;
                         Bluetooth.defaultAdapter.discovering = false;
                     }
@@ -99,7 +99,7 @@ Item {
 
             Text {
                 id: nameText
-                color: device.connected ? Globals.theme.accent1 : Globals.theme.foreground
+                color: device.state == BluetoothDeviceState.Connecting || device.state == BluetoothDeviceState.Connected ? Globals.theme.accent1 : Globals.theme.foreground
                 font.pixelSize: Globals.fonts.medium
                 font.family: Globals.theme.fontFamily
                 anchors {
