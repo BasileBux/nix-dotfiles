@@ -32,7 +32,7 @@ BarPart {
                 id: toggle
                 anchors.fill: parent
                 onClicked: {
-                    bar.focusGrab.active = true;
+                    bar.focusGrab.active = !bar.focusGrab.active;
                     notificationPanel.toggle();
                 }
             }

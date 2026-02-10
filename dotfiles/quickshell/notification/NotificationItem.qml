@@ -68,7 +68,8 @@ Rectangle {
 
     MouseArea {
         anchors.fill: parent
-        // NOTE: Replace with action or meaningful interaction
+        // TODO: Replace with action or meaningful interaction
+        // NOTE: Should use a function passed as a property
         onClicked: root.removeNotification(notification)
     }
 

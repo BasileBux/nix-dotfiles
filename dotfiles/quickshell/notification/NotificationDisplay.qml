@@ -43,7 +43,6 @@ PanelWindow {
     }
 
     implicitWidth: Globals.notification.unitWidth
-    // implicitHeight: Math.min(notificationListView.contentHeight, notificationHeight * maxVisible)
     implicitHeight: Globals.notification.unitHeight * Globals.notification.maxVisible + ((Globals.notification.maxVisible - 1) * Globals.spacing)
 
     visible: false
