@@ -141,7 +141,7 @@
       firefox
       (pkgs.callPackage ./custom-packages/helium-browser.nix { })
       obs-studio
-      kdePackages.kdenlive
+      # kdePackages.kdenlive
       localsend
       vesktop
       mpv
@@ -160,6 +160,10 @@
       winboat
       wireshark
       thunderbird
+      zenity
+      jellyfin-desktop
+
+      rpi-imager
 
       # Dev deps
       gcc
@@ -218,6 +222,8 @@
   services.udisks2.enable = true;
   services.gvfs.enable = true;
   services.devmon.enable = true;
+
+  services.tailscale.enable = true;
 
   age.identityPaths = [
     "/home/${settings.username}/.ssh/id_ed25519"

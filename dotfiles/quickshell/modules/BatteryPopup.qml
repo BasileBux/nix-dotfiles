@@ -269,7 +269,7 @@ Item {
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
-                powerProfile.currentProfile = this.text.split(" ")[Machines.current.getterStringSplitIndex].trim();
+                powerProfile.currentProfile = this.text.split(" ")[Machines.current.getterStringSplitIndex].split("\n")[0].trim();
                 if (powerProfile.currentProfile === Machines.current.profiles[0]) {
                     powerProfile.state = "eco";
                 } else if (powerProfile.currentProfile === Machines.current.profiles[1]) {

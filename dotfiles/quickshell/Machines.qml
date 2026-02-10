@@ -8,11 +8,11 @@ Singleton {
 
     readonly property var asus: QtObject {
         readonly property var profiles: ["Quiet", "Balanced", "Performance"]
-        readonly property var getterCommand: ["asusctl", "profile", "-p"]
-        readonly property int getterStringSplitIndex: 5
-        readonly property var ecoCommand: ["asusctl", "profile", "-P", "Quiet"]
-        readonly property var balancedCommand: ["asusctl", "profile", "-P", "Balanced"]
-        readonly property var performanceCommand: ["asusctl", "profile", "-P", "Performance"]
+        readonly property var getterCommand: ["asusctl", "profile", "get"]
+        readonly property int getterStringSplitIndex: 2
+        readonly property var ecoCommand: ["asusctl", "profile", "set", "Quiet"]
+        readonly property var balancedCommand: ["asusctl", "profile", "set", "Balanced"]
+        readonly property var performanceCommand: ["asusctl", "profile", "set", "Performance"]
         readonly property var hypridleStartCommand: ["systemctl", "--user", "start", "hypridle"]
         readonly property var hypridleStopCommand: ["systemctl", "--user", "stop", "hypridle"]
     }

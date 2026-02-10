@@ -3,6 +3,8 @@ import QtQuick
 import QtQuick.Shapes
 import "paths" as Paths
 
+// Same exact API as Popup.qml
+
 PopupWindow {
     id: popup
     // Reference to the parent component that manages the popup
@@ -21,12 +23,17 @@ PopupWindow {
 
     property bool shown: debug ? true : false
     visible: debug ? true : false
-    anchor.window: ref
     implicitWidth: popupWidth
     implicitHeight: popupHeight + Globals.radius * 2
 
-    anchor.rect.x: -width + Globals.radius - Globals.padding
-    anchor.rect.y: yPos
+    anchor {
+        window: ref
+        gravity: Edges.Bottom | Edges.Left
+        rect.x: Globals.radius / 2
+        rect.y: yPos
+        // Very important but allows to have popups outside the screen
+        adjustment: PopupAdjustment.None
+    }
     color: "transparent"
 
     property var collapse: function () {
@@ -111,7 +118,7 @@ PopupWindow {
             }
         ]
 
-        Paths.RightPopup {
+        Paths.TopRightPopup {
             id: popupShape
             popupWidth: popup.popupWidth
             popupHeight: popup.popupHeight
@@ -122,10 +129,10 @@ PopupWindow {
             id: contentContainer
             anchors {
                 fill: parent
-                margins: Globals.padding
             }
-            anchors.topMargin: Globals.radius * 2
-            anchors.bottomMargin: Globals.radius * 2
+            anchors.leftMargin: Globals.radius
+            anchors.topMargin: Globals.radius / 2
+            anchors.bottomMargin: Globals.radius
         }
     }
 }

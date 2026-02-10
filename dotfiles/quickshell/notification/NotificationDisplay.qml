@@ -2,6 +2,8 @@ import Quickshell
 import Quickshell.Services.Notifications
 import Quickshell.Wayland
 import QtQuick
+import QtQuick.Controls
+import ".."
 
 PanelWindow {
     id: root
@@ -12,65 +14,61 @@ PanelWindow {
 
     color: "transparent"
 
-    property list<Notification> notifications
+    property list<var> notifications
 
     onNotificationsChanged: {
         visible = notifications.length > 0;
     }
 
     function pushNotification(notification) {
+        notification.handler = removeNotification;
+        notification.closeTimer.running = true;
         notifications = [...notifications, notification];
-        console.log("Pushed notification. Total notifications:", notifications.length);
     }
 
     function removeNotification(notification) {
-        notification.tracked = false;
+        // notification.notif.tracked = false;
+        notification.closeTimer.running = false;
         notifications = notifications.filter(n => n !== notification);
     }
-
-    property int notificationWidth: 400
-    property int notificationHeight: 150
 
     anchors {
         right: true
         top: true
     }
-    implicitWidth: notificationWidth
-    implicitHeight: notificationHeight * notifications.length
+
+    margins {
+        right: Globals.barWidth
+        top: Globals.radius - 3
+    }
+
+    implicitWidth: Globals.notification.unitWidth
+    // implicitHeight: Math.min(notificationListView.contentHeight, notificationHeight * maxVisible)
+    implicitHeight: Globals.notification.unitHeight * Globals.notification.maxVisible + ((Globals.notification.maxVisible - 1) * Globals.spacing)
 
     visible: false
 
     ListView {
         id: notificationListView
         model: root.notifications
-        anchors {
-            top: parent.top
-            bottom: parent.bottom
-            right: parent.right
+        spacing: Globals.spacing
+        anchors.fill: parent
+
+        interactive: false
+        clip: true
+
+        onCountChanged: {
+            positionViewAtEnd();
         }
-        implicitWidth: root.notificationWidth
 
-        delegate: Component {
-            Rectangle {
-                property Notification notification: modelData
-                color: "lightgray"
-                anchors.right: parent.right
-                implicitHeight: notificationHeight
-                implicitWidth: notificationWidth
-                Text {
-                    anchors.centerIn: parent
-                    text: notification.appName + "\n" + notification.summary + "\n" + notification.body
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
+        delegate: NotificationItem {
+            required property var modelData
+            notification: modelData
+            removeNotification: root.removeNotification
+            wrapper: true
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        removeNotification(notification);
-                    }
-                }
-            }
+            height: Globals.notification.unitHeight
+            width: Globals.notification.unitWidth
         }
     }
 }

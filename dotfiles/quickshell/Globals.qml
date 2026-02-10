@@ -35,4 +35,10 @@ Singleton {
     readonly property int launcherHeight: 400
 
     readonly property string machine: "asus"
+
+    readonly property var notification: QtObject {
+        readonly property int unitWidth: 340
+        readonly property int unitHeight: 110
+        readonly property int maxVisible: 5
+    }
 }

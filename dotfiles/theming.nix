@@ -1,7 +1,13 @@
 { lib, config, pkgs, inputs, settings, ... }:
 
 {
-  home.packages = with pkgs; [ dconf gsettings-desktop-schemas glib gnome-themes-extra ];
+  home.packages = with pkgs; [
+    dconf
+    gsettings-desktop-schemas
+    glib
+    gnome-themes-extra
+    libnotify # Important for notifications to work
+  ];
 
   gtk = {
     enable = true;
@@ -47,6 +53,12 @@
       xdg-desktop-portal-hyprland
       xdg-desktop-portal-gtk
     ];
+    config = {
+      common = {
+        default = [ "hyprland" ];
+        "org.freedesktop.impl.portal.Notification" = [ "gtk" ];
+      };
+    };
   };
 
   # Optional: dconf settings for additional dark mode support

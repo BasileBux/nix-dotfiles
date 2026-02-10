@@ -78,14 +78,11 @@ Item {
 
     function clickDevice(device, nameText) {
         if (!device.bonded) {
-            nameText.color = Globals.theme.accent1;
             return device.pair();
         }
         if (device.connected) {
-            nameText.color = Globals.theme.foreground;
             return device.disconnect();
         }
-        nameText.color = Globals.theme.accent1;
         device.connect();
     }
 

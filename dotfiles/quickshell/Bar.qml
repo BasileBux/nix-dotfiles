@@ -19,7 +19,15 @@ PanelWindow {
         bottom: true
     }
 
+    margins {
+        right: 0
+        left: 0
+        bottom: 0
+        top: 0
+    }
+
     required property var lock
+    required property var notificationPanel
 
     property var focusGrab: focusGrab
 
@@ -28,7 +36,7 @@ PanelWindow {
     property int spacing: Globals.spacing
     property color popupColor: Globals.theme.background
 
-    property var popups: [bot.lockPopup, bot.clockPopup, bot.batteryPopup, bot.wifiPopup, bot.bluetoothPopup, bot.audioPopup]
+    property var popups: [bot.lockPopup, bot.clockPopup, bot.batteryPopup, bot.wifiPopup, bot.bluetoothPopup, bot.audioPopup, notificationPanel]
 
     property var collapseAllBut: name => {
         for (var i = 0; i < root.popups.length; i++) {
@@ -65,6 +73,7 @@ PanelWindow {
             color: "transparent"
             BarParts.Top {
                 bar: root
+                notificationPanel: root.notificationPanel
             }
         }
         Rectangle {
@@ -115,7 +124,7 @@ PanelWindow {
 
     HyprlandFocusGrab {
         id: focusGrab
-        windows: [root, bot.clockPopup, bot.batteryPopup, bot.wifiPopup, bot.bluetoothPopup, bot.audioPopup]
+        windows: [root, bot.clockPopup, bot.batteryPopup, bot.wifiPopup, bot.bluetoothPopup, bot.audioPopup, root.notificationPanel]
         onCleared: {
             root.popups.forEach(function (popup) {
                 popup.collapse();

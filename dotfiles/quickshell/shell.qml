@@ -8,9 +8,14 @@ ShellRoot {
     id: shellRoot
     Wallpaper {}
     Bar {
+        id: bar
         lock: lock
+        notificationPanel: notification.notificationPanel
     }
-    // Notification {}
+    Notification {
+        id: notification
+        bar: bar
+    }
     // BottomLauncher {}
     PopupLauncher {}
     Lock {
