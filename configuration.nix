@@ -163,8 +163,6 @@
       zenity
       jellyfin-desktop
 
-      rpi-imager
-
       # Dev deps
       gcc
       gcc_multi
