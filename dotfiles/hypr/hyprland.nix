@@ -56,7 +56,7 @@
         gaps_in = 1;
         gaps_out = 3;
         border_size = 2;
-        "col.active_border" = "0xA9464646";
+        "col.active_border" = "0xFF676767";
         "col.inactive_border" = "0x00000000";
         layout = "dwindle";
         allow_tearing = false;
@@ -71,6 +71,10 @@
         };
         dim_inactive = true;
         dim_strength = 0.2;
+
+        shadow = {
+          enabled = false;
+        };
       };
       animations = {
         enabled = true;
@@ -107,7 +111,7 @@
 
       device = [
         {
-          name = "logitech-usb-receiver";
+          name = "logitech-pro-x-1";
           sensitivity = -0.2;
           accel_profile = "flat";
         }

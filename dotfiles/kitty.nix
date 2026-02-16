@@ -13,7 +13,7 @@
 
     settings = {
       # JetBrainsMono NF, Google Sans Code, Berkeley Mono
-      font_family = "Berkeley Mono";
+      font_family = "JetBrainsMono NF";
       disable_ligatures = "always";
 
       font_size = 13;

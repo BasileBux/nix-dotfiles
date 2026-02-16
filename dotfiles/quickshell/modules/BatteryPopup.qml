@@ -60,7 +60,7 @@ Item {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
-                    property bool hypridleState: true
+                    property bool hypridleState: false
 
                     Widgets.Switch {
                         id: hypridleSwitch
