@@ -8,7 +8,6 @@
     bibata-cursors
     hyprcursor
     playerctl
-    hypridle
     grim
     slurp
     hyprlock

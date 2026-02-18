@@ -60,7 +60,15 @@ Item {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
-                    property bool hypridleState: false
+                    property bool hypridleState: true
+
+                    // Disable hypridle by default
+                    Component.onCompleted: {
+                        hypridleState = false;
+                        Quickshell.execDetached({
+                            command: Machines.current.hypridleStopCommand
+                        });
+                    }
 
                     Widgets.Switch {
                         id: hypridleSwitch

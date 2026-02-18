@@ -49,6 +49,7 @@
     enable = true;
     settings = {
       always_reboot = false;
+      vfio_enable = false;
       no_logind = false;
       hotplug_type = "Asus";
     };

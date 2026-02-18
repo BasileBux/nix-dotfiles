@@ -15,6 +15,7 @@ Singleton {
         readonly property var performanceCommand: ["asusctl", "profile", "set", "Performance"]
         readonly property var hypridleStartCommand: ["systemctl", "--user", "start", "hypridle"]
         readonly property var hypridleStopCommand: ["systemctl", "--user", "stop", "hypridle"]
+        readonly property var hypridleGetterCommand: ["systemctl", "--user", "is-active", "hypridle"]
     }
 
     readonly property var thinkpad: QtObject {
@@ -26,5 +27,6 @@ Singleton {
         readonly property var performanceCommand: ["tuned-adm", "profile", "desktop"]
         readonly property var hypridleStartCommand: ["hypridle"]
         readonly property var hypridleStopCommand: ["pkill", "hypridle"]
+        readonly property var hypridleGetterCommand: ["systemctl", "--user", "is-active", "hypridle"]
     }
 }
