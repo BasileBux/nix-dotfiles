@@ -20,7 +20,6 @@
         $mainMod SHIFT, S, exec, grim -g "$(slurp -d)" - | wl-copy
       ''
 
-
       "$mainMod ALT, R, exec, $scripts/reload.sh"
 
       "$mainMod, T, exec, $terminal"
@@ -40,7 +39,8 @@
       "$mainMod, slash, togglespecialworkspace, junk"
       "$mainMod CTRL, slash, movetoworkspacesilent, special:junk"
 
-      "$mainMod ALT, G, exec, hyprctl keyword input:kb_options 'grp:alt_space_toggle,ctrl:nocaps,altwin:swap_lalt_lwin'"
+      # "$mainMod ALT, G, exec, hyprctl keyword input:kb_options 'grp:alt_space_toggle,ctrl:nocaps,altwin:swap_lalt_lwin'"
+      "$mainMod ALT, G, exec, $scripts/altwin-switch-toggle.sh"
 
       "$mainMod, F, fullscreen,"
       "$mainMod SHIFT, F, togglefloating,"
