@@ -24,8 +24,10 @@
       bind-key -T copy-mode-vi _ send-keys -X start-of-line
 
       # Windows navigation
-      bind-key -n C-h previous-window
-      bind-key -n C-l next-window
+      # bind-key -n C-h previous-window
+      # bind-key -n C-l next-window
+      bind-key -n C-j previous-window
+      bind-key -n C-k next-window
 
       # Pane navigation
       bind -r j select-pane -D

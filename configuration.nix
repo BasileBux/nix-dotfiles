@@ -163,6 +163,7 @@
       thunderbird
       zenity
       jellyfin-desktop
+      wireguard-tools
 
       # Dev deps
       gcc

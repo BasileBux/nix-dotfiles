@@ -1,5 +1,5 @@
 {
-    "editor.fontSize": 18,
+    "editor.fontSize": 12,
     "editor.fontFamily": "JetBrains Mono",
     "editor.minimap.enabled": false,
     "workbench.sideBar.location": "right",
@@ -170,13 +170,13 @@
     // "editor.glyphMargin": false, // if this is on, you can't put breakpoints
     "editor.showFoldingControls": "never",
     "editor.wordWrap": "wordWrapColumn",
-    "editor.wordWrapColumn": 90,
+    "editor.wordWrapColumn": 110,
     "[markdown]": {
         "editor.wordWrap": "bounded"
     },
-    "vim.textwidth": 90,
+    "vim.textwidth": 110,
     "editor.rulers": [
-        90
+        110
     ],
     "editor.stickyScroll.scrollWithEditor": false,
     "workbench.tree.enableStickyScroll": false,
