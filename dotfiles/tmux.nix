@@ -11,6 +11,7 @@
 
     extraConfig = ''
       set -ga terminal-overrides ",screen-256color*:Tc"
+      set -sg escape-time 0
 
       # unbind C-b
       # bind-key C-a send-prefix

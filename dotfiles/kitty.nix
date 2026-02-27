@@ -39,7 +39,8 @@
       # true background color is #16181a, but neovim won't render a background if the theme has the same background as the terminal
       background = "#16181b";
       foreground = "#ffffff";
-      cursor = "#ffffff";
+      # cursor = "#ffffff";
+      cursor = "#d1dd44";
       cursor_text_color = "#16181a";
       selection_background = "#3c4048";
       color0 = "#16181a";

@@ -48,8 +48,7 @@
 
   users.users.${settings.username} = {
     isNormalUser = true;
-    extraGroups =
-      [ "wheel" "docker" "kvm" "adbusers" "wireshark" "dialout" ];
+    extraGroups = [ "wheel" "docker" "kvm" "adbusers" "wireshark" "dialout" ];
     packages = with pkgs; [ tree ];
     shell = pkgs.zsh;
   };
