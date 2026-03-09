@@ -1,8 +1,25 @@
-{ lib, config, pkgs, inputs, settings, secrets, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  inputs,
+  settings,
+  secrets,
+  ...
+}:
 let
-  alias =
-    import ./alias.nix { inherit lib config pkgs inputs settings secrets; };
-in {
+  alias = import ./alias.nix {
+    inherit
+      lib
+      config
+      pkgs
+      inputs
+      settings
+      secrets
+      ;
+  };
+in
+{
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;

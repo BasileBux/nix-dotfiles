@@ -1,5 +1,7 @@
-let megalinee = import ./megalinee.nix;
-in {
+let
+  megalinee = import ./megalinee.nix;
+in
+{
   background = megalinee.bg0;
   foreground = megalinee.fg1;
   cursor = megalinee.fg1;

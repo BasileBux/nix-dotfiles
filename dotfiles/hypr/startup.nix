@@ -1,4 +1,11 @@
-{ config, pkgs, inputs, settings, lib, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  settings,
+  lib,
+  ...
+}:
 
 {
   wayland.windowManager.hyprland.settings.exec-once = [
@@ -6,7 +13,8 @@
     "hyprctl setcursor Bibata-Modern-Classic 22"
     "qs" # quickshell
     "systemctl --user start hyprpolkitagent"
-  ] ++ lib.optionals (settings.machine == "asus") [
+  ]
+  ++ lib.optionals (settings.machine == "asus") [
     "brightnessctl -d amdgpu_bl2 set 85"
     "asusctl -c 80"
   ];

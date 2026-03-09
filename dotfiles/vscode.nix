@@ -1,9 +1,18 @@
-{ lib, config, pkgs, inputs, settings, colors, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  inputs,
+  settings,
+  colors,
+  ...
+}:
 
 {
   programs.vscode = {
     enable = true;
-    profiles.default.extensions = with pkgs.vscode-extensions;
+    profiles.default.extensions =
+      with pkgs.vscode-extensions;
       [
         bierner.markdown-emoji
         bierner.markdown-preview-github-styles
@@ -15,7 +24,8 @@
         twxs.cmake
         vscodevim.vim
         aaron-bond.better-comments
-      ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+      ]
+      ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
         {
           name = "oxocarbon-vscode";
           publisher = "NyoomEngineering";
@@ -45,12 +55,8 @@
 
   home.activation.vscode-config = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     $DRY_RUN_CMD mkdir -p ~/.config/Code/User
-    $DRY_RUN_CMD cp -f ${
-      ./vscode/settings.json
-    } ~/.config/Code/User/settings.json
-    $DRY_RUN_CMD cp -f ${
-      ./vscode/keybindings.json
-    } ~/.config/Code/User/keybindings.json
+    $DRY_RUN_CMD cp -f ${./vscode/settings.json} ~/.config/Code/User/settings.json
+    $DRY_RUN_CMD cp -f ${./vscode/keybindings.json} ~/.config/Code/User/keybindings.json
     $DRY_RUN_CMD chmod +w ~/.config/Code/User/settings.json ~/.config/Code/User/keybindings.json
   '';
 }

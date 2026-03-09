@@ -15,6 +15,7 @@ Item {
     readonly property color inactiveColor: Globals.theme.foreground
     readonly property color focusedColor: Globals.theme.accent1
     readonly property color activeColor: Globals.theme.accent3
+    readonly property color urgentColor: Globals.theme.accent2
     readonly property int dotSize: 8
 
     ColumnLayout {
@@ -38,6 +39,7 @@ Item {
                 property HyprlandWorkspace workspace: null
                 property bool exists: workspace !== null
                 property bool active: workspace?.active ?? false
+                property bool urgent: workspace?.urgent ?? false
 
                 Connections {
                     target: root
@@ -61,7 +63,7 @@ Item {
                         bottom: parent.bottom
                         horizontalCenter: parent.horizontalCenter
                     }
-                    color: workspaceItem.exists ? workspaceItem.active ? focusedColor : activeColor : inactiveColor
+                    color: workspaceItem.exists ? (workspaceItem.urgent ? urgentColor : (workspaceItem.active ? focusedColor : activeColor)) : inactiveColor
                     implicitWidth: root.dotSize
                     scale: 1 + animActive * 0.10
                     radius: 15

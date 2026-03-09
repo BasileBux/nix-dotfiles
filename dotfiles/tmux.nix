@@ -1,4 +1,10 @@
-{ config, pkgs, inputs, settings, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  settings,
+  ...
+}:
 
 {
   programs.tmux = {
@@ -56,4 +62,3 @@
     '';
   };
 }
-

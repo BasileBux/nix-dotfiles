@@ -1,4 +1,11 @@
-{ lib, config, pkgs, inputs, settings, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  inputs,
+  settings,
+  ...
+}:
 
 {
   home.packages = with pkgs; [
@@ -27,9 +34,13 @@
       package = pkgs.adwaita-icon-theme;
     };
 
-    gtk3.extraConfig = { gtk-application-prefer-dark-theme = 1; };
+    gtk3.extraConfig = {
+      gtk-application-prefer-dark-theme = 1;
+    };
 
-    gtk4.extraConfig = { gtk-application-prefer-dark-theme = 1; };
+    gtk4.extraConfig = {
+      gtk-application-prefer-dark-theme = 1;
+    };
   };
 
   # Qt theming to match GTK
@@ -73,4 +84,3 @@
     };
   };
 }
-

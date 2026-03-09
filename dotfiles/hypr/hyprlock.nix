@@ -1,41 +1,51 @@
-{ lib, config, pkgs, inputs, settings, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  inputs,
+  settings,
+  ...
+}:
 
 {
   programs.hyprlock = {
     enable = true;
 
     settings = {
-      background = [{
-        path = "${settings.configPath}/dotfiles/hypr/wallpaper.png";
+      background = [
+        {
+          path = "${settings.configPath}/dotfiles/hypr/wallpaper.png";
 
-        blur_size = 4;
-        blur_passes = 3;
-        noise = 1.17e-2;
-        contrast = 1.3;
-        brightness = 0.8;
-        vibrancy = 0.21;
-        vibrancy_darkness = 0.0;
-        hide_cursor = true;
-      }];
+          blur_size = 4;
+          blur_passes = 3;
+          noise = 1.17e-2;
+          contrast = 1.3;
+          brightness = 0.8;
+          vibrancy = 0.21;
+          vibrancy_darkness = 0.0;
+          hide_cursor = true;
+        }
+      ];
 
-      input-field = [{
-        size = "250, 50";
-        outline_thickness = 3;
-        dots_size = 0.26; # Scale of input-field height, 0.2 - 0.8
-        dots_spacing = 0.64; # Scale of dots' absolute size, 0.0 - 1.0
-        dots_center = true;
-        outer_color = "0xff1e2030";
-        inner_color = "0xff1e2030";
-        font_color = "0xffcad3f5";
-        fade_on_empty = true;
-        placeholder_text =
-          "<i>Password...</i>"; # Text rendered in the input box when it's empty.
-        hide_input = false;
+      input-field = [
+        {
+          size = "250, 50";
+          outline_thickness = 3;
+          dots_size = 0.26; # Scale of input-field height, 0.2 - 0.8
+          dots_spacing = 0.64; # Scale of dots' absolute size, 0.0 - 1.0
+          dots_center = true;
+          outer_color = "0xff1e2030";
+          inner_color = "0xff1e2030";
+          font_color = "0xffcad3f5";
+          fade_on_empty = true;
+          placeholder_text = "<i>Password...</i>"; # Text rendered in the input box when it's empty.
+          hide_input = false;
 
-        position = "0, 100";
-        halign = "center";
-        valign = "bottom";
-      }];
+          position = "0, 100";
+          halign = "center";
+          valign = "bottom";
+        }
+      ];
 
       # Current time
       label = [

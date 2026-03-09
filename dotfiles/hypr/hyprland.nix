@@ -1,11 +1,29 @@
-{ lib, config, pkgs, inputs, settings, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  inputs,
+  settings,
+  ...
+}:
 
 {
-  imports = [ ./keybinds.nix ./startup.nix ./windowrules.nix ];
+  imports = [
+    ./keybinds.nix
+    ./startup.nix
+    ./windowrules.nix
+  ];
 
   # Dependencies for the Hyprland setup
   home.packages = with pkgs; [
-    bibata-cursors
+    bibata-cursors # Bibata-Modern-Classic
+    openzone-cursors # OpenZone-Black
+    hackneyed # Hackneyed
+    apple-cursor # macOS
+    posy-cursors # Posy_Cursor
+    whitesur-cursors # -- WhiteSur-cursors
+    quintom-cursor-theme # -- Quintom_snow
+
     hyprcursor
     playerctl
     grim
@@ -33,16 +51,21 @@
         "QT_QPA_PLATFORMTHEME,qt5ct"
       ];
 
-      monitor = if (settings.machine == "asus") then [
-        "desc:Thermotrex Corporation TL140ADXP01, 2560x1600@60.00Hz, 0x0, 1.6"
-        "DP-1, 2560x1440@165.00Hz, auto, 1" # No HDR
-        # "DP-1, 2560x1440@165.00Hz, auto, 1, bitdepth, 10, cm, hdr,sdrbrightness,1.2,sdrsaturation,1.2" # With HDR
-        ",preferred, auto, auto, mirror, eDP-2"
-      ] else if (settings.machine == "thinkpad") then [
-        "eDP-1, 1920x1080@60.01Hz, 0x0, 1.0"
-        ",preferred, auto, auto, mirror, eDP-1"
-      ] else
-        [ ",preferred,auto,auto" ];
+      monitor =
+        if (settings.machine == "asus") then
+          [
+            "desc:Thermotrex Corporation TL140ADXP01, 2560x1600@60.00Hz, 0x0, 1.6"
+            "DP-1, 2560x1440@165.00Hz, auto, 1" # No HDR
+            # "DP-1, 2560x1440@165.00Hz, auto, 1, bitdepth, 10, cm, hdr,sdrbrightness,1.2,sdrsaturation,1.2" # With HDR
+            ",preferred, auto, auto, mirror, eDP-2"
+          ]
+        else if (settings.machine == "thinkpad") then
+          [
+            "eDP-1, 1920x1080@60.01Hz, 0x0, 1.0"
+            ",preferred, auto, auto, mirror, eDP-1"
+          ]
+        else
+          [ ",preferred,auto,auto" ];
 
       cursor.enable_hyprcursor = true;
 
@@ -77,7 +100,10 @@
       };
       animations = {
         enabled = true;
-        bezier = [ "pop, 0.39, 0.575, 0.565, 1" "linear, 0.5, 0.5, 0.5, 0.5" ];
+        bezier = [
+          "pop, 0.39, 0.575, 0.565, 1"
+          "linear, 0.5, 0.5, 0.5, 0.5"
+        ];
         animation = [
           "windows, 1, 2, pop, popin 80%"
           "windowsOut, 1, 3, default, popin 70%"
@@ -97,11 +123,11 @@
       input = {
         kb_layout = "us,ch";
         kb_variant = ",fr";
-        kb_options = "grp:alt_space_toggle,ctrl:nocaps${
-            lib.optionalString settings.swapAltSuper ",altwin:swap_lalt_lwin"
-          }";
+        kb_options = "grp:alt_space_toggle,ctrl:nocaps${lib.optionalString settings.swapAltSuper ",altwin:swap_lalt_lwin"}";
         follow_mouse = 1;
-        touchpad = { natural_scroll = true; };
+        touchpad = {
+          natural_scroll = true;
+        };
         sensitivity = 0; # -1.0 to 1.0, 0 means no modification.
 
         repeat_delay = 250;

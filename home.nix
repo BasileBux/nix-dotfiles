@@ -1,4 +1,12 @@
-{ lib, config, pkgs, inputs, settings, colors, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  inputs,
+  settings,
+  colors,
+  ...
+}:
 
 {
   imports = [

@@ -1,9 +1,17 @@
-{ lib, config, pkgs, inputs, settings, secrets, ... }: {
+{
+  lib,
+  config,
+  pkgs,
+  inputs,
+  settings,
+  secrets,
+  ...
+}:
+{
   # General
   edit = "sudo -e";
   config = "cd ${settings.configPath} && nvim flake.nix";
-  rebuild =
-    "sudo nixos-rebuild switch --flake /home/${settings.username}/nixos#default --impure && sh ${settings.configPath}/scripts/post-rebuild.sh";
+  rebuild = "sudo nixos-rebuild switch --flake /home/${settings.username}/nixos#default --impure && sh ${settings.configPath}/scripts/post-rebuild.sh";
   up = "sudo nix flake update && rebuild --upgrade";
   qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
 
@@ -32,4 +40,6 @@
   mv = "mv --verbose";
   rm = "rm --recursive --verbose";
   sl = "ls";
+
+  qwen = "ollama run qwen3.5:9b --think=false";
 }

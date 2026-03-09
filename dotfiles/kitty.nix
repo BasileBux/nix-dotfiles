@@ -1,4 +1,10 @@
-{ config, pkgs, colors, settings, ... }:
+{
+  config,
+  pkgs,
+  colors,
+  settings,
+  ...
+}:
 
 {
   programs.kitty = {
@@ -12,11 +18,12 @@
     };
 
     settings = {
-      # JetBrainsMono NF, Google Sans Code, Berkeley Mono
-      font_family = "JetBrainsMono NF";
+      # JetBrainsMono NF, Google Sans Code, Berkeley Mono, Iosevka Custom
+      font_family = "Iosevka Custom";
       disable_ligatures = "always";
 
-      font_size = 13;
+      # font_size = 13;
+      font_size = 14; # Iosevka size
 
       tab_bar_style = "powerline";
       tab_powerline_style = "round";
@@ -33,8 +40,7 @@
       # Scrollback.nvim plugin: github.com/mikesmithgh/kitty-scrollback.nvim
       allow_remote_control = "socket-only";
       listen_on = "unix:/tmp/kitty";
-      action_alias =
-        "kitty_scrollback_nvim kitten /home/${settings.username}/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py";
+      action_alias = "kitty_scrollback_nvim kitten /home/${settings.username}/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py";
 
       # true background color is #16181a, but neovim won't render a background if the theme has the same background as the terminal
       background = "#16181b";

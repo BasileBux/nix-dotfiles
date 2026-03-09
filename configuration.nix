@@ -1,8 +1,19 @@
-{ config, lib, pkgs, pkgs-unstable, inputs, settings, secrets, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgs-unstable,
+  inputs,
+  settings,
+  secrets,
+  ...
+}:
 
 {
-  imports = [ ./hardware-configuration.nix ]
-    ++ lib.optionals (settings.machine == "asus") [ ./hosts/asus-g14.nix ];
+  imports = [
+    ./hardware-configuration.nix
+  ]
+  ++ lib.optionals (settings.machine == "asus") [ ./hosts/asus-g14.nix ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -48,12 +59,23 @@
 
   users.users.${settings.username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" "kvm" "adbusers" "wireshark" "dialout" ];
+    extraGroups = [
+      "wheel"
+      "docker"
+      "kvm"
+      "adbusers"
+      "wireshark"
+      "dialout"
+    ];
     packages = with pkgs; [ tree ];
     shell = pkgs.zsh;
   };
 
-  home-manager = { users = { "${settings.username}" = import ./home.nix; }; };
+  home-manager = {
+    users = {
+      "${settings.username}" = import ./home.nix;
+    };
+  };
 
   programs.zsh.enable = true;
 
@@ -61,13 +83,11 @@
   nix.settings = {
     substituters = [ "https://hyprland.cachix.org" ];
     trusted-substituters = [ "https://hyprland.cachix.org" ];
-    trusted-public-keys =
-      [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+    trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
 
   programs.hyprland.enable = true;
-  programs.hyprland.package =
-    inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+  programs.hyprland.package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
 
   environment.sessionVariables = {
     XDG_CURRENT_DESKTOP = "Hyprland";
@@ -90,16 +110,22 @@
   };
 
   # Docker
-  virtualisation.docker = { enable = true; };
+  virtualisation.docker = {
+    enable = true;
+  };
 
   virtualisation.vmware.host.enable = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = (_: true);
 
-  environment.systemPackages = with pkgs;
+  environment.systemPackages =
+    with pkgs;
     [
       # Utils
       wget
@@ -141,7 +167,7 @@
       firefox
       (pkgs.callPackage ./custom-packages/helium-browser.nix { })
       obs-studio
-      # kdePackages.kdenlive
+      kdePackages.kdenlive
       localsend
       vesktop
       mpv
@@ -150,7 +176,7 @@
       neovide
       openvpn
       ghidra-bin
-      zed-editor
+      # zed-editor
       libreoffice
       typst
       steam
@@ -163,6 +189,7 @@
       zenity
       jellyfin-desktop
       wireguard-tools
+      imhex
 
       # Dev deps
       gcc
@@ -200,11 +227,17 @@
       tree-sitter
       imagemagick
       ghostscript
-    ] ++ [ pkgs-unstable.neovim ];
+    ]
+    ++ [ pkgs-unstable.neovim ];
 
   programs.nix-ld.enable = true;
 
-  programs.nix-ld.libraries = with pkgs; [ brotli zstd glib stdenv.cc.cc.lib ];
+  programs.nix-ld.libraries = with pkgs; [
+    brotli
+    zstd
+    glib
+    stdenv.cc.cc.lib
+  ];
 
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
@@ -214,6 +247,7 @@
     nerd-fonts.gohufont
     inter
     dm-sans
+    googlesans-code
   ];
 
   services.upower.enable = true;
@@ -256,4 +290,3 @@
 
   system.stateVersion = "${settings.nixosVersion}"; # Did you read the comment?
 }
-

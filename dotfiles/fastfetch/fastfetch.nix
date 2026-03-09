@@ -1,11 +1,16 @@
-{ config, pkgs, inputs, settings, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  settings,
+  ...
+}:
 
 {
   programs.fastfetch = {
     enable = true;
     settings = {
-      "$schema" =
-        "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json";
+      "$schema" = "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json";
 
       logo = {
         source = "${settings.configPath}/dotfiles/fastfetch/Sasaki-Kojiro.jpg";
@@ -18,7 +23,9 @@
         printRemaining = false;
       };
 
-      display = { separator = "    "; };
+      display = {
+        separator = "    ";
+      };
 
       modules = [
         {
@@ -98,8 +105,7 @@
         }
         {
           type = "custom";
-          format =
-            "└─────────────────────────────────────────────────────────────┘";
+          format = "└─────────────────────────────────────────────────────────────┘";
         }
       ];
     };

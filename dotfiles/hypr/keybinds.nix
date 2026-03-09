@@ -1,8 +1,17 @@
-{ config, pkgs, inputs, settings, lib, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  settings,
+  lib,
+  ...
+}:
 
 {
   wayland.windowManager.hyprland.settings = {
-    binds = { allow_workspace_cycles = true; };
+    binds = {
+      allow_workspace_cycles = true;
+    };
 
     bind = [
       "$mainMod ALT, H, global, quickshell:toggle"
@@ -106,8 +115,8 @@
 
       "$mainMod, mouse_up, workspace, e+1"
       "$mainMod, mouse_down, workspace, e-1"
-    ] ++ lib.optionals (settings.machine == "asus")
-      [ "$mainMod, M, exec, toggle-external-monitor" ];
+    ]
+    ++ lib.optionals (settings.machine == "asus") [ "$mainMod, M, exec, toggle-external-monitor" ];
 
     bindle = [
       ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
@@ -120,11 +129,12 @@
       ",XF86KbdBrightnessDown, exec, brightnessctl -d asus::kbd_backlight set 1-"
     ];
 
-    bindl =
-      [ ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" ];
+    bindl = [ ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" ];
 
     # Mouse: left - 272, right - 273, middle - 274, back - 275, previous - 276
-    bindm =
-      [ "$mainMod, mouse:272, movewindow" "$mainMod, mouse:273, resizewindow" ];
+    bindm = [
+      "$mainMod, mouse:272, movewindow"
+      "$mainMod, mouse:273, resizewindow"
+    ];
   };
 }

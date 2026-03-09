@@ -1,6 +1,8 @@
 { settings, ... }:
-let colorTheme = "megalinee";
-in {
+let
+  colorTheme = "megalinee";
+in
+{
   theme = {
     terminal = import "${settings.configPath}/colors/${colorTheme}/ghostty.nix";
   };

@@ -1,4 +1,11 @@
-{ config, pkgs, inputs, settings, lib, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  settings,
+  lib,
+  ...
+}:
 
 {
   wayland.windowManager.hyprland.settings.windowrule = [
@@ -18,7 +25,6 @@
     # move 50-(80/2)=10% horizontally to center
     # move 50-(80/2)=10% vertically to center
 
-    
     # Might be useful later
     # "noblur, title:quickshell"
     # "noshadow, title:quickshell"

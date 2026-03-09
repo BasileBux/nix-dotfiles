@@ -1,9 +1,21 @@
-{ config, lib, pkgs, pkgs-unstable, inputs, settings, secrets, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgs-unstable,
+  inputs,
+  settings,
+  secrets,
+  ...
+}:
 
 {
   # amdgpu.dcdebugmask=0x4, pcie_aspm=force, amdgpu.sg_display=0 -> might help with stability issues
   boot.kernelParams = [ "amdgpu.runpm=0" ];
   boot.supportedFilesystems = [ "ntfs" ];
+
+  # WARNING: Only set this for benchmarking
+  # powerManagement.cpuFreqGovernor = "performance";
 
   environment.systemPackages = with pkgs; [
     asusctl
@@ -42,7 +54,10 @@
 
   hardware.graphics = {
     enable = true;
-    extraPackages = with pkgs; [ rocmPackages.clr.icd clinfo ];
+    extraPackages = with pkgs; [
+      rocmPackages.clr.icd
+      clinfo
+    ];
   };
 
   services.supergfxd = {
@@ -55,4 +70,13 @@
     };
   };
   services.asusd.enable = true;
+
+  services.ollama = {
+    enable = true;
+    package = pkgs-unstable.ollama;
+    environmentVariables = {
+      HCC_AMDGPU_TARGET = "gfx1032";
+    };
+    rocmOverrideGfx = "10.3.0";
+  };
 }

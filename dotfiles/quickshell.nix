@@ -1,4 +1,12 @@
-{ config, lib, pkgs, pkgs-unstable, settings, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgs-unstable,
+  settings,
+  inputs,
+  ...
+}:
 
 let
   quickshellSrc = builtins.path {
@@ -27,7 +35,11 @@ let
     printf '    readonly property string machine: "${settings.machine}"\n}\n' >> "$tmp"
     mv "$tmp" "$file"
   '';
-in {
-  home.packages = [ pkgs-unstable.quickshell pkgs.kdePackages.qt5compat ];
+in
+{
+  home.packages = [
+    pkgs-unstable.quickshell
+    pkgs.kdePackages.qt5compat
+  ];
   xdg.configFile."quickshell".source = quickshellConfigured;
 }

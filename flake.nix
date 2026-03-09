@@ -17,7 +17,13 @@
     agenix.url = "github:ryantm/agenix";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      ...
+    }@inputs:
     let
       system = "x86_64-linux";
       pkgs-unstable = nixpkgs.legacyPackages.${system};
@@ -34,26 +40,43 @@
       secretsExists = builtins.pathExists secretsPath;
       secrets = if secretsExists then import secretsPath else { };
 
-      theme =
-        import "${settings.configPath}/colors/colors.nix" { inherit settings; };
+      theme = import "${settings.configPath}/colors/colors.nix" { inherit settings; };
       colors = theme.theme;
-    in {
+    in
+    {
       nixosConfigurations.default = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs pkgs-unstable settings colors secrets; };
+        specialArgs = {
+          inherit
+            inputs
+            pkgs-unstable
+            settings
+            colors
+            secrets
+            ;
+        };
         modules = [
           "${settings.configPath}/configuration.nix"
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager.extraSpecialArgs = {
-              inherit inputs pkgs-unstable settings colors secrets;
+              inherit
+                inputs
+                pkgs-unstable
+                settings
+                colors
+                secrets
+                ;
             };
             home-manager.useGlobalPkgs = true;
           }
           inputs.agenix.nixosModules.default
-        ] ++ nixpkgs.lib.optionals (settings.machine == "asus")
-          [ inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402 ]
-          ++ nixpkgs.lib.optionals (settings.machine == "thinkpad")
-          [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480 ];
+        ]
+        ++ nixpkgs.lib.optionals (settings.machine == "asus") [
+          inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
+        ]
+        ++ nixpkgs.lib.optionals (settings.machine == "thinkpad") [
+          inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480
+        ];
       };
     };
 }
