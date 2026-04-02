@@ -176,14 +176,13 @@
       neovide
       openvpn
       ghidra-bin
-      # zed-editor
       libreoffice
       typst
       steam
-      sage
+      # sage # NOTE:
       gnome-calculator
       pinta
-      winboat
+      # winboat # NOTE:
       wireshark
       thunderbird
       zenity
@@ -201,7 +200,7 @@
       rust-analyzer
       clippy
       nodejs
-      go
+      # go # NOTE:
       clang
       python3
       git-lfs
@@ -210,6 +209,7 @@
       gdb
       bun
       openssl
+      difftastic
 
       radicle-node
       radicle-desktop

@@ -13,6 +13,7 @@
     "match:title Picture-in-Picture, float true"
     "match:title quickshell, float true"
     "match:class Emulator, float true"
+    "match:class org.gnome.Nautilus, float true"
 
     "match:title sagepopup, float true"
     "match:title sagepopup, size (monitor_w*0.6) (monitor_h*0.3)"
@@ -31,7 +32,7 @@
     # "noborder, title:quickshell"
   ];
   wayland.windowManager.hyprland.settings.workspace = [
-    "special:sagepopup, on-created-empty:kitty --title='sagepopup' -e sage"
+    "special:sagepopup, on-created-empty:kitty --title='sagepopup' -e sh -c 'sage || python3'"
     "special:scratch, on-created-empty:kitty --title='scratch' -e sh nvim ~/tmp/notes/daily-$(date +%d-%b-%Y).md"
   ];
 }

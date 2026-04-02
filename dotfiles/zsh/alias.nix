@@ -31,7 +31,13 @@
   vpnstatus = "systemctl status openvpn-hs_ch";
 
   playground = "/home/${settings.username}/playground-cli/playground";
-  ubuntu = "${settings.configPath}/scripts/vmware-ubuntu.sh";
+  ubuntu = ''
+    ${settings.configPath}/scripts/vmware-ubuntu.sh \
+      no-user \
+      /home/basileb/ba6/srx/lab2/tmp/Ubuntu_24.04_VM_LinuxVMImages.COM.vmx \
+      ubuntu \
+      ubuntu \
+      192.168.223.132'';
 
   vim = "nvim";
   top = "btop";

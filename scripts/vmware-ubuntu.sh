@@ -1,11 +1,38 @@
 #!/usr/bin/env bash
 
-VMX="/home/basileb/vmware/Ubuntu_PIN_SOS_SLB_CSI_2025/Ubuntu_PIN_SOS_SLB_CSI_2025.vmx"
+MODE="$1"
+VMX="$2"
+DEFAULT_USER="$3"
+PASSWORD="$4"
+IP="$5"
+shift 5
 
-case "$1" in
-  start) vmrun -T ws -gu sos -gp motdepasse start "$VMX" nogui ;;
-  stop)  vmrun -T ws -gu sos -gp motdepasse stop "$VMX" hard ;;
-  ssh)   shift; kitten ssh "$1"@192.168.223.128 ;;
-  scp)   shift; scp -r "${@:2}" "$1"@192.168.223.128:"${@:3}" ;;
-  *)     echo "Usage: $0 {start|stop|ssh user|scp user src... dest}" ;;
+USER="$DEFAULT_USER"
+
+ACTION="$1"
+shift
+
+if [ "$MODE" = "user" ] && [[ "$ACTION" =~ ^(ssh|scp)$ ]]; then
+  USER="$1"
+  shift
+fi
+
+case "$ACTION" in
+  start) 
+    vmrun -T ws -gu $DEFAULT_USER -gp $PASSWORD start "$VMX" nogui 
+    ;;
+  stop)  
+    vmrun -T ws -gu $DEFAULT_USER -gp $PASSWORD stop "$VMX" hard 
+    ;;
+  ssh)   
+    kitten ssh "$USER@$IP" 
+    ;;
+  scp)   
+    SOURCES=("${@:1:$#-1}")
+    DEST="${!#}"
+    scp -r "${SOURCES[@]}" "$USER@$IP:$DEST" 
+    ;;
+  *)     
+    echo "Usage: <alias> {start|stop|ssh [user]|scp [user] src... dest}" 
+    ;;
 esac

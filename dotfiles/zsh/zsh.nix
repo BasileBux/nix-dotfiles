@@ -63,10 +63,12 @@ in
     ANTHROPIC_API_KEY = secrets.keys.anthropicApiKey or "";
     OPENAI_API_KEY = secrets.keys.openaiApiKey or "";
     GEMINI_API_KEY = secrets.keys.geminiApiKey or "";
+    GOOGLE_GENERATIVE_AI_API_KEY = secrets.keys.googleGenerativeAiApiKey or "";
     MOONSHOT_API_KEY = secrets.keys.moonshotApiKey or "";
     TAVILY_API_KEY = secrets.keys.tavilyApiKey or "";
     XAI_API_KEY = secrets.keys.xaiApiKey or "";
     GITHUB_TOKEN = secrets.github-token or "";
     TYPSTDIR = "$HOME/.local/share/typst/packages";
+    GIT_EXTERNAL_DIFF = "difft";
   };
 }

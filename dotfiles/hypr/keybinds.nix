@@ -48,12 +48,16 @@
       "$mainMod, slash, togglespecialworkspace, junk"
       "$mainMod CTRL, slash, movetoworkspacesilent, special:junk"
 
+      # Multi-tasking workspace
+      "$mainMod, period, togglespecialworkspace, multitasking"
+      "$mainMod CTRL, period, movetoworkspacesilent, special:multitasking"
+
       # "$mainMod ALT, G, exec, hyprctl keyword input:kb_options 'grp:alt_space_toggle,ctrl:nocaps,altwin:swap_lalt_lwin'"
       "$mainMod ALT, G, exec, $scripts/altwin-switch-toggle.sh"
 
       "$mainMod, F, fullscreen,"
       "$mainMod SHIFT, F, togglefloating,"
-      "$mainMod, Z, togglesplit,"
+      "$mainMod, Z, layoutmsg, togglesplit"
 
       "$mainMod, left, movefocus, l"
       "$mainMod, right, movefocus, r"

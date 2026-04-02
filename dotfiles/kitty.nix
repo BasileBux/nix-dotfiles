@@ -26,7 +26,7 @@
       font_size = 14; # Iosevka size
 
       tab_bar_style = "powerline";
-      tab_powerline_style = "round";
+      tab_powerline_style = "slanted";
 
       background_opacity = 0.8;
 
@@ -70,10 +70,18 @@
       active_tab_background = "#ffbd5e";
       inactive_tab_foreground = "#ffffff";
       inactive_tab_background = "#16181a";
+
+      scrollback_pager = "/home/basileb/kitty-copy/target/debug/kitty-copy";
     };
     keybindings = {
       "ctrl+shift+." = "change_font_size all 0";
-      "kitty_mod+h" = "kitty_scrollback_nvim";
+
+      "f1" = "new_tab_with_cwd";
+      "ctrl+h" = "previous_tab";
+      "ctrl+l" = "next_tab";
+      "ctrl+;" = "clear_terminal scroll active";
+
+      # "kitty_mod+h" = "kitty_scrollback_nvim";
     };
   };
 }

@@ -4,8 +4,8 @@
 
     defaultApplications = {
       "text/html" = "zen-twilight.desktop";
-      "text/markdown" = "nvim.desktop";
-      "text/plain" = "nvim.desktop";
+      "text/markdown" = "neovide.desktop";
+      "text/plain" = "neovide.desktop";
 
       "image/png" = "org.gnome.eog.desktop";
       "image/jpeg" = "org.gnome.eog.desktop";
