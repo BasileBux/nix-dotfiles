@@ -124,111 +124,125 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = (_: true);
 
-  environment.systemPackages =
-    with pkgs;
-    [
-      # Utils
-      wget
-      curl
-      git
-      pamixer
-      wl-clipboard
-      openssh
-      upower
-      unzip
-      zip
-      jq
-      gparted
-      bluez
-      bc
-      bat
-      btop
-      file
-      patchelf
-      man-pages
-      man-pages-posix
-      inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
-      appimage-run
+  environment.systemPackages = with pkgs; [
+    # Utils
+    wget
+    curl
+    git
+    pamixer
+    wl-clipboard
+    openssh
+    upower
+    unzip
+    zip
+    jq
+    gparted
+    bluez
+    bc
+    bat
+    btop
+    file
+    patchelf
+    man-pages
+    man-pages-posix
+    inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
+    appimage-run
 
-      # Codecs
-      libva
-      libGL
-      ffmpeg-full
-      openh264
+    # Codecs
+    libva
+    libGL
+    ffmpeg-full
+    openh264
 
-      # Software
-      nautilus
-      blueman
-      pavucontrol
-      yazi
-      eog
-      evince
-      gnome-disk-utility
-      firefox
-      (pkgs.callPackage ./custom-packages/helium-browser.nix { })
-      obs-studio
-      kdePackages.kdenlive
-      localsend
-      vesktop
-      mpv
-      vlc
-      qbittorrent
-      neovide
-      openvpn
-      ghidra-bin
-      libreoffice
-      typst
-      steam
-      # sage # NOTE:
-      gnome-calculator
-      pinta
-      # winboat # NOTE:
-      wireshark
-      thunderbird
-      zenity
-      jellyfin-desktop
-      wireguard-tools
-      imhex
+    # Software
+    nautilus
+    blueman
+    pavucontrol
+    yazi
+    eog
+    evince
+    gnome-disk-utility
+    firefox
+    (pkgs.callPackage ./custom-packages/helium-browser.nix { })
+    obs-studio
+    kdePackages.kdenlive
+    localsend
+    vesktop
+    mpv
+    vlc
+    qbittorrent
+    neovide
+    openvpn
+    ghidra-bin
+    libreoffice
+    typst
+    steam
+    # sage # NOTE:
+    gnome-calculator
+    pinta
+    # winboat # NOTE:
+    wireshark
+    thunderbird
+    zenity
+    jellyfin-desktop
+    wireguard-tools
+    imhex
+    opencode
 
-      # Dev deps
-      gcc
-      gcc_multi
-      cmake
-      gnumake
-      rustc
-      rustfmt
-      rust-analyzer
-      clippy
-      nodejs
-      # go # NOTE:
-      clang
-      python3
-      git-lfs
-      texlive.combined.scheme-full
-      jdk
-      gdb
-      bun
-      openssl
-      difftastic
+    # Dev deps
+    gcc
+    gcc_multi
+    cmake
+    gnumake
+    rustc
+    rustfmt
+    rust-analyzer
+    clippy
+    nodejs
+    # go # NOTE:
+    clang
+    python3
+    git-lfs
+    texlive.combined.scheme-full
+    jdk
+    gdb
+    bun
+    openssl
+    difftastic
 
-      radicle-node
-      radicle-desktop
+    radicle-node
+    radicle-desktop
 
-      # nvim
-      ripgrep
-      fd
-      fzf
-      gcc
-      cargo
-      rustc
-      luarocks
-      stylua
-      clang-tools
-      tree-sitter
-      imagemagick
-      ghostscript
-    ]
-    ++ [ pkgs-unstable.neovim ];
+    # nvim
+    neovim-unwrapped
+    ripgrep
+    fd
+    fzf
+    gcc
+    cargo
+    rustc
+    luarocks
+    tree-sitter
+    imagemagick
+    ghostscript
+
+    # lsp and formatters
+    basedpyright
+    cmake-language-server
+    stylua
+    clang-tools
+    gopls
+    gotools
+    ltex-ls
+    lua-language-server
+    nil
+    nixfmt
+    prettier
+    kdePackages.qtdeclarative # qmlls
+    tinymist
+    typescript-language-server
+    typstyle
+  ];
 
   programs.nix-ld.enable = true;
 

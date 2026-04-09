@@ -33,6 +33,6 @@
   ];
   wayland.windowManager.hyprland.settings.workspace = [
     "special:sagepopup, on-created-empty:kitty --title='sagepopup' -e sh -c 'sage || python3'"
-    "special:scratch, on-created-empty:kitty --title='scratch' -e sh nvim ~/tmp/notes/daily-$(date +%d-%b-%Y).md"
+    "special:scratch, on-created-empty:kitty --title='scratch' -e sh -c 'nvim ~/tmp/notes/daily-$(date +%d-%b-%Y).md'"
   ];
 }

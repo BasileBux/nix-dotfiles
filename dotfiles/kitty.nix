@@ -37,11 +37,6 @@
       cursor_trail = 1;
       cursor_trail_decay = "0.1 0.4";
 
-      # Scrollback.nvim plugin: github.com/mikesmithgh/kitty-scrollback.nvim
-      allow_remote_control = "socket-only";
-      listen_on = "unix:/tmp/kitty";
-      action_alias = "kitty_scrollback_nvim kitten /home/${settings.username}/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py";
-
       # true background color is #16181a, but neovim won't render a background if the theme has the same background as the terminal
       background = "#16181b";
       foreground = "#ffffff";
@@ -80,8 +75,6 @@
       "ctrl+h" = "previous_tab";
       "ctrl+l" = "next_tab";
       "ctrl+;" = "clear_terminal scroll active";
-
-      # "kitty_mod+h" = "kitty_scrollback_nvim";
     };
   };
 }
