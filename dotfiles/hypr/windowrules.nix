@@ -9,6 +9,7 @@
     "match:title quickshell, float true"
     "match:class Emulator, float true"
     "match:class org.gnome.Nautilus, float true"
+	"match:class org.gnome.Calculator, float true"
 
     "match:title sagepopup, float true"
     "match:title sagepopup, size (monitor_w*0.6) (monitor_h*0.3)"
