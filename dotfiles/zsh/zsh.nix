@@ -55,7 +55,7 @@ in
       enable = true;
       plugins = [ ];
       custom = "${settings.configPath}/dotfiles/zsh";
-      theme = "new";
+      theme = "basileb";
     };
   };
 

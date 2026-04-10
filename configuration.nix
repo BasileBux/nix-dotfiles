@@ -1,11 +1,8 @@
 {
-  config,
   lib,
   pkgs,
-  pkgs-unstable,
   inputs,
   settings,
-  secrets,
   ...
 }:
 
@@ -17,10 +14,8 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelModules = [ "mt7921e" ];
-  boot.initrd.kernelModules = [ "mt7921e" ];
+
   hardware.enableRedistributableFirmware = true;
 
   networking.hostName = "${settings.username}-${settings.machine}";
@@ -39,15 +34,12 @@
     options = "grp:alt_space_toggle,ctrl:nocaps";
   };
 
-  services.flatpak.enable = true;
-
   services.printing.enable = false;
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
   services.pulseaudio.enable = false;
-
   security.rtkit.enable = true;
 
   services.pipewire = {
@@ -63,7 +55,6 @@
       "wheel"
       "docker"
       "kvm"
-      "adbusers"
       "wireshark"
       "dialout"
     ];
@@ -109,7 +100,6 @@
     dumpcap.enable = true;
   };
 
-  # Docker
   virtualisation.docker = {
     enable = true;
   };
@@ -129,15 +119,11 @@
     wget
     curl
     git
-    pamixer
     wl-clipboard
     openssh
-    upower
     unzip
     zip
     jq
-    gparted
-    bluez
     bc
     bat
     btop
@@ -145,7 +131,6 @@
     patchelf
     man-pages
     man-pages-posix
-    inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
     appimage-run
 
     # Codecs
@@ -156,34 +141,25 @@
 
     # Software
     nautilus
+    eog
+    evince
+    (pkgs.callPackage ./custom-packages/helium-browser.nix { })
+    mpv
+    vlc
+    zenity
+
+    # Optional Software
     blueman
     pavucontrol
     yazi
-    eog
-    evince
-    gnome-disk-utility
-    firefox
-    (pkgs.callPackage ./custom-packages/helium-browser.nix { })
-    obs-studio
-    kdePackages.kdenlive
-    localsend
     vesktop
-    mpv
-    vlc
-    qbittorrent
     neovide
-    openvpn
     ghidra-bin
-    libreoffice
-    typst
     steam
-    # sage # NOTE:
     gnome-calculator
     pinta
-    # winboat # NOTE:
     wireshark
     thunderbird
-    zenity
     jellyfin-desktop
     wireguard-tools
     imhex
@@ -199,16 +175,16 @@
     rust-analyzer
     clippy
     nodejs
-    # go # NOTE:
+    go
     clang
     python3
-    git-lfs
     texlive.combined.scheme-full
-    jdk
     gdb
     bun
     openssl
     difftastic
+    typst
+    sage
 
     radicle-node
     radicle-desktop
@@ -244,13 +220,12 @@
     typstyle
   ];
 
-  programs.nix-ld.enable = true;
-
-  programs.nix-ld.libraries = with pkgs; [
-    brotli
-    zstd
-    glib
-    stdenv.cc.cc.lib
+  # Skip sage tests as they take ages to execute and are not relevant for my use.
+  # However, in a production environment, these tests must be executed.
+  nixpkgs.overlays = [
+    (final: prev: {
+      sage = prev.sage.override { requireSageTests = false; };
+    })
   ];
 
   fonts.packages = with pkgs; [
@@ -266,16 +241,7 @@
 
   services.upower.enable = true;
 
-  services.udisks2.enable = true;
-  services.gvfs.enable = true;
-  services.devmon.enable = true;
-
   services.tailscale.enable = true;
-
-  age.identityPaths = [
-    "/home/${settings.username}/.ssh/id_ed25519"
-    "/home/${settings.username}/.ssh/basileb"
-  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -1,10 +1,6 @@
 {
-  config,
-  lib,
   pkgs,
-  pkgs-unstable,
   settings,
-  inputs,
   ...
 }:
 
@@ -37,9 +33,11 @@ let
   '';
 in
 {
-  home.packages = [
-    pkgs-unstable.quickshell
-    pkgs.kdePackages.qt5compat
+  home.packages = with pkgs; [
+    quickshell
+    kdePackages.qt5compat
+    upower
+    bluez
   ];
   xdg.configFile."quickshell".source = quickshellConfigured;
 }

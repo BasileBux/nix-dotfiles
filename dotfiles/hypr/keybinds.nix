@@ -1,7 +1,4 @@
 {
-  config,
-  pkgs,
-  inputs,
   settings,
   lib,
   ...
@@ -120,7 +117,7 @@
       "$mainMod, mouse_up, workspace, e+1"
       "$mainMod, mouse_down, workspace, e-1"
     ]
-    ++ lib.optionals (settings.machine == "asus") [ "$mainMod, M, exec, toggle-external-monitor" ];
+    ++ lib.optionals (settings.machine == "asus") [ "$mainMod, M, exec, $scripts/monitors-toggle.sh" ];
 
     bindle = [
       ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"

@@ -1,10 +1,5 @@
 {
-  lib,
-  config,
-  pkgs,
-  inputs,
   settings,
-  colors,
   ...
 }:
 
@@ -16,7 +11,6 @@
     ./dotfiles/tmux.nix
     ./dotfiles/zsh/zsh.nix
     ./dotfiles/hypr/hyprland.nix
-    ./dotfiles/hypr/hyprlock.nix
     ./dotfiles/hypr/hypridle.nix
     ./dotfiles/theming.nix
     ./dotfiles/quickshell.nix

@@ -1,10 +1,6 @@
 {
   lib,
-  config,
   pkgs,
-  inputs,
-  settings,
-  colors,
   ...
 }:
 
@@ -43,12 +39,6 @@
           publisher = "janisdd";
           version = "0.11.7";
           sha256 = "sha256-8buRNSxfKmf9+MZDvFOOyrbXtbIC7GbHPRCBVnAHXrA=";
-        }
-        {
-          name = "good-harpoon";
-          publisher = "BasileBuxtorf";
-          version = "0.0.1";
-          sha256 = "sha256-e68jaeVUJLgb8gfXRgRaPhcInzyIpWAeKzvuQfLGb9s=";
         }
       ];
   };

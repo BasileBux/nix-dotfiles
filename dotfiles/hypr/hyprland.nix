@@ -1,8 +1,6 @@
 {
   lib,
-  config,
   pkgs,
-  inputs,
   settings,
   ...
 }:
@@ -17,23 +15,20 @@
   # Dependencies for the Hyprland setup
   home.packages = with pkgs; [
     bibata-cursors # Bibata-Modern-Classic
-    openzone-cursors # OpenZone-Black
-    hackneyed # Hackneyed
-    apple-cursor # macOS
-    posy-cursors # Posy_Cursor
-    whitesur-cursors # -- WhiteSur-cursors
-    quintom-cursor-theme # -- Quintom_snow
+    # openzone-cursors # OpenZone-Black
+    # hackneyed # Hackneyed
+    # apple-cursor # macOS
+    # posy-cursors # Posy_Cursor
+    # whitesur-cursors # WhiteSur-cursors
+    # quintom-cursor-theme # Quintom_snow
 
     hyprcursor
     playerctl
     grim
     slurp
-    hyprlock
     brightnessctl
     hyprpolkitagent
   ];
-
-  # services.swaync.enable = true;
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -58,11 +53,6 @@
             "DP-1, 2560x1440@165.00Hz, auto, 1" # No HDR
             # "DP-1, 2560x1440@165.00Hz, auto, 1, bitdepth, 10, cm, hdr,sdrbrightness,1.2,sdrsaturation,1.2" # With HDR
             ",preferred, auto, auto, mirror, eDP-2"
-          ]
-        else if (settings.machine == "thinkpad") then
-          [
-            "eDP-1, 1920x1080@60.01Hz, 0x0, 1.0"
-            ",preferred, auto, auto, mirror, eDP-1"
           ]
         else
           [ ",preferred,auto,auto" ];
@@ -139,10 +129,6 @@
           name = "logitech-pro-x-1";
           sensitivity = -0.2;
           accel_profile = "flat";
-        }
-        {
-          name = "elan-touchscreen";
-          enabled = false;
         }
         {
           name = "logitech-pro-x-wireless-1";

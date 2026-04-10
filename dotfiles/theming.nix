@@ -1,9 +1,5 @@
 {
-  lib,
-  config,
   pkgs,
-  inputs,
-  settings,
   ...
 }:
 
@@ -44,16 +40,4 @@
       };
     };
   };
-
-  # Optional: dconf settings for additional dark mode support
-  # dconf = {
-  #   enable = true;
-  #   settings = {
-  #     "org/gnome/desktop/interface" = {
-  #       gtk-theme = "Adwaita-dark";
-  #       color-scheme = "prefer-dark";
-  #       gtk-application-prefer-dark-theme = true;
-  #     };
-  #   };
-  # };
 }
