@@ -19,7 +19,7 @@
       disable_ligatures = "always";
 
       # font_size = 13;
-      font_size = 14; # Iosevka size
+      font_size = 13; # Iosevka size
 
       tab_bar_style = "powerline";
       tab_powerline_style = "slanted";

@@ -141,11 +141,10 @@
 
     # Software
     nautilus
-    eog
+    kdePackages.gwenview
     evince
     (pkgs.callPackage ./custom-packages/helium-browser.nix { })
     mpv
-    vlc
     zenity
 
     # Optional Software
@@ -163,6 +162,7 @@
     jellyfin-desktop
     wireguard-tools
     imhex
+    vlc
     opencode
 
     # Dev deps

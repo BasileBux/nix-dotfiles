@@ -8,6 +8,7 @@
   config = "cd ${settings.configPath} && nvim flake.nix";
   rebuild = "sudo nixos-rebuild switch --flake /home/${settings.username}/nixos#default --impure && sh ${settings.configPath}/scripts/post-rebuild.sh";
   up = "sudo nix flake update && rebuild --upgrade";
+  clean-nix = "sudo nix-collect-garbage --delete-older-than 12d && sudo nix store optimize";
   qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
 
   # neovim

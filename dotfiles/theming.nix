@@ -15,15 +15,14 @@
   # Qt theming to match GTK
   qt = {
     enable = true;
-    platformTheme.name = "gtk";
-    style.name = "adwaita-dark";
+	platformTheme = "kde";
+	style.name = "breeze";
     style.package = pkgs.libsForQt5.qtstyleplugins;
   };
 
   # Environment variables for dark theme
   home.sessionVariables = {
     GTK_THEME = "Adwaita:dark";
-    QT_STYLE_OVERRIDE = "adwaita-dark";
   };
 
   # XDG desktop portal for proper theming

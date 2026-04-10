@@ -23,8 +23,7 @@
       window-inherit-working-directory = false;
 
       # rose-pine, Abernathy, deep, tokyonight
-      # theme = "custom";
-      theme = "cyberdream";
+      theme = "Deep";
       background-opacity = 0.8;
 
       window-padding-x = "3,3";
