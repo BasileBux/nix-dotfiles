@@ -15,7 +15,7 @@
   # Qt theming to match GTK
   qt = {
     enable = true;
-	platformTheme = "kde";
+	platformTheme.name = "kde";
 	style.name = "breeze";
     style.package = pkgs.libsForQt5.qtstyleplugins;
   };

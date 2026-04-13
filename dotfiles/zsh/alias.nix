@@ -19,7 +19,6 @@
 
   # Git
   gss = "git status";
-  gd = "nvim -c 'DiffviewOpen' -c 'tabclose 1'";
 
   # VPN
   vpnstart = "sudo systemctl start openvpn-hs_ch";
