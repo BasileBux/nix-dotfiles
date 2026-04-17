@@ -40,7 +40,8 @@
           # exit
 
           # If you want a regular python env keep this
-          exec zsh
+          export SHELL=$(getent passwd $USER | cut -d: -f7)
+          exec $SHELL
         '';
       };
     };
