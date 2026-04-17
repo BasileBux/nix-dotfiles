@@ -36,6 +36,7 @@
         email = "basile.buxtorf@ik.me";
         signingkey = "/home/${settings.username}/.ssh/id_ed25519.pub";
       };
+      core.editor = "nvim";
     };
 
     signing = {
