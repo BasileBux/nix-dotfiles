@@ -14,12 +14,12 @@
     };
 
     settings = {
-      # JetBrainsMono NF, Google Sans Code, Berkeley Mono, Iosevka Custom
-      font_family = "Iosevka Custom";
+      # JetBrainsMono NF, Google Sans Code, Berkeley Mono, Iosevka Custom, Mx437 DOS/V re. JPN24
+      # font_family = "Iosevka Custom";
+      font_family = "Mx437 DOS/V re. JPN24";
       disable_ligatures = "always";
 
-      # font_size = 13;
-      font_size = 13; # Iosevka size
+      font_size = 13;
 
       tab_bar_style = "powerline";
       tab_powerline_style = "slanted";
@@ -38,7 +38,8 @@
       foreground = "#ffffff";
       cursor = "#d1dd44";
       cursor_text_color = "#16181a";
-      selection_background = "#3c4048";
+      # selection_background = "#3c4048";
+      selection_background = "#d1dd44";
       color0 = "#16181a";
       color8 = "#3c4048";
       color1 = "#ff6e5e";
@@ -55,7 +56,8 @@
       color14 = "#5ef1ff";
       color7 = "#ffffff";
       color15 = "#ffffff";
-      selection_foreground = "#ffffff";
+      # selection_foreground = "#ffffff";
+      selection_foreground = "#000000";
       active_tab_foreground = "#000000";
       active_tab_background = "#ffbd5e";
       inactive_tab_foreground = "#ffffff";
