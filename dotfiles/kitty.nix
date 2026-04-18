@@ -15,8 +15,8 @@
 
     settings = {
       # JetBrainsMono NF, Google Sans Code, Berkeley Mono, Iosevka Custom, Mx437 DOS/V re. JPN24
-      # font_family = "Iosevka Custom";
-      font_family = "Mx437 DOS/V re. JPN24";
+      font_family = "Iosevka Custom";
+      # font_family = "Mx437 DOS/V re. JPN24";
       disable_ligatures = "always";
 
       font_size = 13;

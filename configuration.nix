@@ -9,6 +9,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./smb.nix
   ]
   ++ lib.optionals (settings.machine == "asus") [ ./hosts/asus-g14.nix ];
 
@@ -246,6 +247,11 @@
   # Enable nautilus to automount
   services.gvfs.enable = true;
   services.udisks2.enable = true;
+
+  # NOTE: only to use chipwhisperer for SFA lab
+  services.udev.packages = with pkgs; [
+    python3Packages.chipwhisperer
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
