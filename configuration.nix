@@ -189,36 +189,6 @@
 
     radicle-node
     radicle-desktop
-
-    # nvim
-    neovim-unwrapped
-    ripgrep
-    fd
-    fzf
-    gcc
-    cargo
-    rustc
-    luarocks
-    tree-sitter
-    imagemagick
-    ghostscript
-
-    # lsp and formatters
-    basedpyright
-    cmake-language-server
-    stylua
-    clang-tools
-    gopls
-    gotools
-    ltex-ls
-    lua-language-server
-    nil
-    nixfmt
-    prettier
-    kdePackages.qtdeclarative # qmlls
-    tinymist
-    typescript-language-server
-    typstyle
   ];
 
   # Skip sage tests as they take ages to execute and are not relevant for my use.

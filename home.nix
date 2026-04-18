@@ -17,6 +17,7 @@
     ./dotfiles/vscode.nix
     ./dotfiles/kitty.nix
     ./dotfiles/mime-apps.nix
+    ./dotfiles/neovim.nix
   ];
 
   home.username = "${settings.username}";
