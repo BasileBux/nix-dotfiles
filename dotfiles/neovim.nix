@@ -5,18 +5,28 @@
 }:
 let
   treesitterParsers = with pkgs.tree-sitter-grammars; [
-    tree-sitter-bash
     tree-sitter-c
     tree-sitter-cpp
     tree-sitter-go
-    tree-sitter-html
-    tree-sitter-javascript
-    tree-sitter-json
-    tree-sitter-python
     tree-sitter-rust
+
+    tree-sitter-javascript
     tree-sitter-typescript
+    tree-sitter-html
+
+    tree-sitter-json
+    tree-sitter-yaml
+    tree-sitter-toml
+
+    tree-sitter-bash
+    tree-sitter-python
+
     tree-sitter-typst
-    # tree-sitter-nix # Package seems rather abondoned and a bit broken
+
+    # tree-sitter-nix
+    # NOTE: Package seems rather abondoned and a bit broken. So I have a modified
+    # version of the parser under `~/.local/share/nvim/site/parser` and `queries`
+    # keep an eye on https://github.com/nix-community/tree-sitter-nix still.
   ];
   parserBundle = pkgs.runCommand "nvim-treesitter-parsers" { } ''
     mkdir -p $out/parser
