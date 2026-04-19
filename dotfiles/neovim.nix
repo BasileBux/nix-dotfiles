@@ -16,8 +16,7 @@ let
     tree-sitter-rust
     tree-sitter-typescript
     tree-sitter-typst
-    tree-sitter-nix
-    tree-sitter-markdown
+    # tree-sitter-nix # Package seems rather abondoned and a bit broken
   ];
   parserBundle = pkgs.runCommand "nvim-treesitter-parsers" { } ''
     mkdir -p $out/parser

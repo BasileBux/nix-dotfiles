@@ -8,7 +8,7 @@
   # Create file `~/smb-secrets` and, in it, write:
   # username=
   # password=
-  fileSystems."/mnt/synology" = {
+  fileSystems."/home/${settings.username}/synology" = {
     device = "//100.86.179.75/home";
     fsType = "cifs";
     options =
