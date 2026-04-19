@@ -27,6 +27,8 @@ let
     # NOTE: Package seems rather abondoned and a bit broken. So I have a modified
     # version of the parser under `~/.local/share/nvim/site/parser` and `queries`
     # keep an eye on https://github.com/nix-community/tree-sitter-nix still.
+    # Also using the queries from:
+    # https://github.com/nvim-treesitter/nvim-treesitter/tree/main/runtime/queries/nix
   ];
   parserBundle = pkgs.runCommand "nvim-treesitter-parsers" { } ''
     mkdir -p $out/parser
