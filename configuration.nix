@@ -133,6 +133,7 @@
     man-pages
     man-pages-posix
     appimage-run
+    perf
 
     # Codecs
     libva

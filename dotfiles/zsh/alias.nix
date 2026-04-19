@@ -2,6 +2,10 @@
   settings,
   ...
 }:
+let
+  fff_path = "/home/${settings.username}/.local/share/nvim/site/pack/core/opt/fff.nvim";
+  fff_error = "echo 'Error: fff.nvim not found. Please install it under `${fff_path}`.'";
+in
 {
   # General
   edit = "sudo -e";
@@ -41,6 +45,9 @@
   mv = "mv --verbose";
   rm = "rm --recursive --verbose";
   sl = "ls";
+
+  fff = "bun run ${fff_path}/packages/fff-bun/examples/search.ts . 2>/dev/null || ${fff_error}";
+  ffg = "bun run ${fff_path}/packages/fff-bun/examples/grep.ts . 2>/dev/null || ${fff_error}";
 
   qwen = "ollama run qwen3.5:9b --think=false";
 }
