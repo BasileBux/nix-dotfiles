@@ -84,5 +84,6 @@ in
     typescript-language-server
     typstyle
     marksman
+    bash-language-server
   ];
 }

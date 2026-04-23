@@ -23,6 +23,12 @@
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
         {
+          name = "ayu";
+          publisher = "teabyii";
+          version = "1.1.12";
+          sha256 = "sha256-pwLvik3GRMLyr6GeTmZh1MrkgH1MgbyoembNmQxg4I0=";
+        }
+        {
           name = "oxocarbon-vscode";
           publisher = "NyoomEngineering";
           version = "1.2.0";
@@ -37,9 +43,11 @@
         {
           name = "vscode-edit-csv";
           publisher = "janisdd";
-          version = "0.11.7";
-          sha256 = "sha256-8buRNSxfKmf9+MZDvFOOyrbXtbIC7GbHPRCBVnAHXrA=";
+          version = "0.11.9";
+          sha256 = "sha256-hbu/r3mBtb9nDZcP8kY4fBJ5ZuKwkO/kJFk1OWDIdlk=";
         }
+        # Install https://marketplace.visualstudio.com/items?itemName=TaeKim.fast-fuzzy-finder
+        # which doesn't work with this home-manager module
       ];
   };
 

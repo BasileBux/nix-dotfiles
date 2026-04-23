@@ -13,9 +13,24 @@
   ]
   ++ lib.optionals (settings.machine == "asus") [ ./hosts/asus-g14.nix ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    kernelPackages = pkgs.linuxPackages_latest;
+
+    plymouth.enable = true;
+
+    consoleLogLevel = 0;
+    initrd.verbose = false;
+    kernelParams = [
+      "quiet"
+      "splash"
+      "loglevel=3"
+      "udev.log_priority=3"
+    ];
+  };
 
   hardware.enableRedistributableFirmware = true;
 
@@ -190,6 +205,10 @@
 
     radicle-node
     radicle-desktop
+
+    # NOTE: only for BBC lab
+    veryfasttree
+    muscle
   ];
 
   # Skip sage tests as they take ages to execute and are not relevant for my use.
