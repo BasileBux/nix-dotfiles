@@ -72,5 +72,6 @@ in
     TAVILY_API_KEY = secrets.keys.tavilyApiKey or "";
     XAI_API_KEY = secrets.keys.xaiApiKey or "";
     GITHUB_TOKEN = secrets.github-token or "";
+    NVIDIA_API_KEY = secrets.keys.nvidiaApiKey or "";
   };
 }
