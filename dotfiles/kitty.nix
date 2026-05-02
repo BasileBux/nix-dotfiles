@@ -19,7 +19,7 @@
       # font_family = "Mx437 DOS/V re. JPN24";
       disable_ligatures = "always";
 
-      font_size = 13;
+      font_size = 12;
 
       tab_bar_style = "powerline";
       tab_powerline_style = "slanted";
@@ -63,7 +63,8 @@
       inactive_tab_foreground = "#ffffff";
       inactive_tab_background = "#16181a";
 
-      scrollback_pager = "/home/basileb/kitty-copy/target/release/kitty-copy";
+      scrollback_pager = "/home/basileb/kitty-copy/target/debug/kitty-copy";
+      allow_remote_control = true;
     };
     keybindings = {
       "ctrl+shift+." = "change_font_size all 0";

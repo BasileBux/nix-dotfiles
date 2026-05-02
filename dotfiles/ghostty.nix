@@ -17,7 +17,7 @@
       # JetBrainsMono NF, Google Sans Code, Berkeley Mono
       font-family = "Berkeley Mono";
 
-      font-size = 13;
+      font-size = 12;
       font-feature = "-calt";
       working-directory = "home";
       window-inherit-working-directory = false;

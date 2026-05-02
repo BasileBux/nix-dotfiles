@@ -29,7 +29,13 @@
       "splash"
       "loglevel=3"
       "udev.log_priority=3"
+      "transparent_hugepage=never" # For VMWare stability
     ];
+
+    # For VMWare stability
+    kernel.sysctl = {
+      "vm.compaction_proactiveness" = 0;
+    };
   };
 
   hardware.enableRedistributableFirmware = true;
@@ -177,7 +183,6 @@
     wireshark
     thunderbird
     jellyfin-desktop
-    wireguard-tools
     imhex
     vlc
     opencode
@@ -205,10 +210,6 @@
 
     radicle-node
     radicle-desktop
-
-    # NOTE: only for BBC lab
-    veryfasttree
-    muscle
   ];
 
   # Skip sage tests as they take ages to execute and are not relevant for my use.
@@ -237,11 +238,6 @@
   # Enable nautilus to automount
   services.gvfs.enable = true;
   services.udisks2.enable = true;
-
-  # NOTE: only to use chipwhisperer for SFA lab
-  services.udev.packages = with pkgs; [
-    python3Packages.chipwhisperer
-  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
