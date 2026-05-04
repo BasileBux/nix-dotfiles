@@ -143,6 +143,7 @@
     git
     wl-clipboard
     openssh
+    mosh
     unzip
     zip
     jq

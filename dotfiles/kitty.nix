@@ -63,7 +63,7 @@
       inactive_tab_foreground = "#ffffff";
       inactive_tab_background = "#16181a";
 
-      scrollback_pager = "/home/basileb/kitty-copy/target/debug/kitty-copy";
+      scrollback_pager = "/home/basileb/kitty-copy/target/debug/kitty-copy-pager";
       allow_remote_control = true;
     };
     keybindings = {

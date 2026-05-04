@@ -181,7 +181,7 @@ PanelWindow {
                 id: appItem
                 color: appList.hovered === index ? Globals.theme.accent1 : "transparent"
                 property DesktopEntry app: modelData
-                implicitHeight: 60
+                implicitHeight: 50
                 implicitWidth: launcher.implicitWidth - Globals.radius * 4
                 radius: Globals.radius
 
@@ -204,7 +204,7 @@ PanelWindow {
                     anchors.rightMargin: Globals.spacing
                     IconImage {
                         id: appIcon
-                        implicitSize: 40
+                        implicitSize: 30
                         asynchronous: true
                         source: {
                             let path = Quickshell.iconPath(appItem?.app.icon);

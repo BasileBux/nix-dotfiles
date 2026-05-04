@@ -31,7 +31,7 @@ Singleton {
         readonly property int tiny: 8
     }
 
-    readonly property int launcherWidth: 700
+    readonly property int launcherWidth: 600
     readonly property int launcherHeight: 400
 
     readonly property var notification: QtObject {
