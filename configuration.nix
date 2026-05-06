@@ -43,6 +43,12 @@
   networking.hostName = "${settings.username}-${settings.machine}";
   networking.networkmanager.enable = true;
 
+  networking.nameservers = [
+    "1.1.1.1"
+    "8.8.8.8"
+  ];
+  networking.networkmanager.dns = "none";
+
   time.timeZone = "Europe/Amsterdam";
 
   console = {
