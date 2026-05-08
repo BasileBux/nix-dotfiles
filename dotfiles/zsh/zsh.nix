@@ -28,18 +28,7 @@ in
 
     shellAliases = alias;
 
-    initContent = ''
-      mann() { man "$1" | bat -l man -p -; }
-
-      ba() {
-        local school_dir="$HOME/ba6"
-        if [ $# -eq 0 ]; then
-          cd "$school_dir" || return
-        else
-          cd "$school_dir/$1" || return
-        fi
-      }
-    '';
+    initContent = builtins.readFile ./initContent.zsh;
 
     history = {
       size = 10000;
