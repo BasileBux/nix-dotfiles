@@ -1,4 +1,5 @@
 {
+  pkgs,
   ...
 }:
 
@@ -75,4 +76,17 @@
       "ctrl+;" = "clear_terminal scroll active";
     };
   };
+  # Disable binds for tab management as we use Tmux to do that on a remote
+  xdg.configFile."kitty/ssh.conf".text = ''
+    include kitty.conf
+    map f1 no_op
+    map ctrl+h no_op
+    map ctrl+l no_op
+  '';
+
+  home.packages = with pkgs; [
+    (writeShellScriptBin "remote" ''
+      nohup kitty --config ~/.config/kitty/ssh.conf mosh "$1" -- tmux new-session -A -s "$2" > /dev/null 2>&1 &
+    '')
+  ];
 }

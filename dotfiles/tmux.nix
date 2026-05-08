@@ -15,7 +15,9 @@
       set -ga terminal-overrides ",screen-256color*:Tc"
       set -sg escape-time 0
 
+      # Uncomment on a remote
       # unbind C-b
+      # set -g prefix C-a
       # bind-key C-a send-prefix
 
       # Reload config
@@ -27,10 +29,8 @@
       bind-key -T copy-mode-vi _ send-keys -X start-of-line
 
       # Windows navigation
-      # bind-key -n C-h previous-window
-      # bind-key -n C-l next-window
-      bind-key -n C-j previous-window
-      bind-key -n C-k next-window
+      bind-key -n C-h previous-window
+      bind-key -n C-l next-window
 
       # Pane navigation
       bind -r j select-pane -D

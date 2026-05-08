@@ -49,6 +49,7 @@
   #   "8.8.8.8"
   # ];
   # networking.networkmanager.dns = "none";
+  networking.enableIPv6 = false;
 
   time.timeZone = "Europe/Amsterdam";
 
@@ -135,10 +136,15 @@
 
   virtualisation.vmware.host.enable = true;
 
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
   ];
+
+  nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
     # Utils
