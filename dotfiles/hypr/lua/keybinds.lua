@@ -3,6 +3,49 @@ local terminal = "kitty"
 local input = require("input")
 local config = require("config")
 
+local toggle_nautilus = function()
+	local wins = hl.get_windows({ class = "org.gnome.Nautilus" })
+	local active = hl.get_active_window()
+
+	if #wins == 0 then
+		hl.exec_cmd("nautilus")
+		return
+	end
+
+	local win = wins[1]
+
+	if active ~= nil and active.address == win.address then
+		hl.dispatch(hl.dsp.window.move({
+			window = win,
+			workspace = "special:shadowrealm",
+			follow = false,
+		}))
+		return
+	end
+
+	local ws = hl.get_active_workspace()
+
+	if ws ~= nil then
+		hl.dispatch(hl.dsp.window.move({
+			window = win,
+			workspace = ws,
+			follow = false,
+		}))
+	end
+
+	hl.dispatch(hl.dsp.focus({ window = win }))
+end
+
+local close_win = function()
+	local active = hl.get_active_window()
+
+	if active ~= nil and active.class == "org.gnome.Nautilus" then
+		toggle_nautilus()
+	else
+		hl.dispatch(hl.dsp.window.close())
+	end
+end
+
 -- Global shortcuts
 hl.bind(mainMod .. " + ALT + H", hl.dsp.global("quickshell:toggle"))
 hl.bind(mainMod .. " + ALT + L", hl.dsp.global("quickshell:lock"))
@@ -19,8 +62,9 @@ hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd([[grim -g "$(slurp -d)" - | w
 
 -- Apps
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
-hl.bind(mainMod .. " + Q", hl.dsp.window.close())
+hl.bind(mainMod .. " + Q", close_win)
 hl.bind(mainMod .. " + ALT + N", hl.dsp.exec_cmd("zen-twilight"))
+hl.bind(mainMod .. " + E", toggle_nautilus)
 hl.bind(
 	mainMod .. " + ALT + D",
 	hl.dsp.exec_cmd(terminal .. " -e sh nvim ~/tmp/notes/daily-$(date +%d-%b-%Y).md", { float = true })
