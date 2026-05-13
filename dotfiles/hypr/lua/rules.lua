@@ -1,3 +1,9 @@
+local f_str = function(s, tab)
+	return (s:gsub("($%b{})", function(w)
+		return tab[w:sub(3, -2)] or w
+	end))
+end
+
 hl.window_rule({
 	name = "pip-float",
 	match = { title = "Picture-in-Picture" },
@@ -28,20 +34,30 @@ hl.window_rule({
 	float = true,
 })
 
+local center = function(width)
+	return (1 - width) / 2
+end
+
+local sagepopup_width = 0.6
 hl.window_rule({
 	name = "sagepopup",
 	match = { title = "sagepopup" },
 	float = true,
-	size = "(monitor_w*0.6) (monitor_h*0.3)",
-	move = "(monitor_w*0.2) (monitor_h*0.02)",
+	size = f_str("(monitor_w*${width}) (monitor_h*${height})", { width = sagepopup_width, height = 0.3 }),
+	move = f_str("(monitor_w*${x_off}) (monitor_h*${y_off})", { x_off = center(sagepopup_width), y_off = 0.02 }),
 })
 
+local scratch_width = 0.8
+local scratch_height = 0.8
 hl.window_rule({
 	name = "scratch",
 	match = { title = "scratch" },
 	float = true,
-	size = "(monitor_w*0.8) (monitor_h*0.8)",
-	move = "(monitor_w*0.1) (monitor_h*0.1)",
+	size = f_str("(monitor_w*${width}) (monitor_h*${height})", { width = scratch_width, height = scratch_height }),
+	move = f_str(
+		"(monitor_w*${x_off}) (monitor_h*${y_off})",
+		{ x_off = center(scratch_width), y_off = center(scratch_height) }
+	),
 })
 
 -- ----------------
