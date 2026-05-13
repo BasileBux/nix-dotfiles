@@ -39,5 +39,5 @@ Singleton {
         readonly property int unitHeight: 110
         readonly property int maxVisible: 5
     }
-    readonly property string machine: "asus" // WARNING: Keep this as the last line
+    readonly property string machine: "asus-g14" // WARNING: Keep this as the last line
 }

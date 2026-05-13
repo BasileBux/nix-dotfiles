@@ -26,7 +26,7 @@
       settings = {
         username = "basileb";
         configPath = "/home/${settings.username}/nixos";
-        machine = "asus";
+        machine = "asus-g14";
         swapAltSuper = false;
         nixosVersion = "25.05"; # DO NOT CHANGE THIS EVER
       };
@@ -60,7 +60,7 @@
             home-manager.useGlobalPkgs = true;
           }
         ]
-        ++ nixpkgs.lib.optionals (settings.machine == "asus") [
+        ++ nixpkgs.lib.optionals (settings.machine == "asus-g14") [
           inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
         ];
       };

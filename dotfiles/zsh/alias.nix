@@ -10,10 +10,12 @@ in
   # General
   edit = "sudo -e";
   config = "cd ${settings.configPath} && nvim flake.nix";
-  rebuild = "sudo nixos-rebuild switch --flake /home/${settings.username}/nixos#default --impure && sh ${settings.configPath}/scripts/post-rebuild.sh";
+  rebuild = "sudo nixos-rebuild switch --flake /home/${settings.username}/nixos#default --impure";
+  rebuild-offline = "sudo nixos-rebuild switch --offline --flake /home/${settings.username}/nixos#default --impure";
   up = "sudo nix flake update && rebuild --upgrade";
   clean-nix = "sudo nix-collect-garbage --delete-older-than 12d && sudo nix store optimise";
   qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
+  hlconfig = "cd ${settings.configPath}/dotfiles/hypr && nvim hyprland.lua";
 
   # neovim
   nvimconfig = "cd $HOME/.config/nvim && nvim init.lua";

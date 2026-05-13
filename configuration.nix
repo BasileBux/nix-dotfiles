@@ -11,7 +11,7 @@
     ./hardware-configuration.nix
     ./smb.nix
   ]
-  ++ lib.optionals (settings.machine == "asus") [ ./hosts/asus-g14.nix ];
+  ++ lib.optionals (settings.machine == "asus-g14") [ ./hosts/asus-g14.nix ];
 
   boot = {
     loader = {
@@ -43,13 +43,13 @@
   networking.hostName = "${settings.username}-${settings.machine}";
   networking.networkmanager.enable = true;
 
-  # Only uncomment for cellular hotspot
+  # Only uncomment for cellular hotspot if it's bugging
   # networking.nameservers = [
   #   "1.1.1.1"
   #   "8.8.8.8"
   # ];
   # networking.networkmanager.dns = "none";
-  networking.enableIPv6 = false;
+  # networking.enableIPv6 = false;
 
   time.timeZone = "Europe/Amsterdam";
 
@@ -209,6 +209,7 @@
     clippy
     nodejs
     go
+    lua
     clang
     python3
     texlive.combined.scheme-full
@@ -249,6 +250,11 @@
   # Enable nautilus to automount
   services.gvfs.enable = true;
   services.udisks2.enable = true;
+
+  # NOTE: only to use chipwhisperer for SFA lab
+  services.udev.packages = with pkgs; [
+    python3Packages.chipwhisperer
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

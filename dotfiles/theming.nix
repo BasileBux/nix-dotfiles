@@ -15,8 +15,8 @@
   # Qt theming to match GTK
   qt = {
     enable = true;
-	platformTheme.name = "kde";
-	style.name = "breeze";
+    platformTheme.name = "kde";
+    style.name = "breeze";
     style.package = pkgs.libsForQt5.qtstyleplugins;
   };
 
@@ -29,7 +29,6 @@
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
-      xdg-desktop-portal-hyprland
       xdg-desktop-portal-gtk
     ];
     config = {

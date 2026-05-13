@@ -1,0 +1,14 @@
+local config = require("config")
+
+hl.on("hyprland.start", function()
+	hl.exec_cmd(
+		"dbus-update-activation-environment --systemd DISPLAY HYPRLAND_INSTANCE_SIGNATURE WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE"
+	)
+	hl.exec_cmd("systemctl --user stop hyprland-session.target && systemctl --user start hyprland-session.target")
+	hl.exec_cmd("hyprctl setcursor Bibata-Modern-Classic 22")
+	hl.exec_cmd("pkill quickshell; quickshell")
+	hl.exec_cmd("systemctl --user start hyprpolkitagent")
+	for _, cmd in pairs(config.startup) do
+		cmd()
+	end
+end)
