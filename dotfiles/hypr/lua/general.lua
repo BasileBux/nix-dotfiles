@@ -56,11 +56,11 @@ hl.animation({ leaf = "windows", enabled = true, speed = 2, bezier = "pop", styl
 hl.animation({ leaf = "windowsOut", enabled = true, speed = 3, bezier = "linear", style = "popin 70%" })
 hl.animation({ leaf = "fade", enabled = false })
 hl.animation({ leaf = "workspaces", enabled = true, speed = 0.6, bezier = "linear", style = "slide" })
-hl.animation({ leaf = "specialWorkspaceIn", enabled = true, speed = 1.2, bezier = "linear", style = "slidevert top" })
+hl.animation({ leaf = "specialWorkspaceIn", enabled = true, speed = 0.8, bezier = "linear", style = "slidevert top" })
 hl.animation({
 	leaf = "specialWorkspaceOut",
 	enabled = true,
-	speed = 1.2,
+	speed = 0.8,
 	bezier = "linear",
 	style = "slidevert bottom",
 })
