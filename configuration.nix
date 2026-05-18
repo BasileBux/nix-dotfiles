@@ -189,6 +189,7 @@
     imhex
     vlc
     opencode
+    gh
 
     # Dev deps
     gcc

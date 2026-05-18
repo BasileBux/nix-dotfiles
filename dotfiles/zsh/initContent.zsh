@@ -9,6 +9,30 @@ ba() {
   fi
 }
 
+git_init() {
+	repo_name="$1"
+	if [[ -z "$repo_name" ]]; then
+		echo "Usage: git_init <repo_name> [public|private]"
+		return 1
+	fi
+	repo_visibility="${2:-public}"
+	if [[ "$repo_visibility" != "public" && "$repo_visibility" != "private" ]]; then
+		echo "Invalid repository visibility: $repo_visibility. Use 'public' or 'private'."
+		return 1
+	fi
+	gh repo create "$repo_name" --"$repo_visibility"
+
+	git remote add gh git@github.com:BasileBux/"$repo_name".git
+	git remote add origin gitt@buxtorf-synology:"$repo_name".git
+
+	ssh gitt@buxtorf-synology "mkdir -p ${repo_name}.git && cd ${repo_name}.git && git init --bare && git branch -M main"
+	git branch -M main
+	git push -u origin main
+	git branch --set-upstream-to=origin/main main
+	git push -u origin --tags
+	git pushall
+}
+
 # Uselessly complex completion for the `remote` command (see ./dotfiles/kitty.nix)
 _remote_complete() {
   local state
