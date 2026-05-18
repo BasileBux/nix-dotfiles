@@ -38,6 +38,7 @@
         signingkey = "/home/${settings.username}/.ssh/id_ed25519.pub";
       };
       core.editor = "nvim";
+      alias.pushall = "!git push origin && git push gh main && git push rad main";
     };
 
     signing = {

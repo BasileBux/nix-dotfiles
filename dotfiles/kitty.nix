@@ -39,7 +39,6 @@
       foreground = "#ffffff";
       cursor = "#d1dd44";
       cursor_text_color = "#16181a";
-      # selection_background = "#3c4048";
       selection_background = "#d1dd44";
       color0 = "#16181a";
       color8 = "#3c4048";
@@ -57,7 +56,6 @@
       color14 = "#5ef1ff";
       color7 = "#ffffff";
       color15 = "#ffffff";
-      # selection_foreground = "#ffffff";
       selection_foreground = "#000000";
       active_tab_foreground = "#000000";
       active_tab_background = "#ffbd5e";
@@ -77,7 +75,7 @@
     };
   };
   # Disable binds for tab management as we use Tmux to do that on a remote
-  xdg.configFile."kitty/ssh.conf".text = ''
+  xdg.configFile."kitty/remote.conf".text = ''
     include kitty.conf
     map f1 no_op
     map ctrl+h no_op
@@ -86,7 +84,7 @@
 
   home.packages = with pkgs; [
     (writeShellScriptBin "remote" ''
-      nohup kitty --config ~/.config/kitty/ssh.conf mosh "$1" -- tmux new-session -A -s "$2" > /dev/null 2>&1 &
+      nohup kitty --config ~/.config/kitty/remote.conf mosh "$1" -- tmux new-session -A -s "$2" > /dev/null 2>&1 &
     '')
   ];
 }
