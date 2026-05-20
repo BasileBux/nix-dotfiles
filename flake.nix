@@ -2,6 +2,7 @@
   description = "Main flake";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs_stable.url = "github:nixos/nixpkgs?ref=nixos-25.11";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,6 +24,10 @@
       ...
     }@inputs:
     let
+      pkgs_stable = import inputs.nixpkgs_stable { # NOTE: Used for packages which are broken in unstable
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+      };
       settings = {
         username = "basileb";
         configPath = "/home/${settings.username}/nixos";
@@ -43,6 +48,7 @@
             inputs
             settings
             secrets
+            pkgs_stable
             ;
         };
 

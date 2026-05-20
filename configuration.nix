@@ -3,6 +3,7 @@
   pkgs,
   inputs,
   settings,
+  pkgs_stable,
   ...
 }:
 
@@ -190,6 +191,7 @@
     vlc
     opencode
     gh
+    pi-coding-agent
 
     # Dev deps
     gcc
@@ -245,7 +247,7 @@
   services.udisks2.enable = true;
 
   # NOTE: only to use chipwhisperer for SFA lab
-  services.udev.packages = with pkgs; [
+  services.udev.packages = with pkgs_stable; [
     python3Packages.chipwhisperer
   ];
 
