@@ -170,9 +170,9 @@
     nautilus
     kdePackages.gwenview
     evince
-    (pkgs.callPackage ./custom-packages/helium-browser.nix { })
     mpv
     zenity
+    inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
 
     # Optional Software
     blueman
@@ -213,10 +213,11 @@
     openssl
     difftastic
     typst
-    sage
+    # sage # NOTE:
 
     radicle-node
     radicle-desktop
+
   ];
 
   # Skip sage tests as they take ages to execute and are not relevant for my use.

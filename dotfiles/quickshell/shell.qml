@@ -12,6 +12,9 @@ ShellRoot {
         lock: lock
         notificationPanel: notification.notificationPanel
     }
+
+	Corners {}
+
     Notification {
         id: notification
         bar: bar

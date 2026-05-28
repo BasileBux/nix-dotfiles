@@ -72,6 +72,9 @@
       "ctrl+h" = "previous_tab";
       "ctrl+l" = "next_tab";
       "ctrl+;" = "clear_terminal scroll active";
+
+      "ctrl+shift+h" =
+        "launch --stdin-source=@screen_scrollback --stdin-add-formatting --type=overlay /home/basileb/kitty-copy/target/debug/kitty-copy-pager";
     };
   };
   # Disable binds for tab management as we use Tmux to do that on a remote

@@ -8,7 +8,7 @@
   config = "cd ${settings.configPath} && nvim flake.nix";
   rebuild = "sudo nixos-rebuild switch --flake /home/${settings.username}/nixos#default --impure";
   rebuild-offline = "sudo nixos-rebuild switch --offline --flake /home/${settings.username}/nixos#default --impure";
-  up = "sudo nix flake update && rebuild --upgrade";
+  up = "sudo nix flake update && rebuild";
   clean-nix = "sudo nix-collect-garbage --delete-older-than 12d && sudo nix store optimise";
   qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
   hlconfig = "cd ${settings.configPath}/dotfiles/hypr && nvim hyprland.lua";
@@ -31,10 +31,10 @@
   ubuntu = ''
     ${settings.configPath}/scripts/vmware-ubuntu.sh \
       no-user \
-      /home/basileb/ba6/srx/lab2/tmp/Ubuntu_24.04_VM_LinuxVMImages.COM.vmx \
+      '/home/basileb/ba6/srx/lab6/VM/UbuntuServer_24.04_VM_LinuxVMImages.COM.vmx' \
       ubuntu \
       ubuntu \
-      192.168.223.132'';
+      192.168.223.133'';
 
   vim = "nvim";
   top = "btop";
