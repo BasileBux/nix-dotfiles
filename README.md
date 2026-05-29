@@ -4,20 +4,44 @@ This is my personal NixOS configuration.
 
 ## Installation
 
-To install it, you can use on of the following commands:
-
-```bash
-nix-shell -p curl git --run "curl -L https://raw.githubusercontent.com/BasileBux/nix-dotfiles/refs/heads/main/install.sh | sh"
-```
-
-or
+To install it, you need to create a new host in the `hosts` directory. Do the following:
 
 ```bash
 nix-shell -p git
 git clone https://github.com/BasileBux/nix-dotfiles.git nixos
 cd nixos
-sudo cp /etc/nixos/hardware-configuration.nix .
-sudo nixos-rebuild switch --flake /home/basileb/nixos#default --impure
+# Create a new host
+mkdir hosts/<hostname>
+cp hosts/asus-g14/default.nix hosts/<hostname>
+sudo cp /etc/nixos/hardware-configuration.nix hosts/<hostname>
+```
+
+In `flake.nix` add a new host in `systems` which should look like:
+```nix
+```
+<hostname> =
+  let
+    settings = rec {
+      username = "";
+      configPath = "/home/${username}/nixos";
+      machine = "<hostname>";
+      desktop = false;
+      # Put the version which is in the automatically generated `/etc/nixos/configuration.nix`
+      # NEVER CHANGE THIS ONCE YOU SET IT UP !!!
+      nixosVersion = ""; 
+    };
+  in
+  {
+    inherit settings;
+    modules = [
+      # Optional additional modules
+    ];
+  };
+};
+
+And then rebuilt the system with:
+```bash
+sudo nixos-rebuild switch --flake /home/basileb/nixos#<hostname> --impure
 ```
 
 For certain things, you might need a `secrets.nix` file in the root of the repo:
@@ -28,13 +52,13 @@ For certain things, you might need a `secrets.nix` file in the root of the repo:
     anthropicApiKey = "";
     openaiApiKey = "";
     geminiApiKey = "";
+    googleGenerativeAiApiKey = "";
     moonshotApiKey = "";
     tavilyApiKey = "";
     xaiApiKey = "";
+    nvidiaApiKey = "";
   };
-  hotspotshield = {
-    username = "";
-    password = "";
-  };
+  github-token = "";
+  rad-passphrase = "";
 }
 ```
