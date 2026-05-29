@@ -55,7 +55,7 @@
 
   home-manager = {
     users = {
-      "${settings.username}" = import ./home.nix;
+      "${settings.username}" = import ../home.nix;
     };
   };
 

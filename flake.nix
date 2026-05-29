@@ -41,7 +41,7 @@
           secrets = if secretsExists then import secretsPath else { };
 
           commonModules = name: [
-            ./configuration.nix
+            ./hosts/default.nix
             ./hosts/${name}/default.nix
             ./hosts/${name}/hardware-configuration.nix
 
