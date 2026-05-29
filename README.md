@@ -18,7 +18,6 @@ sudo cp /etc/nixos/hardware-configuration.nix hosts/<hostname>
 
 In `flake.nix` add a new host in `systems` which should look like:
 ```nix
-```
 <hostname> =
   let
     settings = rec {
@@ -38,6 +37,7 @@ In `flake.nix` add a new host in `systems` which should look like:
     ];
   };
 };
+```
 
 And then rebuilt the system with:
 ```bash
