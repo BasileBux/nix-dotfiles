@@ -1,15 +1,19 @@
 {
   settings,
+  lib,
   ...
 }:
 
 {
   imports = [
+    ./dotfiles/tmux.nix
+    ./dotfiles/zsh/zsh.nix
+    ./dotfiles/neovim.nix
+  ]
+  ++ lib.optionals (settings.desktop) [
     ./dotfiles/ghostty.nix
     ./dotfiles/zen.nix
     ./dotfiles/fastfetch/fastfetch.nix
-    ./dotfiles/tmux.nix
-    ./dotfiles/zsh/zsh.nix
     ./dotfiles/hypr/hyprland.nix
     ./dotfiles/hypr/hypridle.nix
     ./dotfiles/theming.nix
@@ -17,7 +21,6 @@
     ./dotfiles/vscode.nix
     ./dotfiles/kitty.nix
     ./dotfiles/mime-apps.nix
-    ./dotfiles/neovim.nix
   ];
 
   home.username = "${settings.username}";

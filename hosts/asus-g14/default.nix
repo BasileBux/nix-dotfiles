@@ -46,4 +46,6 @@
     };
     rocmOverrideGfx = "10.3.0";
   };
+
+  system.stateVersion = "25.05"; # DO NOT CHANGE THIS EVER
 }

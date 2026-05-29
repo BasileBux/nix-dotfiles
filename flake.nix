@@ -26,51 +26,72 @@
       ...
     }@inputs:
     let
-      pkgs_stable = import inputs.nixpkgs_stable { # NOTE: Used for packages which are broken in unstable
+      pkgs_stable = import inputs.nixpkgs_stable {
         system = "x86_64-linux";
         config.allowUnfree = true;
       };
-      settings = {
-        username = "basileb";
-        configPath = "/home/${settings.username}/nixos";
-        machine = "asus-g14";
-        swapAltSuper = false;
-        nixosVersion = "25.05"; # DO NOT CHANGE THIS EVER
-      };
 
-      secretsPath = "${settings.configPath}/secrets.nix";
-      secretsExists = builtins.pathExists secretsPath;
-      secrets = if secretsExists then import secretsPath else { };
+      mkSystem =
+        name: cfg:
+        let
+          settings = cfg.settings or { };
 
-    in
-    {
-      nixosConfigurations.default = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit
-            inputs
-            settings
-            secrets
-            pkgs_stable
-            ;
+          secretsPath = "${settings.configPath}/secrets.nix";
+          secretsExists = builtins.pathExists secretsPath;
+          secrets = if secretsExists then import secretsPath else { };
+
+          commonModules = name: [
+            ./configuration.nix
+            ./hosts/${name}/default.nix
+            ./hosts/${name}/hardware-configuration.nix
+
+            inputs.home-manager.nixosModules.home-manager
+            {
+              home-manager.extraSpecialArgs = {
+                inherit
+                  inputs
+                  settings
+                  secrets
+                  ;
+              };
+              home-manager.useGlobalPkgs = true;
+            }
+          ];
+        in
+        nixpkgs.lib.nixosSystem {
+          system = cfg.system or "x86_64-linux";
+          modules = (commonModules name) ++ (cfg.modules or [ ]);
+          specialArgs = {
+            inherit
+              inputs
+              settings
+              secrets
+              pkgs_stable
+              ;
+          };
         };
 
-        modules = [
-          "${settings.configPath}/configuration.nix"
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager.extraSpecialArgs = {
-              inherit
-                inputs
-                settings
-                secrets
-                ;
+      systems = {
+        asus-g14 =
+          let
+            settings = rec {
+              username = "basileb";
+              configPath = "/home/${username}/nixos";
+              machine = "asus-g14";
+              desktop = true;
+              nixosVersion = "25.05"; # DO NOT CHANGE THIS EVER
             };
-            home-manager.useGlobalPkgs = true;
-          }
-        ]
-        ++ nixpkgs.lib.optionals (settings.machine == "asus-g14") [
-          inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
-        ];
+          in
+          {
+            inherit settings;
+            modules = [
+              ./hosts/desktop.nix
+              inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
+            ];
+          };
       };
+    in
+    {
+      nixosConfigurations = nixpkgs.lib.mapAttrs mkSystem systems;
     };
 }

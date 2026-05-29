@@ -1,3 +1,2 @@
-hardware-configuration.nix
 secrets.nix
 dotfiles/quickshell/.qmlls.ini
