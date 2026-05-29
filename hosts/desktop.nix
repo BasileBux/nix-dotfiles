@@ -2,7 +2,6 @@
   pkgs,
   inputs,
   settings,
-  pkgs_stable,
   ...
 }:
 
@@ -75,7 +74,9 @@
   programs.virt-manager.enable = true;
 
   environment.systemPackages = with pkgs; [
+    # Utils
     wl-clipboard
+    appimage-run
 
     # Codecs
     libva
@@ -110,6 +111,7 @@
     gh
     pi-coding-agent
 
+    radicle-node
     radicle-desktop
   ];
 
@@ -137,15 +139,4 @@
   # Enable nautilus to automount
   services.gvfs.enable = true;
   services.udisks2.enable = true;
-
-  # NOTE: only to use chipwhisperer for SFA lab
-  services.udev.packages = with pkgs_stable; [
-    python3Packages.chipwhisperer
-  ];
-
-  # NOTE: Only for HPC lab. Dangerous to enable
-  # programs.nix-ld.enable = true;
-  # boot.kernel.sysctl = {
-  #   "kernel.perf_event_paranoid" = 0;
-  # };
 }

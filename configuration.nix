@@ -94,33 +94,34 @@
     patchelf
     man-pages
     man-pages-posix
-    appimage-run
     perf
     tree
+    difftastic
 
-    # Dev deps
+    # C / C++
     gcc
     gcc_multi
     cmake
     gnumake
+    clang
+    gdb
+
+    # Rust
     rustc
     rustfmt
     rust-analyzer
     clippy
+
+    # js
     nodejs
+    bun
+
+    # Misc dev deps
     go
     lua
-    clang
     python3
-    texlive.combined.scheme-full
-    gdb
-    bun
-    openssl
-    difftastic
-    typst
     pkgs_stable.sage
-
-    radicle-node
+    typst
   ];
 
   services.tailscale.enable = true;

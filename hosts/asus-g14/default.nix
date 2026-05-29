@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgs_stable,
   ...
 }:
 
@@ -46,6 +47,17 @@
     };
     rocmOverrideGfx = "10.3.0";
   };
+
+  # NOTE: only to use chipwhisperer for SFA lab
+  services.udev.packages = with pkgs_stable; [
+    python3Packages.chipwhisperer
+  ];
+
+  # NOTE: Only for HPC lab. Dangerous to enable
+  # programs.nix-ld.enable = true;
+  # boot.kernel.sysctl = {
+  #   "kernel.perf_event_paranoid" = 0;
+  # };
 
   system.stateVersion = "25.05"; # DO NOT CHANGE THIS EVER
 }
