@@ -213,7 +213,7 @@
     openssl
     difftastic
     typst
-    # sage # NOTE:
+    pkgs_stable.sage
 
     radicle-node
     radicle-desktop
