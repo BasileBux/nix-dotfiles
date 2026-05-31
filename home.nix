@@ -27,6 +27,7 @@
   home.homeDirectory = "/home/${settings.username}";
 
   home.stateVersion = "${settings.nixosVersion}";
+  home.enableNixpkgsReleaseCheck = false;
 
   programs.home-manager.enable = true;
 

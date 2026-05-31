@@ -36,6 +36,7 @@
 
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
+  security.sudo.extraConfig = "Defaults pwfeedback";
 
   services.pipewire = {
     enable = true;
