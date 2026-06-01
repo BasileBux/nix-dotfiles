@@ -1,7 +1,6 @@
 {
   pkgs,
   settings,
-  pkgs_stable,
   ...
 }:
 
@@ -49,7 +48,6 @@
     isNormalUser = true;
     extraGroups = [
       "wheel"
-      "docker"
     ];
     shell = pkgs.zsh;
   };
@@ -65,10 +63,6 @@
   environment.sessionVariables = {
     SUDO_EDITOR = "/run/current-system/sw/bin/nvim";
     EDITOR = "/run/current-system/sw/bin/nvim";
-  };
-
-  virtualisation.docker = {
-    enable = true;
   };
 
   nix.settings.experimental-features = [
@@ -92,7 +86,6 @@
     bat
     btop
     file
-    patchelf
     man-pages
     man-pages-posix
     perf
@@ -121,11 +114,7 @@
     go
     lua
     python3
-    pkgs_stable.sage
-    typst
   ];
-
-  services.tailscale.enable = true;
 
   services.openssh.enable = true;
   programs.ssh.startAgent = true;

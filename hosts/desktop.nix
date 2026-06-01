@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgs_stable,
   inputs,
   settings,
   ...
@@ -96,6 +97,8 @@
     blueman
     pavucontrol
     yazi
+    typst
+    pkgs_stable.sage
     vesktop
     neovide
     ghidra-bin
@@ -139,4 +142,6 @@
   # Enable nautilus to automount
   services.gvfs.enable = true;
   services.udisks2.enable = true;
+
+  services.tailscale.enable = true;
 }
