@@ -21,20 +21,20 @@
       "splash"
       "loglevel=3"
       "udev.log_priority=3"
-      "transparent_hugepage=never" # For VMWare stability
+      # "transparent_hugepage=never" # For VMWare stability
     ];
 
-    # For VMWare stability
-    kernel.sysctl = {
-      "vm.compaction_proactiveness" = 0;
-    };
+    # # For VMWare stability
+    # kernel.sysctl = {
+    #   "vm.compaction_proactiveness" = 0;
+    # };
   };
 
   users.users.${settings.username} = {
     extraGroups = [
       "kvm"
-      "wireshark"
       "dialout"
+      # "wireshark" # Enable only when needed
     ];
   };
 

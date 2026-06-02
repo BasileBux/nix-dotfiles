@@ -19,13 +19,10 @@
     nvim -c CodeCompanionChat -c "wincmd h" -c "q"
   '';
 
+  vpn = "${settings.configPath}/scripts/vpn-home.sh";
+
   # Git
   gss = "git status";
-
-  # VPN
-  vpnstart = "sudo systemctl start openvpn-hs_ch";
-  vpnstop = "sudo systemctl stop openvpn-hs_ch";
-  vpnstatus = "systemctl status openvpn-hs_ch";
 
   playground = "/home/${settings.username}/playground-cli/playground";
   ubuntu = ''
