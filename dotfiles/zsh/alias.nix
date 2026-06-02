@@ -1,4 +1,5 @@
 {
+  lib,
   settings,
   ...
 }:
@@ -10,6 +11,19 @@
   rebuild-offline = "sudo nixos-rebuild switch --offline --flake /home/${settings.username}/nixos#${settings.machine} --impure";
   up = "sudo nix flake update && rebuild";
   clean-nix = "sudo nix-collect-garbage --delete-older-than 12d && sudo nix store optimise";
+
+  # Git
+  gss = "git status";
+
+  vim = "nvim";
+  top = "btop";
+
+  cp = "cp --recursive --verbose";
+  mv = "mv --verbose";
+  rm = "rm --recursive --verbose";
+  sl = "ls";
+}
+// lib.optionalAttrs settings.desktop {
   qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
   hlconfig = "cd ${settings.configPath}/dotfiles/hypr && nvim hyprland.lua";
 
@@ -21,9 +35,6 @@
 
   vpn = "${settings.configPath}/scripts/vpn-home.sh";
 
-  # Git
-  gss = "git status";
-
   playground = "/home/${settings.username}/playground-cli/playground";
   ubuntu = ''
     ${settings.configPath}/scripts/vmware-ubuntu.sh \
@@ -32,14 +43,6 @@
       ubuntu \
       ubuntu \
       192.168.223.133'';
-
-  vim = "nvim";
-  top = "btop";
-
-  cp = "cp --recursive --verbose";
-  mv = "mv --verbose";
-  rm = "rm --recursive --verbose";
-  sl = "ls";
 
   qwen = "ollama run qwen3.5:9b --think=false";
 }

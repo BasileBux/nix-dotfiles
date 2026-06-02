@@ -15,7 +15,6 @@ let
       pkgs
       inputs
       settings
-      secrets
       ;
   };
 in
