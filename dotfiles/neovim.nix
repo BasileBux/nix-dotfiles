@@ -22,14 +22,18 @@ let
     tree-sitter-python
 
     tree-sitter-typst
-
-    # tree-sitter-nix
-    # NOTE: Package seems rather abondoned and a bit broken. So I have a modified
-    # version of the parser under `~/.local/share/nvim/site/parser` and `queries`
-    # keep an eye on https://github.com/nix-community/tree-sitter-nix still.
-    # Also using the queries from:
-    # https://github.com/nvim-treesitter/nvim-treesitter/tree/main/runtime/queries/nix
+    tree-sitter-nix
   ];
+
+  # Using queries from my fork of nvim-treesitter because even if archived, the
+  # queries are good and I can fix them if needed.
+  nvim-treesitter-queries = pkgs.fetchFromGitHub {
+    owner = "BasileBux";
+    repo = "nvim-treesitter";
+    rev = "main";
+    hash = "sha256-PQR6tFt4lCrAZNQG7BLMD1IiCKja9wDS1S4laGJf/HE=";
+  };
+
   parserBundle = pkgs.runCommand "nvim-treesitter-parsers" { } ''
     mkdir -p $out/parser
     mkdir -p $out/queries
@@ -43,8 +47,10 @@ let
         # Link parser .so file to parser/
         ln -s ${p}/parser $out/parser/${lang}.so
 
-        # Link queries directory to queries/{lang}/
-        ln -s ${p}/queries $out/queries/${lang}
+        # Link queries directory from your fork (if it exists)
+        if [ -d "${nvim-treesitter-queries}/runtime/queries/${lang}" ]; then
+          ln -s ${nvim-treesitter-queries}/runtime/queries/${lang} $out/queries/${lang}
+        fi
       ''
     ) treesitterParsers}
   '';
