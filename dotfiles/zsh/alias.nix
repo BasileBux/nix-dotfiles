@@ -44,5 +44,13 @@
       ubuntu \
       192.168.223.133'';
 
+  ubuntu-g = ''
+    ${settings.configPath}/scripts/vmware-ubuntu.sh \
+      no-user \
+      '/home/basileb/vmware/Ubuntu/Ubuntu.vmx' \
+      osboxes \
+      osboxes.org \
+      192.168.223.134'';
+
   qwen = "ollama run qwen3.5:9b --think=false";
 }

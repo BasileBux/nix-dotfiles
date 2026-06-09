@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgs_stable,
   ...
 }:
 
@@ -18,6 +17,10 @@
     pciutils
     ryzenadj
     nvtopPackages.amd
+
+    perf
+    valgrind
+    hyperfine
   ];
 
   hardware.graphics = {
@@ -47,11 +50,6 @@
     };
     rocmOverrideGfx = "10.3.0";
   };
-
-  # NOTE: only to use chipwhisperer for SFA lab
-  services.udev.packages = with pkgs_stable; [
-    python3Packages.chipwhisperer
-  ];
 
   # NOTE: Only for HPC lab. Dangerous to enable
   # programs.nix-ld.enable = true;

@@ -34,7 +34,7 @@
     extraGroups = [
       "kvm"
       "dialout"
-      # "wireshark" # Enable only when needed
+      "wireshark" # Enable only when needed
     ];
   };
 
@@ -144,4 +144,7 @@
   services.udisks2.enable = true;
 
   services.tailscale.enable = true;
+
+  # NOTE: only enable when needed but disable else
+  programs.nix-ld.enable = true;
 }

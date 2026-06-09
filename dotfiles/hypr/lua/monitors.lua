@@ -17,22 +17,33 @@ local monitors_setup = function()
 		scale = secondary_mon.scale,
 	})
 
-	hl.monitor({
-		output = "",
-		mode = "preferred",
-		position = "auto",
-		scale = "auto",
-		mirror = "desc:" .. primary_mon.description,
-	})
-
 	local mons = hl.get_monitors()
+	local found_secondary = false
 	for _, mon in pairs(mons) do
 		if mon.description == secondary_mon.description then
+			found_secondary = true
 			hl.monitor({
 				output = "desc:" .. primary_mon.description,
 				disabled = true,
 			})
 		end
+	end
+
+	-- Mirror all monitors which aren't the secondary one
+	if not found_secondary and #mons > 1 then
+		hl.monitor({
+			output = "desc:" .. primary_mon.description,
+			mode = "1920x1080@120.00Hz", -- To have 16:9 aspect ratio for mirroring
+			scale = "1",
+			disabled = false,
+		})
+		hl.monitor({
+			output = "",
+			mode = "preferred",
+			position = "auto",
+			scale = "auto",
+			mirror = "desc:" .. primary_mon.description,
+		})
 	end
 	hl.exec_cmd("pkill quickshell; quickshell")
 end

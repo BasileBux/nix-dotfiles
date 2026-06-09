@@ -77,8 +77,7 @@ in
     cmake-language-server
     stylua
     clang-tools
-    # gopls
-    # (lib.hiPrio gopls)
+    gopls
     gotools
     ltex-ls
     lua-language-server

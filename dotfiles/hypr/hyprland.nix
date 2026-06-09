@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   config,
+  settings,
   ...
 }:
 
@@ -34,7 +35,13 @@ in
 
   xdg.configFile."hypr/hyprland.lua".source = ./hyprland.lua;
   xdg.configFile."hypr/input.lua".source = ./input.lua;
-  xdg.configFile."hypr/config.lua".source = ./config.lua;
+
+  xdg.configFile."hypr/config.lua".source =
+    let
+      hostConfig = ../../hosts + "/${settings.machine}/config.lua";
+    in
+    if (settings ? machine) && builtins.pathExists hostConfig then hostConfig else ./config.lua;
+
   xdg.configFile."hypr/lua" = {
     source = ./lua;
     recursive = true;
