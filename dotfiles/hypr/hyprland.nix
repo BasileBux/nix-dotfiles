@@ -38,9 +38,15 @@ in
 
   xdg.configFile."hypr/config.lua".source =
     let
-      hostConfig = ../../hosts + "/${settings.machine}/config.lua";
+      hostConfig = ../../hosts + "/${settings.machine}/hypr/config.lua";
     in
     if (settings ? machine) && builtins.pathExists hostConfig then hostConfig else ./config.lua;
+
+  xdg.configFile."hypr/host.lua".source =
+    let
+      hostConfig = ../../hosts + "/${settings.machine}/hypr/host.lua";
+    in
+    if (settings ? machine) && builtins.pathExists hostConfig then hostConfig else ./host.lua;
 
   xdg.configFile."hypr/lua" = {
     source = ./lua;

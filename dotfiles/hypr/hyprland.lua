@@ -14,3 +14,5 @@ require("input").setup()
 require("lua.keybinds")
 
 require("lua.rules")
+
+require("host")

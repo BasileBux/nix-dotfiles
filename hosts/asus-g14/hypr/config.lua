@@ -18,7 +18,7 @@ return {
 		keyboard = "asus::kbd_backlight",
 	},
 	startup = {
-		-- "brightnessctl -d amdgpu_bl2 set 85",
 		"asusctl -c 80",
 	},
+	mainMod = "SUPER",
 }

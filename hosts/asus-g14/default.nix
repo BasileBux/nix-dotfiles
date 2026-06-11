@@ -17,10 +17,6 @@
     pciutils
     ryzenadj
     nvtopPackages.amd
-
-    perf
-    valgrind
-    hyperfine
   ];
 
   hardware.graphics = {
@@ -41,21 +37,6 @@
     };
   };
   services.asusd.enable = true;
-
-  services.ollama = {
-    enable = true;
-    package = pkgs.ollama;
-    environmentVariables = {
-      HCC_AMDGPU_TARGET = "gfx1032";
-    };
-    rocmOverrideGfx = "10.3.0";
-  };
-
-  # NOTE: Only for HPC lab. Dangerous to enable
-  # programs.nix-ld.enable = true;
-  # boot.kernel.sysctl = {
-  #   "kernel.perf_event_paranoid" = 0;
-  # };
 
   system.stateVersion = "25.05"; # DO NOT CHANGE THIS EVER
 }

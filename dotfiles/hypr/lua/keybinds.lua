@@ -1,7 +1,7 @@
-local mainMod = "SUPER"
 local terminal = "kitty"
 local input = require("input")
 local config = require("config")
+local mainMod = config.mainMod
 
 local toggle_nautilus = function()
 	local wins = hl.get_windows({ class = "org.gnome.Nautilus" })

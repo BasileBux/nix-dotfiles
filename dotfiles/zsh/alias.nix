@@ -33,7 +33,7 @@
     nvim -c CodeCompanionChat -c "wincmd h" -c "q"
   '';
 
-  vpn = "${settings.configPath}/scripts/vpn-home.sh";
+  vpn = "${settings.configPath}/scripts/tailscale-exit-nodes.sh";
 
   playground = "/home/${settings.username}/playground-cli/playground";
   ubuntu = ''

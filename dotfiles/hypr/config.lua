@@ -17,8 +17,6 @@ return {
 		monitor = "amdgpu_bl2",
 		keyboard = "asus::kbd_backlight",
 	},
-	startup = {
-		-- hl.exec_cmd("brightnessctl -d amdgpu_bl2 set 85"),
-		"asusctl -c 80",
-	},
+	startup = {},
+	mainMod = "SUPER",
 }
