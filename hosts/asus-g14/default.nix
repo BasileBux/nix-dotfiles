@@ -37,6 +37,4 @@
     };
   };
   services.asusd.enable = true;
-
-  system.stateVersion = "25.05"; # DO NOT CHANGE THIS EVER
 }

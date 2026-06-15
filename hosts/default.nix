@@ -113,9 +113,12 @@
     # Misc dev deps
     go
     lua
-    python3
+    python313
+    python313Packages.pip
   ];
 
   services.openssh.enable = true;
   programs.ssh.startAgent = true;
+
+  system.stateVersion = settings.nixosVersion; # DO NOT CHANGE THIS EVER
 }

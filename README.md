@@ -12,9 +12,19 @@ git clone https://github.com/BasileBux/nix-dotfiles.git nixos
 cd nixos
 # Create a new host
 mkdir hosts/<hostname>
-cp hosts/asus-g14/default.nix hosts/<hostname>
 sudo cp /etc/nixos/hardware-configuration.nix hosts/<hostname>
 ```
+
+All the following files are standards and should be in the `hosts/<hostname>` directory:
+```bash
+.
+├── default.nix # Put whatever you want in there to be machine specific
+├── hardware-configuration.nix
+└── hypr
+    ├── config.lua
+    └── host.lua
+```
+Note: the `hypr` directory is optional and only makes sense if you are on a desktop.
 
 In `flake.nix` add a new host in `systems` which should look like:
 ```nix

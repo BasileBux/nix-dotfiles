@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgs_stable,
   inputs,
   settings,
   ...
@@ -21,20 +20,20 @@
       "splash"
       "loglevel=3"
       "udev.log_priority=3"
-      # "transparent_hugepage=never" # For VMWare stability
+      "transparent_hugepage=never" # For VMWare stability
     ];
 
-    # # For VMWare stability
-    # kernel.sysctl = {
-    #   "vm.compaction_proactiveness" = 0;
-    # };
+    # For VMWare stability
+    kernel.sysctl = {
+      "vm.compaction_proactiveness" = 0;
+    };
   };
 
   users.users.${settings.username} = {
     extraGroups = [
       "kvm"
       "dialout"
-      "wireshark" # Enable only when needed
+      # "wireshark" # Enable only when needed
     ];
   };
 
@@ -98,7 +97,7 @@
     pavucontrol
     yazi
     typst
-    pkgs_stable.sage
+    # sage # Often broken
     vesktop
     neovide
     ghidra-bin
@@ -144,7 +143,4 @@
   services.udisks2.enable = true;
 
   services.tailscale.enable = true;
-
-  # NOTE: only enable when needed but disable else
-  programs.nix-ld.enable = true;
 }

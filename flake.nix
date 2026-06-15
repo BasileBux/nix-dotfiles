@@ -2,7 +2,6 @@
   description = "Main flake";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    nixpkgs_stable.url = "github:nixos/nixpkgs?ref=nixos-26.05";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,11 +26,6 @@
       ...
     }@inputs:
     let
-      pkgs_stable = import inputs.nixpkgs_stable {
-        system = "x86_64-linux";
-        config.allowUnfree = true;
-      };
-
       mkSystem =
         name: cfg:
         let
@@ -67,7 +61,6 @@
               inputs
               settings
               secrets
-              pkgs_stable
               ;
           };
         };
