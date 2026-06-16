@@ -4,6 +4,10 @@
 }:
 
 {
+  imports = [
+    ../smb.nix
+  ];
+
   # amdgpu.dcdebugmask=0x4, pcie_aspm=force, amdgpu.sg_display=0 -> might help with stability issues
   # boot.kernelParams = [ "amdgpu.runpm=0" ];
   boot.supportedFilesystems = [ "ntfs" ];

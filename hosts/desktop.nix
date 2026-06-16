@@ -6,10 +6,6 @@
 }:
 
 {
-  imports = [
-    ../smb.nix
-  ];
-
   boot = {
     plymouth.enable = true;
 
