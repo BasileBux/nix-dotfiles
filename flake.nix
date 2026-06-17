@@ -26,63 +26,21 @@
       ...
     }@inputs:
     let
-      mkSystem =
-        name: cfg:
-        let
-          settings = cfg.settings or { };
-
-          secretsPath = "${settings.configPath}/secrets.nix";
-          secretsExists = builtins.pathExists secretsPath;
-          secrets = if secretsExists then import secretsPath else { };
-
-          commonModules = name: [
-            ./hosts/default.nix
-            ./hosts/${name}/default.nix
-            ./hosts/${name}/hardware-configuration.nix
-
-            inputs.home-manager.nixosModules.home-manager
-            {
-              home-manager.extraSpecialArgs = {
-                inherit
-                  inputs
-                  settings
-                  secrets
-                  ;
-              };
-              home-manager.useGlobalPkgs = true;
-            }
-          ];
-        in
-        nixpkgs.lib.nixosSystem {
-          system = cfg.system or "x86_64-linux";
-          modules = (commonModules name) ++ (cfg.modules or [ ]);
-          specialArgs = {
-            inherit
-              inputs
-              settings
-              secrets
-              ;
-          };
-        };
+      mkSystem = import ./lib/mkSystem.nix { inherit inputs; };
 
       systems = {
-        asus-g14 =
-          let
-            settings = rec {
-              username = "basileb";
-              configPath = "/home/${username}/nixos";
-              machine = "asus-g14";
-              desktop = true;
-              nixosVersion = "25.05"; # DO NOT CHANGE THIS EVER
-            };
-          in
-          {
-            inherit settings;
-            modules = [
-              ./hosts/desktop.nix
-              inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
-            ];
+        asus-g14 = {
+          settings = {
+            username = "basileb";
+            machine = "asus-g14";
+            desktop = true;
+            nixosVersion = "25.05"; # DO NOT CHANGE THIS EVER
           };
+          modules = [
+            ./hosts/desktop.nix
+            inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
+          ];
+        };
       };
     in
     {

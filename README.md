@@ -29,25 +29,21 @@ Note: the `hypr` directory is optional and only makes sense if you are on a desk
 In `flake.nix` add a new host in `systems` which should look like:
 ```nix
 <hostname> =
-  let
-    settings = rec {
-      username = "";
-      configPath = "/home/${username}/nixos";
-      machine = "<hostname>";
-      desktop = false;
-      # Put the version which is in the automatically generated `/etc/nixos/configuration.nix`
-      # NEVER CHANGE THIS ONCE YOU SET IT UP !!!
-      nixosVersion = ""; 
-    };
-  in
   {
-    inherit settings;
+    settings = {
+      username = "";        # required
+      machine = "<hostname>"; # required
+      nixosVersion = "";    # required, from `/etc/nixos/configuration.nix` NEVER CHANGE THIS ONCE YOU SET IT UP !!!
+      desktop = false;      # optional, defaults to false
+      configPath = "/home/${username}/nixos"; # optional, defaults to /home/<username>/nixos
+    };
     modules = [
       # Optional additional modules
     ];
   };
-};
 ```
+
+`flake.nix` validates the `settings` attrset with a submodule: missing required fields or unknown fields will fail the rebuild with a clear error.
 
 And then rebuilt the system with:
 ```bash
