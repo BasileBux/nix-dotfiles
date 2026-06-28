@@ -21,6 +21,15 @@
     pciutils
     ryzenadj
     nvtopPackages.amd
+
+    platformio-core
+  ];
+
+  programs.nix-ld.enable = true;
+
+  services.udev.packages = [
+    pkgs.platformio-core
+    pkgs.openocd
   ];
 
   hardware.graphics = {

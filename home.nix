@@ -50,4 +50,14 @@
       signByDefault = true;
     };
   };
+
+  programs.jujutsu = {
+    enable = true;
+    settings = {
+      user = {
+        name = "BasileBux";
+        email = "basile.buxtorf@ik.me";
+      };
+    };
+  };
 }

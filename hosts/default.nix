@@ -77,6 +77,7 @@
     wget
     curl
     git
+    jujutsu
     openssh
     mosh
     unzip
