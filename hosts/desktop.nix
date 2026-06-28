@@ -87,6 +87,7 @@
     mpv
     zenity
     inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
+    meld
 
     # Optional Software
     blueman
@@ -111,6 +112,7 @@
 
     radicle-node
     radicle-desktop
+    jjui
   ];
 
   # Skip sage tests as they take ages to execute and are not relevant for my use.

@@ -19,6 +19,7 @@ return {
 	},
 	startup = {
 		"asusctl -c 80",
+		"asusctl profile set Quiet",
 	},
 	mainMod = "SUPER",
 }

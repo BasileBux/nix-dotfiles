@@ -58,6 +58,19 @@
         name = "BasileBux";
         email = "basile.buxtorf@ik.me";
       };
+      ui = {
+        default-command = "log";
+        editor = "meld";
+        merge-editor = "nvim";
+      };
+      signing = {
+        behavior = "own";
+        backend = "ssh";
+        key = "/home/${settings.username}/.ssh/id_ed25519.pub";
+      };
+      git = {
+        sign-on-push = true;
+      };
     };
   };
 }
