@@ -10,9 +10,6 @@ Singleton {
     readonly property int spacing: 6
     readonly property int barIconSpacing: 2
 
-    // FloatPopup, Popup
-    readonly property string popup: "Popup"
-
     readonly property int barExtrema: 4
     readonly property int workspacesGap: 5
 

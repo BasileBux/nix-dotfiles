@@ -11,7 +11,7 @@ Item {
     required property int popupYpos
     required property int popupHeight
     required property int popupWidth
-    readonly property alias popup: popupLoader.popup
+    readonly property alias popup: popup
 
     ColumnLayout {
         anchors.fill: parent
@@ -46,36 +46,13 @@ Item {
         }
     }
 
-    Loader {
-        id: popupLoader
-        sourceComponent: Globals.popup === "FloatPopup" ? floatPopupComponent : regularPopupComponent
-
-        property var popup: popupLoader.item
-
-        Component {
-            id: regularPopupComponent
-            Popup {
-                id: popup
-                ref: bar
-                name: "Audio"
-                popupHeight: root.popupHeight
-                popupWidth: root.popupWidth
-                yPos: root.popupYpos
-                AudioPopup {}
-            }
-        }
-
-        Component {
-            id: floatPopupComponent
-            FloatPopup {
-                id: popup
-                ref: bar
-                name: "Audio"
-                popupHeight: root.popupHeight
-                popupWidth: root.popupWidth
-                yPos: root.popupYpos
-                AudioPopup {}
-            }
-        }
+    Popup {
+        id: popup
+        ref: bar
+        name: "Audio"
+        popupHeight: root.popupHeight
+        popupWidth: root.popupWidth
+        yPos: root.popupYpos
+        AudioPopup {}
     }
 }

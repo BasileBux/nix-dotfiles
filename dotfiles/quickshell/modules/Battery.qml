@@ -12,7 +12,7 @@ Item {
     property int popupYpos
     required property int popupWidth
     required property int popupHeight
-    readonly property alias popup: popupLoader.popup
+    readonly property alias popup: popup
 
     readonly property var chargeState: UPower.displayDevice.state
     readonly property bool isCharging: chargeState == UPowerDeviceState.Charging
@@ -72,51 +72,20 @@ Item {
         }
     }
 
-    Loader {
-        id: popupLoader
-        sourceComponent: Globals.popup === "FloatPopup" ? floatPopupComponent : regularPopupComponent
+    Popup {
+        id: popup
+        ref: bar
+        popupWidth: root.popupWidth
+        popupHeight: root.popupHeight
+        yPos: root.popupYpos
+        name: "Battery"
 
-        property var popup: popupLoader.item
-
-        Component {
-            id: regularPopupComponent
-            Popup {
-                id: popup
-                ref: bar
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            BatteryPopup {
                 popupWidth: root.popupWidth
-                popupHeight: root.popupHeight
-                yPos: root.popupYpos
-                name: "Battery"
-
-                Rectangle {
-                    anchors.fill: parent
-                    color: "transparent"
-                    BatteryPopup {
-                        popupWidth: root.popupWidth
-                        moduleRef: batteryContent
-                    }
-                }
-            }
-        }
-
-        Component {
-            id: floatPopupComponent
-            FloatPopup {
-                id: popup
-                ref: bar
-                popupWidth: root.popupWidth
-                popupHeight: root.popupHeight
-                yPos: root.popupYpos
-                name: "Battery"
-
-                Rectangle {
-                    anchors.fill: parent
-                    color: "transparent"
-                    BatteryPopup {
-                        popupWidth: root.popupWidth
-                        moduleRef: batteryContent
-                    }
-                }
+                moduleRef: batteryContent
             }
         }
     }

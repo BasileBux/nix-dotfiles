@@ -13,7 +13,7 @@ ShellRoot {
         notificationPanel: notification.notificationPanel
     }
 
-	Corners {}
+    Corners {}
 
     Notification {
         id: notification

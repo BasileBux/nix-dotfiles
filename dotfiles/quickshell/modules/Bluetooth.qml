@@ -11,7 +11,7 @@ Item {
     required property int popupYpos
     required property int popupHeight
     required property int popupWidth
-    readonly property alias popup: popupLoader.popup
+    readonly property alias popup: popup
 
     Button {
         id: bluetoothIcon
@@ -36,42 +36,16 @@ Item {
         }
     }
 
-    Loader {
-        id: popupLoader
-        sourceComponent: Globals.popup === "FloatPopup" ? floatPopupComponent : regularPopupComponent
+    Popup {
+        id: popup
+        ref: bar
+        name: "Bluetooth"
+        popupHeight: root.popupHeight
+        popupWidth: root.popupWidth
+        yPos: popupYpos
 
-        property var popup: popupLoader.item
-
-        Component {
-            id: regularPopupComponent
-            Popup {
-                id: popup
-                ref: bar
-                name: "Bluetooth"
-                popupHeight: root.popupHeight
-                popupWidth: root.popupWidth
-                yPos: popupYpos
-
-                BluetoothPopup {
-                    id: bluetoothPopup
-                }
-            }
-        }
-
-        Component {
-            id: floatPopupComponent
-            FloatPopup {
-                id: popup
-                ref: bar
-                name: "Bluetooth"
-                popupHeight: root.popupHeight
-                popupWidth: root.popupWidth
-                yPos: popupYpos
-
-                BluetoothPopup {
-                    id: bluetoothPopup
-                }
-            }
+        BluetoothPopup {
+            id: bluetoothPopup
         }
     }
 }

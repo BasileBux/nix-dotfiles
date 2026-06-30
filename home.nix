@@ -60,8 +60,8 @@
       };
       ui = {
         default-command = "log";
-        editor = "meld";
-        merge-editor = "nvim";
+        editor = "nvim";
+        merge-editor = "meld";
       };
       signing = {
         behavior = "own";

@@ -1,4 +1,3 @@
-import Quickshell
 import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
@@ -63,15 +62,15 @@ Item {
                         bottom: parent.bottom
                         horizontalCenter: parent.horizontalCenter
                     }
-                    color: workspaceItem.exists ? (workspaceItem.urgent ? urgentColor : (workspaceItem.active ? focusedColor : activeColor)) : inactiveColor
+                    color: workspaceItem.exists ? (workspaceItem.urgent ? root.urgentColor : (workspaceItem.active ? root.focusedColor : root.activeColor)) : root.inactiveColor
                     implicitWidth: root.dotSize
-                    scale: 1 + animActive * 0.10
+                    scale: 1 + workspaceItem.animActive * 0.10
                     radius: 15
                 }
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: Hyprland.dispatch(`workspace ${workspaceIndex}`)
+                    onClicked: Hyprland.dispatch(`hl.dsp.focus({workspace = ${workspaceItem.workspaceIndex}})`)
                 }
             }
         }

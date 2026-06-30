@@ -9,7 +9,7 @@ Item {
     property int popupYpos
     required property int popupHeight
     required property int popupWidth
-    readonly property alias popup: popupLoader.popup
+    readonly property alias popup: popup
     readonly property int fontSize: Globals.fonts.small
 
     MouseArea {
@@ -51,57 +51,23 @@ Item {
         }
     }
 
-    Loader {
-        id: popupLoader
-        sourceComponent: Globals.popup === "FloatPopup" ? floatPopupComponent : regularPopupComponent
+    Popup {
+        id: popup
+        ref: bar
+        popupWidth: root.popupWidth
+        popupHeight: root.popupHeight
+        yPos: popupYpos
+        name: "Clock"
 
-        property var popup: popupLoader.item
+        Item {
+            anchors.fill: parent
 
-        Component {
-            id: regularPopupComponent
-            Popup {
-                id: popup
-                ref: bar
-                popupWidth: root.popupWidth
-                popupHeight: root.popupHeight
-                yPos: popupYpos
-                name: "Clock"
-
-                Item {
-                    anchors.fill: parent
-
-                    Text {
-                        anchors.centerIn: parent
-                        color: Globals.theme.foreground
-                        font.pixelSize: Globals.fonts.medium
-                        font.family: Globals.theme.fontFamily
-                        text: Qt.formatDateTime(clock.date, "dd-MM-yyyy")
-                    }
-                }
-            }
-        }
-
-        Component {
-            id: floatPopupComponent
-            FloatPopup {
-                id: popup
-                ref: bar
-                popupWidth: root.popupWidth
-                popupHeight: root.popupHeight
-                yPos: popupYpos
-                name: "Clock"
-
-                Item {
-                    anchors.fill: parent
-
-                    Text {
-                        anchors.centerIn: parent
-                        color: Globals.theme.foreground
-                        font.pixelSize: Globals.fonts.medium
-                        font.family: Globals.theme.fontFamily
-                        text: Qt.formatDateTime(clock.date, "dd-MM-yyyy")
-                    }
-                }
+            Text {
+                anchors.centerIn: parent
+                color: Globals.theme.foreground
+                font.pixelSize: Globals.fonts.medium
+                font.family: Globals.theme.fontFamily
+                text: Qt.formatDateTime(clock.date, "dd-MM-yyyy")
             }
         }
     }
