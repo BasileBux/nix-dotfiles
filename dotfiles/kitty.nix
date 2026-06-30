@@ -40,8 +40,8 @@
       cursor = "#d1dd44";
       cursor_text_color = "#16181a";
       selection_background = "#d1dd44";
-      color0 = "#16181a";
-      color8 = "#3c4048";
+      color0 = "#747C8B"; # #3c4048 #16181a
+      color8 = "#747C8B"; # #3c4048
       color1 = "#ff6e5e";
       color9 = "#ff6e5e";
       color2 = "#5eff6c";
