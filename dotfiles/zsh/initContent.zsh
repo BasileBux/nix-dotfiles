@@ -60,3 +60,7 @@ _remote_complete() {
   esac
 }
 compdef _remote_complete remote
+
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^a' edit-command-line

@@ -22,6 +22,10 @@
   mv = "mv --verbose";
   rm = "rm --recursive --verbose";
   sl = "ls";
+
+  C = "wl-copy";
+  P = "wl-paste";
+  NULL = "/dev/null 2>&1";
 }
 // lib.optionalAttrs settings.desktop {
   qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";

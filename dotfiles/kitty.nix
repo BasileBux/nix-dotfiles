@@ -62,7 +62,7 @@
       inactive_tab_foreground = "#ffffff";
       inactive_tab_background = "#16181a";
 
-      scrollback_pager = "/home/basileb/kitty-copy/target/debug/kitty-copy-pager";
+      scrollback_pager = "nvim -u ~/.config/nvim/minimal.lua --cmd 'set eventignore=FileType' +'nnoremap q ZQ' +'call nvim_open_term(0, {})' +'set nomodified nolist' +'call cursor(CURSOR_LINE, CURSOR_COLUMN)' -";
       allow_remote_control = true;
     };
     keybindings = {
@@ -72,9 +72,6 @@
       "ctrl+h" = "previous_tab";
       "ctrl+l" = "next_tab";
       "ctrl+;" = "clear_terminal scroll active";
-
-      "ctrl+shift+h" =
-        "launch --stdin-source=@screen_scrollback --stdin-add-formatting --type=overlay /home/basileb/kitty-copy/target/debug/kitty-copy-pager";
     };
   };
   # Disable binds for tab management as we use Tmux to do that on a remote
