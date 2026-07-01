@@ -17,12 +17,6 @@ Item {
     NotificationServer {
         id: notificationServer
 
-        function printList(list) {
-            for (var i = 0; i < list.length; i++) {
-                console.log("Item " + i + ": " + list[i]);
-            }
-        }
-
         bodyHyperlinksSupported: true
         bodyMarkupSupported: true
         bodyImagesSupported: true
