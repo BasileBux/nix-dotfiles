@@ -20,8 +20,6 @@ git_init() {
 	ssh gitt@buxtorf-synology "mkdir -p ${repo_name}.git && cd ${repo_name}.git && git init --bare && git branch -M main"
 	git branch -M main
 	git branch --set-upstream-to=origin/main main
-
-  git remote add all gitt@buxtorf-synology:"$repo_name".git
 }
 
 github_init() {
@@ -40,10 +38,10 @@ github_init() {
 	git branch -M main
 }
 
-git_setup_remotes() {
+jj_pushall() {
   for r in $(git remote);
   do
-    git remote set-url --add --push all $(git remote get-url --push $r)
+    jj git push --remote $r
   done
 }
 
