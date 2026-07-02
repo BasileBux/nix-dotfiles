@@ -12,6 +12,21 @@ ba() {
 git_init() {
 	repo_name="$1"
 	if [[ -z "$repo_name" ]]; then
+		echo "Usage: git_init <repo_name>"
+		return 1
+	fi
+	git remote add origin gitt@buxtorf-synology:"$repo_name".git
+
+	ssh gitt@buxtorf-synology "mkdir -p ${repo_name}.git && cd ${repo_name}.git && git init --bare && git branch -M main"
+	git branch -M main
+	git branch --set-upstream-to=origin/main main
+
+  git remote add all gitt@buxtorf-synology:"$repo_name".git
+}
+
+github_init() {
+	repo_name="$1"
+	if [[ -z "$repo_name" ]]; then
 		echo "Usage: git_init <repo_name> [public|private]"
 		return 1
 	fi
@@ -21,16 +36,15 @@ git_init() {
 		return 1
 	fi
 	gh repo create "$repo_name" --"$repo_visibility"
-
 	git remote add gh git@github.com:BasileBux/"$repo_name".git
-	git remote add origin gitt@buxtorf-synology:"$repo_name".git
-
-	ssh gitt@buxtorf-synology "mkdir -p ${repo_name}.git && cd ${repo_name}.git && git init --bare && git branch -M main"
 	git branch -M main
-	git push -u origin main
-	git branch --set-upstream-to=origin/main main
-	git push -u origin --tags
-	git pushall
+}
+
+git_setup_remotes() {
+  for r in $(git remote);
+  do
+    git remote set-url --add --push all $(git remote get-url --push $r)
+  done
 }
 
 # Uselessly complex completion for the `remote` command (see ./dotfiles/kitty.nix)
