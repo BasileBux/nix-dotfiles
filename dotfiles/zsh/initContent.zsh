@@ -9,6 +9,7 @@ ba() {
   fi
 }
 
+# Create a repo hosted on the NAS and add it as a remote
 git_init() {
 	repo_name="$1"
 	if [[ -z "$repo_name" ]]; then
@@ -22,6 +23,7 @@ git_init() {
 	git branch --set-upstream-to=origin/main main
 }
 
+# Create a repo hosted on GitHub and add it as a remote
 github_init() {
 	repo_name="$1"
 	if [[ -z "$repo_name" ]]; then
@@ -38,6 +40,7 @@ github_init() {
 	git branch -M main
 }
 
+# Push to all remotes
 jj_pushall() {
   for r in $(git remote);
   do
