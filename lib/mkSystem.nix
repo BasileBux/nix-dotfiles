@@ -30,6 +30,12 @@ let
         type = lib.types.str;
         description = "The NixOS state version. DO NOT CHANGE THIS EVER";
       };
+
+      accentColor = lib.mkOption {
+        type = lib.types.strMatching "^#[0-9a-fA-F]{6}$";
+        default = "#fb8b1e";
+        description = "Main accent color for prompts/theming, as #RRGGBB";
+      };
     };
   };
 

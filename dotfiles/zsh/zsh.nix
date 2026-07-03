@@ -17,6 +17,21 @@ let
       settings
       ;
   };
+
+  themeFile = pkgs.runCommand "basileb.zsh-theme" {
+    accentColor = settings.accentColor;
+  } ''
+    r=$(printf '%d' 0x''${accentColor:1:2})
+    g=$(printf '%d' 0x''${accentColor:3:2})
+    b=$(printf '%d' 0x''${accentColor:5:2})
+
+    sed -e "s|@accent_rgb@|$r;$g;$b|g" ${./basileb.zsh-theme} > $out
+  '';
+
+  zshCustom = pkgs.runCommand "zsh-custom" {} ''
+    mkdir -p $out
+    cp ${themeFile} $out/basileb.zsh-theme
+  '';
 in
 {
   programs.zsh = {
@@ -42,7 +57,7 @@ in
     oh-my-zsh = {
       enable = true;
       plugins = [ ];
-      custom = "${settings.configPath}/dotfiles/zsh";
+      custom = "${zshCustom}";
       theme = "basileb";
     };
   };
