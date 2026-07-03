@@ -1,18 +1,43 @@
 {
   pkgs,
+  settings,
   ...
 }:
 
 {
   imports = [
-    ../smb.nix
+    ../profiles/smb.nix
   ];
 
-  # amdgpu.dcdebugmask=0x4, pcie_aspm=force, amdgpu.sg_display=0 -> might help with stability issues
-  # boot.kernelParams = [ "amdgpu.runpm=0" ];
-  boot.supportedFilesystems = [ "ntfs" ];
-  boot.kernelModules = [ "mt7921e" ];
-  boot.initrd.kernelModules = [ "mt7921e" ];
+  boot = {
+    supportedFilesystems = [ "ntfs" ];
+    kernelModules = [
+      "mt7921e"
+      "spi_bcm2835"
+      "spidev"
+    ];
+    initrd.kernelModules = [ "mt7921e" ];
+
+    # For VMWare stability
+    kernelParams = [
+      "transparent_hugepage=never"
+    ];
+    kernel.sysctl = {
+      "vm.compaction_proactiveness" = 0;
+    };
+  };
+
+  users.users.${settings.username} = {
+    extraGroups = [
+      # "wireshark" # Enable only when needed
+    ];
+  };
+
+  programs.wireshark = {
+    enable = true;
+    usbmon.enable = true;
+    dumpcap.enable = true;
+  };
 
   environment.systemPackages = with pkgs; [
     asusctl
@@ -27,10 +52,17 @@
 
   programs.nix-ld.enable = true;
 
-  services.udev.packages = [
-    pkgs.platformio-core
-    pkgs.openocd
-  ];
+  services.udev = {
+    packages = [
+      pkgs.platformio-core
+      pkgs.openocd
+    ];
+    # Rules to make flashrom on the ch341a work without sudo
+    extraRules = ''
+      SUBSYSTEM=="usb", ATTR{idVendor}=="1a86", ATTR{idProduct}=="5512", MODE="0660", GROUP="dialout", TAG+="uaccess" 
+      SUBSYSTEM=="usb", ATTR{idVendor}=="1a86", ATTR{idProduct}=="5523", MODE="0660", GROUP="dialout", TAG+="uaccess"
+    '';
+  };
 
   environment.sessionVariables = {
     PI_SKIP_VERSION_CHECK = "1";

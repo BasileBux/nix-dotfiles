@@ -13,9 +13,7 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
-  hardware.enableRedistributableFirmware = true;
-
-  networking.hostName = "${settings.username}-${settings.machine}";
+  networking.hostName = settings.hostname;
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Amsterdam";
@@ -31,18 +29,8 @@
     options = "grp:alt_space_toggle,ctrl:nocaps";
   };
 
-  services.printing.enable = false;
-
-  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   security.sudo.extraConfig = "Defaults pwfeedback";
-
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
 
   users.users.${settings.username} = {
     isNormalUser = true;
@@ -61,16 +49,14 @@
   programs.zsh.enable = true;
 
   environment.sessionVariables = {
-    SUDO_EDITOR = "/run/current-system/sw/bin/nvim";
-    EDITOR = "/run/current-system/sw/bin/nvim";
+    SUDO_EDITOR = "nvim";
+    EDITOR = "nvim";
   };
 
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
   ];
-
-  nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
     # Utils
@@ -84,43 +70,14 @@
     zip
     jq
     bc
-    bat
-    xxd
     btop
     file
-    man-pages
-    man-pages-posix
-    perf
-    tree
-    difftastic
-
-    # C / C++
-    gcc
-    gcc_multi
-    cmake
-    gnumake
-    clang
-    gdb
-
-    # Rust
-    rustc
-    rustfmt
-    rust-analyzer
-    clippy
-
-    # js
-    nodejs
-    bun
-
-    # Misc dev deps
-    go
-    lua
-    python313
-    python313Packages.pip
   ];
 
   services.openssh.enable = true;
   programs.ssh.startAgent = true;
+
+  services.tailscale.enable = true;
 
   system.stateVersion = settings.nixosVersion; # DO NOT CHANGE THIS EVER
 }

@@ -20,6 +20,12 @@ let
         description = "The hostname / machine identifier (should match the name of the system in the flake)";
       };
 
+      hostname = lib.mkOption {
+        type = lib.types.str;
+        description = "The hostname for this machine. If not set, defaults to \${username}-\${machine}";
+        default = "${config.username}-${config.machine}";
+      };
+
       desktop = lib.mkOption {
         type = lib.types.bool;
         description = "Whether this machine is a desktop";
@@ -35,6 +41,18 @@ let
         type = lib.types.strMatching "^#[0-9a-fA-F]{6}$";
         default = "#fb8b1e";
         description = "Main accent color for prompts/theming, as #RRGGBB";
+      };
+
+      gitName = lib.mkOption {
+        type = lib.types.str;
+        default = "BasileBux";
+        description = "Git and Jujutsu user name";
+      };
+
+      gitEmail = lib.mkOption {
+        type = lib.types.str;
+        default = "basile.buxtorf@ik.me";
+        description = "Git and Jujutsu user email";
       };
     };
   };
@@ -57,10 +75,11 @@ let
   secretsExists = builtins.pathExists secretsPath;
   secrets = if secretsExists then import secretsPath else { };
 
-  commonModules = name: [
+  hardwarePath = ../hosts/${name}/hardware-configuration.nix;
+
+  commonModules = [
     ../hosts/default.nix
     ../hosts/${name}/default.nix
-    ../hosts/${name}/hardware-configuration.nix
 
     inputs.home-manager.nixosModules.home-manager
     {
@@ -74,10 +93,14 @@ let
       home-manager.useGlobalPkgs = true;
     }
   ];
+
+  optionalModules =
+    lib.optional (builtins.pathExists hardwarePath) hardwarePath
+    ++ lib.optional settings.desktop ../hosts/profiles/desktop.nix;
 in
 lib.nixosSystem {
   system = cfg.system or "x86_64-linux";
-  modules = (commonModules name) ++ (cfg.modules or [ ]);
+  modules = commonModules ++ optionalModules ++ (cfg.modules or [ ]);
   specialArgs = {
     inherit
       inputs

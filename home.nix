@@ -37,8 +37,8 @@
 
     settings = {
       user = {
-        name = "BasileBux";
-        email = "basile.buxtorf@ik.me";
+        name = "${settings.gitName}";
+        email = "${settings.gitEmail}";
         signingkey = "/home/${settings.username}/.ssh/id_ed25519.pub";
       };
       core.editor = "nvim";
@@ -55,8 +55,8 @@
     enable = true;
     settings = {
       user = {
-        name = "BasileBux";
-        email = "basile.buxtorf@ik.me";
+        name = "${settings.gitName}";
+        email = "${settings.gitEmail}";
       };
       ui = {
         default-command = "log";

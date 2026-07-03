@@ -33,12 +33,13 @@
           settings = {
             username = "basileb";
             machine = "asus-g14";
+            hostname = "laptop-asus";
             desktop = true;
             accentColor = "#fb8b1e";
             nixosVersion = "25.05"; # DO NOT CHANGE THIS EVER
           };
           modules = [
-            ./hosts/desktop.nix
+            ./hosts/profiles/common.nix
             inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
           ];
         };

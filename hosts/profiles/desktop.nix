@@ -16,20 +16,21 @@
       "splash"
       "loglevel=3"
       "udev.log_priority=3"
-      "transparent_hugepage=never" # For VMWare stability
     ];
+  };
 
-    # For VMWare stability
-    kernel.sysctl = {
-      "vm.compaction_proactiveness" = 0;
-    };
+  services.pulseaudio.enable = false;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
   };
 
   users.users.${settings.username} = {
     extraGroups = [
       "kvm"
       "dialout"
-      # "wireshark" # Enable only when needed
     ];
   };
 
@@ -57,14 +58,6 @@
     enable = true;
     binfmt = true;
   };
-
-  programs.wireshark = {
-    enable = true;
-    usbmon.enable = true;
-    dumpcap.enable = true;
-  };
-
-  virtualisation.vmware.host.enable = true;
 
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
@@ -139,6 +132,4 @@
   # Enable nautilus to automount
   services.gvfs.enable = true;
   services.udisks2.enable = true;
-
-  services.tailscale.enable = true;
 }

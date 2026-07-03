@@ -19,7 +19,7 @@ All the following files are standards and should be in the `hosts/<hostname>` di
 ```bash
 .
 ├── default.nix # Put whatever you want in there to be machine specific
-├── hardware-configuration.nix
+├── hardware-configuration.nix # optional, auto-detected if present
 └── hypr
     ├── config.lua
     └── host.lua
@@ -33,15 +33,28 @@ In `flake.nix` add a new host in `systems` which should look like:
     settings = {
       username = "";        # required
       machine = "<hostname>"; # required
-      nixosVersion = "";    # required, from `/etc/nixos/configuration.nix` NEVER CHANGE THIS ONCE YOU SET IT UP !!!
+      hostname = "<hostname>";  # optional, default to 'username-machine'
       desktop = false;      # optional, defaults to false
-      configPath = "/home/${username}/nixos"; # optional, defaults to /home/<username>/nixos
+      accentColor = "#fb8b1e"; # optional, defaults to "#fb8b1e"
+      gitName = "BasileBux"; # optional, defaults to "BasileBux"
+      gitEmail = "basile.buxtorf@ik.me"; # optional, defaults to "basile.buxtorf@ik.me"
+      nixosVersion = "";    # required, from `/etc/nixos/configuration.nix` NEVER CHANGE THIS ONCE YOU SET IT UP !!!
     };
     modules = [
-      # Optional additional modules
+      # Optional additional modules, e.g. ./hosts/profiles/common.nix
     ];
   };
 ```
+
+### Profiles
+
+Reusable system modules live in `hosts/profiles/`:
+
+- `desktop.nix` is **automatically imported** when `settings.desktop = true`.
+- `common.nix` is optional; import it manually in `modules` if you want it on that host.
+- `smb.nix` is optional; import it from the host-specific `default.nix` if needed.
+
+`hosts/default.nix` is always imported as the minimal base config.
 
 `flake.nix` validates the `settings` attrset with a submodule: missing required fields or unknown fields will fail the rebuild with a clear error.
 
