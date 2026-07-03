@@ -6,7 +6,7 @@
   ...
 }:
 let
-  treesitterParsers = with pkgs.tree-sitter-grammars; [
+  treesitterParsers = (with pkgs.tree-sitter-grammars; [
     tree-sitter-c
     tree-sitter-cpp
     tree-sitter-go
@@ -25,6 +25,8 @@ let
 
     tree-sitter-typst
     tree-sitter-nix
+  ]) ++ [
+    pkgs.vimPlugins.nvim-treesitter-parsers.qmljs
   ];
 
   # Using queries from my fork of nvim-treesitter because even if archived, the
@@ -43,15 +45,32 @@ let
     ${lib.concatMapStrings (
       p:
       let
-        lang = lib.removePrefix "tree-sitter-" (lib.getName p);
+        name = lib.getName p;
+        lang =
+          if lib.hasPrefix "tree-sitter-" name then
+            lib.removePrefix "tree-sitter-" name
+          else if lib.hasPrefix "nvim-treesitter-grammar-" name then
+            lib.removePrefix "nvim-treesitter-grammar-" name
+          else
+            name;
       in
       ''
         # Link parser .so file to parser/
-        ln -s ${p}/parser $out/parser/${lang}.so
+        # tree-sitter-grammars exposes ${p}/parser as the .so file directly,
+        # vimPlugins.nvim-treesitter-parsers exposes it as a directory.
+        if [ -f "${p}/parser" ]; then
+          ln -s ${p}/parser $out/parser/${lang}.so
+        elif [ -d "${p}/parser" ]; then
+          for so in ${p}/parser/*.so; do
+            [ -f "$so" ] && ln -s "$so" $out/parser/$(basename "$so")
+          done
+        fi
 
-        # Link queries directory from your fork (if it exists)
+        # Prefer queries from your fork, fall back to the grammar package
         if [ -d "${nvim-treesitter-queries}/runtime/queries/${lang}" ]; then
           ln -s ${nvim-treesitter-queries}/runtime/queries/${lang} $out/queries/${lang}
+        elif [ -d "${p}/queries" ]; then
+          ln -s ${p}/queries $out/queries/${lang}
         fi
       ''
     ) treesitterParsers}

@@ -26,14 +26,14 @@ autocmd({ "FocusGained", "BufEnter" }, {
 local no_treesitter_highlight = {
 	"typescript",
 }
+vim.treesitter.language.register("qmljs", "qml")
 
 -- Enable treesitter-based syntax highlighting if a parser is available for the filetype
 vim.api.nvim_create_autocmd("FileType", {
 	callback = function()
 		local ft = vim.bo.filetype
 		if
-			vim.treesitter.get_parser(0, nil, { error = false })
-			and not vim.tbl_contains(no_treesitter_highlight, ft)
+			vim.treesitter.get_parser(0, ft, { error = false }) and not vim.tbl_contains(no_treesitter_highlight, ft)
 		then
 			vim.treesitter.start()
 			vim.bo.syntax = "off"
