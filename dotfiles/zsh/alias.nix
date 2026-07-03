@@ -32,7 +32,7 @@
   hlconfig = "cd ${settings.configPath}/dotfiles/hypr && nvim hyprland.lua";
 
   # neovim
-  nvimconfig = "cd $HOME/.config/nvim && nvim init.lua";
+  nvimconfig = "cd ${settings.configPath}/dotfiles/nvim && nvim init.lua";
   ai = ''
     nvim -c CodeCompanionChat -c "wincmd h" -c "q"
   '';

@@ -85,6 +85,7 @@
     jq
     bc
     bat
+    xxd
     btop
     file
     man-pages
