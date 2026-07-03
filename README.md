@@ -63,6 +63,7 @@ For certain things, you might need a `secrets.nix` file in the root of the repo:
     tavilyApiKey = "";
     xaiApiKey = "";
     nvidiaApiKey = "";
+    deepseekApiKey = "";
   };
   github-token = "";
   rad-passphrase = "";
