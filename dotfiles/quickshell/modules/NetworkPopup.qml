@@ -1,6 +1,7 @@
 import Quickshell
 import QtQuick
 import QtQuick.Layouts
+import Quickshell.Networking as Net
 import "../services" as Services
 import "../widgets" as Widgets
 import ".."
@@ -10,6 +11,46 @@ Item {
     anchors.fill: parent
     anchors.topMargin: Globals.spacing
     anchors.leftMargin: Globals.spacing
+
+    function securityString(sec) {
+        if (sec === undefined || sec === null || sec === Net.WifiSecurityType.Open) return "";
+        return " (" + Net.WifiSecurityType.toString(sec) + ")";
+    }
+
+    function refreshNetworks() {
+        const device = Services.Network.wifiDevice;
+        const networks = device ? device.networks.values : [];
+
+        const entries = networks.map(n => ({
+            name: n.name,
+            connected: n.connected,
+            security: securityString(n.security),
+            networkObj: n
+        }));
+
+        // Keep the list stable: connected first, then alphabetical by SSID.
+        entries.sort((a, b) => {
+            if (a.connected !== b.connected) return a.connected ? -1 : 1;
+            return a.name.localeCompare(b.name);
+        });
+
+        networkListModel.clear();
+        for (const e of entries) networkListModel.append(e);
+    }
+
+    Component.onCompleted: refreshNetworks()
+
+    // Refreshes the list a few seconds after a rescan so new networks have
+    // time to appear, without constantly rebuilding the list while scrolling.
+    Timer {
+        id: rescanResultTimer
+        interval: 4000
+        onTriggered: refreshNetworks()
+    }
+
+    ListModel {
+        id: networkListModel
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -63,11 +104,11 @@ Item {
                             return "Scanning...";
                         if (!Services.Network.wifiEnabled)
                             return "";
-                        if (!Services.Network.active)
+                        if (!Services.Network.hasActiveConnection)
                             return "Not connected";
                         if (Services.Network.ethernetConnected)
                             return "Ethernet connected";
-                        return Services.Network.active.ssid;
+                        return Services.Network.activeConnectionName;
                     }
                 }
             }
@@ -88,6 +129,7 @@ Item {
                         anchors.fill: parent
                         onClicked: {
                             Services.Network.rescanWifi();
+                            rescanResultTimer.restart();
                         }
                     }
                 }
@@ -99,27 +141,28 @@ Item {
             Item {
                 id: item
 
-                required property string ssid
-                required property bool active
+                required property string name
+                required property bool connected
                 required property string security
+                required property var networkObj
 
                 height: 36
-                width: parent.width
+                width: networkListView.width
 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        if (item.active) {
-                            Services.Network.disconnectFromNetwork();
-                            return;
+                        if (networkObj && networkObj.connected) {
+                            networkObj.disconnect();
+                        } else if (networkObj) {
+                            networkObj.connect();
                         }
-                        Services.Network.connectToNetwork(item.ssid);
                     }
                 }
 
                 Text {
                     id: networkText
-                    color: item.active ? Globals.theme.accent1 : Globals.theme.foreground
+                    color: networkObj && networkObj.connected ? Globals.theme.accent1 : Globals.theme.foreground
                     font.pixelSize: Globals.fonts.medium
                     font.family: Globals.theme.fontFamily
                     anchors {
@@ -127,7 +170,7 @@ Item {
                         verticalCenter: parent.verticalCenter
                     }
                     elide: Text.ElideRight
-                    text: item.ssid
+                    text: item.name
                 }
                 Text {
                     id: securityText
@@ -139,7 +182,7 @@ Item {
                         rightMargin: Globals.spacing
                         verticalCenter: parent.verticalCenter
                     }
-                    text: item.security ? " (" + item.security + ")" : ""
+                    text: item.security
                 }
             }
         }
@@ -152,7 +195,7 @@ Item {
                 id: networkListView
                 anchors.fill: parent
                 spacing: Globals.padding
-                model: Services.Network.networks
+                model: networkListModel
 
                 delegate: networkDelegate
 

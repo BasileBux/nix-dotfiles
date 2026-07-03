@@ -32,7 +32,7 @@ Item {
                 return "../icons/globe.svg";
             if (!Services.Network.wifiEnabled)
                 return "../icons/wifi-off.svg";
-            if (Services.Network.active)
+            if (Services.Network.hasActiveConnection)
                 return "../icons/wifi-on.svg";
             return "../icons/wifi-problem.svg";
         }
@@ -54,5 +54,12 @@ Item {
         popupWidth: root.popupWidth
         moduleRef: root.moduleRef
         NetworkPopup {}
+    }
+
+    Connections {
+        target: popup
+        function onShownChanged() {
+            Services.Network.popupVisible = popup.shown;
+        }
     }
 }

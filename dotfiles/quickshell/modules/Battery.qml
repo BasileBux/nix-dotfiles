@@ -20,6 +20,10 @@ Item {
     readonly property real percentage: UPower.displayDevice.percentage
     readonly property bool isLow: percentage <= 0.30
 
+	readonly property color lowColor: "#FD788B" 
+	readonly property color chargingColor: "#20FF4F"
+	readonly property color normalColor: "green"
+
     MouseArea {
         anchors.fill: parent
         onClicked: {
@@ -43,7 +47,7 @@ Item {
                 id: chargeOverlay
                 width: batteryIcon.width * 0.34
                 height: batteryIcon.height * (root.percentage) * 0.64
-                color: root.isCharging ? "#20FF4F" : root.isLow ? "#FD788B" : "green"
+                color: root.isCharging ? root.chargingColor : root.isLow ? root.lowColor : root.normalColor
                 x: batteryIcon.width / 2 - width / 2
                 y: batteryIcon.height - height - batteryIcon.height * 0.2 + 1
                 radius: 2

@@ -34,7 +34,7 @@ Item {
             color: Globals.theme.foreground
             font.pixelSize: Globals.fonts.xsmall + 1 // Weird as fuck but font rendering seems to be fucked
             font.family: Globals.theme.fontFamily
-            text: Services.Audio.volume === (0 / 0) ? "0%" : (Services.Audio.volume * 100).toFixed(0) + "%"
+            text: isNaN(Services.Audio.volume) ? "0%" : (Services.Audio.volume * 100).toFixed(0) + "%"
         }
     }
 
