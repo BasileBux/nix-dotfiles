@@ -65,7 +65,7 @@ sudo nixos-rebuild switch --flake /home/basileb/nixos#<hostname> --impure
 
 For certain things, you might need a `secrets.nix` file in the root of the repo:
 
-```secrets.nix
+```nix
 {
   keys = {
     anthropicApiKey = "";

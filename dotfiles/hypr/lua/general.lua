@@ -40,8 +40,11 @@ hl.config({
 		shadow = {
 			enabled = false,
 		},
+
 		dim_inactive = true,
 		dim_strength = 0.2,
+		dim_special = 0.2,
+
 		rounding = 7,
 	},
 	animations = {

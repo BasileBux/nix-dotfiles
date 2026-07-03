@@ -44,8 +44,8 @@ require("codecompanion").setup({
 	interactions = {
 		chat = {
 			adapter = {
-				name = "moonshot",
-				model = "kimi-k2.6",
+				name = "deepseek",
+				model = "deepseek-v4-pro",
 			},
 			keymaps = {
 				send = {

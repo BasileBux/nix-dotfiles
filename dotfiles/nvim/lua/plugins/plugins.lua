@@ -80,6 +80,9 @@ require("todo-comments").setup({
 -- Render-markdown.nvim
 require("render-markdown").setup({
 	file_types = { "markdown", "vimwiki", "codecompanion" },
+	code = {
+		style = "language",
+	},
 })
 
 -- copilot.vim
