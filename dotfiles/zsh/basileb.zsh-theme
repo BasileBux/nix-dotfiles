@@ -45,40 +45,42 @@ jj_prompt() {
 
     [[ -z "$revision" ]] && return
 
-    bookmark=$(jj log --repository "$workspace" --ignore-working-copy \
-        --no-graph --limit 1 --color never \
-        -r 'heads(::@ & bookmarks())' -T 'bookmarks.join(" ")' 2>/dev/null)
-
-    if [[ -n "$bookmark" ]]; then
-        distance=$(jj log --repository "$workspace" --ignore-working-copy \
-            --no-graph --color never \
-            -r 'heads(::@ & bookmarks())..@' \
-            -T 'change_id ++ "\n"' 2>/dev/null | wc -l | tr -d ' ')
-    fi
-
-    file_status=$(jj log --repository "$workspace" --ignore-working-copy \
-        --no-graph --color never --revisions @ \
-        -T 'self.diff().files().map(|f| f.status()).join("\n")' 2>/dev/null | \
-        sort | uniq -c | awk '
-            /modified/ { parts[++i] = "%F{cyan}±" $1 "%f" }
-            /added/ { parts[++i] = "%F{green}+" $1 "%f" }
-            /removed/ { parts[++i] = "%F{red}-" $1 "%f" }
-            /copied/ { parts[++i] = "%F{yellow}⧉" $1 "%f" }
-            /renamed/ { parts[++i] = "%F{magenta}↻" $1 "%f" }
-            END { for (j=1; j<=i; j++) printf "%s%s", parts[j], (j<i ? " " : "") }
-        ')
-
     display=$revision
 
-    if [[ -n "$bookmark" ]]; then
-        display+=" $bookmark"
-        if [[ "$distance" -gt 0 ]]; then
-            display+=" %F{white}⇡${distance}%f"
-        fi
-    fi
+    if [[ "${EXTENDED_JJ_PROMPT:-false}" == true ]]; then
+        bookmark=$(jj log --repository "$workspace" --ignore-working-copy \
+            --no-graph --limit 1 --color never \
+            -r 'heads(::@ & bookmarks())' -T 'bookmarks.join(" ")' 2>/dev/null)
 
-    if [[ -n "$file_status" ]]; then
-        display+=" ${file_status}"
+        if [[ -n "$bookmark" ]]; then
+            distance=$(jj log --repository "$workspace" --ignore-working-copy \
+                --no-graph --color never \
+                -r 'heads(::@ & bookmarks())..@' \
+                -T 'change_id ++ "\n"' 2>/dev/null | wc -l | tr -d ' ')
+        fi
+
+        file_status=$(jj log --repository "$workspace" --ignore-working-copy \
+            --no-graph --color never --revisions @ \
+            -T 'self.diff().files().map(|f| f.status()).join("\n")' 2>/dev/null | \
+            sort | uniq -c | awk '
+                /modified/ { parts[++i] = "%F{cyan}±" $1 "%f" }
+                /added/ { parts[++i] = "%F{green}+" $1 "%f" }
+                /removed/ { parts[++i] = "%F{red}-" $1 "%f" }
+                /copied/ { parts[++i] = "%F{yellow}⧉" $1 "%f" }
+                /renamed/ { parts[++i] = "%F{magenta}↻" $1 "%f" }
+                END { for (j=1; j<=i; j++) printf "%s%s", parts[j], (j<i ? " " : "") }
+            ')
+
+        if [[ -n "$bookmark" ]]; then
+            display+=" $bookmark"
+            if [[ "$distance" -gt 0 ]]; then
+                display+=" %F{white}⇡${distance}%f"
+            fi
+        fi
+
+        if [[ -n "$file_status" ]]; then
+            display+=" ${file_status}"
+        fi
     fi
 
     # Wrap jj's ANSI color escapes so zsh counts them as zero-width

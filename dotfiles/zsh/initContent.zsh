@@ -44,6 +44,7 @@ github_init() {
 jj_pushall() {
   for r in $(git remote);
   do
+	echo "pushing to $r"
     jj git push --remote $r
   done
 }

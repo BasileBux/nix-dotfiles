@@ -34,8 +34,8 @@
             username = "basileb";
             machine = "asus-g14";
             desktop = true;
-            nixosVersion = "25.05"; # DO NOT CHANGE THIS EVER
             accentColor = "#fb8b1e";
+            nixosVersion = "25.05"; # DO NOT CHANGE THIS EVER
           };
           modules = [
             ./hosts/desktop.nix

@@ -72,6 +72,10 @@
       "ctrl+h" = "previous_tab";
       "ctrl+l" = "next_tab";
       "ctrl+;" = "clear_terminal scroll active";
+
+      "ctrl+shift+enter" = "new_window_with_cwd";
+      "ctrl+shift+j" = "previous_window";
+      "ctrl+shift+k" = "next_window";
     };
   };
   # Disable binds for tab management as we use Tmux to do that on a remote
