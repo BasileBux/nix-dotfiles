@@ -1,5 +1,6 @@
 {
   pkgs,
+  settings,
   ...
 }:
 
@@ -28,6 +29,8 @@
       background_opacity = 0.8;
 
       window_padding_width = "3 4";
+
+      enabled_layouts = "splits:split_axis=horizontal,splits:split_axis=vertical,stack";
 
       cursor_shape = "block";
       cursor_shape_unfocused = "hollow";
@@ -62,7 +65,6 @@
       inactive_tab_foreground = "#ffffff";
       inactive_tab_background = "#16181a";
 
-      scrollback_pager = "nvim -u ~/.config/nvim/minimal.lua --cmd 'set eventignore=FileType' +'nnoremap q ZQ' +'call nvim_open_term(0, {})' +'set nomodified nolist' +'call cursor(CURSOR_LINE, CURSOR_COLUMN)' -";
       allow_remote_control = true;
     };
     keybindings = {
@@ -76,6 +78,8 @@
       "ctrl+shift+enter" = "new_window_with_cwd";
       "ctrl+shift+j" = "previous_window";
       "ctrl+shift+k" = "next_window";
+
+      "ctrl+shift+h" = "launch --type=overlay --stdin-source=@screen_scrollback --stdin-add-formatting ${settings.configPath}/scripts/kitty-nvim-scrollback.sh @input-line-number";
     };
   };
   # Disable binds for tab management as we use Tmux to do that on a remote
