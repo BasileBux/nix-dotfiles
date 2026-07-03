@@ -19,7 +19,6 @@ ShellRoot {
         id: notification
         bar: bar
     }
-    // BottomLauncher {}
     PopupLauncher {}
     Lock {
         id: lock

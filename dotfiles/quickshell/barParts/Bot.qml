@@ -6,7 +6,6 @@ import "../modules" as Modules
 
 BarPart {
     id: root
-    moduleSizes: [25, 40, 50, 28, 30, 39]
 
     property alias batteryPopup: batteryContent.popup
     property alias clockPopup: clockContent.popup
@@ -14,10 +13,6 @@ BarPart {
     property alias bluetoothPopup: bluetoothContent.popup
     property alias audioPopup: audioContent.popup
     property alias lockPopup: lockContent.popup
-
-    function calculatePopupYpos(index, popupHeight) {
-        return bar.height - ((2 + index) * Globals.spacing + root.sumSizesUntil(index) + (root.moduleSizes[index] / 2) + (popupHeight / 2) + Globals.radius);
-    }
 
     ColumnLayout {
         id: layout
@@ -31,13 +26,12 @@ BarPart {
         Item {
             id: audioModule
             Layout.fillWidth: true
-            property int index: 5
             property int popupHeight: 185
             property int popupWidth: 340
-            implicitHeight: root.moduleSizes[index]
+            implicitHeight: 39
             Modules.Audio {
                 id: audioContent
-                popupYpos: root.calculatePopupYpos(audioModule.index, audioModule.popupHeight)
+                moduleRef: audioModule
                 popupHeight: audioModule.popupHeight
                 popupWidth: audioModule.popupWidth
             }
@@ -45,13 +39,12 @@ BarPart {
         Item {
             id: bluetoothModule
             Layout.fillWidth: true
-            property int index: 4
             property int popupHeight: 300
             property int popupWidth: 330
-            implicitHeight: root.moduleSizes[index]
+            implicitHeight: 30
             Modules.Bluetooth {
                 id: bluetoothContent
-                popupYpos: root.calculatePopupYpos(bluetoothModule.index, bluetoothModule.popupHeight)
+                moduleRef: bluetoothModule
                 popupHeight: bluetoothModule.popupHeight
                 popupWidth: bluetoothModule.popupWidth
             }
@@ -59,13 +52,12 @@ BarPart {
         Item {
             id: wifiModule
             Layout.fillWidth: true
-            property int index: 3
             property int popupHeight: 320
             property int popupWidth: 360
-            implicitHeight: root.moduleSizes[index]
+            implicitHeight: 28
             Modules.Network {
                 id: wifiContent
-                popupYpos: root.calculatePopupYpos(wifiModule.index, wifiModule.popupHeight)
+                moduleRef: wifiModule
                 popupHeight: wifiModule.popupHeight
                 popupWidth: wifiModule.popupWidth
             }
@@ -73,14 +65,12 @@ BarPart {
         Item {
             id: batteryModule
             Layout.fillWidth: true
-            property int index: 2
             property int popupHeight: 160
             property int popupWidth: 280
-
-            implicitHeight: root.moduleSizes[index]
+            implicitHeight: 50
             Modules.Battery {
                 id: batteryContent
-                popupYpos: root.calculatePopupYpos(batteryModule.index, batteryModule.popupHeight)
+                moduleRef: batteryModule
                 popupHeight: batteryModule.popupHeight
                 popupWidth: batteryModule.popupWidth
             }
@@ -88,13 +78,12 @@ BarPart {
         Item {
             id: clockModule
             Layout.fillWidth: true
-            property int index: 1
             property int popupHeight: 50
             property int popupWidth: 110
-            implicitHeight: root.moduleSizes[index]
+            implicitHeight: 40
             Modules.Clock {
                 id: clockContent
-                popupYpos: root.calculatePopupYpos(clockModule.index, clockModule.popupHeight)
+                moduleRef: clockModule
                 popupHeight: clockModule.popupHeight
                 popupWidth: clockModule.popupWidth
             }
@@ -102,10 +91,7 @@ BarPart {
         Item {
             id: lockModule
             Layout.fillWidth: true
-            property int index: 0
-            property int popupHeight: 0
-            property int popupWidth: 0
-            implicitHeight: root.moduleSizes[index]
+            implicitHeight: 28
             Modules.Lock {
                 id: lockContent
             }

@@ -12,21 +12,44 @@ PopupWindow {
 
     required property int popupWidth
     required property int popupHeight
-    required property int yPos
+    property int yPos: 0
     required property string name
+    property var moduleRef: null
     property bool debug: false
     property color popupColor: Globals.theme.background
+    // true  -> anchored to the bar's top-right, uses Paths.TopRightPopup shape
+    // false -> anchored to the bar's left side, uses Paths.RightPopup shape
+    property bool topRight: false
 
     default property alias content: contentContainer.data
 
     property bool shown: debug ? true : false
     visible: debug ? true : false
-    anchor.window: ref
     implicitWidth: popupWidth
     implicitHeight: popupHeight + Globals.radius * 2
 
-    anchor.rect.x: -width + Globals.radius - Globals.padding
-    anchor.rect.y: yPos
+    anchor {
+        window: ref
+        rect.x: topRight ? Globals.radius / 2 : (-width + Globals.radius - Globals.padding)
+        rect.y: yPos
+    }
+
+    // Only apply top-right-specific anchor flags in that mode;
+    // otherwise the anchor reverts to its default behavior.
+    Binding {
+        target: popup.anchor
+        property: "gravity"
+        value: Edges.Bottom | Edges.Left
+        when: topRight
+    }
+
+    Binding {
+        target: popup.anchor
+        property: "adjustment"
+        value: PopupAdjustment.None
+        when: topRight
+    }
+
     color: "transparent"
 
     property var collapse: function () {
@@ -34,13 +57,24 @@ PopupWindow {
         shown = false;
     }
 
+    function updateYpos() {
+        if (moduleRef) {
+            var center = moduleRef.mapToItem(null, 0, moduleRef.height / 2);
+            // Center the popup content vertically on the module. The popup window is
+            // taller than the content by the corner radius, so offset by that amount.
+            yPos = center.y - popupHeight / 2 - Globals.radius;
+        }
+    }
+
     property var toggle: function () {
+        updateYpos();
         wrapper.state === "hidden" ? wrapper.state = "visible" : wrapper.state = "hidden";
         shown = wrapper.state === "visible";
         ref.collapseAllBut(name);
     }
 
     property var show: function () {
+        updateYpos();
         wrapper.state = "visible";
         shown = true;
         ref.collapseAllBut(name);
@@ -112,7 +146,16 @@ PopupWindow {
         ]
 
         Paths.RightPopup {
-            id: popupShape
+            id: rightPopupShape
+            visible: !topRight
+            popupWidth: popup.popupWidth
+            popupHeight: popup.popupHeight
+            popupColor: popup.popupColor
+        }
+
+        Paths.TopRightPopup {
+            id: topRightPopupShape
+            visible: topRight
             popupWidth: popup.popupWidth
             popupHeight: popup.popupHeight
             popupColor: popup.popupColor
@@ -122,10 +165,12 @@ PopupWindow {
             id: contentContainer
             anchors {
                 fill: parent
-                margins: Globals.padding
+                margins: topRight ? 0 : Globals.padding
             }
-            anchors.topMargin: Globals.radius * 2
-            anchors.bottomMargin: Globals.radius * 2
+            anchors.leftMargin: topRight ? Globals.radius : Globals.padding
+            anchors.topMargin: topRight ? Globals.radius / 2 : Globals.radius * 2
+            anchors.bottomMargin: topRight ? Globals.radius : Globals.radius * 2
+            anchors.rightMargin: topRight ? 0 : Globals.padding
         }
     }
 }

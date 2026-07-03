@@ -44,8 +44,9 @@ Item {
         id: notificationDisplay
     }
     Item {
-        TopRightPopup {
+        Popup {
             id: panel
+            topRight: true
             popupWidth: Globals.notification.unitWidth + (Globals.padding * 8)
             popupHeight: Globals.notification.unitHeight * 7 + (Globals.padding * 2)
             yPos: 0

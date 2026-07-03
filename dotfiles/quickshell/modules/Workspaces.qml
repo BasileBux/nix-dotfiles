@@ -6,7 +6,6 @@ import ".."
 Item {
     id: root
     anchors.fill: parent
-    property int popupYpos: 0
 
     signal workspaceAdded(workspace: HyprlandWorkspace)
     property int workspaceCount: 0

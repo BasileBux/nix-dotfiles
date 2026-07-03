@@ -6,7 +6,7 @@ import ".."
 Item {
     id: root
     anchors.fill: parent
-    property int popupYpos
+    required property var moduleRef
     required property int popupHeight
     required property int popupWidth
     readonly property alias popup: popup
@@ -28,6 +28,7 @@ Item {
         id: layout
         spacing: -6
         anchors {
+			topMargin: -(layout.spacing) / 2
             fill: parent
         }
         Text {
@@ -56,7 +57,7 @@ Item {
         ref: bar
         popupWidth: root.popupWidth
         popupHeight: root.popupHeight
-        yPos: popupYpos
+        moduleRef: root.moduleRef
         name: "Clock"
 
         Item {

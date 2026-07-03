@@ -5,7 +5,6 @@ import QtQuick.Controls
 import ".."
 
 BarPart {
-    property var moduleSizes: [40]
     required property var notificationPanel
 
     ColumnLayout {
@@ -21,7 +20,7 @@ BarPart {
         Item {
             id: notificationsModule
             Layout.fillWidth: true
-            implicitHeight: moduleSizes[0]
+            implicitHeight: 40
             Image {
                 anchors.fill: parent
                 anchors.margins: 5

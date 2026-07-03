@@ -9,7 +9,7 @@ import ".."
 Item {
     id: root
     anchors.fill: parent
-    property int popupYpos
+    required property var moduleRef
     required property int popupWidth
     required property int popupHeight
     readonly property alias popup: popup
@@ -77,7 +77,7 @@ Item {
         ref: bar
         popupWidth: root.popupWidth
         popupHeight: root.popupHeight
-        yPos: root.popupYpos
+        moduleRef: root.moduleRef
         name: "Battery"
 
         Rectangle {

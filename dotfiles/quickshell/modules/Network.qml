@@ -8,7 +8,7 @@ Item {
     id: root
     anchors.fill: parent
 
-    required property int popupYpos
+    required property var moduleRef
     required property int popupHeight
     required property int popupWidth
     readonly property alias popup: popup
@@ -52,7 +52,7 @@ Item {
         name: "Network"
         popupHeight: root.popupHeight
         popupWidth: root.popupWidth
-        yPos: popupYpos
+        moduleRef: root.moduleRef
         NetworkPopup {}
     }
 }

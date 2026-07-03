@@ -5,7 +5,6 @@ import ".."
 import "../modules" as Modules
 
 BarPart {
-    property var moduleSizes: [60]
 
     ColumnLayout {
         id: layout
@@ -15,10 +14,9 @@ BarPart {
         Item {
             id: workspacesModule
             Layout.fillWidth: true
-            implicitHeight: moduleSizes[0]
+            implicitHeight: 60
             Modules.Workspaces {
                 id: workspacesContent
-                popupYpos: bar.height - (moduleSizes[0] / 2 + Globals.radius)
             }
         }
     }
