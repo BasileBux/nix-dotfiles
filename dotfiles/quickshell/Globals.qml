@@ -36,5 +36,8 @@ Singleton {
         readonly property int unitHeight: 80
         readonly property int maxVisible: 5
     }
-    readonly property string machine: "asus-g14" // WARNING: Keep this as the last line
+    readonly property string machine: {
+        var m = Quickshell.env("QUICKSHELL_MACHINE");
+        return m && m.length > 0 ? m : "asus-g14";
+    }
 }

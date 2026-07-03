@@ -1,6 +1,8 @@
 {
   pkgs,
+  config,
   lib,
+  settings,
   ...
 }:
 let
@@ -91,4 +93,7 @@ in
     marksman
     bash-language-server
   ];
+
+  xdg.configFile."nvim".source =
+    config.lib.file.mkOutOfStoreSymlink "${settings.configPath}/dotfiles/nvim";
 }
