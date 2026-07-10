@@ -36,6 +36,10 @@ Singleton {
         readonly property int unitHeight: 80
         readonly property int maxVisible: 5
     }
+
+	readonly property int authDialogWidth: 380
+	readonly property int authDialogHeight: 200
+	
     readonly property string machine: {
         var m = Quickshell.env("QUICKSHELL_MACHINE");
         return m && m.length > 0 ? m : "asus-g14";

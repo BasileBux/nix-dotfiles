@@ -12,7 +12,7 @@ hl.window_rule({
 
 hl.window_rule({
 	name = "quickshell-float",
-	match = { title = "quickshell" },
+	match = { class = "org.quickshell", title = "Authentication Required" },
 	float = true,
 })
 

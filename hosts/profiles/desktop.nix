@@ -54,6 +54,11 @@
     NIXOS_OZONE_WL = "1";
   };
 
+  security.polkit = {
+    enable = true;
+    enablePkexecWrapper = true;
+  };
+
   programs.appimage = {
     enable = true;
     binfmt = true;

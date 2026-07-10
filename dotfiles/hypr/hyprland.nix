@@ -38,7 +38,6 @@ in
     grim
     slurp
     brightnessctl
-    hyprpolkitagent
   ];
 
   # export HYPRLAND_STUBS="$(dirname $(dirname $(readlink -f $(which hyprland))))/share/hypr/stubs"

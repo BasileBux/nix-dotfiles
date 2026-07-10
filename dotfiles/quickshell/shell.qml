@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Services.Polkit
 import QtQuick
 import "launcher"
 import "lock"
@@ -22,5 +23,15 @@ ShellRoot {
     PopupLauncher {}
     Lock {
         id: lock
+    }
+
+    PolkitAgent {
+        id: polkitAgent
+        // path defaults to /org/quickshell/Polkit
+    }
+
+    AuthDialog {
+        id: authDialog
+        agent: polkitAgent
     }
 }
