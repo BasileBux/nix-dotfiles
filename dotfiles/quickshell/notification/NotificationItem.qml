@@ -57,7 +57,7 @@ Rectangle {
             top: summary.bottom
             right: closeButton.left
         }
-        maximumLineCount: 3
+        maximumLineCount: 2
         color: Globals.theme.foreground
         text: notif.body
         font.pixelSize: Globals.fonts.small

@@ -11,6 +11,7 @@
   environment.systemPackages = with pkgs; [
     bat
     xxd
+    dig
     man-pages
     man-pages-posix
     perf
