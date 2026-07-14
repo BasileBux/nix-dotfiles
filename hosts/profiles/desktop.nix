@@ -79,7 +79,7 @@
     openh264
 
     # Software
-    nautilus
+    nemo
     kdePackages.gwenview
     evince
     mpv
@@ -134,7 +134,7 @@
 
   services.upower.enable = true;
 
-  # Enable nautilus to automount
+  # Enable automount
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 }

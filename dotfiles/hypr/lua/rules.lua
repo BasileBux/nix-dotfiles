@@ -22,11 +22,14 @@ hl.window_rule({
 	float = true,
 })
 
-hl.window_rule({
-	name = "nautilus-float",
-	match = { class = "org.gnome.Nautilus" },
-	float = true,
-})
+local settings = require("lua.settings")
+for _, fe in pairs(settings.file_explorers) do
+	hl.window_rule({
+		name = fe.class .. "-float",
+		match = { class = fe.class },
+		float = true,
+	})
+end
 
 hl.window_rule({
 	name = "calculator-float",

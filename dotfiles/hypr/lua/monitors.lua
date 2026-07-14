@@ -33,8 +33,8 @@ local monitors_setup = function()
 	if not found_secondary and #mons > 1 then
 		hl.monitor({
 			output = "desc:" .. primary_mon.description,
-			mode = "1920x1080@120.00Hz", -- To have 16:9 aspect ratio for mirroring
-			scale = "1",
+			mode = primary_mon.mirror.mode, -- To have 16:9 aspect ratio for mirroring
+			scale = primary_mon.mirror.scale,
 			disabled = false,
 		})
 		hl.monitor({

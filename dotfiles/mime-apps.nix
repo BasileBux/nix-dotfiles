@@ -7,10 +7,10 @@
       "text/markdown" = "neovide.desktop";
       "text/plain" = "neovide.desktop";
 
-      "image/png" = "org.gnome.eog.desktop";
-      "image/jpeg" = "org.gnome.eog.desktop";
-      "image/gif" = "org.gnome.eog.desktop";
-      "image/webp" = "org.gnome.eog.desktop";
+      "image/png" = "org.kde.gwenview.desktop";
+      "image/jpeg" = "org.kde.gwenview.desktop";
+      "image/gif" = "org.kde.gwenview.desktop";
+      "image/webp" = "org.kde.gwenview.desktop";
       "application/pdf" = "org.gnome.Evince.desktop";
 
       "video/mp4" = "mpv.desktop";

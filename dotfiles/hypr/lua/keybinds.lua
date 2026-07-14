@@ -1,14 +1,17 @@
 local terminal = "kitty"
-local input = require("input")
+local input = require("lua.input")
 local config = require("config")
-local mainMod = config.mainMod
+local settings = require("lua.settings")
 
-local toggle_nautilus = function()
-	local wins = hl.get_windows({ class = "org.gnome.Nautilus" })
+local mainMod = config.mainMod
+local file_explorer = settings.file_explorer
+
+local toggle_file_explorer = function()
+	local wins = hl.get_windows({ class = file_explorer.class })
 	local active = hl.get_active_window()
 
 	if #wins == 0 then
-		hl.exec_cmd("nautilus")
+		hl.exec_cmd(file_explorer.cmd)
 		return
 	end
 
@@ -39,8 +42,8 @@ end
 local close_win = function()
 	local active = hl.get_active_window()
 
-	if active ~= nil and active.class == "org.gnome.Nautilus" then
-		toggle_nautilus()
+	if active ~= nil and active.class == file_explorer.class then
+		toggle_file_explorer()
 	else
 		hl.dispatch(hl.dsp.window.close())
 	end
@@ -64,7 +67,7 @@ hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd([[grim -g "$(slurp -d)" - | w
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Q", close_win)
 hl.bind(mainMod .. " + ALT + N", hl.dsp.exec_cmd("zen-twilight"))
-hl.bind(mainMod .. " + E", toggle_nautilus)
+hl.bind(mainMod .. " + E", toggle_file_explorer)
 hl.bind(
 	mainMod .. " + ALT + D",
 	hl.dsp.exec_cmd(terminal .. " -e sh nvim ~/tmp/notes/daily-$(date +%d-%b-%Y).md", { float = true })

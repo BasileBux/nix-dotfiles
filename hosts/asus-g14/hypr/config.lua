@@ -12,6 +12,10 @@ return {
 			position = "1600x0",
 			scale = "1",
 		},
+		mirror = {
+			mode = "1920x1080@120.00Hz",
+			scale = "1",
+		},
 	},
 	brightness = {
 		monitor = "amdgpu_bl2",

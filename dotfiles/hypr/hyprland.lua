@@ -9,7 +9,7 @@ require("lua.monitors")
 
 require("lua.general")
 
-require("input").setup()
+require("lua.input").setup()
 
 require("lua.keybinds")
 
