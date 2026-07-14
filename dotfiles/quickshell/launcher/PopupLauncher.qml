@@ -206,12 +206,25 @@ PanelWindow {
                         id: appIcon
                         implicitSize: 30
                         asynchronous: true
+
+                        readonly property string overrideDir: Qt.resolvedUrl("../icons/app-fallback/")
+                        readonly property var iconOverrides: ({
+                            nemo: "nemo.png",
+                            systemsettings: "kde-settings.png",
+                            kdesystemsettings: "kde-settings.png"
+                        })
+                        readonly property string fallbackIcon: overrideDir + "general.png"
+
                         source: {
+                            const appId = appItem?.app?.id || "";
+                            if (iconOverrides[appId]) {
+                                return overrideDir + iconOverrides[appId];
+                            }
                             let path = Quickshell.iconPath(appItem?.app.icon);
                             if (path) {
                                 return path;
                             }
-                            return `file:///run/current-system/sw/share/icons/hicolor/1024x1024/apps/nix-snowflake-white.png`;
+                            return fallbackIcon;
                         }
                     }
 

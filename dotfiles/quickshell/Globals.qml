@@ -13,7 +13,7 @@ Singleton {
     readonly property int barExtrema: 4
     readonly property int workspacesGap: 5
 
-    readonly property string terminal: "ghostty"
+    readonly property string terminal: "kitty"
     readonly property string browser: "zen-twilight"
 
     readonly property var theme: Themes.modern.rodeurRouge
