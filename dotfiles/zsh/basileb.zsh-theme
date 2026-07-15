@@ -102,7 +102,7 @@ vcs_prompt() {
 
 NIX_SHELL=""
 if [[ -n $IN_NIX_SHELL ]]; then
-  NIX_SHELL=" %{$BLUE%}%{$RESET%} "
+  NIX_SHELL=" %{$BLUE%} %{$RESET%} "
 fi
 
 SSH_SHELL=""
@@ -110,5 +110,61 @@ if [[ -n $SSH_CONNECTION ]]; then
   SSH_SHELL=" %{$LIGHT_BLUE%}⇄%{$RESET%} "
 fi
 
-PROMPT='%(?.%{$PROMPT_COLOR_SUCCESS_BOLD%}.%{$PROMPT_COLOR_FAILURE_BOLD%})┌─── %~%u%{$RESET%}%{$SSH_SHELL%}%{$NIX_SHELL%}%{$RESET%}$(vcs_prompt)%{$RESET%}
+# Keep the duration on the next prompt, but only for commands that took more
+# than ten seconds. EPOCHREALTIME gives us enough precision to show millis.
+zmodload zsh/datetime 2>/dev/null
+_BASILEB_COMMAND_START=""
+BASILEB_COMMAND_DURATION=""
+BASILEB_PROMPT_COLOR=$PROMPT_COLOR_SUCCESS_BOLD
+
+_basileb_preexec() {
+    _BASILEB_COMMAND_START=$EPOCHREALTIME
+    BASILEB_COMMAND_DURATION=""
+}
+
+_basileb_precmd() {
+    local command_status=$?
+    if (( command_status == 0 )); then
+        BASILEB_PROMPT_COLOR=$PROMPT_COLOR_SUCCESS_BOLD
+    else
+        BASILEB_PROMPT_COLOR=$PROMPT_COLOR_FAILURE_BOLD
+    fi
+
+    [[ -z $_BASILEB_COMMAND_START ]] && return
+
+    local -F 6 elapsed
+    integer total_ms minutes seconds milliseconds
+    elapsed=$(( EPOCHREALTIME - _BASILEB_COMMAND_START ))
+    _BASILEB_COMMAND_START=""
+
+    total_ms=$(( elapsed * 1000 ))
+    if (( elapsed > 10 )); then
+        minutes=$(( total_ms / 60000 ))
+        seconds=$(( (total_ms / 1000) % 60 ))
+        milliseconds=$(( total_ms % 1000 ))
+        if (( minutes > 0 )); then
+            BASILEB_COMMAND_DURATION="${minutes}min "
+        else
+            BASILEB_COMMAND_DURATION=""
+        fi
+        BASILEB_COMMAND_DURATION+="${seconds}sec ${milliseconds}ms"
+    else
+        BASILEB_COMMAND_DURATION=""
+    fi
+}
+
+# add-zsh-hook preserves any hooks installed by zsh or other plugins.
+autoload -Uz add-zsh-hook
+add-zsh-hook preexec _basileb_preexec
+add-zsh-hook precmd _basileb_precmd
+
+basileb_prompt_prefix() {
+    if [[ -n $BASILEB_COMMAND_DURATION ]]; then
+        print -n "┌┤ %{$MAGENTA_BOLD%}${BASILEB_COMMAND_DURATION}%{$RESET%}%{$BASILEB_PROMPT_COLOR%} ├─ "
+    else
+        print -n "┌─── "
+    fi
+}
+
+PROMPT='%(?.%{$PROMPT_COLOR_SUCCESS_BOLD%}.%{$PROMPT_COLOR_FAILURE_BOLD%})$(basileb_prompt_prefix)%~%u%{$RESET%}%{$SSH_SHELL%}%{$NIX_SHELL%}%{$RESET%}$(vcs_prompt)%{$RESET%}
 %(?.%{$PROMPT_COLOR_SUCCESS%}.%{$PROMPT_COLOR_FAILURE%})│ %{$RESET%}'

@@ -67,3 +67,15 @@ vim.api.nvim_create_autocmd("PackChanged", {
 		end
 	end,
 })
+
+-- Remove trailing spaces on save
+local trim_trailing = augroup("TrimTrailingWhitespace", { clear = true })
+autocmd("BufWritePre", {
+	group = trim_trailing,
+	pattern = "*",
+	callback = function()
+		local save_cursor = vim.fn.getcurpos()
+		vim.cmd([[%s/\s\+$//e]])
+		vim.fn.setpos(".", save_cursor)
+	end,
+})
