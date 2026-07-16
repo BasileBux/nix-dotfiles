@@ -39,7 +39,13 @@ Singleton {
 
 	readonly property int authDialogWidth: 380
 	readonly property int authDialogHeight: 200
-	
+
+	readonly property var extras: QtObject {
+		readonly property int remoteWidth: 380
+		readonly property int remoteHeight: 240
+		readonly property string remoteDefaultTmuxSession: "main"
+	}
+
     readonly property string machine: {
         var m = Quickshell.env("QUICKSHELL_MACHINE");
         return m && m.length > 0 ? m : "asus-g14";

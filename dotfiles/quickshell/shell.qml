@@ -4,6 +4,7 @@ import QtQuick
 import "launcher"
 import "lock"
 import "notification"
+import "extras"
 
 ShellRoot {
     id: shellRoot
@@ -34,4 +35,8 @@ ShellRoot {
         id: authDialog
         agent: polkitAgent
     }
+
+	Remote {
+		id: remote
+	}
 }

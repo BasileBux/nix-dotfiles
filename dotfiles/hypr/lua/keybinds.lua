@@ -53,6 +53,7 @@ end
 hl.bind(mainMod .. " + ALT + H", hl.dsp.global("quickshell:toggle"))
 hl.bind(mainMod .. " + ALT + L", hl.dsp.global("quickshell:lock"))
 hl.bind(mainMod .. " + D", hl.dsp.global("quickshell:appLauncher"))
+hl.bind(mainMod .. " + R", hl.dsp.global("quickshell:remote"))
 
 -- Media controls
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("playerctl play-pause"))
