@@ -12,6 +12,10 @@
     libnotify # Important for notifications to work
   ];
 
+  dconf.settings = {
+    "org/gnome/desktop/interface".color-scheme = "prefer-dark";
+  };
+
   # Qt theming to match GTK
   qt = {
     enable = true;

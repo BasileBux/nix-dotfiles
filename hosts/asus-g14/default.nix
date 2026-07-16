@@ -52,18 +52,6 @@
 
   programs.nix-ld.enable = true;
 
-  services.udev = {
-    packages = [
-      pkgs.platformio-core
-      pkgs.openocd
-    ];
-    # Rules to make flashrom on the ch341a work without sudo
-    extraRules = ''
-      SUBSYSTEM=="usb", ATTR{idVendor}=="1a86", ATTR{idProduct}=="5512", MODE="0660", GROUP="dialout", TAG+="uaccess" 
-      SUBSYSTEM=="usb", ATTR{idVendor}=="1a86", ATTR{idProduct}=="5523", MODE="0660", GROUP="dialout", TAG+="uaccess"
-    '';
-  };
-
   environment.sessionVariables = {
     PI_SKIP_VERSION_CHECK = "1";
   };
