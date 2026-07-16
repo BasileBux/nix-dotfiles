@@ -93,7 +93,7 @@
     yazi
     typst
     # sage # Often broken
-    vesktop
+    # vesktop # Broken because of electron 40 EOL
     neovide
     ghidra-bin
     steam
