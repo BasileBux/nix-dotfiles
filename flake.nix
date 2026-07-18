@@ -2,6 +2,16 @@
   description = "Main flake";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,6 +51,20 @@
           modules = [
             ./hosts/profiles/common.nix
             inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
+          ];
+        };
+        hetzner-arm-vps = {
+          system = "aarch64-linux";
+          settings = {
+            username = "eugene";
+            machine = "hetzner-arm-vps";
+            hostname = "hetzner-arm-vps";
+            desktop = false;
+            accentColor = "#f57df3";
+            nixosVersion = "24.11"; # DO NOT CHANGE THIS EVER
+          };
+          modules = [
+            inputs.disko.nixosModules.disko
           ];
         };
       };

@@ -6,28 +6,30 @@
   ...
 }:
 let
-  treesitterParsers = (with pkgs.tree-sitter-grammars; [
-    tree-sitter-c
-    tree-sitter-cpp
-    tree-sitter-go
-    tree-sitter-rust
+  treesitterParsers =
+    (with pkgs.tree-sitter-grammars; [
+      tree-sitter-c
+      tree-sitter-cpp
+      tree-sitter-go
+      tree-sitter-rust
 
-    tree-sitter-javascript
-    tree-sitter-typescript
-    tree-sitter-html
+      tree-sitter-javascript
+      tree-sitter-typescript
+      tree-sitter-html
 
-    tree-sitter-json
-    tree-sitter-yaml
-    tree-sitter-toml
+      tree-sitter-json
+      tree-sitter-yaml
+      tree-sitter-toml
 
-    tree-sitter-bash
-    tree-sitter-python
+      tree-sitter-bash
+      tree-sitter-python
 
-    tree-sitter-typst
-    tree-sitter-nix
-  ]) ++ [
-    pkgs.vimPlugins.nvim-treesitter-parsers.qmljs
-  ];
+      tree-sitter-typst
+      tree-sitter-nix
+    ])
+    ++ [
+      pkgs.vimPlugins.nvim-treesitter-parsers.qmljs
+    ];
 
   # Using queries from my fork of nvim-treesitter because even if archived, the
   # queries are good and I can fix them if needed.
@@ -112,6 +114,10 @@ in
     marksman
     bash-language-server
   ];
+
+  home.sessionVariables = {
+    NVIM_UNDODIR = "/home/${settings.username}/.local/share/nvim/undo";
+  };
 
   xdg.configFile."nvim".source =
     config.lib.file.mkOutOfStoreSymlink "${settings.configPath}/dotfiles/nvim";

@@ -10,6 +10,12 @@
   ];
 
   boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    kernelPackages = pkgs.linuxPackages_latest;
+
     supportedFilesystems = [ "ntfs" ];
     kernelModules = [
       "mt7921e"

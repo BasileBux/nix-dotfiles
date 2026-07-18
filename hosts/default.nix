@@ -1,18 +1,6 @@
-{
-  pkgs,
-  settings,
-  ...
-}:
+{ pkgs, settings, ... }:
 
 {
-  boot = {
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-    kernelPackages = pkgs.linuxPackages_latest;
-  };
-
   networking.hostName = settings.hostname;
   networking.networkmanager.enable = true;
 
@@ -34,9 +22,7 @@
 
   users.users.${settings.username} = {
     isNormalUser = true;
-    extraGroups = [
-      "wheel"
-    ];
+    extraGroups = [ "wheel" ];
     shell = pkgs.zsh;
   };
 
@@ -72,9 +58,17 @@
     bc
     btop
     file
+    difftastic
   ];
 
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+    };
+  };
   programs.ssh.startAgent = true;
 
   services.tailscale.enable = true;

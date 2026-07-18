@@ -44,11 +44,11 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("PackChanged", {
 	callback = function(ev)
 		local name, kind = ev.data.spec.name, ev.data.kind
-		if name == "fff.nvim" and (kind == "install" or kind == "update") then
+		if name == 'fff.nvim' and (kind == 'install' or kind == 'update') then
 			if not ev.data.active then
 				vim.cmd.packadd("fff.nvim")
 			end
-			vim.system({ "nix", "run", ".#release" }, { cwd = ev.data.path })
+			require("fff.download").download_or_build_binary()
 		elseif name == "blink.cmp" and (kind == "install" or kind == "update") then
 			if not ev.data.active then
 				vim.cmd.packadd("blink.cmp")

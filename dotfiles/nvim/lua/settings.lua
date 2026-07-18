@@ -26,7 +26,7 @@ vim.opt.updatetime = 250
 -- Displays which-key popup sooner
 vim.opt.timeoutlen = 300
 
-vim.opt.undodir = "/home/basileb/.local/share/nvim/undo"
+vim.opt.undodir = os.getenv("NVIM_UNDODIR")
 
 -- Configure how new splits should be opened
 vim.opt.splitright = true
