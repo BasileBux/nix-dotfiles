@@ -11,12 +11,20 @@
     shell = pkgs.zsh;
   };
 
+  services.openssh.settings.port = 2222;
+
   services.openssh.extraConfig = ''
     Match User nvim
       PasswordAuthentication yes
       KbdInteractiveAuthentication yes
       PubkeyAuthentication no
   '';
+
+  services.fail2ban = {
+    enable = true;
+    maxretry = 10;
+    bantime = "1h";
+  };
 
   home-manager.users.nvim = import ./home-nvim.nix;
 

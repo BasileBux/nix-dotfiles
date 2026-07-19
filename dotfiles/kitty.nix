@@ -78,7 +78,8 @@
       "ctrl+shift+j" = "previous_window";
       "ctrl+shift+k" = "next_window";
 
-      "ctrl+shift+h" = "launch --type=overlay --stdin-source=@screen_scrollback --stdin-add-formatting ${settings.configPath}/scripts/kitty-nvim-scrollback.sh @input-line-number";
+      "ctrl+shift+h" =
+        "launch --type=overlay --stdin-source=@screen_scrollback --stdin-add-formatting ${settings.configPath}/scripts/kitty-nvim-scrollback.sh @input-line-number";
     };
   };
   # Disable binds for tab management as we use Tmux to do that on a remote
@@ -87,6 +88,7 @@
     map f1 no_op
     map ctrl+h no_op
     map ctrl+l no_op
+    cursor_trail 0
   '';
 
   home.packages = with pkgs; [

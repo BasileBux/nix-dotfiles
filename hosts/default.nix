@@ -51,7 +51,6 @@
     git
     jujutsu
     openssh
-    mosh
     unzip
     zip
     jq
@@ -60,6 +59,8 @@
     file
     difftastic
   ];
+
+  programs.mosh.enable = true;
 
   services.openssh = {
     enable = true;

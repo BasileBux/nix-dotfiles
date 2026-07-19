@@ -12,7 +12,9 @@
     prefix = "C-a";
 
     extraConfig = ''
+      set-option -sa terminal-features ',screen-256color:RGB'
       set -ga terminal-overrides ",screen-256color*:Tc"
+
       set -sg escape-time 0
 
       # Uncomment on a remote
