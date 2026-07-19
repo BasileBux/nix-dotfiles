@@ -69,11 +69,11 @@
 
   services.openssh = {
     enable = true;
+    ports = [ 2222 ];
     settings = {
       PubkeyAuthentication = true;
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
-      port = 2222;
     };
   };
   programs.ssh.startAgent = true;
