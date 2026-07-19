@@ -1,4 +1,9 @@
-{ pkgs, settings, lib, ... }:
+{
+  pkgs,
+  settings,
+  lib,
+  ...
+}:
 
 {
   networking.hostName = settings.hostname;
@@ -68,6 +73,7 @@
       PubkeyAuthentication = true;
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
+      port = 2222;
     };
   };
   programs.ssh.startAgent = true;

@@ -11,8 +11,6 @@
     shell = pkgs.zsh;
   };
 
-  services.openssh.settings.port = 2222;
-
   services.openssh.extraConfig = ''
     Match User nvim
       PasswordAuthentication yes
