@@ -40,5 +40,9 @@
   networking.nameservers = [
     "2a01:4ff:ff00::add:1"
     "2a01:4ff:ff00::add:2"
+    "185.12.64.2"
+    "185.12.64.1"
   ];
+
+  networking.interfaces.enp1s0.useDHCP = true;
 }
