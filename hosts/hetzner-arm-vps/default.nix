@@ -3,7 +3,16 @@
 {
   imports = [
     ./disko-config.nix
+    ./firewall-nvim.nix
+    ./limits-nvim.nix
   ];
+
+  users.users.nvim = {
+    isNormalUser = true;
+    shell = pkgs.zsh;
+  };
+
+  home-manager.users.nvim = import ./home-nvim.nix;
 
   boot.loader = {
     grub = {
