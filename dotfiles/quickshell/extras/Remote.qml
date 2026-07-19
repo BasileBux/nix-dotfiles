@@ -39,7 +39,7 @@ Window {
     }
 
     function exec() {
-        var address = addressField.text;
+        var address = addressField.text.trim();
         var session = sessionName.text;
 
         if (address.length <= 0) {
@@ -50,10 +50,21 @@ Window {
             session = Globals.extras.remoteDefaultTmuxSession;
         }
 
+        // Parse optional port: "root@example.com 2222" -> address="root@example.com", port=2222
+        var port = 22;
+        var parts = address.split(" ");
+        if (parts.length > 1) {
+            var lastPart = parts[parts.length - 1];
+            if (/^[0-9]+$/.test(lastPart)) {
+                port = parseInt(lastPart);
+                address = parts.slice(0, -1).join(" ");
+            }
+        }
+
         var user = Quickshell.env("USER");
 
         Quickshell.execDetached({
-            command: ["kitty", "--config", `/home/${user}/.config/kitty/remote.conf`, "mosh", address, "--", "tmux", "new-session", "-A", "-s", session]
+            command: ["kitty", "--config", `/home/${user}/.config/kitty/remote.conf`, "mosh", "--ssh=ssh -p " + port, address, "--", "tmux", "new-session", "-A", "-s", session]
         });
 
         exit();
@@ -80,7 +91,7 @@ Window {
             id: addressDescText
             Layout.alignment: Qt.AlignLeft
             Layout.leftMargin: parent.width * 1 / (2 * root.widthRatio)
-            text: "user@host:"
+            text: "user@host [port]:"
             color: Globals.theme.foreground
             font.family: Globals.theme.fontFamily
             font.pixelSize: Globals.fonts.small
