@@ -1,4 +1,4 @@
-{ pkgs, settings, ... }:
+{ pkgs, settings, lib, ... }:
 
 {
   networking.hostName = settings.hostname;
@@ -63,13 +63,14 @@
 
   services.openssh = {
     enable = true;
-
     settings = {
+      PubkeyAuthentication = true;
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
     };
   };
   programs.ssh.startAgent = true;
+  security.pam.services.sshd.unixAuth = lib.mkForce true;
 
   services.tailscale.enable = true;
 

@@ -3,7 +3,6 @@
 {
   imports = [
     ./disko-config.nix
-    ./firewall-nvim.nix
     ./limits-nvim.nix
   ];
 
@@ -12,7 +11,24 @@
     shell = pkgs.zsh;
   };
 
+  services.openssh.extraConfig = ''
+    Match User nvim
+      PasswordAuthentication yes
+      KbdInteractiveAuthentication yes
+      PubkeyAuthentication no
+  '';
+
   home-manager.users.nvim = import ./home-nvim.nix;
+
+  system.activationScripts.copyNvimPlugins = ''
+    SRC=/home/eugene/.local/share/nvim/site
+    DST=/home/nvim/.local/share/nvim/site
+    if [ -d "$SRC" ]; then
+      mkdir -p "$DST"
+      cp -ru "$SRC"/. "$DST"/
+      chown -R nvim:users "$DST"
+    fi
+  '';
 
   boot.loader = {
     grub = {
