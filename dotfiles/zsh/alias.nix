@@ -14,6 +14,9 @@ in
   rebuild-offline = "${rebuild_cmd} --offline";
   up = "sudo nix flake update && ${rebuild_cmd}";
 
+  # neovim
+  nvimconfig = "cd ${settings.configPath}/dotfiles/nvim && nvim init.lua";
+
   gss = "git status";
 
   vim = "nvim";
@@ -33,12 +36,6 @@ in
 // lib.optionalAttrs settings.desktop {
   qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
   hlconfig = "cd ${settings.configPath}/dotfiles/hypr && nvim hyprland.lua";
-
-  # neovim
-  nvimconfig = "cd ${settings.configPath}/dotfiles/nvim && nvim init.lua";
-  ai = ''
-    nvim -c CodeCompanionChat -c "wincmd h" -c "q"
-  '';
 
   vpn = "${settings.configPath}/scripts/tailscale-exit-nodes.sh";
 

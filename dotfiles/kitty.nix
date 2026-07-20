@@ -31,6 +31,8 @@
 
       enabled_layouts = "splits:split_axis=horizontal,splits:split_axis=vertical,stack";
 
+      clipboard_control = "write-clipboard write-primary read-clipboard read-primary-ask";
+
       cursor_shape = "block";
       cursor_shape_unfocused = "hollow";
       cursor_trail = 1;
