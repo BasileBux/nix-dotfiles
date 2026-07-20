@@ -6,6 +6,25 @@ vim.opt.mouse = "a"
 
 vim.opt.showmode = false
 
+-- If running in an SSH session, use OSC 52 to share clipboard with OS
+local function is_ssh()
+  return os.getenv("SSH_TTY") ~= nil or os.getenv("SSH_CONNECTION") ~= nil
+end
+
+if is_ssh() then
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = {
+      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+    },
+    paste = {
+      ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+    },
+  }
+end
+
 -- Share clipboard with OS
 vim.opt.clipboard = "unnamedplus"
 
