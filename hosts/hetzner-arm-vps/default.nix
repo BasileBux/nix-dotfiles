@@ -1,9 +1,17 @@
 { pkgs, ... }:
 
+let
+  customFonts = pkgs.callPackage ../../dotfiles/fonts { };
+in
 {
   imports = [
     ./disko-config.nix
     ./limits-nvim.nix
+  ];
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+    customFonts.iosevka-custom
   ];
 
   users.users.nvim = {

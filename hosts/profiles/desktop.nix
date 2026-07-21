@@ -130,7 +130,7 @@
     inter
     dm-sans
     googlesans-code
-  ];
+  ] ++ (builtins.attrValues (pkgs.callPackage ../../dotfiles/fonts { }));
 
   services.upower.enable = true;
 
