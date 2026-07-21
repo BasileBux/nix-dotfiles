@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 
 let
   customFonts = pkgs.callPackage ../../dotfiles/fonts { };
@@ -6,7 +9,7 @@ in
 {
   imports = [
     ./disko-config.nix
-    ./limits-nvim.nix
+    ./remote-nvim.nix
   ];
 
   fonts.packages = with pkgs; [
@@ -14,35 +17,11 @@ in
     customFonts.iosevka-custom
   ];
 
-  users.users.nvim = {
-    isNormalUser = true;
-    shell = pkgs.zsh;
-  };
-
-  services.openssh.extraConfig = ''
-    Match User nvim
-      PasswordAuthentication yes
-      KbdInteractiveAuthentication yes
-      PubkeyAuthentication no
-  '';
-
   services.fail2ban = {
     enable = true;
     maxretry = 10;
     bantime = "1h";
   };
-
-  home-manager.users.nvim = import ./home-nvim.nix;
-
-  system.activationScripts.copyNvimPlugins = ''
-    SRC=/home/eugene/.local/share/nvim/site
-    DST=/home/nvim/.local/share/nvim/site
-    if [ -d "$SRC" ]; then
-      mkdir -p "$DST"
-      cp -ru "$SRC"/. "$DST"/
-      chown -R nvim:users "$DST"
-    fi
-  '';
 
   boot.loader = {
     grub = {
