@@ -31,10 +31,10 @@ let
       pkgs.vimPlugins.nvim-treesitter-parsers.qmljs
     ];
 
-  # Using queries from my fork of nvim-treesitter because even if archived, the
-  # queries are good and I can fix them if needed.
+  # Using queries from nvim-treesitter. The queries are better then the ones from
+  # tree-sitter-grammars
   nvim-treesitter-queries = pkgs.fetchFromGitHub {
-    owner = "BasileBux";
+    owner = "nvim-treesitter";
     repo = "nvim-treesitter";
     rev = "main";
     hash = "sha256-PQR6tFt4lCrAZNQG7BLMD1IiCKja9wDS1S4laGJf/HE=";
