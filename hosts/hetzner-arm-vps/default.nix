@@ -30,6 +30,10 @@ in
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  environment.systemPackages = with pkgs; [
+    pi-coding-agent
+  ];
+
   networking.interfaces.enp1s0.ipv6.addresses = [
     {
       address = "2a01:4f8:c014:ef6::1";
