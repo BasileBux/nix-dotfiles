@@ -1,7 +1,5 @@
 {
   pkgs,
-  lib,
-  settings,
   ...
 }:
 
@@ -12,7 +10,7 @@ let
 
   caddyWithInfomaniak = pkgs.caddy.withPlugins {
     plugins = [ "github.com/caddy-dns/infomaniak@v1.0.2" ];
-    hash = lib.fakeHash;
+    hash = "sha256-4MWGK9iJlF56iiVq4M1nqk54qlcP1ZKi6mgS4+BUw+Y=";
   };
 in
 {
@@ -43,8 +41,28 @@ in
       PubkeyAuthentication no
   '';
 
-  # Might use caddy basic auth (https://caddyserver.com/docs/caddyfile/directives/basic_auth)
-  # instead of gotty's own auth. Or even both at the same time.
+  services.fail2ban = {
+    enable = true;
+    maxretry = 10;
+    bantime = "1h";
+
+    jails.caddy-auth = ''
+      enabled  = true
+      filter   = caddy-auth
+      logpath  = /var/log/caddy/${nvimSubdomain}.log
+      maxretry = 10
+      findtime = 10m
+      bantime  = 1h
+      backend  = auto
+    '';
+  };
+
+  environment.etc."fail2ban/filter.d/caddy-auth.conf".text = ''
+    [Definition]
+    failregex = ^.*"remote_ip":"<HOST>".*"status":401.*$
+    ignoreregex =
+  '';
+
   services.caddy = {
     enable = true;
     package = caddyWithInfomaniak;
@@ -54,53 +72,59 @@ in
     '';
 
     virtualHosts.${nvimSubdomain} = {
+      logFormat = null;
       extraConfig = ''
-        respond "GoTTY will be here soon — TLS is working! 🎉"
+        log {
+          output file /var/log/caddy/${nvimSubdomain}.log {
+            roll_size 10mb
+            roll_keep 5
+            roll_keep_for 720h
+          }
+          format json
+        }
 
-        # TODO: once gotty is tested and enabled, replace the line above with:
-        # reverse_proxy localhost:8080
+        basic_auth argon2id {
+          {env.GOTTY_USER} {env.GOTTY_PASS_HASH}
+        }
+
+        reverse_proxy localhost:8080
       '';
     };
   };
 
-  # Caddy reads the Infomaniak API token from this file.
-  # Create it manually (keeps the token out of /nix/store):
-  #
-  #   echo 'INFOMANIAK_API_TOKEN=...' | sudo tee /etc/caddy/infomaniak.env
-  #   sudo chown root:caddy /etc/caddy/infomaniak.env
-  #   sudo chmod 440 /etc/caddy/infomaniak.env
-  systemd.services.caddy.serviceConfig.EnvironmentFile = "/etc/caddy/infomaniak.env";
+  systemd.tmpfiles.rules = [
+    "d /var/log/caddy 0750 caddy caddy - -"
+  ];
 
-  # Before enabling, create the credentials file (kept OUT of /nix/store):
-  #
-  #   echo 'username:password' > /home/eugene/.gotty-creds
-  #   chmod 400 /home/eugene/.gotty-creds
-  #
-  # Then enable with:  sudo systemctl start gotty
-  # To persist across boots: add `wantedBy = [ "multi-user.target" ];` below.
+  # INFOMANIAK_API_TOKEN=myToken...
+  # GOTTY_USER=user
+  # GOTTY_PASS_HASH=hash -> sudo chmod 440 /etc/caddy/creds.env
+  systemd.services.caddy.serviceConfig.EnvironmentFile = "/etc/caddy/creds.env";
+  # ```
+  # caddy hash-password \
+  #   --algorithm argon2id \
+  #   --argon2id-time 3 \
+  #   --argon2id-memory 65536 \
+  #   --argon2id-threads 2 \
+  #   --argon2id-keylen 32 \
+  #   --plaintext "yourpassword"
+  # ```
 
   systemd.services.gotty = {
     description = "GoTTY — share your terminal as a web application";
     after = [ "network-online.target" ];
     requires = [ "network-online.target" ];
-    # wantedBy is intentionally omitted — the service is defined but not auto-started.
-    # Add `wantedBy = [ "multi-user.target" ];` here when you're ready.
+    wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
       User = "nvim";
       Group = "users";
       WorkingDirectory = "/home/nvim";
 
-      LoadCredential = "gotty-password:/home/${settings.username}/.gotty-creds";
-
-      # Copy the static config, then append the credential at runtime.
-      # The password never touches the Nix store.
       ExecStartPre = pkgs.writeShellScript "gotty-gen-config" ''
         set -euo pipefail
-        CRED="$(cat "$CREDENTIALS_DIRECTORY/gotty-password" | tr -d '\n')"
+        rm -f /home/nvim/.gotty
         cp ${gottyConfigTemplate} /home/nvim/.gotty
-        echo "credential = \"$CRED\"" >> /home/nvim/.gotty
-        chmod 600 /home/nvim/.gotty
       '';
 
       ExecStart = "${pkgs.gotty}/bin/gotty --config /home/nvim/.gotty ${pkgs.zsh}/bin/zsh";

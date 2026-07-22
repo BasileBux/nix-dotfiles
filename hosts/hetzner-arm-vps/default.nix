@@ -12,16 +12,12 @@ in
     ./remote-nvim.nix
   ];
 
+  nixpkgs.config.allowUnfree = true;
+
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     customFonts.iosevka-custom
   ];
-
-  services.fail2ban = {
-    enable = true;
-    maxretry = 10;
-    bantime = "1h";
-  };
 
   boot.loader = {
     grub = {

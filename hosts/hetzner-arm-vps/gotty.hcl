@@ -1,15 +1,17 @@
 // https://github.com/sorenisanerd/gotty/blob/master/.gotty
 
-permit_write = false // debugging and testing only
+permit_write = true
 
 address = "127.0.0.1"
 port = 8080
 
-enable_basic_auth = true
+enable_basic_auth = false
 
 enable_tls = false // We use a reverse proxy
 
 // index_file = "" // Allows to have a custom index.html file
+
+title_format = "Nvim - remote session"
 
 max_connection = 5
 
