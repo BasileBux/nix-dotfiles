@@ -74,6 +74,9 @@
       PubkeyAuthentication = true;
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
+
+      ClientAliveInterval = 60;
+      ClientAliveCountMax = 3;
     };
   };
   programs.ssh.startAgent = true;

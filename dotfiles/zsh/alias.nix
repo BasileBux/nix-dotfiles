@@ -33,6 +33,9 @@ in
   P = "wl-paste";
   NULL = "/dev/null 2>&1";
 }
+// lib.optionalAttrs (settings.machine == "hetzner-arm-vps") {
+  gotty-conn = ''sudo cat /var/log/caddy/nvim.asbel.xyz.log | ${pkgs.jq}/bin/jq -C 'select(.status == 200 and .request.uri == "/" and .request.method == "GET") | {remote_ip: .request.remote_ip, user_id: .user_id, status: .status}' | less'';
+}
 // lib.optionalAttrs settings.desktop {
   qsconfig = "cd ${settings.configPath}/dotfiles/quickshell && nvim shell.qml";
   hlconfig = "cd ${settings.configPath}/dotfiles/hypr && nvim hyprland.lua";
