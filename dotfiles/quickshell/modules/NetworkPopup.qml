@@ -121,6 +121,9 @@ Item {
                 height: 36
 
                 readonly property bool isConnected: modelData.connected === true
+                readonly property bool isConnecting: modelData.state === Net.ConnectionState.Connecting
+                readonly property bool isKnown: modelData.known === true
+                readonly property real signalStrength: modelData.signalStrength ?? 0
 
                 MouseArea {
                     anchors.fill: parent
@@ -133,36 +136,67 @@ Item {
                     }
                 }
 
-                Text {
+                Row {
+                    id: signalBars
                     anchors {
                         left: parent.left
-                        verticalCenter: parent.verticalCenter
+                        bottom: parent.bottom
+                        bottomMargin: (parent.height - 14) / 2   // 14 = tallest bar
                     }
-                    width: parent.width - securityLabel.width - Globals.spacing
-                    color: delegateItem.isConnected ? Globals.theme.accent1 : Globals.theme.foreground
-                    font.pixelSize: Globals.fonts.medium
-                    font.family: Globals.theme.fontFamily
-                    font.bold: delegateItem.isConnected
-                    elide: Text.ElideRight
-                    text: modelData.name || "(unnamed)"
+                    spacing: 2
+
+                    Repeater {
+                        model: 4
+                        Rectangle {
+                            width: 3
+                            height: 5 + index * 3   // 5, 8, 11, 14
+                            radius: 1
+                            anchors.bottom: parent.bottom
+                            color: {
+                                var threshold = (index + 1) * 0.22;
+                                if (delegateItem.signalStrength >= threshold)
+                                    return delegateItem.isConnected ? Globals.theme.accent1 : Globals.theme.foreground;
+                                return Globals.theme.muted;
+                            }
+                        }
+                    }
                 }
 
                 Text {
-                    id: securityLabel
+                    id: statusLabel
                     anchors {
                         right: parent.right
                         rightMargin: Globals.spacing
                         verticalCenter: parent.verticalCenter
                     }
-                    color: Globals.theme.muted
+                    color: delegateItem.isConnecting ? Globals.theme.accent1 : Globals.theme.muted
                     font.pixelSize: Globals.fonts.xsmall
                     font.family: Globals.theme.fontFamily
+                    font.italic: delegateItem.isConnecting
                     text: {
+                        if (delegateItem.isConnecting)
+                            return "Connecting…";
                         var sec = modelData.security;
                         if (sec === undefined || sec === null || sec === Net.WifiSecurityType.Open)
                             return "";
                         return Net.WifiSecurityType.toString(sec);
                     }
+                }
+
+                Text {
+                    anchors {
+                        left: signalBars.right
+                        leftMargin: Globals.spacing
+                        right: statusLabel.left
+                        rightMargin: Globals.spacing
+                        verticalCenter: parent.verticalCenter
+                    }
+                    color: delegateItem.isConnected ? Globals.theme.accent1 : Globals.theme.foreground
+                    font.pixelSize: Globals.fonts.medium
+                    font.family: Globals.theme.fontFamily
+                    font.bold: delegateItem.isConnected || delegateItem.isKnown
+                    elide: Text.ElideRight
+                    text: modelData.name || "(unnamed)"
                 }
             }
         }
