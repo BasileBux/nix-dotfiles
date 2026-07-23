@@ -38,6 +38,7 @@ Item {
             color: Globals.theme.foreground
             font.pointSize: root.fontSize
             font.family: Globals.theme.fontFamily
+			font.bold: true
             text: Qt.formatDateTime(clock.date, "hh")
         }
 
@@ -48,6 +49,7 @@ Item {
             color: Globals.theme.foreground
             font.pointSize: root.fontSize
             font.family: Globals.theme.fontFamily
+			font.bold: true
             text: Qt.formatDateTime(clock.date, "mm")
         }
     }

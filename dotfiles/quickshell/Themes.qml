@@ -167,7 +167,7 @@ Singleton {
         readonly property color sharedForeground: "#F2F2F2"
         readonly property color sharedBorder: "#BFBFBF"
         readonly property color sharedMuted: "#464646"
-        readonly property string sharedFontFamily: "DM Sans"
+        readonly property string sharedFontFamily: "Inter"
 
         readonly property var antidote: QtObject {
             readonly property color background: modern.sharedBackground
