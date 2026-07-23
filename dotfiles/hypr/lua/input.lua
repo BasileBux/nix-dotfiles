@@ -17,7 +17,7 @@ M.setup = function()
 			kb_layout = "us,ch",
 			kb_options = "grp:alt_space_toggle,ctrl:nocaps",
 			kb_variant = ",fr",
-			repeat_delay = 250,
+			repeat_delay = 200,
 			repeat_rate = 35,
 			sensitivity = 0,
 		},
