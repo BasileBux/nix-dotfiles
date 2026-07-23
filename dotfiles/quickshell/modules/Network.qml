@@ -15,24 +15,18 @@ Item {
 
     Button {
         id: networkIcon
-        anchors {
-            fill: parent
-            // rightMargin: 1 // Slightest adjustment
-        }
-        background: Rectangle {
-            color: "transparent"
-        }
+        anchors.fill: parent
+        background: Rectangle { color: "transparent" }
+
         icon.width: parent.width * 0.6
         icon.height: parent.width * 0.6
         icon.color: Globals.theme.foreground
         icon.source: {
-            if (Services.Network.scanning || !Services.Network.startupFinished)
-                return "../icons/search.svg";
             if (Services.Network.ethernetConnected)
                 return "../icons/globe.svg";
             if (!Services.Network.wifiEnabled)
                 return "../icons/wifi-off.svg";
-            if (Services.Network.hasActiveConnection)
+            if (Services.Network.wifiConnected)
                 return "../icons/wifi-on.svg";
             return "../icons/wifi-problem.svg";
         }
@@ -53,13 +47,8 @@ Item {
         popupHeight: root.popupHeight
         popupWidth: root.popupWidth
         moduleRef: root.moduleRef
-        NetworkPopup {}
-    }
-
-    Connections {
-        target: popup
-        function onShownChanged() {
-            Services.Network.popupVisible = popup.shown;
+        NetworkPopup {
+            popupShown: popup.shown
         }
     }
 }
