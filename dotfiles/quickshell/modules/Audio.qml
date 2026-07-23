@@ -53,6 +53,8 @@ Item {
         popupHeight: root.popupHeight
         popupWidth: root.popupWidth
         moduleRef: root.moduleRef
-        AudioPopup {}
+        AudioPopup {
+            popupShown: popup.shown
+        }
     }
 }

@@ -16,6 +16,8 @@ Item {
         rightMargin: Globals.spacing
     }
 
+    required property bool popupShown
+
     readonly property string preferedPlayerDBusName: "org.mpris.MediaPlayer2.firefox"
     readonly property var mprisPlayers: Mpris.players.values
     property MprisPlayer preferedPlayer: null
@@ -243,18 +245,39 @@ Item {
         }
     }
 
-    function findPreferedPlayer() {
-        for (let player of Mpris.players.values) {
-            if (player.dbusName.startsWith(preferedPlayerDBusName)) {
-                return player;
+    // Prefer firefox when it has content, otherwise use any available player
+    function selectPlayer() {
+        const players = Mpris.players.values;
+
+        // Firefox with actual content
+        for (let i = 0; i < players.length; ++i) {
+            const p = players[i];
+            if (p.dbusName.startsWith(preferedPlayerDBusName) && p.trackTitle !== "") {
+                root.preferedPlayer = p;
+                return;
             }
         }
-        return null;
+        // Any other player with content
+        for (let i = 0; i < players.length; ++i) {
+            const p = players[i];
+            if (p.trackTitle !== "") {
+                root.preferedPlayer = p;
+                return;
+            }
+        }
+        // Nothing playing anywhere
+        root.preferedPlayer = null;
     }
 
-    onMprisPlayersChanged: {
-        if (root.preferedPlayer === null) {
-            root.preferedPlayer = findPreferedPlayer();
-        }
+    // Re-evaluate whenever the player list changes (registration / unregistration).
+    onMprisPlayersChanged: selectPlayer()
+
+    // Periodically re-evaluate while the popup is visible to catch track-title
+    // changes within an already-registered player (e.g. firefox tab closed).
+    Timer {
+        interval: 2000
+        repeat: true
+        running: root.popupShown
+        onTriggered: root.selectPlayer()
     }
 }
