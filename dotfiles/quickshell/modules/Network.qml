@@ -2,6 +2,7 @@ import Quickshell
 import QtQuick
 import QtQuick.Controls
 import "../services" as Services
+import "../widgets" as Widgets
 import ".."
 
 Item {
@@ -13,15 +14,14 @@ Item {
     required property int popupWidth
     readonly property alias popup: popup
 
-    Button {
+    Widgets.TintIcon {
         id: networkIcon
         anchors.fill: parent
-        background: Rectangle { color: "transparent" }
 
-        icon.width: parent.width * 0.6
-        icon.height: parent.width * 0.6
-        icon.color: Globals.theme.foreground
-        icon.source: {
+        width: parent.width * 0.6
+        height: parent.width * 0.6
+        color: Globals.theme.foreground
+        source: {
             if (Services.Network.ethernetConnected)
                 return "../icons/globe.svg";
             if (!Services.Network.wifiEnabled)

@@ -2,6 +2,7 @@ import Quickshell
 import Quickshell.Io
 import QtQuick
 import QtQuick.Controls
+import "../widgets" as Widgets
 import ".."
 
 Item {
@@ -9,17 +10,14 @@ Item {
     anchors.fill: parent
     readonly property alias popup: popup
 
-    Button {
+    Widgets.TintIcon {
         id: lockIcon
         anchors.fill: parent
 
-        background: Rectangle {
-            color: "transparent"
-        }
-        icon.source: "../icons/power.svg"
-        icon.color: Globals.theme.foreground
-        icon.width: parent.height
-        icon.height: parent.height
+        source: "../icons/power.svg"
+        color: Globals.theme.foreground
+        width: parent.height
+        height: parent.height
     }
 
     MouseArea {

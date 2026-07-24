@@ -4,6 +4,7 @@ import Quickshell.Services.UPower
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import "../widgets" as Widgets
 import ".."
 
 Item {
@@ -49,16 +50,13 @@ Item {
                 radius: 2
             }
 
-            Button {
+            Widgets.TintIcon {
                 id: batteryIcon
                 anchors.fill: parent
-                background: Rectangle {
-                    color: "transparent"
-                }
-                icon.source: "../icons/battery-vertical.svg"
-                icon.width: parent.width
-                icon.height: parent.width
-                icon.color: Globals.theme.foreground
+                source: "../icons/battery-vertical.svg"
+                width: parent.width
+                height: parent.width
+                color: Globals.theme.foreground
             }
         }
 

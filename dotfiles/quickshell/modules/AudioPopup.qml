@@ -5,6 +5,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import "../services" as Services
+import "../widgets" as Widgets
 import Quickshell.Services.Mpris
 import ".."
 
@@ -95,8 +96,12 @@ Item {
             implicitHeight: Globals.spacing * 2
         }
         Item {
+			id: playbackControls
             Layout.fillWidth: true
             implicitHeight: root.height * (8/57)
+
+			readonly property int iconSize: playbackControls.height
+
             RowLayout {
                 id: controls
                 // Layout.fillHeight: true
@@ -106,83 +111,89 @@ Item {
                     // Spacer
                     Layout.fillWidth: true
                 }
-                Button {
+                Item {
                     id: previousButton
-                    background: Rectangle {
-                        color: "transparent"
-                    }
-                    icon.source: "../icons/previous.svg"
-                    icon.color: {
-                        if (root.preferedPlayer === null || root.preferedPlayer.canGoPrevious === false) {
-                            Globals.theme.muted;
-                        } else {
-                            Globals.theme.foreground;
-                        }
-                    }
-                    icon.height: parent.height * 0.7
-                    icon.width: parent.height * 0.7
-                    enabled: preferedPlayer !== null
-                    onClicked: {
-                        if (root.preferedPlayer !== null && root.preferedPlayer.canGoPrevious) {
-                            root.preferedPlayer.previous();
-                        }
-                    }
-                }
-                Button {
-                    id: playPauseButton
-                    background: Rectangle {
-                        color: "transparent"
-                    }
-                    icon.source: {
-                        if (root.preferedPlayer === null) {
-                            "../icons/play.svg";
-                        } else {
-                            if (root.preferedPlayer.playbackState === MprisPlaybackState.Playing) {
-                                "../icons/pause.svg";
+                    Layout.preferredWidth: playbackControls.iconSize
+                    Layout.preferredHeight: playbackControls.iconSize
+                    Widgets.TintIcon {
+                        anchors.fill: parent
+                        source: "../icons/previous.svg"
+                        color: {
+                            if (root.preferedPlayer === null || root.preferedPlayer.canGoPrevious === false) {
+                                Globals.theme.muted;
                             } else {
-                                "../icons/play.svg";
+                                Globals.theme.foreground;
                             }
                         }
                     }
-                    icon.color: {
-                        if (root.preferedPlayer === null || (root.preferedPlayer.canPause === false && root.preferedPlayer.playbackState === MprisPlaybackState.Playing) || (root.preferedPlayer.canPlay === false && root.preferedPlayer.playbackState !== MprisPlaybackState.Playing)) {
-                            Globals.theme.muted;
-                        } else {
-                            Globals.theme.foreground;
-                        }
-                    }
-                    icon.height: parent.height * 0.7
-                    icon.width: parent.height * 0.7
-                    enabled: preferedPlayer !== null
-                    onClicked: {
-                        if (root.preferedPlayer !== null) {
-                            if (root.preferedPlayer.playbackState === MprisPlaybackState.Playing && root.preferedPlayer.canPause) {
-                                root.preferedPlayer.pause();
-                            } else if (root.preferedPlayer.playbackState !== MprisPlaybackState.Playing && root.preferedPlayer.canPlay) {
-                                root.preferedPlayer.play();
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            if (root.preferedPlayer !== null && root.preferedPlayer.canGoPrevious) {
+                                root.preferedPlayer.previous();
                             }
                         }
                     }
                 }
-                Button {
-                    id: nextButton
-                    background: Rectangle {
-                        color: "transparent"
-                    }
-                    icon.source: "../icons/next.svg"
-                    icon.color: {
-                        if (root.preferedPlayer === null || root.preferedPlayer.canGoNext === false) {
-                            Globals.theme.muted;
-                        } else {
-                            Globals.theme.foreground;
+                Item {
+                    id: playPauseButton
+                    Layout.preferredWidth: playbackControls.iconSize
+                    Layout.preferredHeight: playbackControls.iconSize
+                    Widgets.TintIcon {
+                        anchors.fill: parent
+                        source: {
+                            if (root.preferedPlayer === null) {
+                                "../icons/play.svg";
+                            } else {
+                                if (root.preferedPlayer.playbackState === MprisPlaybackState.Playing) {
+                                    "../icons/pause.svg";
+                                } else {
+                                    "../icons/play.svg";
+                                }
+                            }
+                        }
+                        color: {
+                            if (root.preferedPlayer === null || (root.preferedPlayer.canPause === false && root.preferedPlayer.playbackState === MprisPlaybackState.Playing) || (root.preferedPlayer.canPlay === false && root.preferedPlayer.playbackState !== MprisPlaybackState.Playing)) {
+                                Globals.theme.muted;
+                            } else {
+                                Globals.theme.foreground;
+                            }
                         }
                     }
-                    icon.height: parent.height * 0.7
-                    icon.width: parent.height * 0.7
-                    enabled: preferedPlayer !== null
-                    onClicked: {
-                        if (root.preferedPlayer !== null && root.preferedPlayer.canGoNext) {
-                            root.preferedPlayer.next();
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            if (root.preferedPlayer !== null) {
+                                if (root.preferedPlayer.playbackState === MprisPlaybackState.Playing && root.preferedPlayer.canPause) {
+                                    root.preferedPlayer.pause();
+                                } else if (root.preferedPlayer.playbackState !== MprisPlaybackState.Playing && root.preferedPlayer.canPlay) {
+                                    root.preferedPlayer.play();
+                                }
+                            }
+                        }
+                    }
+                }
+                Item {
+                    id: nextButton
+                    Layout.preferredWidth: playbackControls.iconSize
+                    Layout.preferredHeight: playbackControls.iconSize
+                    Widgets.TintIcon {
+                        anchors.fill: parent
+                        source: "../icons/next.svg"
+                        color: {
+                            if (root.preferedPlayer === null || root.preferedPlayer.canGoNext === false) {
+                                Globals.theme.muted;
+                            } else {
+                                Globals.theme.foreground;
+                            }
+                        }
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            if (root.preferedPlayer !== null && root.preferedPlayer.canGoNext) {
+                                root.preferedPlayer.next();
+                            }
                         }
                     }
                 }

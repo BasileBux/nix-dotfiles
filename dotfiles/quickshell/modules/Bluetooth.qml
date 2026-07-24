@@ -2,6 +2,7 @@ import Quickshell
 import Quickshell.Bluetooth
 import QtQuick
 import QtQuick.Controls
+import "../widgets" as Widgets
 import ".."
 
 Item {
@@ -13,19 +14,16 @@ Item {
     required property int popupWidth
     readonly property alias popup: popup
 
-    Button {
+    Widgets.TintIcon {
         id: bluetoothIcon
         anchors {
             fill: parent
             // rightMargin: 2 // Slightest adjustment
         }
-        background: Rectangle {
-            color: "transparent"
-        }
-        icon.source: "../icons/bluetooth.svg"
-        icon.width: parent.width * 0.8
-        icon.height: parent.width * 0.8
-        icon.color: Globals.theme.foreground
+        source: "../icons/bluetooth.svg"
+        width: parent.width * 0.8
+        height: parent.width * 0.8
+        color: Globals.theme.foreground
     }
 
     MouseArea {

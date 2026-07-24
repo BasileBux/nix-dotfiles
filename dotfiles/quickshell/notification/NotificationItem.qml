@@ -3,6 +3,7 @@ import Quickshell.Services.Notifications
 import Quickshell.Wayland
 import QtQuick
 import QtQuick.Controls
+import "../widgets" as Widgets
 import ".."
 
 // Parent sets width and height additionally to the required stuff
@@ -73,23 +74,27 @@ Rectangle {
         onClicked: root.removeNotification(notification)
     }
 
-    Button {
+    Item {
         id: closeButton
         anchors {
             top: parent.top
             right: parent.right
         }
-        background: Rectangle {
-            color: "transparent"
-        }
-        icon.source: "../icons/cross.svg"
-        icon.color: Globals.theme.foreground
         property int iconSize: 24
-        icon.height: iconSize
-        icon.width: iconSize
-        onClicked: {
-            notif.tracked = false;
-            root.removeNotification(root.notification);
+        width: iconSize
+        height: iconSize
+
+        Widgets.TintIcon {
+            anchors.fill: parent
+            source: "../icons/cross.svg"
+            color: Globals.theme.foreground
+        }
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                notif.tracked = false;
+                root.removeNotification(root.notification);
+            }
         }
     }
 }

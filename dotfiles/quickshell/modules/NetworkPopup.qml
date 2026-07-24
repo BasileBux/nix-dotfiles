@@ -65,20 +65,16 @@ Item {
                 text: Services.Network.wifiEnabled ? "Wi-Fi On" : "Wi-Fi Off"
             }
 
-            Button {
+            Widgets.TintIcon {
                 id: statusIndicator
                 anchors {
                     right: parent.right
                     verticalCenter: parent.verticalCenter
                 }
-                background: Rectangle {
-                    color: "transparent"
-                }
-                icon.source: root.hasProblem ? "../icons/warning.svg" : "../icons/reboot.svg"
-                icon.width: Globals.fonts.large
-                icon.height: Globals.fonts.large
-                icon.color: root.indicatorColor
-                enabled: false
+                source: root.hasProblem ? "../icons/warning.svg" : "../icons/reboot.svg"
+                width: Globals.fonts.xlarge
+                height: Globals.fonts.xlarge
+                color: root.indicatorColor
             }
         }
 

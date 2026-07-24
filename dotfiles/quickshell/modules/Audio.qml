@@ -3,6 +3,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import "../services" as Services
+import "../widgets" as Widgets
 import ".."
 
 Item {
@@ -16,16 +17,13 @@ Item {
     ColumnLayout {
         anchors.fill: parent
         spacing: -5
-        Button {
+        Widgets.TintIcon {
             id: audioIcon
             Layout.alignment: Qt.AlignHCenter
-            background: Rectangle {
-                color: "transparent"
-            }
-            icon.source: Services.Audio.muted ? "../icons/muted.svg" : "../icons/speaker.svg"
-            icon.width: parent.width * 0.45
-            icon.height: parent.width * 0.45
-            icon.color: Globals.theme.foreground
+            Layout.preferredWidth: parent.width * 0.65
+            Layout.preferredHeight: parent.width * 0.65
+            source: Services.Audio.muted ? "../icons/muted.svg" : "../icons/speaker.svg"
+            color: Globals.theme.foreground
         }
 
         Text {

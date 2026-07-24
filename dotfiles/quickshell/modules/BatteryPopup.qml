@@ -153,20 +153,19 @@ Item {
                 Repeater {
                     id: profileButtons
                     model: [
-                        { icon: "../icons/leaf.svg",    iw: 17, ih: 17, idx: 0 },
-                        { icon: "../icons/balance.svg", iw: 19, ih: 19, idx: 1 },
-                        { icon: "../icons/rocket.svg",  iw: 16, ih: 16, idx: 2 },
+                        { icon: "../icons/leaf.svg",    iw: 27, ih: 27, idx: 0 },
+                        { icon: "../icons/balance.svg", iw: 29, ih: 29, idx: 1 },
+                        { icon: "../icons/rocket.svg",  iw: 26, ih: 26, idx: 2 },
                     ]
                     delegate: Item {
                         width: 56
                         height: track.height
-                        Button {
+                        Widgets.TintIcon {
                             anchors.centerIn: parent
-                            background: Rectangle { color: "transparent" }
-                            icon.source: modelData.icon
-                            icon.width: modelData.iw
-                            icon.height: modelData.ih
-                            icon.color: root.activeProfileIndex === modelData.idx
+                            source: modelData.icon
+                            width: modelData.iw
+                            height: modelData.ih
+                            color: root.activeProfileIndex === modelData.idx
                                 ? Globals.theme.background
                                 : Globals.theme.foreground
                         }
