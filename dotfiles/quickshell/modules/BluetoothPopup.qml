@@ -2,6 +2,7 @@ import Quickshell
 import Quickshell.Bluetooth
 import QtQuick
 import QtQuick.Layouts
+import "../widgets" as Widgets
 import ".."
 
 Item {
@@ -15,68 +16,20 @@ Item {
 
     property bool searching: false
 
-    ColumnLayout {
-        anchors.fill: parent
-        spacing: Globals.spacing * 2
-
-        Item {
-            Layout.fillWidth: true
-            implicitHeight: 32
-            Rectangle {
-                id: searchButton
-                anchors {
-                    left: parent.left
-                    top: parent.top
-                    bottom: parent.bottom
-                }
-                implicitWidth: 76
-                radius: Globals.radius
-                color: Globals.theme.accent1
-                Text {
-                    id: searchText
-                    anchors.centerIn: parent
-                    color: Globals.theme.background
-                    font.pointSize: Globals.fonts.xsmall
-                    font.family: Globals.theme.fontFamily
-                    text: "Search"
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        if (!searching) {
-                            searching = true;
-                            searchButton.color = Globals.theme.accent3;
-                            Bluetooth.defaultAdapter.pairable = true;
-                            Bluetooth.defaultAdapter.discovering = true;
-                            return;
-                        }
-                        searching = false;
-                        searchButton.color = Globals.theme.accent1;
-                        Bluetooth.defaultAdapter.pairable = false;
-                        Bluetooth.defaultAdapter.discovering = false;
-                    }
-                }
-            }
+    function connectedDeviceName() {
+        var devices = Bluetooth.devices.values;
+        for (var i = 0; i < devices.length; i++) {
+            if (devices[i].connected)
+                return devices[i].name;
         }
-
-        Item {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            ListView {
-                id: deviceList
-                anchors.fill: parent
-                spacing: Globals.spacing
-
-                model: Bluetooth.devices
-                delegate: bluetoothDelegate
-
-                displayMarginBeginning: -(2 * Globals.spacing)
-                displayMarginEnd: -(2 * Globals.spacing)
-            }
-        }
+        return "";
     }
 
-    function clickDevice(device, nameText) {
+    function isMacAddress(name) {
+        return /^([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}$/.test(name);
+    }
+
+    function clickDevice(device) {
         if (!device.bonded) {
             return device.pair();
         }
@@ -86,61 +39,173 @@ Item {
         device.connect();
     }
 
-    Component {
-        id: bluetoothDelegate
+    ColumnLayout {
+        anchors.fill: parent
+        spacing: Globals.spacing
+
         Item {
-            id: item
-            property var device: modelData
-            implicitHeight: device.batteryAvailable ? 38 : 20
-            implicitWidth: parent.width
+            Layout.fillWidth: true
+            Layout.preferredHeight: 30
 
-            Text {
-                id: nameText
-                color: device.state == BluetoothDeviceState.Connecting || device.state == BluetoothDeviceState.Connected ? Globals.theme.accent1 : Globals.theme.foreground
-                font.pixelSize: Globals.fonts.medium
-                font.family: Globals.theme.fontFamily
+            Rectangle {
+                id: scanButton
                 anchors {
-                    top: parent.top
                     left: parent.left
-                    leftMargin: Globals.spacing
+                    verticalCenter: parent.verticalCenter
                 }
-                text: device.name
+                width: scanRow.width + Globals.spacing * 1.5 + Globals.spacing * 3
+                height: parent.height
+                radius: height / 2
+                color: root.searching ? Globals.theme.accent1 : Globals.theme.muted
+                opacity: root.searching ? 1.0 : 0.4
+
+                Behavior on color { ColorAnimation { duration: 150 } }
+                Behavior on opacity { NumberAnimation { duration: 150 } }
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: clickDevice(device, nameText)
+                    onClicked: {
+                        root.searching = !root.searching;
+                        Bluetooth.defaultAdapter.pairable = root.searching;
+                        Bluetooth.defaultAdapter.discovering = root.searching;
+                    }
+                }
+
+                Row {
+                    id: scanRow
+                    anchors {
+                        left: parent.left
+                        leftMargin: Globals.spacing * 1.5
+                        verticalCenter: parent.verticalCenter
+                    }
+                    spacing: Globals.spacing * 0.6
+
+                    Widgets.TintIcon {
+                        source: "../icons/search.svg"
+                        width: Globals.fonts.xlarge
+                        height: Globals.fonts.xlarge
+                        color: root.searching ? Globals.theme.background : Globals.theme.foreground
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: stopMetrics.width
+                        horizontalAlignment: Text.AlignHCenter
+                        color: root.searching ? Globals.theme.background : Globals.theme.foreground
+                        font.pixelSize: Globals.fonts.small
+                        font.family: Globals.theme.fontFamily
+                        font.bold: root.searching
+                        text: root.searching ? "Stop" : "Scan"
+                    }
+
+                    TextMetrics {
+                        id: stopMetrics
+                        font.pixelSize: Globals.fonts.small
+                        font.family: Globals.theme.fontFamily
+                        font.bold: true
+                        text: "Stop"
+                    }
                 }
             }
-            Text {
-                id: batteryText
-                color: Globals.theme.muted
-                font.pixelSize: Globals.fonts.small
-                font.family: Globals.theme.fontFamily
-                anchors {
-                    left: parent.left
-                    leftMargin: Globals.spacing
-                    top: nameText.bottom
-                }
-                text: device.batteryAvailable ? "Battery: " + (device.battery * 100).toFixed(0) + "%" : ""
+        }
+
+        Text {
+            Layout.fillWidth: true
+            color: Globals.theme.muted
+            font.pixelSize: Globals.fonts.small
+            font.family: Globals.theme.fontFamily
+            elide: Text.ElideRight
+            text: {
+                if (root.searching)
+                    return "Scanning…";
+                var name = root.connectedDeviceName();
+                if (name !== "")
+                    return "Connected to " + name;
+                return "Not connected";
             }
-            Text {
-                id: forgetText
-                anchors {
-                    right: parent.right
-                    rightMargin: Globals.spacing
-                    top: parent.top
-                    topMargin: -3
-                }
-                visible: device.bonded
-                color: Globals.theme.foreground
-                font.pointSize: Globals.fonts.medium
-                font.family: Globals.theme.fontFamily
-                font.bold: true
-                text: ""
+        }
+
+        ListView {
+            id: deviceList
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            spacing: 0
+            clip: true
+            model: Bluetooth.devices
+
+            displayMarginBeginning: -(2 * Globals.spacing)
+            displayMarginEnd: -(2 * Globals.spacing)
+
+            delegate: Item {
+                id: delegateItem
+                width: ListView.view.width
+                height: visible ? (device.batteryAvailable ? 38 : 26) + Globals.padding : 0
+                visible: !root.isMacAddress(modelData.name)
+
+                property var device: modelData
+                readonly property bool isConnecting: device.state === BluetoothDeviceState.Connecting
+                readonly property bool isConnected: device.state === BluetoothDeviceState.Connected
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: device.forget()
+                    onClicked: root.clickDevice(device)
+                }
+
+                // Device name
+                Text {
+                    id: nameText
+                    anchors {
+                        left: parent.left
+                        leftMargin: Globals.spacing
+                        right: forgetIcon.left
+                        rightMargin: Globals.spacing
+                        top: parent.top
+                        topMargin: Globals.padding
+                    }
+                    color: delegateItem.isConnected || delegateItem.isConnecting
+                           ? Globals.theme.accent1 : Globals.theme.foreground
+                    font.pixelSize: Globals.fonts.medium
+                    font.family: Globals.theme.fontFamily
+                    font.bold: delegateItem.isConnected
+                    elide: Text.ElideRight
+                    text: device.name || "(unnamed)"
+                }
+
+                // Battery info
+                Text {
+                    id: batteryText
+                    anchors {
+                        left: parent.left
+                        leftMargin: Globals.spacing
+                        top: nameText.bottom
+                    }
+                    color: Globals.theme.muted
+                    font.pixelSize: Globals.fonts.xsmall
+                    font.family: Globals.theme.fontFamily
+                    visible: device.batteryAvailable
+                    text: "Battery: " + (device.battery * 100).toFixed(0) + "%"
+                }
+
+                // Forget button
+                Widgets.TintIcon {
+                    id: forgetIcon
+                    anchors {
+                        right: parent.right
+                        rightMargin: Globals.spacing
+                        verticalCenter: nameText.verticalCenter
+                    }
+                    source: "../icons/cross.svg"
+                    width: Globals.fonts.xlarge
+                    height: Globals.fonts.xlarge
+                    color: Globals.theme.muted
+                    visible: device.bonded
+
+                    MouseArea {
+                        anchors.fill: parent
+                        anchors.margins: -Globals.spacing
+                        onClicked: device.forget()
+                    }
                 }
             }
         }
