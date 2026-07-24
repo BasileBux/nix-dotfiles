@@ -18,6 +18,15 @@ Singleton {
 
     readonly property var theme: Themes.modern.rodeurRouge
 
+	// Semantic colors, consistent across all themes. Use these when a color needs
+	// to convey meaning
+    readonly property var colors: QtObject {
+        readonly property color brightGreen: "#20FF4F"
+		readonly property color green: "#008000"
+
+        readonly property color red: "#FD788B"
+    }
+
     readonly property var fonts: QtObject {
         readonly property int huge: 28
         readonly property int xlarge: 24
