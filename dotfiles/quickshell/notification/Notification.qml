@@ -3,10 +3,6 @@ import Quickshell.Services.Notifications
 import QtQuick
 import ".."
 
-// TODO:
-// Support for actions in notifications
-// Support for different urgency levels
-
 // nix-shell -p libnotify
 // notify-send "Hello" "This is a test notification from libnotify."
 
@@ -14,6 +10,9 @@ Item {
     id: root
     property alias notificationPanel: panel
     required property var bar
+
+    readonly property alias dnd: notificationServer.doNotDisturb
+    readonly property int notificationCount: notificationServer.trackedNotifications.values.length
     NotificationServer {
         id: notificationServer
 

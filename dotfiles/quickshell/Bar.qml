@@ -28,6 +28,8 @@ PanelWindow {
 
     required property var lock
     required property var notificationPanel
+    required property bool notifDnd
+    required property int notifCount
 
     property var focusGrab: focusGrab
 
@@ -74,6 +76,8 @@ PanelWindow {
             BarParts.Top {
                 bar: root
                 notificationPanel: root.notificationPanel
+                dnd: root.notifDnd
+                notifCount: root.notifCount
             }
         }
         Rectangle {

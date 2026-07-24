@@ -41,8 +41,8 @@ Singleton {
     readonly property int launcherHeight: 400
 
     readonly property var notification: QtObject {
-        readonly property int unitWidth: 300
-        readonly property int unitHeight: 80
+        readonly property int unitWidth: 340
+        readonly property int unitHeight: 100
         readonly property int maxVisible: 5
     }
 

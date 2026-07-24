@@ -13,6 +13,8 @@ ShellRoot {
         id: bar
         lock: lock
         notificationPanel: notification.notificationPanel
+        notifDnd: notification.dnd
+        notifCount: notification.notificationCount
     }
 
     Corners {}
