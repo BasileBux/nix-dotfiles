@@ -280,8 +280,8 @@ Singleton {
         readonly property var astralinsang: QtObject {
             readonly property color background: modern.sharedBackground
             readonly property color foreground: modern.sharedForeground
-            readonly property color accent1: "#2D356B"
-            readonly property color accent2: "#8298D9"
+            readonly property color accent1: "#8298D9"
+            readonly property color accent2: "#2D356B"
             readonly property color accent3: "#575E8C"
             readonly property color border: modern.sharedBorder
             readonly property color muted: modern.sharedMuted
