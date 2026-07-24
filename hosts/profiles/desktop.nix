@@ -130,7 +130,9 @@
     inter
     dm-sans
     googlesans-code
-  ] ++ (builtins.attrValues (pkgs.callPackage ../../dotfiles/fonts { }));
+  ] ++ builtins.attrValues (
+    builtins.removeAttrs (pkgs.callPackage ../../dotfiles/fonts { }) [ "override" "overrideDerivation" ]
+  );
 
   services.upower.enable = true;
 
