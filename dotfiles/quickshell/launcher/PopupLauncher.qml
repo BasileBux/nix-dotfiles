@@ -60,23 +60,35 @@ PanelWindow {
         }
 
         function runApp(app: DesktopEntry) {
+			// Unset Qt-specific env vars that Quickshell inherits, they can cause
+			// version conflicts with apps that bundle their own Qt
+            const cleanEnv = ({
+                QT_PLUGIN_PATH: null,
+                NIXPKGS_QT6_QML_IMPORT_PATH: null,
+            });
             if (app.runInTerminal) {
                 Quickshell.execDetached({
                     command: [Globals.terminal, "-e", ...app.command],
-                    workingDirectory: app.workingDirectory
+                    workingDirectory: app.workingDirectory,
+                    environment: cleanEnv
                 });
                 return;
             }
             Quickshell.execDetached({
                 command: app.command,
-                workingDirectory: app.workingDirectory
+                workingDirectory: app.workingDirectory,
+                environment: cleanEnv
             });
         }
 
         function browserSearch(query: string) {
             Quickshell.execDetached({
                 command: [Globals.browser, "-new-tab", "https://unduck.link?q=" + query.substring(1)],
-                workingDirectory: "/"
+                workingDirectory: "/",
+                environment: ({
+                    QT_PLUGIN_PATH: null,
+                    NIXPKGS_QT6_QML_IMPORT_PATH: null,
+                })
             });
             root.hide();
         }
