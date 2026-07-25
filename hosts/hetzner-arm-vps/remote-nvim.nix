@@ -10,7 +10,7 @@ let
 
   caddyWithInfomaniak = pkgs.caddy.withPlugins {
     plugins = [ "github.com/caddy-dns/infomaniak@v1.0.2" ];
-    hash = "sha256-4MWGK9iJlF56iiVq4M1nqk54qlcP1ZKi6mgS4+BUw+Y=";
+    hash = "sha256-xoOWamsUcKclhw6WVchg/LlBZiDlArA8M/axxpo0Wlg=";
   };
 in
 {
