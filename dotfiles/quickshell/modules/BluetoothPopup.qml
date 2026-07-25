@@ -56,8 +56,8 @@ Item {
                 width: scanRow.width + Globals.spacing * 1.5 + Globals.spacing * 3
                 height: parent.height
                 radius: height / 2
-                color: root.searching ? Globals.theme.accent1 : Globals.theme.muted
-                opacity: root.searching ? 1.0 : 0.4
+                color: root.searching ? Globals.theme.muted : Globals.theme.accent1
+                opacity: root.searching ? 0.4 : 1.0
 
                 Behavior on color { ColorAnimation { duration: 150 } }
                 Behavior on opacity { NumberAnimation { duration: 150 } }
@@ -84,7 +84,7 @@ Item {
                         source: "../icons/search.svg"
                         width: Globals.fonts.xlarge
                         height: Globals.fonts.xlarge
-                        color: root.searching ? Globals.theme.background : Globals.theme.foreground
+                        color: root.searching ? Globals.theme.foreground : Globals.theme.background
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
@@ -92,7 +92,7 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         width: stopMetrics.width
                         horizontalAlignment: Text.AlignHCenter
-                        color: root.searching ? Globals.theme.background : Globals.theme.foreground
+                        color: root.searching ? Globals.theme.foreground : Globals.theme.background
                         font.pixelSize: Globals.fonts.small
                         font.family: Globals.theme.fontFamily
                         font.bold: root.searching
