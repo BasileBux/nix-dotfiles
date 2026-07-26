@@ -5,6 +5,7 @@
 
 let
   nvimSubdomain = "nvim.asbel.xyz";
+  dufsSubpath = "/files";
 
   gottyConfigTemplate = ./gotty.hcl;
 
@@ -83,11 +84,17 @@ in
           format json
         }
 
-        basic_auth argon2id {
+        basic_auth /* argon2id {
           {env.GOTTY_USER} {env.GOTTY_PASS_HASH}
         }
 
-        reverse_proxy localhost:8080
+        handle ${dufsSubpath}/* {
+          reverse_proxy localhost:8081
+        }
+
+        handle {
+          reverse_proxy localhost:8080
+        }
       '';
     };
   };
@@ -121,13 +128,28 @@ in
       Group = "users";
       WorkingDirectory = "/home/nvim";
 
-      ExecStartPre = pkgs.writeShellScript "gotty-gen-config" ''
-        set -euo pipefail
-        rm -f /home/nvim/.gotty
-        cp ${gottyConfigTemplate} /home/nvim/.gotty
-      '';
+      ExecStart = "${pkgs.gotty}/bin/gotty --config ${gottyConfigTemplate} ${pkgs.zsh}/bin/zsh";
 
-      ExecStart = "${pkgs.gotty}/bin/gotty --config /home/nvim/.gotty ${pkgs.zsh}/bin/zsh";
+      Restart = "on-failure";
+      RestartSec = "5s";
+
+      NoNewPrivileges = true;
+      PrivateTmp = true;
+    };
+  };
+
+  systemd.services.dufs = {
+    description = "DuFS — static file server";
+    after = [ "network-online.target" ];
+    requires = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+
+    serviceConfig = {
+      User = "nvim";
+      Group = "users";
+      WorkingDirectory = "/home/nvim";
+
+      ExecStart = "${pkgs.dufs}/bin/dufs --bind 127.0.0.1 --port 8081 --path-prefix ${dufsSubpath} --hidden '.*' --allow-all";
 
       Restart = "on-failure";
       RestartSec = "5s";
