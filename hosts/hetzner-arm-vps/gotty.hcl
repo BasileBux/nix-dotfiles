@@ -48,5 +48,5 @@ preferences {
 	enable_clipboard_write = true
 
 	font_family = "'Iosevka Custom', 'JetBrainsMono NF', monospace"
-	font_size = 15
+	font_size = 16
 }

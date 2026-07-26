@@ -9,6 +9,7 @@ let
 
   gottyConfigTemplate = ./gotty.hcl;
   gottyIndexTemplate = ./gotty-index.html;
+  dufsIndexTemplate = ./dufs-index.html;
 
   caddyWithInfomaniak = pkgs.caddy.withPlugins {
     plugins = [ "github.com/caddy-dns/infomaniak@v1.0.2" ];
@@ -155,7 +156,13 @@ in
       Group = "users";
       WorkingDirectory = "/home/nvim";
 
-      ExecStart = "${pkgs.dufs}/bin/dufs --bind 127.0.0.1 --port 8081 --path-prefix ${dufsSubpath} --hidden '.*' --allow-all";
+      ExecStartPre = "${pkgs.writeShellScript "dufs-copy-assets" ''
+        rm -rf /home/nvim/.dufs-assets
+        mkdir -p /home/nvim/.dufs-assets
+        cp ${dufsIndexTemplate} /home/nvim/.dufs-assets/index.html
+      ''}";
+
+      ExecStart = "${pkgs.dufs}/bin/dufs --bind 127.0.0.1 --port 8081 --path-prefix ${dufsSubpath} --assets /home/nvim/.dufs-assets --hidden '.*' --allow-all";
 
       Restart = "on-failure";
       RestartSec = "5s";

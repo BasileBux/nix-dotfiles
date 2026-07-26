@@ -32,6 +32,7 @@ in
 
   environment.systemPackages = with pkgs; [
     pi-coding-agent
+    typst
   ];
 
   networking.interfaces.enp1s0.ipv6.addresses = [
