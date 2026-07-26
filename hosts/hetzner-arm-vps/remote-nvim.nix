@@ -8,6 +8,7 @@ let
   dufsSubpath = "/files";
 
   gottyConfigTemplate = ./gotty.hcl;
+  gottyIndexTemplate = ./gotty-index.html;
 
   caddyWithInfomaniak = pkgs.caddy.withPlugins {
     plugins = [ "github.com/caddy-dns/infomaniak@v1.0.2" ];
@@ -127,6 +128,11 @@ in
       User = "nvim";
       Group = "users";
       WorkingDirectory = "/home/nvim";
+
+      ExecStartPre = "${pkgs.writeShellScript "gotty-copy-index" ''
+        rm -f /home/nvim/.gotty-index.html
+        cp ${gottyIndexTemplate} /home/nvim/.gotty-index.html
+      ''}";
 
       ExecStart = "${pkgs.gotty}/bin/gotty --config ${gottyConfigTemplate} ${pkgs.zsh}/bin/zsh";
 

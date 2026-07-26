@@ -9,7 +9,7 @@ enable_basic_auth = false
 
 enable_tls = false // We use a reverse proxy
 
-// index_file = "" // Allows to have a custom index.html file
+index_file = "/home/nvim/.gotty-index.html"
 
 title_format = "Nvim - remote session"
 
