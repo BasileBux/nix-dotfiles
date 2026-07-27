@@ -110,7 +110,6 @@
 
     radicle-node
     radicle-desktop
-    jjui
     optmem
   ];
 

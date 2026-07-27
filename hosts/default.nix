@@ -55,6 +55,7 @@
     curl
     git
     jujutsu
+    jjui
     openssh
     unzip
     zip
