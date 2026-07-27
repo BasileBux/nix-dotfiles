@@ -11,6 +11,17 @@ let
   gottyIndexTemplate = ./gotty-index.html;
   dufsIndexTemplate = ./dufs-index.html;
 
+  # Combine custom index.html with default dufs assets (index.js, index.css, favicon.ico)
+  # When --assets is used, dufs completely overrides built-in assets and looks for all
+  # files on disk. Without this, __ASSETS_PREFIX__ references like index.js would 404.
+  dufsAssets = pkgs.runCommand "dufs-assets" {} ''
+    mkdir -p $out
+    cp ${dufsIndexTemplate} $out/index.html
+    cp ${pkgs.dufs.src}/assets/index.js $out/index.js
+    cp ${pkgs.dufs.src}/assets/index.css $out/index.css
+    cp ${pkgs.dufs.src}/assets/favicon.ico $out/favicon.ico
+  '';
+
   caddyWithInfomaniak = pkgs.caddy.withPlugins {
     plugins = [ "github.com/caddy-dns/infomaniak@v1.0.2" ];
     hash = "sha256-xoOWamsUcKclhw6WVchg/LlBZiDlArA8M/axxpo0Wlg=";
@@ -158,8 +169,8 @@ in
 
       ExecStartPre = "${pkgs.writeShellScript "dufs-copy-assets" ''
         rm -rf /home/nvim/.dufs-assets
-        mkdir -p /home/nvim/.dufs-assets
-        cp ${dufsIndexTemplate} /home/nvim/.dufs-assets/index.html
+        cp -r ${dufsAssets} /home/nvim/.dufs-assets
+        chmod -R u+w /home/nvim/.dufs-assets
       ''}";
 
       ExecStart = "${pkgs.dufs}/bin/dufs --bind 127.0.0.1 --port 8081 --path-prefix ${dufsSubpath} --assets /home/nvim/.dufs-assets --hidden '.*' --allow-all";
