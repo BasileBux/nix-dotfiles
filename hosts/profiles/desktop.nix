@@ -111,6 +111,7 @@
     radicle-node
     radicle-desktop
     jjui
+    optmem
   ];
 
   # Skip sage tests as they take ages to execute and are not relevant for my use.

@@ -92,6 +92,10 @@ let
       };
       home-manager.useGlobalPkgs = true;
     }
+
+    {
+      nixpkgs.overlays = [ (import ../pkgs) ];
+    }
   ];
 
   optionalModules =
