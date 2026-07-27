@@ -1,30 +1,37 @@
+let
+  browser = "helium"; # zen-twilight
+  textEditor = "neovide";
+  imageViewer = "org.kde.gwenview";
+  videoPlayer = "mpv";
+  pdfViewer = "org.gnome.Evince";
+in
 {
   xdg.mimeApps = {
     enable = true;
 
     defaultApplications = {
-      "text/html" = "zen-twilight.desktop";
-      "text/markdown" = "neovide.desktop";
-      "text/plain" = "neovide.desktop";
+      "text/html" = "${browser}.desktop";
+      "text/markdown" = "${textEditor}.desktop";
+      "text/plain" = "${textEditor}.desktop";
 
-      "image/png" = "org.kde.gwenview.desktop";
-      "image/jpeg" = "org.kde.gwenview.desktop";
-      "image/gif" = "org.kde.gwenview.desktop";
-      "image/webp" = "org.kde.gwenview.desktop";
-      "application/pdf" = "org.gnome.Evince.desktop";
+      "image/png" = "${imageViewer}.desktop";
+      "image/jpeg" = "${imageViewer}.desktop";
+      "image/gif" = "${imageViewer}.desktop";
+      "image/webp" = "${imageViewer}.desktop";
+      "application/pdf" = "${pdfViewer}.desktop";
 
-      "video/mp4" = "mpv.desktop";
-      "video/webm" = "mpv.desktop";
-      "video/x-matroska" = "mpv.desktop";
+      "video/mp4" = "${videoPlayer}.desktop";
+      "video/webm" = "${videoPlayer}.desktop";
+      "video/x-matroska" = "${videoPlayer}.desktop";
 
-      "audio/mpeg" = "mpv.desktop";
-      "audio/flac" = "mpv.desktop";
-      "audio/ogg" = "mpv.desktop";
+      "audio/mpeg" = "${videoPlayer}.desktop";
+      "audio/flac" = "${videoPlayer}.desktop";
+      "audio/ogg" = "${videoPlayer}.desktop";
 
-      "x-scheme-handler/http" = "zen-twilight.desktop";
-      "x-scheme-handler/https" = "zen-twilight.desktop";
-      "x-scheme-handler/about" = "zen-twilight.desktop";
-      "x-scheme-handler/unknown" = "zen-twilight.desktop";
+      "x-scheme-handler/http" = "${browser}.desktop";
+      "x-scheme-handler/https" = "${browser}.desktop";
+      "x-scheme-handler/about" = "${browser}.desktop";
+      "x-scheme-handler/unknown" = "${browser}.desktop";
     };
   };
 }
