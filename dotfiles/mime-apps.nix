@@ -2,6 +2,7 @@
 let
   browser = globals.browser; # zen-twilight
   textEditor = "neovide";
+  fileManager = "nemo";
   imageViewer = "org.kde.gwenview";
   videoPlayer = "mpv";
   pdfViewer = "org.gnome.Evince";
@@ -28,6 +29,8 @@ in
       "audio/mpeg" = "${videoPlayer}.desktop";
       "audio/flac" = "${videoPlayer}.desktop";
       "audio/ogg" = "${videoPlayer}.desktop";
+
+      "inode/directory" = "${fileManager}.desktop";
 
       "x-scheme-handler/http" = "${browser}.desktop";
       "x-scheme-handler/https" = "${browser}.desktop";
