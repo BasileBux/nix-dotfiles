@@ -12,4 +12,5 @@ local fe = {
 return {
 	file_explorers = fe,
 	file_explorer = fe.nemo,
+	browser = os.getenv("WEB_BROWSER") or "zen-twilight",
 }

@@ -1,5 +1,6 @@
+{ globals, ...}:
 let
-  browser = "helium"; # zen-twilight
+  browser = globals.browser; # zen-twilight
   textEditor = "neovide";
   imageViewer = "org.kde.gwenview";
   videoPlayer = "mpv";

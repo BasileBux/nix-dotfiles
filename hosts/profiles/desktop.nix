@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   settings,
+  globals,
   ...
 }:
 
@@ -52,6 +53,7 @@
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
     NIXOS_OZONE_WL = "1";
+    WEB_BROWSER = globals.browser;
   };
 
   security.polkit = {

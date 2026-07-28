@@ -67,7 +67,7 @@ hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd([[grim -g "$(slurp -d)" - | w
 -- Apps
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Q", close_win)
-hl.bind(mainMod .. " + ALT + N", hl.dsp.exec_cmd("zen-twilight"))
+hl.bind(mainMod .. " + ALT + N", hl.dsp.exec_cmd(settings.browser))
 hl.bind(mainMod .. " + E", toggle_file_explorer)
 hl.bind(
 	mainMod .. " + ALT + D",

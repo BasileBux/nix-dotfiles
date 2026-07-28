@@ -1,4 +1,4 @@
-{ inputs }:
+{ inputs, globals, ... }:
 let
   lib = inputs.nixpkgs.lib;
 
@@ -88,6 +88,7 @@ let
           inputs
           settings
           secrets
+          globals
           ;
       };
       home-manager.useGlobalPkgs = true;
@@ -110,6 +111,7 @@ lib.nixosSystem {
       inputs
       settings
       secrets
+      globals
       ;
   };
 }

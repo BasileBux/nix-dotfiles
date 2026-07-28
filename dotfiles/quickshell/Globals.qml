@@ -4,6 +4,11 @@ import Quickshell
 import QtQuick
 
 Singleton {
+    function getEnvOr(name, defaultValue) {
+        var value = Quickshell.env(name);
+        return value && value.length > 0 ? value : defaultValue;
+    }
+
     readonly property int barWidth: 40
     readonly property int padding: 3
     readonly property int radius: 7
@@ -14,15 +19,15 @@ Singleton {
     readonly property int workspacesGap: 5
 
     readonly property string terminal: "kitty"
-    readonly property string browser: "zen-twilight"
+    readonly property string browser: getEnvOr("WEB_BROWSER", "zen-twilight")
 
     readonly property var theme: Themes.modern.rodeurRouge
 
-	// Semantic colors, consistent across all themes. Use these when a color needs
-	// to convey meaning
+    // Semantic colors, consistent across all themes. Use these when a color needs
+    // to convey meaning
     readonly property var colors: QtObject {
         readonly property color brightGreen: "#20FF4F"
-		readonly property color green: "#008000"
+        readonly property color green: "#008000"
 
         readonly property color red: "#FD788B"
     }
@@ -46,17 +51,14 @@ Singleton {
         readonly property int maxVisible: 5
     }
 
-	readonly property int authDialogWidth: 380
-	readonly property int authDialogHeight: 200
+    readonly property int authDialogWidth: 380
+    readonly property int authDialogHeight: 200
 
-	readonly property var extras: QtObject {
-		readonly property int remoteWidth: 380
-		readonly property int remoteHeight: 240
-		readonly property string remoteDefaultTmuxSession: "main"
-	}
-
-    readonly property string machine: {
-        var m = Quickshell.env("QUICKSHELL_MACHINE");
-        return m && m.length > 0 ? m : "asus-g14";
+    readonly property var extras: QtObject {
+        readonly property int remoteWidth: 380
+        readonly property int remoteHeight: 240
+        readonly property string remoteDefaultTmuxSession: "main"
     }
+
+    readonly property string machine: getEnvOr("QUICKSHELL_MACHINE", "asus-g14")
 }

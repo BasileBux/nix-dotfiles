@@ -36,7 +36,10 @@
       ...
     }@inputs:
     let
-      mkSystem = import ./lib/mkSystem.nix { inherit inputs; };
+      globals = {
+        browser = "helium"; # helium | zen-twilight
+      };
+      mkSystem = import ./lib/mkSystem.nix { inherit inputs globals; };
 
       systems = {
         asus-g14 = {
