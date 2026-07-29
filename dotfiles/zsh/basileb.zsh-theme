@@ -41,7 +41,7 @@ jj_prompt() {
 
     revision=$(jj log --repository "$workspace" --ignore-working-copy \
         --no-graph --limit 1 --color always \
-        --revisions @ -T 'separate(" ", change_id.shortest(4), commit_id.shortest(4), if(empty, label("empty", "(empty)"), ""), if(description == "", label("description placeholder", "(no description)"), ""), if(conflict, label("conflict", "(conflict)"), ""))' 2>/dev/null)
+        --revisions @ -T 'separate(" ", change_id.shortest(3), commit_id.shortest(2), if(empty, label("empty", "(empty)"), ""), if(description == "", label("description placeholder", "(no description)"), ""), if(conflict, label("conflict", "(conflict)"), ""), if(divergent, label("divergent prefix", "(divergent)"), ""), if(hidden, label("hidden prefix", "(hidden)"), ""))' 2>/dev/null)
 
     [[ -z "$revision" ]] && return
 
@@ -107,23 +107,44 @@ fi
 
 SSH_SHELL=""
 if [[ -n $SSH_CONNECTION ]]; then
-  SSH_SHELL=" %{$LIGHT_BLUE%}⇄%{$RESET%} "
+  SSH_SHELL=" %{$LIGHT_BLUE_BOLD%}@$(hostname)%{$RESET%} "
 fi
 
 # Keep the duration on the next prompt, but only for commands that took more
-# than ten seconds. EPOCHREALTIME gives us enough precision to show millis.
+# than two seconds. EPOCHREALTIME gives us enough precision to show millis.
 zmodload zsh/datetime 2>/dev/null
 _BASILEB_COMMAND_START=""
 BASILEB_COMMAND_DURATION=""
+BASILEB_LAST_EXIT=0
 BASILEB_PROMPT_COLOR=$PROMPT_COLOR_SUCCESS_BOLD
 
 _basileb_preexec() {
     _BASILEB_COMMAND_START=$EPOCHREALTIME
     BASILEB_COMMAND_DURATION=""
+
+    # --- Transient prompt: redraw a simplified prompt for scrollback ---
+    # The full prompt has "┌───" / "│ " ; the transient replaces them with
+    # "───" / "  " so past commands in the scrollback buffer look clean.
+    local cmd="$1"
+    local vcs_info
+    vcs_info=$(vcs_prompt 2>/dev/null)
+
+    # Build the simplified first line (same content, different prefix)
+    local line1
+    line1=$(print -Pn "%{${BASILEB_PROMPT_COLOR}%}──── %~%{$RESET%}%{$SSH_SHELL%}%{$NIX_SHELL%}${vcs_info}%{$RESET%}")
+
+    # Move cursor to start of the first prompt line, then clear to end of screen
+    printf '\e[2A\r\e[0J'
+
+    # Print transient two-line prompt + reprint the command
+    printf '%s\n' "$line1"
+    printf '  '
+    printf '%s\n' "$cmd"
 }
 
 _basileb_precmd() {
     local command_status=$?
+    BASILEB_LAST_EXIT=$command_status
     if (( command_status == 0 )); then
         BASILEB_PROMPT_COLOR=$PROMPT_COLOR_SUCCESS_BOLD
     else
@@ -138,7 +159,7 @@ _basileb_precmd() {
     _BASILEB_COMMAND_START=""
 
     total_ms=$(( elapsed * 1000 ))
-    if (( elapsed > 10 )); then
+    if (( elapsed > 2 )); then
         minutes=$(( total_ms / 60000 ))
         seconds=$(( (total_ms / 1000) % 60 ))
         milliseconds=$(( total_ms % 1000 ))
@@ -159,7 +180,13 @@ add-zsh-hook preexec _basileb_preexec
 add-zsh-hook precmd _basileb_precmd
 
 basileb_prompt_prefix() {
-    if [[ -n $BASILEB_COMMAND_DURATION ]]; then
+    local exit_code=${BASILEB_LAST_EXIT:-0}
+
+    if [[ $exit_code -ne 0 && -n $BASILEB_COMMAND_DURATION ]]; then
+        print -n "┌┤ %{$RED_BOLD%}${exit_code}%{$RESET%}%{$BASILEB_PROMPT_COLOR%} ├─┤ %{$MAGENTA_BOLD%}${BASILEB_COMMAND_DURATION}%{$RESET%}%{$BASILEB_PROMPT_COLOR%} ├─ "
+    elif [[ $exit_code -ne 0 ]]; then
+        print -n "┌┤ %{$RED_BOLD%}${exit_code}%{$RESET%}%{$BASILEB_PROMPT_COLOR%} ├─ "
+    elif [[ -n $BASILEB_COMMAND_DURATION ]]; then
         print -n "┌┤ %{$MAGENTA_BOLD%}${BASILEB_COMMAND_DURATION}%{$RESET%}%{$BASILEB_PROMPT_COLOR%} ├─ "
     else
         print -n "┌─── "
