@@ -56,6 +56,7 @@ PanelWindow {
             const idx = Math.max(0, Math.min(appList.hovered, values.length - 1));
             const app = values[idx];
             runApp(app);
+			Globals.playSound(Globals.sounds.launch);
             root.hide();
         }
 

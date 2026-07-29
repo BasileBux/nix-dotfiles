@@ -9,6 +9,11 @@ Rectangle {
 
     required property var toggleFunction
     required property bool toggleState
+    property bool silent: true
+
+    Component.onCompleted: {
+        silent = false;
+    }
 
     property color bgColorOn: Globals.theme.accent1
     property color bgColorOff: Globals.theme.muted
@@ -50,6 +55,12 @@ Rectangle {
             }
         }
     ]
+
+    onToggleStateChanged: {
+        if (!silent)
+            Globals.playSound(toggleState ? Globals.sounds.toggleOn : Globals.sounds.toggleOff);
+    }
+
     transitions: Transition {
         NumberAnimation {
             target: selector

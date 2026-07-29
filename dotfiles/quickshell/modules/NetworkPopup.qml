@@ -41,6 +41,7 @@ Item {
             Layout.fillWidth: true
             Layout.preferredHeight: 30
 
+			// BUG: When toggling on, the audio plays twice
             Widgets.Switch {
                 id: wifiToggle
                 anchors {
@@ -121,9 +122,29 @@ Item {
                 readonly property bool isKnown: modelData.known === true
                 readonly property real signalStrength: modelData.signalStrength ?? 0
 
+                // Play sounds on connection state transitions
+                property int _state: modelData.state ?? Net.ConnectionState.Unknown
+                property int _prevState: -1
+                property bool _init: false
+                Component.onCompleted: _init = true
+                on_StateChanged: {
+                    if (!_init) {
+                        _prevState = _state;
+                        return;
+                    }
+                    if (_state === Net.ConnectionState.Connected) {
+                        Globals.playSound(Globals.sounds.toggleOn);
+                    } else if (_prevState === Net.ConnectionState.Connecting
+                               && _state === Net.ConnectionState.Disconnected) {
+                        Globals.playSound(Globals.sounds.toggleOff);
+                    }
+                    _prevState = _state;
+                }
+
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+						Globals.playSound(Globals.sounds.click);
                         if (modelData.connected) {
                             modelData.disconnect();
                         } else {

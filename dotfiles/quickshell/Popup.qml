@@ -91,6 +91,11 @@ PopupWindow {
         clip: true
         state: debug ? "visible" : "hidden"
 
+        onStateChanged: {
+            if (state == "visible")
+                Globals.playSound(Globals.sounds.click);
+        }
+
         states: [
             State {
                 name: "hidden"

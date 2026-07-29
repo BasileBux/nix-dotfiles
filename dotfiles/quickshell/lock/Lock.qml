@@ -2,6 +2,7 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Services.Mpris
 import Quickshell.Hyprland
+import ".."
 
 Scope {
     id: lockScope
@@ -10,7 +11,9 @@ Scope {
     onLockedChanged: {
         if (locked) {
             pauseMedia();
-        }
+		} else {
+			Globals.playSound(Globals.sounds.unlock);
+		}
     }
 
 	readonly property bool mediaPlaying: Mpris.players.values.some(player => {

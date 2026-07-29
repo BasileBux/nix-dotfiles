@@ -35,3 +35,10 @@ me know):
 - snowy-mountain.jpeg: unknown
 
 I got some of these from: [Desktop generation](https://x.com/dsktpGeneration/status/1838629270349815861)
+
+- `./sounds/fancy-select.wav`: UIEnter/Advance by mrickey13 -- https://freesound.org/s/515627/ -- License: Creative Commons 0
+- `./sounds/cute-confirm.wav`: sfx_rpg_ui_confirm by MATUSTRM -- https://freesound.org/s/848974/ -- License: Creative Commons 0
+- `./sounds/starry-confirm.wav`: UI Confirmation Alert, C1.wav by InspectorJ -- https://freesound.org/s/403016/ -- License: Attribution 4.0
+- `./sounds/startup.wav`: UI Startup Chime by mikiko850 -- https://freesound.org/s/857700/ -- License: Attribution 4.0
+- `./sounds/low-robotic-wave.ogg`: Enter Button - Low Robotic by steaq -- https://freesound.org/s/442161/ -- License: Creative Commons 0
+- https://mixkit.co/free-sound-effects/interface/

@@ -9,6 +9,30 @@ Singleton {
         return value && value.length > 0 ? value : defaultValue;
     }
 
+    property bool _soundReady: false
+    readonly property int _startupGraceMs: 100
+
+    Timer {
+        interval: _startupGraceMs
+        running: true
+        repeat: false
+        onTriggered: {
+            _soundReady = true;
+            playSound(sounds.unlock);
+        }
+    }
+
+    function playSound(soundFile) {
+        if (!_soundReady || !sounds.enabled)
+            return;
+        Quickshell.execDetached(["pw-play", "--volume", "0.35", sounds.path + soundFile]);
+    }
+    function playSoundLoud(soundFile) {
+        if (!_soundReady || !sounds.enabled)
+            return;
+        Quickshell.execDetached(["pw-play", sounds.path + soundFile]);
+    }
+
     readonly property int barWidth: 40
     readonly property int padding: 3
     readonly property int radius: 7
@@ -40,6 +64,22 @@ Singleton {
         readonly property int small: 12
         readonly property int xsmall: 10
         readonly property int tiny: 8
+    }
+
+    readonly property var sounds: QtObject {
+		readonly property bool enabled: true
+        readonly property string path: Quickshell.shellDir + "/sounds/"
+
+        readonly property string click: "click.wav"
+        readonly property string toggleOn: "device-added.oga"
+        readonly property string toggleOff: "device-removed.oga"
+        readonly property string fancySelect: "fancy-select.wav"
+        readonly property string pageTurn: "page.wav"
+        readonly property string smallPing: "cute-confirm.wav"
+        readonly property string bigPing: "starry-confirm.wav"
+        readonly property string lock: "low-robotic-wave.ogg"
+        readonly property string unlock: "startup.wav"
+		readonly property string launch: "starry-confirm.wav"
     }
 
     readonly property int launcherWidth: 600

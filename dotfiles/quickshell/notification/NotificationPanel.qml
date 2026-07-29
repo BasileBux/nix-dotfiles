@@ -45,6 +45,7 @@ Item {
                 color: Globals.theme.foreground
             }
             onClicked: {
+                Globals.playSound(Globals.sounds.pageTurn);
                 for (let i = root.notifications.length - 1; i >= 0; i--) {
                     root.notifications[i].tracked = false;
                 }
@@ -72,6 +73,7 @@ Item {
             }
             onClicked: {
                 root.notificationServer.doNotDisturb = !root.notificationServer.doNotDisturb;
+                Globals.playSound(Globals.sounds.click);
             }
         }
 
@@ -95,6 +97,7 @@ Item {
             }
             onClicked: {
                 root.notificationServer.audioEnabled = !root.notificationServer.audioEnabled;
+                Globals.playSound(Globals.sounds.click);
             }
         }
     }

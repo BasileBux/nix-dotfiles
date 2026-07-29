@@ -36,6 +36,10 @@ Item {
 
     property int activeProfileIndex: 1
 
+	onActiveProfileIndexChanged: {
+		Globals.playSound(Globals.sounds.fancySelect);
+	}
+
     Component.onCompleted: currentProfileProcess.running = true
 
     function setProfile(index) {
@@ -59,7 +63,7 @@ Item {
         anchors.fill: parent
         spacing: 4
 
-        // ── Percentage ──
+        // Percentage
         Text {
             Layout.alignment: Qt.AlignHCenter
             text: (root.percentage * 100).toFixed(0) + "%"
@@ -69,7 +73,7 @@ Item {
             font.bold: true
         }
 
-        // ── Status ──
+        // Status
         Text {
             Layout.alignment: Qt.AlignHCenter
             text: {
@@ -83,7 +87,7 @@ Item {
             font.family: Globals.theme.fontFamily
         }
 
-        // ── Time estimate ──
+        // Time estimate
         Text {
             Layout.alignment: Qt.AlignHCenter
             visible: !moduleRef.isDocked
@@ -99,7 +103,7 @@ Item {
             }
         }
 
-        // ── Divider ──
+        // Divider
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: 1
@@ -109,7 +113,7 @@ Item {
             opacity: 0.2
         }
 
-        // ── Power profile selector ──
+        // Power profile selector
         Item {
             Layout.fillWidth: true
             Layout.preferredHeight: 34
@@ -153,9 +157,24 @@ Item {
                 Repeater {
                     id: profileButtons
                     model: [
-                        { icon: "../icons/leaf.svg",    iw: 27, ih: 27, idx: 0 },
-                        { icon: "../icons/balance.svg", iw: 29, ih: 29, idx: 1 },
-                        { icon: "../icons/rocket.svg",  iw: 26, ih: 26, idx: 2 },
+                        {
+                            icon: "../icons/leaf.svg",
+                            iw: 27,
+                            ih: 27,
+                            idx: 0
+                        },
+                        {
+                            icon: "../icons/balance.svg",
+                            iw: 29,
+                            ih: 29,
+                            idx: 1
+                        },
+                        {
+                            icon: "../icons/rocket.svg",
+                            iw: 26,
+                            ih: 26,
+                            idx: 2
+                        },
                     ]
                     delegate: Item {
                         width: 56
@@ -165,9 +184,7 @@ Item {
                             source: modelData.icon
                             width: modelData.iw
                             height: modelData.ih
-                            color: root.activeProfileIndex === modelData.idx
-                                ? Globals.theme.background
-                                : Globals.theme.foreground
+                            color: root.activeProfileIndex === modelData.idx ? Globals.theme.background : Globals.theme.foreground
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -178,7 +195,7 @@ Item {
             }
         }
 
-        // ── Hypridle toggle ──
+        // Hypridle toggle
         Item {
             Layout.fillWidth: true
             Layout.preferredHeight: 25
@@ -194,9 +211,11 @@ Item {
                     Quickshell.execDetached({
                         command: Machines.current.hypridleStopCommand
                     });
+                    hypridleSwitch.silent = false;
                 }
 
                 Widgets.Switch {
+                    id: hypridleSwitch
                     widgetWidth: 45
                     widgetHeight: 22
                     toggleFunction: () => {
@@ -206,6 +225,7 @@ Item {
                         });
                     }
                     toggleState: parent.hypridleState
+                    silent: true
                 }
 
                 Text {
@@ -219,7 +239,7 @@ Item {
         }
     }
 
-    // ── Processes ──
+    // Processes
     property var profileProcs: [ecoProc, balancedProc, perfProc]
 
     Process {

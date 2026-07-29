@@ -68,6 +68,7 @@ Item {
                         root.searching = !root.searching;
                         Bluetooth.defaultAdapter.pairable = root.searching;
                         Bluetooth.defaultAdapter.discovering = root.searching;
+						Globals.playSound(Globals.sounds.click);
                     }
                 }
 
@@ -147,9 +148,31 @@ Item {
                 readonly property bool isConnecting: device.state === BluetoothDeviceState.Connecting
                 readonly property bool isConnected: device.state === BluetoothDeviceState.Connected
 
+                // Play sounds on connection state transitions
+                property int _state: device.state ?? BluetoothDeviceState.Disconnected
+                property int _prevState: -1
+                property bool _init: false
+                Component.onCompleted: _init = true
+                on_StateChanged: {
+                    if (!_init) {
+                        _prevState = _state;
+                        return;
+                    }
+                    if (_state === BluetoothDeviceState.Connected) {
+                        Globals.playSound(Globals.sounds.toggleOn);
+                    } else if (_prevState === BluetoothDeviceState.Connecting
+                               && _state === BluetoothDeviceState.Disconnected) {
+                        Globals.playSound(Globals.sounds.toggleOff);
+                    }
+                    _prevState = _state;
+                }
+
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: root.clickDevice(device)
+                    onClicked: {
+                        Globals.playSound(Globals.sounds.click);
+                        root.clickDevice(device);
+                    }
                 }
 
                 // Device name

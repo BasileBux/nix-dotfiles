@@ -34,10 +34,9 @@ Item {
             notification.tracked = true;
 
             if (!panel.shown && !doNotDisturb) {
-                let soundPath = Quickshell.shellDir + "/sounds/";
                 if (audioEnabled) {
-                    let sound = notification.urgency === NotificationUrgency.Critical ? soundPath + "complete.oga" : soundPath + "message.oga";
-                    Quickshell.execDetached(["pw-play", sound]);
+                    let sound = notification.urgency === NotificationUrgency.Critical ? Globals.sounds.bigPing : Globals.sounds.smallPing;
+                    Globals.playSoundLoud(sound);
                 }
 
                 let wrapper = Qt.createQmlObject('import Quickshell; import QtQuick; NotificationWrapper { }', notificationServer);

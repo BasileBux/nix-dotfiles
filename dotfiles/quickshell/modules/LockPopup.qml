@@ -10,7 +10,7 @@ Item {
     id: root
     anchors.fill: parent
 
-    required property var lock 
+    required property var lock
 
     function shutdown() {
         Quickshell.execDetached({
@@ -29,9 +29,8 @@ Item {
     }
     function lockScreen() {
         lock.locked = true;
+        Globals.playSound(Globals.sounds.lock);
     }
-
-
 
     focus: true
     Keys.onPressed: event => {
