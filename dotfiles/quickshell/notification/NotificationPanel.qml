@@ -74,6 +74,29 @@ Item {
                 root.notificationServer.doNotDisturb = !root.notificationServer.doNotDisturb;
             }
         }
+
+        Button {
+            id: audioToggleButton
+            anchors {
+                left: doNotDisturbButton.right
+                leftMargin: Globals.spacing
+                verticalCenter: parent.verticalCenter
+            }
+            implicitWidth: header.height
+            implicitHeight: header.height
+            background: Rectangle {
+                color: "transparent"
+            }
+            icon {
+                source: root.notificationServer.audioEnabled ? "../icons/bell.svg" : "../icons/muted-bell.svg"
+                width: height * 0.8
+                height: height * 0.8
+                color: Globals.theme.foreground
+            }
+            onClicked: {
+                root.notificationServer.audioEnabled = !root.notificationServer.audioEnabled;
+            }
+        }
     }
 
     ListView {

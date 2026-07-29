@@ -8,8 +8,8 @@ Window {
     required property PolkitAgent agent
     readonly property var flow: root.agent ? root.agent.flow : null
 
-	readonly property int buttonWidth: 110
-	readonly property int buttonHeight: 32
+    readonly property int buttonWidth: 110
+    readonly property int buttonHeight: 32
 
     width: Globals.authDialogWidth
     height: Globals.authDialogHeight

@@ -38,7 +38,7 @@ ShellRoot {
         agent: polkitAgent
     }
 
-	Remote {
-		id: remote
-	}
+    Remote {
+        id: remote
+    }
 }

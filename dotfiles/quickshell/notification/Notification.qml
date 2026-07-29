@@ -28,10 +28,18 @@ Item {
 
         property bool doNotDisturb: false
 
+        property bool audioEnabled: true
+
         onNotification: notification => {
             notification.tracked = true;
 
             if (!panel.shown && !doNotDisturb) {
+                let soundPath = Quickshell.shellDir + "/sounds/";
+                if (audioEnabled) {
+                    let sound = notification.urgency === NotificationUrgency.Critical ? soundPath + "complete.oga" : soundPath + "message.oga";
+                    Quickshell.execDetached(["pw-play", sound]);
+                }
+
                 let wrapper = Qt.createQmlObject('import Quickshell; import QtQuick; NotificationWrapper { }', notificationServer);
                 wrapper.notif = notification;
 
