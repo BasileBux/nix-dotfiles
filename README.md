@@ -82,3 +82,9 @@ For certain things, you might need a `secrets.nix` file in the root of the repo:
   rad-passphrase = "";
 }
 ```
+
+## Dentride credits
+
+For the dentride setup, I stole a bunch of ideas from [RGBCube's ncc](https://github.com/RGBCube/ncc/tree/dentride).
+They have some clever tricks which make the dentride setup better than the regular
+tree setup.

@@ -1,15 +1,14 @@
 {
-  description = "Main flake";
+  description = "NixOS configuration";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
+
     disko = {
       url = "github:nix-community/disko";
-      inputs = {
-        nixpkgs = {
-          follows = "nixpkgs";
-        };
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     home-manager = {
@@ -24,55 +23,29 @@
 
     hyprland.url = "github:hyprwm/hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-
     helium.url = "github:amaanq/helium-flake";
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      home-manager,
-      ...
-    }@inputs:
-    let
-      globals = {
-        browser = "helium"; # helium | zen-twilight
-      };
-      mkSystem = import ./lib/mkSystem.nix { inherit inputs globals; };
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
+      {
+        lib,
+        self,
+        inputs,
+        ...
+      }:
+      {
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+        ];
 
-      systems = {
-        asus-g14 = {
-          settings = {
-            username = "basileb";
-            machine = "asus-g14";
-            hostname = "laptop-asus";
-            desktop = true;
-            accentColor = "#fb8b1e";
-            nixosVersion = "25.05"; # DO NOT CHANGE THIS EVER
-          };
-          modules = [
-            ./hosts/profiles/common.nix
-            inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
-          ];
-        };
-        hetzner-arm-vps = {
-          system = "aarch64-linux";
-          settings = {
-            username = "eugene";
-            machine = "hetzner-arm-vps";
-            hostname = "hetzner-arm-vps";
-            desktop = false;
-            accentColor = "#f57df3";
-            nixosVersion = "24.11"; # DO NOT CHANGE THIS EVER
-          };
-          modules = [
-            inputs.disko.nixosModules.disko
-          ];
-        };
-      };
-    in
-    {
-      nixosConfigurations = nixpkgs.lib.mapAttrs mkSystem systems;
-    };
+        imports = builtins.filter (lib.strings.hasSuffix ".mod.nix") (
+          lib.filesystem.listFilesRecursive ./.
+        );
+
+        # nixosConfigurations are defined by host .mod.nix files via mkHost
+      }
+    );
 }

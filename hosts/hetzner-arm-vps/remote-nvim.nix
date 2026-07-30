@@ -14,7 +14,7 @@ let
   # Combine custom index.html with default dufs assets (index.js, index.css, favicon.ico)
   # When --assets is used, dufs completely overrides built-in assets and looks for all
   # files on disk. Without this, __ASSETS_PREFIX__ references like index.js would 404.
-  dufsAssets = pkgs.runCommand "dufs-assets" {} ''
+  dufsAssets = pkgs.runCommand "dufs-assets" { } ''
     mkdir -p $out
     cp ${dufsIndexTemplate} $out/index.html
     cp ${pkgs.dufs.src}/assets/index.js $out/index.js

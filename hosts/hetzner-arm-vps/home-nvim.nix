@@ -1,13 +1,13 @@
 {
   settings,
   pkgs,
+  inputs,
   ...
 }:
 
 {
   imports = [
-    ../../dotfiles/tmux.nix
-    ../../dotfiles/zsh/zsh.nix
+    inputs.self.homeModules.cli
   ];
 
   home.username = "nvim";
@@ -51,5 +51,5 @@
   home.sessionVariables.NVIM_UNDODIR = "/home/nvim/.local/share/nvim/undo";
 
   # Copy into store (no mkOutOfStoreSymlink) so nvim user can read it
-  xdg.configFile."nvim".source = "${settings.configPath}/dotfiles/nvim";
+  xdg.configFile."nvim".source = ../../dotfiles/nvim;
 }
