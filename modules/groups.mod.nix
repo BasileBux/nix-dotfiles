@@ -3,7 +3,6 @@
     self.homeModules.zsh
     self.homeModules.tmux
     self.homeModules.vcs
-    self.homeModules.nh
     self.homeModules.fastfetch
   ];
 

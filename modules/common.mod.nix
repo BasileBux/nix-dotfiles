@@ -10,7 +10,6 @@
       man-pages-posix
       perf
       tree
-      difftastic
       gcc
       gcc_multi
       cmake

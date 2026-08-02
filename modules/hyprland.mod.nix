@@ -13,36 +13,105 @@ in
   config = {
     flake.nixosModules.desktop = self.nixosModules.hyprland;
 
-    flake.nixosModules.hyprland = { inputs, pkgs, ... }: {
-      imports = [ hypridleModule ];
-      nix.settings = {
-        substituters = [ "https://hyprland.cachix.org" ];
-        trusted-substituters = [ "https://hyprland.cachix.org" ];
-        trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
-      };
+    flake.nixosModules.hyprland =
+      {
+        inputs,
+        pkgs,
+        lib,
+        ...
+      }:
+      {
+        options.my.hyprland = lib.mkOption {
+          type = lib.types.submodule {
+            options = {
+              monitors = lib.mkOption {
+                type = lib.types.submodule {
+                  options = {
+                    primary = lib.mkOption {
+                      type = lib.types.submodule {
+                        options = {
+                          description = lib.mkOption { type = lib.types.str; };
+                          mode = lib.mkOption { type = lib.types.str; };
+                          position = lib.mkOption { type = lib.types.str; };
+                          scale = lib.mkOption { type = lib.types.str; };
+                          mirror = lib.mkOption {
+                            type = lib.types.submodule {
+                              options = {
+                                mode = lib.mkOption { type = lib.types.str; };
+                                scale = lib.mkOption { type = lib.types.str; };
+                              };
+                            };
+                          };
+                        };
+                      };
+                    };
+                    secondary = lib.mkOption {
+                      type = lib.types.submodule {
+                        options = {
+                          description = lib.mkOption { type = lib.types.str; };
+                          mode = lib.mkOption { type = lib.types.str; };
+                          position = lib.mkOption { type = lib.types.str; };
+                          scale = lib.mkOption { type = lib.types.str; };
+                        };
+                      };
+                    };
+                  };
+                };
+              };
+              brightness = lib.mkOption {
+                type = lib.types.submodule {
+                  options = {
+                    monitor = lib.mkOption { type = lib.types.str; };
+                    keyboard = lib.mkOption { type = lib.types.str; };
+                  };
+                };
+              };
+              startup = lib.mkOption {
+                type = lib.types.listOf lib.types.str;
+                default = [ ];
+              };
+              mainMod = lib.mkOption {
+                type = lib.types.str;
+                default = "SUPER";
+              };
+              extraConfig = lib.mkOption {
+                type = lib.types.lines;
+                default = "";
+              };
+            };
+          };
+        };
+        imports = [ hypridleModule ];
+        config = {
+          nix.settings = {
+            substituters = [ "https://hyprland.cachix.org" ];
+            trusted-substituters = [ "https://hyprland.cachix.org" ];
+            trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+          };
 
-      programs.hyprland.enable = true;
-      programs.hyprland.package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    };
+          programs.hyprland.enable = true;
+          programs.hyprland.package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+        };
+      };
 
     flake.homeModules.hyprland =
       {
         config,
         pkgs,
-        settings,
+        osConfig,
         ...
       }:
       let
         input-hyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
 
-        inherit (settings) desktop;
+        inherit (osConfig.my) hyprland;
 
         luaString = v: ''"${v}"'';
 
         luaConfig =
           let
-            m = desktop.monitors;
-            b = desktop.brightness;
+            m = hyprland.monitors;
+            b = hyprland.brightness;
           in
           ''
             return {
@@ -69,9 +138,9 @@ in
             		keyboard = ${luaString b.keyboard},
             	},
             	startup = {
-            ${builtins.concatStringsSep "" (map (cmd: "		${luaString cmd},") desktop.startup)}
+            ${builtins.concatStringsSep "" (map (cmd: "		${luaString cmd},") hyprland.startup)}
             	},
-            	mainMod = ${luaString desktop.mainMod},
+            	mainMod = ${luaString hyprland.mainMod},
             }
           '';
       in
@@ -91,7 +160,7 @@ in
 
         xdg.configFile."hypr/config.lua".text = luaConfig;
 
-        xdg.configFile."hypr/host.lua".text = desktop.extraConfig;
+        xdg.configFile."hypr/host.lua".text = hyprland.extraConfig;
 
         xdg.configFile."hypr/lua".source = ../dotfiles/hypr/lua;
 

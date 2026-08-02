@@ -1,7 +1,7 @@
 { self, lib, ... }: {
   flake.homeModules.mime-apps = { config, settings, ... }: {
-    imports = lib.optionals (settings.desktop != null) [ ];
-    config = lib.mkIf (settings.desktop != null) {
+    imports = lib.optionals (settings.desktop) [ ];
+    config = lib.mkIf (settings.desktop) {
       xdg.mimeApps = {
         enable = true;
         defaultApplications = {

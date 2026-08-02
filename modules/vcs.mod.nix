@@ -22,6 +22,7 @@
           signByDefault = true;
         };
       };
+      home.sessionVariables.GIT_EXTERNAL_DIFF = "difft";
 
       programs.jujutsu = {
         enable = true;
@@ -41,10 +42,16 @@
           git.sign-on-push = true;
         };
       };
-      home.packages = with pkgs; [
-        jjui
-        difftastic
-      ];
+      home.packages =
+        with pkgs;
+        [
+          gh
+          jjui
+          difftastic
+        ]
+        ++ lib.optionals (settings.desktop) [
+          meld
+        ];
 
     };
 }

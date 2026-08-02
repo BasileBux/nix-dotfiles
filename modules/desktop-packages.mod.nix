@@ -41,23 +41,19 @@
         evince
         mpv
         zenity
-        meld
         blueman
         pavucontrol
         yazi
         typst
-        neovide
         ghidra-bin
         steam
         gnome-calculator
         pinta
-        wireshark
         thunderbird
         jellyfin-desktop
         imhex
         vlc
         opencode
-        gh
         pi-coding-agent
         radicle-node
         radicle-desktop

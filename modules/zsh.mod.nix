@@ -37,7 +37,7 @@
 
       aliases =
         aliasContent
-        // lib.optionalAttrs (cfg.desktop != null) {
+        // lib.optionalAttrs (cfg.desktop) {
           playground = "/home/${cfg.username}/playground-cli/playground";
         }
         // cfg.extraShellAliases or { };
@@ -84,7 +84,6 @@
       home.sessionVariables = {
         EDITOR = "nvim";
         TYPSTDIR = "$HOME/.local/share/typst/packages";
-        GIT_EXTERNAL_DIFF = "difft";
         ANTHROPIC_API_KEY = secrets.keys.anthropicApiKey or "";
         OPENAI_API_KEY = secrets.keys.openaiApiKey or "";
         GEMINI_API_KEY = secrets.keys.geminiApiKey or "";

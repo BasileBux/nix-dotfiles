@@ -7,8 +7,8 @@
       ...
     }:
     {
-      imports = lib.optionals (settings.desktop != null) [ ];
-      config = lib.mkIf (settings.desktop != null) {
+      imports = lib.optionals (settings.desktop) [ ];
+      config = lib.mkIf (settings.desktop) {
         home.packages = with pkgs; [
           quickshell
           kdePackages.qt5compat

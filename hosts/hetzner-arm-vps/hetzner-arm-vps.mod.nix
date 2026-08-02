@@ -10,7 +10,7 @@
     settings = {
       username = "eugene";
       hostname = "hetzner-arm-vps";
-      desktop = null;
+      desktop = false;
       accentColor = "#f57df3";
       nixosVersion = "24.11";
       gitName = "BasileBux";

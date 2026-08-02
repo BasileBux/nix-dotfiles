@@ -49,8 +49,8 @@ in
     settings = {
       username = "basileb";
       hostname = "asus-g14";
-      desktop = hyprland-config;
       accentColor = "#fb8b1e";
+      desktop = true;
       nixosVersion = "25.05";
       gitName = "BasileBux";
       gitEmail = "basile.buxtorf@ik.me";
@@ -62,6 +62,7 @@ in
       };
     };
     extraModules = [
+      { my.hyprland = hyprland-config; }
       inputs.self.nixosModules.desktop
       inputs.self.nixosModules.common
       inputs.self.nixosModules.asus-g14

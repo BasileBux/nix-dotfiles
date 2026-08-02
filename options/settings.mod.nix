@@ -12,71 +12,9 @@
           description = "The hostname for this machine";
         };
         desktop = lib.mkOption {
-          type = lib.types.nullOr (
-            lib.types.submodule {
-              options = {
-                monitors = lib.mkOption {
-                  type = lib.types.submodule {
-                    options = {
-                      primary = lib.mkOption {
-                        type = lib.types.submodule {
-                          options = {
-                            description = lib.mkOption { type = lib.types.str; };
-                            mode = lib.mkOption { type = lib.types.str; };
-                            position = lib.mkOption { type = lib.types.str; };
-                            scale = lib.mkOption { type = lib.types.str; };
-                            mirror = lib.mkOption {
-                              type = lib.types.submodule {
-                                options = {
-                                  mode = lib.mkOption { type = lib.types.str; };
-                                  scale = lib.mkOption { type = lib.types.str; };
-                                };
-                              };
-                            };
-                          };
-                        };
-                      };
-                      secondary = lib.mkOption {
-                        type = lib.types.submodule {
-                          options = {
-                            description = lib.mkOption { type = lib.types.str; };
-                            mode = lib.mkOption { type = lib.types.str; };
-                            position = lib.mkOption { type = lib.types.str; };
-                            scale = lib.mkOption { type = lib.types.str; };
-                          };
-                        };
-                      };
-                    };
-                  };
-                };
-                brightness = lib.mkOption {
-                  type = lib.types.submodule {
-                    options = {
-                      monitor = lib.mkOption { type = lib.types.str; };
-                      keyboard = lib.mkOption { type = lib.types.str; };
-                    };
-                  };
-                };
-                startup = lib.mkOption {
-                  type = lib.types.listOf lib.types.str;
-                  default = [ ];
-                  description = "Commands to run on Hyprland startup";
-                };
-                mainMod = lib.mkOption {
-                  type = lib.types.str;
-                  default = "SUPER";
-                  description = "Main modifier key for Hyprland keybinds";
-                };
-                extraConfig = lib.mkOption {
-                  type = lib.types.lines;
-                  default = "";
-                  description = "Extra Hyprland Lua config appended as host.lua";
-                };
-              };
-            }
-          );
-          default = null;
-          description = "Desktop environment configuration. Set to null for headless/server machines.";
+          type = lib.types.bool;
+          default = false;
+          description = "Whether this machine has a desktop environment.";
         };
         nixosVersion = lib.mkOption {
           type = lib.types.str;
@@ -115,67 +53,8 @@
           username = lib.mkOption { type = lib.types.str; };
           hostname = lib.mkOption { type = lib.types.str; };
           desktop = lib.mkOption {
-            type = lib.types.nullOr (
-              lib.types.submodule {
-                options = {
-                  monitors = lib.mkOption {
-                    type = lib.types.submodule {
-                      options = {
-                        primary = lib.mkOption {
-                          type = lib.types.submodule {
-                            options = {
-                              description = lib.mkOption { type = lib.types.str; };
-                              mode = lib.mkOption { type = lib.types.str; };
-                              position = lib.mkOption { type = lib.types.str; };
-                              scale = lib.mkOption { type = lib.types.str; };
-                              mirror = lib.mkOption {
-                                type = lib.types.submodule {
-                                  options = {
-                                    mode = lib.mkOption { type = lib.types.str; };
-                                    scale = lib.mkOption { type = lib.types.str; };
-                                  };
-                                };
-                              };
-                            };
-                          };
-                        };
-                        secondary = lib.mkOption {
-                          type = lib.types.submodule {
-                            options = {
-                              description = lib.mkOption { type = lib.types.str; };
-                              mode = lib.mkOption { type = lib.types.str; };
-                              position = lib.mkOption { type = lib.types.str; };
-                              scale = lib.mkOption { type = lib.types.str; };
-                            };
-                          };
-                        };
-                      };
-                    };
-                  };
-                  brightness = lib.mkOption {
-                    type = lib.types.submodule {
-                      options = {
-                        monitor = lib.mkOption { type = lib.types.str; };
-                        keyboard = lib.mkOption { type = lib.types.str; };
-                      };
-                    };
-                  };
-                  startup = lib.mkOption {
-                    type = lib.types.listOf lib.types.str;
-                    default = [ ];
-                  };
-                  mainMod = lib.mkOption {
-                    type = lib.types.str;
-                    default = "SUPER";
-                  };
-                  extraConfig = lib.mkOption {
-                    type = lib.types.lines;
-                    default = "";
-                  };
-                };
-              }
-            );
-            default = null;
+            type = lib.types.bool;
+            default = false;
           };
           nixosVersion = lib.mkOption { type = lib.types.str; };
           accentColor = lib.mkOption {
