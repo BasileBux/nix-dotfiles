@@ -106,8 +106,6 @@ in
         typstyle
         marksman
         bash-language-server
-      ] ++ lib.optionals (settings.desktop) [
-        neovide
       ];
 
       home.sessionVariables.NVIM_UNDODIR = "/home/${settings.username}/.local/share/nvim/undo";

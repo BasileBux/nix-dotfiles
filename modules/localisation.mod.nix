@@ -1,5 +1,5 @@
 { self, ... }: {
-  commonModules.localisation = { ... }: {
+  flake.nixosModules.localisation = { ... }: {
     console = {
       font = "Lat2-Terminus16";
       earlySetup = true;

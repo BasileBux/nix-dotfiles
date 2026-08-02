@@ -8,8 +8,8 @@
       ...
     }:
     {
-      imports = lib.optionals (settings.desktop) [ ];
-      config = lib.mkIf (settings.desktop) {
+      imports = [ ];
+      config = {
         programs.vscode = {
           enable = true;
           profiles.default.extensions =

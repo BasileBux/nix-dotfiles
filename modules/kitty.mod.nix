@@ -7,8 +7,8 @@
       ...
     }:
     {
-      imports = lib.optionals (settings.desktop) [ ];
-      config = lib.mkIf (settings.desktop) {
+      imports = [ ];
+      config = {
         programs.kitty = {
           enable = true;
           enableGitIntegration = true;

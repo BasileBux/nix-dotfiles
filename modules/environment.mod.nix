@@ -1,5 +1,5 @@
 { self, ... }: {
-  commonModules.environment = { pkgs, ... }: {
+  flake.nixosModules.environment = { pkgs, ... }: {
     environment.sessionVariables = {
       SUDO_EDITOR = "nvim";
       EDITOR = "nvim";

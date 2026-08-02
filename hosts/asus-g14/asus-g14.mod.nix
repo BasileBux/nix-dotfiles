@@ -41,7 +41,6 @@ in
     hostName = "asus-g14";
     homeModules = [
       inputs.self.homeModules.cli
-      inputs.self.homeModules.editor
       inputs.self.homeModules.terminal
       inputs.self.homeModules.desktop
       inputs.self.homeModules.gui

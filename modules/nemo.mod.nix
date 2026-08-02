@@ -1,7 +1,7 @@
 { self, lib, ... }: {
   flake.homeModules.nemo = { config, settings, ... }: {
-    imports = lib.optionals (settings.desktop) [ ];
-    config = lib.mkIf (settings.desktop) {
+    imports = [ ];
+    config = {
       dconf.enable = true;
       dconf.settings = {
         "org/nemo/preferences" = {

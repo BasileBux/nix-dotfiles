@@ -42,16 +42,10 @@
           git.sign-on-push = true;
         };
       };
-      home.packages =
-        with pkgs;
-        [
-          gh
-          jjui
-          difftastic
-        ]
-        ++ lib.optionals (settings.desktop) [
-          meld
-        ];
-
+      home.packages = with pkgs; [
+        gh
+        jjui
+        difftastic
+      ];
     };
 }

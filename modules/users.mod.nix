@@ -10,8 +10,5 @@ let
   };
 in
 {
-  config = {
-    commonModules.users = userModule;
-    flake.nixosModules.users = userModule;
-  };
+  config.flake.nixosModules.users = userModule;
 }

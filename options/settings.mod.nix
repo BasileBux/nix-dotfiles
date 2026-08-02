@@ -46,7 +46,7 @@
   };
 
   # Also register as a NixOS module so that my.settings is available in nixosSystem
-  config.commonModules.settings = { lib, ... }: {
+  config.flake.nixosModules.settings = { lib, ... }: {
     options.my.settings = lib.mkOption {
       type = lib.types.submodule {
         options = {

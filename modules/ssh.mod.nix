@@ -1,5 +1,4 @@
 { self, ... }: {
-  flake.nixosModules.default = self.nixosModules.ssh-server;
   flake.nixosModules.ssh-server = { ... }: {
     programs.mosh.enable = true;
     services.openssh = {

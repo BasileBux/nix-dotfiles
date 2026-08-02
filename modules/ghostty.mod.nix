@@ -1,7 +1,7 @@
 { self, lib, ... }: {
   flake.homeModules.ghostty = { config, settings, ... }: {
-    imports = lib.optionals (settings.desktop) [ ];
-    config = lib.mkIf (settings.desktop) {
+    imports = [ ];
+    config = {
       programs.ghostty = {
         enable = true;
         enableZshIntegration = true;

@@ -5,7 +5,6 @@
     system = "aarch64-linux";
     homeModules = [
       inputs.self.homeModules.cli
-      inputs.self.homeModules.editor
     ];
     settings = {
       username = "eugene";

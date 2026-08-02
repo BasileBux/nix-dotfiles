@@ -1,13 +1,29 @@
 { self, lib, ... }: {
   flake.homeModules.mime-apps = { config, settings, ... }: {
-    imports = lib.optionals (settings.desktop) [ ];
-    config = lib.mkIf (settings.desktop) {
+    imports = [ ];
+    config = {
+      xdg.desktopEntries.nvim-terminal = {
+        name = "Neovim";
+        comment = "Edit text files in Neovim (terminal)";
+        exec = "kitty -e nvim %F";
+        terminal = false; # kitty itself is the terminal being launched; this is not the flag you set to true
+        icon = "nvim";
+        type = "Application";
+        mimeType = [
+          "text/plain"
+          "text/markdown"
+        ];
+        categories = [
+          "Utility"
+          "TextEditor"
+        ];
+      };
+
       xdg.mimeApps = {
         enable = true;
         defaultApplications = {
-          "text/html" = "helium.desktop";
-          "text/markdown" = "neovide.desktop";
-          "text/plain" = "neovide.desktop";
+          "text/markdown" = "nvim-terminal.desktop";
+          "text/plain" = "nvim-terminal.desktop";
           "image/png" = "org.kde.gwenview.desktop";
           "image/jpeg" = "org.kde.gwenview.desktop";
           "image/gif" = "org.kde.gwenview.desktop";
@@ -20,10 +36,6 @@
           "audio/flac" = "mpv.desktop";
           "audio/ogg" = "mpv.desktop";
           "inode/directory" = "nemo.desktop";
-          "x-scheme-handler/http" = "helium.desktop";
-          "x-scheme-handler/https" = "helium.desktop";
-          "x-scheme-handler/about" = "helium.desktop";
-          "x-scheme-handler/unknown" = "helium.desktop";
         };
       };
     };

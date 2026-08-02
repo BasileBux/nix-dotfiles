@@ -1,7 +1,7 @@
 { self, lib, ... }: {
   flake.homeModules.fastfetch = { config, settings, ... }: {
-    imports = lib.optionals (settings.desktop) [ ];
-    config = lib.mkIf (settings.desktop) {
+    imports = [ ];
+    config = {
       programs.fastfetch = {
         enable = true;
         settings = {

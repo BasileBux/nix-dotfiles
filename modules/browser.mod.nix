@@ -7,6 +7,20 @@
 }:
 let
   defaultBrowser = config.my.defaultBrowser;
+
+  mimeTypes = [
+    "application/rdf+xml"
+    "application/rss+xml"
+    "application/xhtml+xml"
+    "application/xhtml_xml"
+    "application/xml"
+    "text/html"
+    "text/xml"
+    "x-scheme-handler/http"
+    "x-scheme-handler/https"
+    "x-scheme-handler/about"
+    "x-scheme-handler/unknown"
+  ];
 in
 {
   options.my.defaultBrowser = lib.mkOption {
@@ -14,47 +28,47 @@ in
       "helium"
       "zen-twilight"
     ];
-    default = "helium"; # Set default browser here
-    description = "Global default browser. Controls WEB_BROWSER env var on all desktop hosts.";
+    default = "helium";
+    description = "Global default browser. Controls my.browser default and WEB_BROWSER env var on all desktop hosts.";
   };
 
   config = {
-    commonModules.browser =
+    flake.homeModules.helium = { pkgs, ... }: {
+      home.packages = [
+        inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
+      ];
+    };
+
+    flake.homeModules.zen = { ... }: {
+      imports = [ inputs.zen-browser.homeModules.twilight ];
+      programs.zen-browser.enable = true;
+    };
+
+    flake.homeModules.browser =
+      { config, lib, ... }:
+      let
+        inherit (lib.attrsets) genAttrs;
+        inherit (lib.trivial) const;
+      in
       {
-        config,
-        lib,
-        pkgs,
-        ...
-      }:
-      {
+        imports = [
+          self.homeModules.helium
+          self.homeModules.zen
+        ];
+
         options.my.browser = lib.mkOption {
           type = lib.types.enum [
             "helium"
             "zen-twilight"
           ];
           default = defaultBrowser;
-          description = "Default browser for this host (WEB_BROWSER env var). Both browsers are always installed.";
+          description = "Default browser for this host. Both browsers are always installed.";
         };
 
-        config = lib.mkIf (config.my.settings.desktop) {
-          environment.systemPackages = [
-            inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
-          ];
-        };
-      };
+        config = {
+          home.sessionVariables.WEB_BROWSER = config.my.browser;
 
-    flake.homeModules.browser =
-      {
-        config,
-        lib,
-        osConfig,
-        ...
-      }:
-      {
-        imports = [ inputs.zen-browser.homeModules.twilight ];
-        config = lib.mkIf (osConfig.my.settings.desktop) {
-          programs.zen-browser.enable = true;
-          home.sessionVariables.WEB_BROWSER = osConfig.my.browser;
+          xdg.mimeApps.defaultApplications = genAttrs mimeTypes (const "${config.my.browser}.desktop");
         };
       };
   };

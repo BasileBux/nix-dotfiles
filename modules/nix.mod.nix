@@ -1,5 +1,4 @@
 { self, ... }: {
-  flake.nixosModules.default = self.nixosModules.nix;
   flake.nixosModules.nix = { settings, ... }: {
 
     nix.settings.experimental-features = [
