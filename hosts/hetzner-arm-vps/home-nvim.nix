@@ -7,7 +7,7 @@
 
 {
   imports = [
-    inputs.self.homeModules.cli
+    inputs.self.homeModules.default
   ];
 
   home.username = "nvim";

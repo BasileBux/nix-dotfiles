@@ -44,6 +44,7 @@ in
       programs.zen-browser.enable = true;
     };
 
+    flake.homeModules.desktop = self.homeModules.browser;
     flake.homeModules.browser =
       { config, lib, ... }:
       let

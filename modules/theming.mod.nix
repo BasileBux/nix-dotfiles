@@ -1,4 +1,5 @@
 { self, lib, ... }: {
+  flake.homeModules.desktop = self.homeModules.theming;
   flake.homeModules.theming =
     {
       config,

@@ -5,8 +5,8 @@ let
       isNormalUser = true;
       extraGroups = [ "wheel" ];
       shell = pkgs.zsh;
+      ignoreShellProgramCheck = true;
     };
-    programs.zsh.enable = true;
   };
 in
 {

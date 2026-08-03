@@ -1,7 +1,17 @@
-{ self, lib, ... }: {
-  flake.homeModules.nemo = { config, settings, ... }: {
+{
+  self,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  flake.homeModules.desktop = self.homeModules.nemo;
+  flake.homeModules.nemo = { config, pkgs, ... }: {
     imports = [ ];
     config = {
+      home.packages = [
+        pkgs.nemo
+      ];
       dconf.enable = true;
       dconf.settings = {
         "org/nemo/preferences" = {
@@ -23,6 +33,15 @@
         };
         "org/cinnamon/desktop/applications/terminal".exec = "kitty";
       };
+      xdg.mimeApps.defaultApplications = {
+        "inode/directory" = "nemo.desktop";
+      };
     };
+  };
+
+  flake.nixosModules.desktop = self.nixosModules.nemo;
+  flake.nixosModules.nemo = { config, pkgs, ... }: {
+    services.gvfs.enable = true;
+    services.udisks2.enable = true;
   };
 }

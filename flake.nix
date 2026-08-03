@@ -45,6 +45,8 @@
           lib.filesystem.listFilesRecursive ./.
         );
 
+        flake.lib = import ./lib inputs.nixpkgs.lib;
+
         # nixosConfigurations are defined by host .mod.nix files via mkHost
       }
     );

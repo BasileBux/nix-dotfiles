@@ -11,11 +11,6 @@
           type = lib.types.str;
           description = "The hostname for this machine";
         };
-        desktop = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-          description = "Whether this machine has a desktop environment.";
-        };
         nixosVersion = lib.mkOption {
           type = lib.types.str;
           description = "The NixOS state version. DO NOT CHANGE THIS EVER";
@@ -52,10 +47,6 @@
         options = {
           username = lib.mkOption { type = lib.types.str; };
           hostname = lib.mkOption { type = lib.types.str; };
-          desktop = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-          };
           nixosVersion = lib.mkOption { type = lib.types.str; };
           accentColor = lib.mkOption {
             type = lib.types.strMatching "^#[0-9a-fA-F]{6}$";

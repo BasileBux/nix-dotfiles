@@ -1,4 +1,5 @@
 { self, ... }: {
+  flake.homeModules.shell = self.homeModules.tmux;
   flake.homeModules.tmux = { ... }: {
     programs.tmux = {
       enable = true;

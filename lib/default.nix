@@ -1,6 +1,10 @@
 nixpkgsLib:
 nixpkgsLib.extend (
   self: super: {
-    # Additional library functions can be added here as needed.
+    # Generate a shell snippet that creates the given directories.
+    # Usage: home.activation.createDirs = lib.hm.dag.entryAfter ["writeBoundary"] (myLib.mkXdgDirs dirs);
+    mkXdgDirs = dirs: ''
+      ${nixpkgsLib.concatMapStringsSep "\n" (d: "\$DRY_RUN_CMD mkdir -p '${d}'") dirs}
+    '';
   }
 )

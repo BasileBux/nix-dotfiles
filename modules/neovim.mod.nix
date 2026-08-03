@@ -4,6 +4,7 @@ let
   ;
 in
 {
+  flake.homeModules.shell = self.homeModules.neovim;
   flake.homeModules.neovim =
     {
       config,
@@ -74,42 +75,73 @@ in
       neovim-wrapped = pkgs.writeShellScriptBin "nvim" ''
         exec ${pkgs.neovim-unwrapped}/bin/nvim --cmd "set rtp^=${parserBundle}" "$@"
       '';
+
+      mimeTypes = [
+        "text/markdown"
+        "text/plain"
+      ];
+      inherit (lib.attrsets) genAttrs;
+      inherit (lib.trivial) const;
     in
     {
-      home.packages = with pkgs; [
-        neovim-wrapped
-        ripgrep
-        fd
-        fzf
-        gcc
-        cargo
-        rustc
-        luarocks
-        tree-sitter
-        imagemagick
-        ghostscript
-        basedpyright
-        cmake-language-server
-        stylua
-        clang-tools
-        gopls
-        gotools
-        ltex-ls
-        lua-language-server
-        nil
-        nixfmt
-        nixfmt-tree
-        prettier
-        kdePackages.qtdeclarative
-        tinymist
-        typescript-language-server
-        typstyle
-        marksman
-        bash-language-server
-      ];
+      config = {
+        home.packages = with pkgs; [
+          neovim-wrapped
+          ripgrep
+          fd
+          fzf
+          gcc
+          cargo
+          rustc
+          luarocks
+          tree-sitter
+          imagemagick
+          ghostscript
+          basedpyright
+          cmake-language-server
+          stylua
+          clang-tools
+          gopls
+          gotools
+          ltex-ls
+          lua-language-server
+          nil
+          nixfmt
+          nixfmt-tree
+          prettier
+          kdePackages.qtdeclarative
+          tinymist
+          typescript-language-server
+          typstyle
+          marksman
+          bash-language-server
+        ];
 
-      home.sessionVariables.NVIM_UNDODIR = "/home/${settings.username}/.local/share/nvim/undo";
+        home.sessionVariables = {
+          NVIM_UNDODIR = "${config.home.homeDirectory}/.local/share/nvim/undo";
+          SUDO_EDITOR = "nvim";
+          EDITOR = "nvim";
+        };
 
-      xdg.configFile."nvim".source = ../dotfiles/nvim;
+        xdg.configFile."nvim".source = ../dotfiles/nvim;
+
+        xdg.desktopEntries.nvim-terminal = {
+          name = "Neovim";
+          comment = "Edit text files in Neovim (terminal)";
+          exec = "kitty -e nvim %F";
+          terminal = false; # kitty itself is the terminal being launched; this is not the flag you set to true
+          icon = "nvim";
+          type = "Application";
+          mimeType = [
+            "text/plain"
+            "text/markdown"
+          ];
+          categories = [
+            "Utility"
+            "TextEditor"
+          ];
+        };
+        xdg.mimeApps.defaultApplications = genAttrs mimeTypes (const "nvim-terminal.desktop");
+      };
     };
 }

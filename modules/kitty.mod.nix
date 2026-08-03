@@ -1,4 +1,5 @@
 { self, lib, ... }: {
+  flake.homeModules.desktop = self.homeModules.kitty;
   flake.homeModules.kitty =
     {
       config,

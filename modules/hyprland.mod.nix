@@ -12,7 +12,6 @@ in
 {
   config = {
     flake.nixosModules.desktop = self.nixosModules.hyprland;
-
     flake.nixosModules.hyprland =
       {
         inputs,
@@ -94,6 +93,7 @@ in
         };
       };
 
+    flake.homeModules.desktop = self.homeModules.hyprland;
     flake.homeModules.hyprland =
       {
         config,
@@ -146,15 +146,23 @@ in
       in
       {
         home.packages = with pkgs; [
+          wl-clipboard
           bibata-cursors
           hyprcursor
           playerctl
           grim
           slurp
           brightnessctl
+          zenity
         ];
 
-        home.sessionVariables.HYPRLAND_STUBS = "${input-hyprland}/share/hypr/stubs";
+        home.sessionVariables = {
+          HYPRLAND_STUBS = "${input-hyprland}/share/hypr/stubs";
+          XDG_CURRENT_DESKTOP = "Hyprland";
+          XDG_SESSION_TYPE = "wayland";
+          XDG_SESSION_DESKTOP = "Hyprland";
+          NIXOS_OZONE_WL = "1";
+        };
 
         xdg.configFile."hypr/hyprland.lua".source = ../dotfiles/hypr/hyprland.lua;
 

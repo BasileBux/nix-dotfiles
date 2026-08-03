@@ -6,6 +6,7 @@
   ...
 }:
 {
+  flake.homeModules.shell = self.homeModules.zsh;
   flake.homeModules.zsh =
     {
       config,
@@ -35,12 +36,7 @@
         NULL = "/dev/null 2>&1";
       };
 
-      aliases =
-        aliasContent
-        // lib.optionalAttrs (cfg.desktop) {
-          playground = "/home/${cfg.username}/playground-cli/playground";
-        }
-        // cfg.extraShellAliases or { };
+      aliases = aliasContent // cfg.extraShellAliases or { };
 
       secrets = if builtins.pathExists ../secrets.nix then import ../secrets.nix else { };
 
@@ -68,7 +64,7 @@
           size = 10000;
           save = 10000;
           share = false;
-          path = "$HOME/.zsh_history";
+          path = "${config.xdg.stateHome}/zsh/history";
           ignoreDups = true;
           ignoreSpace = true;
           extended = true;
@@ -82,8 +78,7 @@
       };
 
       home.sessionVariables = {
-        EDITOR = "nvim";
-        TYPSTDIR = "$HOME/.local/share/typst/packages";
+        TYPSTDIR = "${config.xdg.dataHome}/typst/packages";
         ANTHROPIC_API_KEY = secrets.keys.anthropicApiKey or "";
         OPENAI_API_KEY = secrets.keys.openaiApiKey or "";
         GEMINI_API_KEY = secrets.keys.geminiApiKey or "";

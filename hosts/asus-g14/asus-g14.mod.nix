@@ -1,10 +1,5 @@
 { lib, inputs, ... }:
 let
-  hyprland-extraConfig = /* lua */ ''
-    local mainMod = require("config").mainMod
-    hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("nvtop -s > /dev/null"))
-  '';
-
   hyprland-config = {
     monitors = {
       primary = {
@@ -33,27 +28,27 @@ let
       "asusctl profile set Quiet"
     ];
     mainMod = "SUPER";
-    extraConfig = hyprland-extraConfig;
+    extraConfig = /* lua */ ''
+      local mainMod = require("config").mainMod
+      hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("nvtop -s > /dev/null"))
+    '';
   };
 in
 {
   flake.nixosConfigurations.asus-g14 = (import ../../lib/mkHost.nix { inherit inputs lib; }) {
     hostName = "asus-g14";
     homeModules = [
-      inputs.self.homeModules.cli
-      inputs.self.homeModules.terminal
       inputs.self.homeModules.desktop
-      inputs.self.homeModules.gui
     ];
     settings = {
       username = "basileb";
       hostname = "asus-g14";
       accentColor = "#fb8b1e";
-      desktop = true;
       nixosVersion = "25.05";
       gitName = "BasileBux";
       gitEmail = "basile.buxtorf@ik.me";
       extraShellAliases = {
+        config = "cd $HOME/nixos && nvim flake.nix";
         nvimconfig = "cd $HOME/nixos/dotfiles/nvim && nvim init.lua";
         qsconfig = "cd $HOME/nixos/dotfiles/quickshell && nvim shell.qml";
         hlconfig = "cd $HOME/nixos/dotfiles/hypr && nvim hyprland.lua";
@@ -61,11 +56,11 @@ in
       };
     };
     extraModules = [
+      ./extra-config.nix
       { my.hyprland = hyprland-config; }
       inputs.self.nixosModules.desktop
-      inputs.self.nixosModules.common
-      inputs.self.nixosModules.asus-g14
       inputs.self.nixosModules.smb
+      inputs.self.nixosModules.tailscale
       inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
     ];
   };

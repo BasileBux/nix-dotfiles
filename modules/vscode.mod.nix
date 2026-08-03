@@ -1,4 +1,5 @@
 { self, lib, ... }: {
+  flake.homeModules.desktop = self.homeModules.vscode;
   flake.homeModules.vscode =
     {
       config,

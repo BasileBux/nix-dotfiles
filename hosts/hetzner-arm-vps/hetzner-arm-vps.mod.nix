@@ -4,12 +4,11 @@
     hostName = "hetzner-arm-vps";
     system = "aarch64-linux";
     homeModules = [
-      inputs.self.homeModules.cli
+      inputs.self.homeModules.default
     ];
     settings = {
       username = "eugene";
       hostname = "hetzner-arm-vps";
-      desktop = false;
       accentColor = "#f57df3";
       nixosVersion = "24.11";
       gitName = "BasileBux";
