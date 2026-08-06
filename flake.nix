@@ -24,7 +24,14 @@
     hyprland.url = "github:hyprwm/hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     helium.url = "github:amaanq/helium-flake";
-    agenix.url = "github:ryantm/agenix";
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "";
+      inputs.systems.follows = "systems";
+    };
+
+    systems.url = "github:nix-systems/default";
   };
 
   outputs =

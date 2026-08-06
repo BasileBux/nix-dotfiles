@@ -61,13 +61,11 @@ in
 
       aliases = aliasContent // cfg.extraShellAliases;
 
-      secrets = if builtins.pathExists ../secrets.nix then import ../secrets.nix else { };
-
       themeFile = pkgs.runCommand "basileb.zsh-theme" { accentColor = cfg.accentColor; } ''
         r=$(printf '%d' 0x''${accentColor:1:2})
         g=$(printf '%d' 0x''${accentColor:3:2})
         b=$(printf '%d' 0x''${accentColor:5:2})
-        sed -e "s|@accent_rgb@|$r;$g;$b|g" ${../dotfiles/zsh/basileb.zsh-theme} > $out
+        sed -e "s|@accent_rgb@|$r;$g;$b|g" ${../../dotfiles/zsh/basileb.zsh-theme} > $out
       '';
 
       zshCustom = pkgs.runCommand "zsh-custom" { } ''
@@ -82,7 +80,7 @@ in
         enableCompletion = true;
         syntaxHighlighting.enable = true;
         shellAliases = aliases;
-        initContent = builtins.readFile ../dotfiles/zsh/initContent.zsh;
+        initContent = "source ~/.zsh/secrets-env\n" + builtins.readFile ../../dotfiles/zsh/initContent.zsh;
         history = {
           size = 10000;
           save = 10000;
@@ -102,17 +100,20 @@ in
 
       home.sessionVariables = {
         TYPSTDIR = "${config.xdg.dataHome}/typst/packages";
-        ANTHROPIC_API_KEY = secrets.keys.anthropicApiKey or "";
-        OPENAI_API_KEY = secrets.keys.openaiApiKey or "";
-        GEMINI_API_KEY = secrets.keys.geminiApiKey or "";
-        GOOGLE_GENERATIVE_AI_API_KEY = secrets.keys.googleGenerativeAiApiKey or "";
-        MOONSHOT_API_KEY = secrets.keys.moonshotApiKey or "";
-        TAVILY_API_KEY = secrets.keys.tavilyApiKey or "";
-        XAI_API_KEY = secrets.keys.xaiApiKey or "";
-        GITHUB_TOKEN = secrets.github-token or "";
-        NVIDIA_API_KEY = secrets.keys.nvidiaApiKey or "";
-        DEEPSEEK_API_KEY = secrets.keys.deepseekApiKey or "";
-        RAD_PASSPHRASE = secrets.rad-passphrase or "";
       };
+
+      home.file.".zsh/secrets-env".text = ''
+        export ANTHROPIC_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/anthropic.age".path})"
+        export OPENAI_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/openai.age".path})"
+        export GEMINI_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/gemini.age".path})"
+        export GOOGLE_GENERATIVE_AI_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/google-generative-ai.age".path})"
+        export MOONSHOT_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/moonshot.age".path})"
+        export TAVILY_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/tavily.age".path})"
+        export XAI_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/xai.age".path})"
+        export GITHUB_TOKEN="$(cat ${osConfig.age.secrets."modules/zsh/github-token.age".path})"
+        export NVIDIA_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/nvidia.age".path})"
+        export DEEPSEEK_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/deepseek.age".path})"
+        export RAD_PASSPHRASE="$(cat ${osConfig.age.secrets."modules/zsh/rad-passphrase.age".path})"
+      '';
     };
 }

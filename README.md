@@ -83,8 +83,14 @@ For certain things, you might need a `secrets.nix` file in the root of the repo:
 }
 ```
 
-## Dentride credits
+## Credits
 
-For the dentride setup, I stole a bunch of ideas from [RGBCube's ncc](https://github.com/RGBCube/ncc/tree/dentride).
-They have some clever tricks which make the dentride setup better than the regular
-tree setup.
+This config underwent a big rewrite to match the dentride structure, based on
+[RGBCube's ncc](https://github.com/RGBCube/ncc/tree/dentride) (MIT licensed).
+
+- The module auto-discovery mechanism was conceptually inspired by ncc, then adapted
+    for my own module set.
+- The age/secrets configuration is copied almost verbatim from ncc, with only minor
+    adjustments.
+
+Given how much of this repo derives from ncc, this repo is also licensed MIT.

@@ -8,26 +8,23 @@
 }:
 let
   settings' = settings;
-  secrets = if builtins.pathExists ../secrets.nix then import ../secrets.nix else { };
   hardwarePath = ../hosts/${hostName}/hardware-configuration.nix;
 in
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;
   specialArgs = {
-    inherit
-      inputs
-      secrets
-      ;
+    inherit inputs;
     settings = settings';
   };
   modules = [
     inputs.self.nixosModules.default
+    inputs.self.nixosModules.secrets
     inputs.home-manager.nixosModules.home-manager
     {
       home-manager.useGlobalPkgs = true;
-      home-manager.extraSpecialArgs = { inherit inputs secrets; settings = settings'; };
+      home-manager.extraSpecialArgs = { inherit inputs; settings = settings'; };
       home-manager.users.${settings'.username} = {
-        imports = [ inputs.self.homeModules.default ] ++ homeModules;
+        imports = [ inputs.self.homeModules.default inputs.self.homeModules.secrets ] ++ homeModules;
         home.stateVersion = settings.nixosVersion;
       };
     }

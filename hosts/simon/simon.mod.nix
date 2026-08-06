@@ -63,6 +63,9 @@ in
         my.hyprland = hyprland-config;
         my.zsh = zsh-config;
       }
+      {
+        age.identityPaths = [ "/home/basileb/.ssh/simon" ];
+      }
       inputs.self.nixosModules.desktop
       inputs.self.nixosModules.smb
       inputs.self.nixosModules.tailscale

@@ -15,6 +15,9 @@
     };
     extraModules = [
       { my.zsh.accentColor = "#f57df3"; }
+      {
+        age.identityPaths = [ "/home/eugene/.ssh/yoko" ];
+      }
       ./hetzner-config.nix
       inputs.disko.nixosModules.disko
       ./disko-config.nix

@@ -1,13 +1,22 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
-  userModule = { config, pkgs, ... }: {
-    users.users.${config.my.settings.username} = {
-      isNormalUser = true;
-      extraGroups = [ "wheel" ];
-      shell = pkgs.zsh;
-      ignoreShellProgramCheck = true;
+  userModule = { config, pkgs, ... }:
+    let
+      username = config.my.settings.username;
+      hostname = config.networking.hostName;
+      secretName = "hosts/${hostname}/${username}.age";
+      hasPassword = config.age.secrets ? "${secretName}";
+    in
+    {
+      users.users.${username} = {
+        isNormalUser = true;
+        extraGroups = [ "wheel" ];
+        shell = pkgs.zsh;
+        ignoreShellProgramCheck = true;
+      } // lib.optionalAttrs hasPassword {
+        hashedPasswordFile = config.age.secrets.${secretName}.path;
+      };
     };
-  };
 in
 {
   config.flake.nixosModules.users = userModule;
