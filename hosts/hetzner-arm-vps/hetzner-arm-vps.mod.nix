@@ -15,7 +15,7 @@
     };
     extraModules = [
       { my.zsh.accentColor = "#f57df3"; }
-      inputs.self.nixosModules.hetzner
+      ./hetzner-config.nix
       inputs.disko.nixosModules.disko
       ./disko-config.nix
       ./remote-nvim.nix

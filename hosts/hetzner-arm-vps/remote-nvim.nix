@@ -35,6 +35,7 @@ in
   users.users.nvim = {
     isNormalUser = true;
     shell = pkgs.zsh;
+    ignoreShellProgramCheck = true;
   };
   home-manager.users.nvim = import ./home-nvim.nix;
 
