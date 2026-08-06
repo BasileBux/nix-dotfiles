@@ -100,5 +100,5 @@ Singleton {
         readonly property string remoteDefaultTmuxSession: "main"
     }
 
-    readonly property string machine: getEnvOr("QUICKSHELL_MACHINE", "asus-g14")
+    readonly property string machine: getEnvOr("QUICKSHELL_MACHINE", "simon")
 }

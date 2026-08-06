@@ -4,9 +4,9 @@ import Quickshell
 import QtQuick
 
 Singleton {
-    readonly property var current: Globals.machine === "asus-g14" ? asus : Globals.machine === "thinkpad" ? thinkpad : null
+    readonly property var current: Globals.machine === "simon" ? simon : Globals.machine === "thinkpad" ? thinkpad : null
 
-    readonly property var asus: QtObject {
+    readonly property var simon: QtObject {
         readonly property var profiles: ["Quiet", "Balanced", "Performance"]
         readonly property var getterCommand: ["asusctl", "profile", "get"]
         readonly property int getterStringSplitIndex: 2

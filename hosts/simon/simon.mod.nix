@@ -45,14 +45,14 @@ let
   };
 in
 {
-  flake.nixosConfigurations.asus-g14 = (import ../../lib/mkHost.nix { inherit inputs lib; }) {
-    hostName = "asus-g14";
+  flake.nixosConfigurations.simon = (import ../../lib/mkHost.nix { inherit inputs lib; }) {
+    hostName = "simon";
     homeModules = [
       inputs.self.homeModules.desktop
     ];
     settings = {
       username = "basileb";
-      hostname = "asus-g14";
+      hostname = "simon";
       nixosVersion = "25.05";
       gitName = "BasileBux";
       gitEmail = "basile.buxtorf@ik.me";

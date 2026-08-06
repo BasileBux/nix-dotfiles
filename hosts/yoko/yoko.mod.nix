@@ -1,14 +1,14 @@
 { lib, inputs, ... }:
 {
-  flake.nixosConfigurations.hetzner-arm-vps = (import ../../lib/mkHost.nix { inherit inputs lib; }) {
-    hostName = "hetzner-arm-vps";
+  flake.nixosConfigurations.yoko = (import ../../lib/mkHost.nix { inherit inputs lib; }) {
+    hostName = "yoko";
     system = "aarch64-linux";
     homeModules = [
       inputs.self.homeModules.default
     ];
     settings = {
       username = "eugene";
-      hostname = "hetzner-arm-vps";
+      hostname = "yoko";
       nixosVersion = "24.11";
       gitName = "BasileBux";
       gitEmail = "basile.buxtorf@ik.me";
