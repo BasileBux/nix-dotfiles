@@ -33,6 +33,16 @@ let
       hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("nvtop -s > /dev/null"))
     '';
   };
+  zsh-config = {
+    accentColor = "#fb8b1e";
+    extraShellAliases = {
+      config = "cd $HOME/nixos && nvim flake.nix";
+      nvimconfig = "cd $HOME/nixos/dotfiles/nvim && nvim init.lua";
+      qsconfig = "cd $HOME/nixos/dotfiles/quickshell && nvim shell.qml";
+      hlconfig = "cd $HOME/nixos/dotfiles/hypr && nvim hyprland.lua";
+      vpn = "$HOME/nixos/scripts/tailscale-exit-nodes.sh";
+    };
+  };
 in
 {
   flake.nixosConfigurations.asus-g14 = (import ../../lib/mkHost.nix { inherit inputs lib; }) {
@@ -43,21 +53,16 @@ in
     settings = {
       username = "basileb";
       hostname = "asus-g14";
-      accentColor = "#fb8b1e";
       nixosVersion = "25.05";
       gitName = "BasileBux";
       gitEmail = "basile.buxtorf@ik.me";
-      extraShellAliases = {
-        config = "cd $HOME/nixos && nvim flake.nix";
-        nvimconfig = "cd $HOME/nixos/dotfiles/nvim && nvim init.lua";
-        qsconfig = "cd $HOME/nixos/dotfiles/quickshell && nvim shell.qml";
-        hlconfig = "cd $HOME/nixos/dotfiles/hypr && nvim hyprland.lua";
-        vpn = "$HOME/nixos/scripts/tailscale-exit-nodes.sh";
-      };
     };
     extraModules = [
       ./extra-config.nix
-      { my.hyprland = hyprland-config; }
+      {
+        my.hyprland = hyprland-config;
+        my.zsh = zsh-config;
+      }
       inputs.self.nixosModules.desktop
       inputs.self.nixosModules.smb
       inputs.self.nixosModules.tailscale

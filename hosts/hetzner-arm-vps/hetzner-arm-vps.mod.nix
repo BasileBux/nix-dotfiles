@@ -9,12 +9,12 @@
     settings = {
       username = "eugene";
       hostname = "hetzner-arm-vps";
-      accentColor = "#f57df3";
       nixosVersion = "24.11";
       gitName = "BasileBux";
       gitEmail = "basile.buxtorf@ik.me";
     };
     extraModules = [
+      { my.zsh.accentColor = "#f57df3"; }
       inputs.self.nixosModules.hetzner
       inputs.disko.nixosModules.disko
       ./disko-config.nix

@@ -15,11 +15,6 @@
           type = lib.types.str;
           description = "The NixOS state version. DO NOT CHANGE THIS EVER";
         };
-        accentColor = lib.mkOption {
-          type = lib.types.strMatching "^#[0-9a-fA-F]{6}$";
-          default = "#fb8b1e";
-          description = "Main accent color for prompts/theming, as #RRGGBB";
-        };
         gitName = lib.mkOption {
           type = lib.types.str;
           default = "BasileBux";
@@ -29,11 +24,6 @@
           type = lib.types.str;
           default = "basile.buxtorf@ik.me";
           description = "Git and Jujutsu user email";
-        };
-        extraShellAliases = lib.mkOption {
-          type = lib.types.attrsOf lib.types.str;
-          default = { };
-          description = "Extra shell aliases appended to the built-in set";
         };
       };
     };
@@ -48,10 +38,6 @@
           username = lib.mkOption { type = lib.types.str; };
           hostname = lib.mkOption { type = lib.types.str; };
           nixosVersion = lib.mkOption { type = lib.types.str; };
-          accentColor = lib.mkOption {
-            type = lib.types.strMatching "^#[0-9a-fA-F]{6}$";
-            default = "#fb8b1e";
-          };
           gitName = lib.mkOption {
             type = lib.types.str;
             default = "BasileBux";
@@ -59,10 +45,6 @@
           gitEmail = lib.mkOption {
             type = lib.types.str;
             default = "basile.buxtorf@ik.me";
-          };
-          extraShellAliases = lib.mkOption {
-            type = lib.types.attrsOf lib.types.str;
-            default = { };
           };
         };
       };

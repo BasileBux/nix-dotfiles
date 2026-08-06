@@ -5,24 +5,47 @@
   inputs,
   ...
 }:
+let
+  zshOptionModule = { lib, ... }: {
+    options.my.zsh = lib.mkOption {
+      type = lib.types.submodule {
+        options = {
+          accentColor = lib.mkOption {
+            type = lib.types.strMatching "^#[0-9a-fA-F]{6}$";
+            default = "#fb8b1e";
+            description = "Main accent color for prompts/theming, as #RRGGBB";
+          };
+          extraShellAliases = lib.mkOption {
+            type = lib.types.attrsOf lib.types.str;
+            default = { };
+            description = "Extra shell aliases appended to the built-in set";
+          };
+        };
+      };
+      default = { };
+      description = "Zsh module settings";
+    };
+  };
+in
 {
+  flake.nixosModules.zsh = zshOptionModule;
+  flake.nixosModules.shell = self.nixosModules.zsh;
+
   flake.homeModules.shell = self.homeModules.zsh;
   flake.homeModules.zsh =
     {
       config,
-      settings,
+      osConfig,
       pkgs,
       lib,
       ...
     }:
     let
-      cfg = settings;
+      cfg = osConfig.my.zsh;
 
       aliasContent = {
         edit = "sudo -e";
         rebuild = "nh os switch --impure";
-        rebuild-offline = "nh os switch --impure --offline";
-        up = "sudo nix flake update && nh os switch --impure";
         gss = "git status";
         vim = "nvim";
         top = "btop";
@@ -36,7 +59,7 @@
         NULL = "/dev/null 2>&1";
       };
 
-      aliases = aliasContent // cfg.extraShellAliases or { };
+      aliases = aliasContent // cfg.extraShellAliases;
 
       secrets = if builtins.pathExists ../secrets.nix then import ../secrets.nix else { };
 

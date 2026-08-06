@@ -6,6 +6,7 @@
     self.nixosModules.ssh-server
     self.nixosModules.base-tools
     self.nixosModules.settings
+    self.nixosModules.shell
     self.nixosModules.xdg
   ];
 
