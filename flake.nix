@@ -21,6 +21,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    qq = {
+      url = "github:BasileBux/qq";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     hyprland.url = "github:hyprwm/hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     helium.url = "github:amaanq/helium-flake";

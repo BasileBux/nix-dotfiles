@@ -94,6 +94,7 @@ in
           cargo
           rustc
           luarocks
+          nodejs
           tree-sitter
           imagemagick
           ghostscript

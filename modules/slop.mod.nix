@@ -12,6 +12,7 @@
         pi-coding-agent
         opencode
         optmem
+        inputs.qq.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
     };
 }
