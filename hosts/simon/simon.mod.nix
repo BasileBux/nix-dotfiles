@@ -33,6 +33,21 @@ let
       hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("nvtop -s > /dev/null"))
     '';
   };
+  quickshell-config = {
+    powerProfiles = {
+      setCommand = [
+        "asusctl"
+        "profile"
+        "set"
+      ];
+      profiles = [
+        "Quiet"
+        "Balanced"
+        "Performance"
+      ];
+      getterCommand = [ "asusctl-profile-get" ];
+    };
+  };
   zsh-config = {
     accentColor = "#fb8b1e";
     extraShellAliases = {
@@ -62,6 +77,7 @@ in
       {
         my.hyprland = hyprland-config;
         my.zsh = zsh-config;
+        my.quickshell = quickshell-config;
       }
       {
         age.identityPaths = [ "/home/basileb/.ssh/simon" ];

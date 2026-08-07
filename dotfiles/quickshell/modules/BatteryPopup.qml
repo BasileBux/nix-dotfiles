@@ -209,7 +209,7 @@ Item {
                 Component.onCompleted: {
                     hypridleState = false;
                     Quickshell.execDetached({
-                        command: Machines.current.hypridleStopCommand
+                        command: Machines.hypridleStopCommand
                     });
                     hypridleSwitch.silent = false;
                 }
@@ -221,7 +221,7 @@ Item {
                     toggleFunction: () => {
                         parent.hypridleState = !parent.hypridleState;
                         Quickshell.execDetached({
-                            command: parent.hypridleState ? Machines.current.hypridleStartCommand : Machines.current.hypridleStopCommand
+                            command: parent.hypridleState ? Machines.hypridleStartCommand : Machines.hypridleStopCommand
                         });
                     }
                     toggleState: parent.hypridleState
@@ -264,8 +264,16 @@ Item {
         running: false
         stdout: StdioCollector {
             onStreamFinished: {
-                var name = this.text.split(" ")[Machines.current.getterStringSplitIndex].split("\n")[0].trim();
-                var idx = Machines.current.profiles.indexOf(name);
+                // Search for the longest matching profile name in the output.
+                // Sorted descending to avoid "balanced" matching before "balanced-performance".
+                var sorted = Machines.current.profiles.slice().sort((a, b) => b.length - a.length);
+                var idx = -1;
+                for (var i = 0; i < sorted.length; i++) {
+                    if (this.text.includes(sorted[i])) {
+                        idx = Machines.current.profiles.indexOf(sorted[i]);
+                        break;
+                    }
+                }
                 root.activeProfileIndex = idx >= 0 ? idx : 1;
                 if (idx < 0)
                     root.profileProcs[1].running = true;

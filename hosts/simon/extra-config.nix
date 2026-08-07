@@ -28,6 +28,11 @@
 
   environment.systemPackages = with pkgs; [
     asusctl
+    # Wrapper because asusctl getter command sucks ass
+    (pkgs.writeShellScriptBin "asusctl-profile-get" ''
+      asusctl profile get | grep 'Active profile:' | cut -d' ' -f3
+    '')
+
     supergfxctl
     powertop
     pciutils
