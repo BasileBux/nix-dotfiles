@@ -16,8 +16,23 @@ let
     ;
 
   singleton = value: [ value ];
-  mapAttrs = f: set: listToAttrs (map (name: { inherit name; value = f name set.${name}; }) (attrNames set));
-  filterAttrs = pred: set: listToAttrs (filter (name: pred name set.${name}) (attrNames set) |> map (name: { inherit name; value = set.${name}; }));
+  mapAttrs =
+    f: set:
+    listToAttrs (
+      map (name: {
+        inherit name;
+        value = f name set.${name};
+      }) (attrNames set)
+    );
+  filterAttrs =
+    pred: set:
+    listToAttrs (
+      filter (name: pred name set.${name}) (attrNames set)
+      |> map (name: {
+        inherit name;
+        value = set.${name};
+      })
+    );
   uniq = list: list |> foldl' (acc: item: if elem item acc then acc else acc ++ singleton item) [ ];
 
   # Recursively list all regular files under a directory, relative to it
@@ -64,12 +79,7 @@ let
         name = path;
         value = {
           file = ./. + "/${path}";
-          publicKeys =
-            uniq
-              (
-                singleton entitiesImport.keys.${host}
-                ++ entitiesImport.keys-admin
-              );
+          publicKeys = uniq (singleton entitiesImport.keys.${host} ++ entitiesImport.keys-admin);
         };
       })
     );

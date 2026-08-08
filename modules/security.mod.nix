@@ -6,9 +6,7 @@
 # - https://github.com/NotAShelf/nyx/blob/main/modules/core/common/system/security/kernel.nix
 
 {
-  self,
   lib,
-  config,
   ...
 }:
 {

@@ -1,6 +1,6 @@
-{ self, pkgs, ... }: {
+{ self, ... }: {
   flake.nixosModules.desktop = self.nixosModules.audio;
-  flake.nixosModules.audio = {pkgs, ... }: {
+  flake.nixosModules.audio = { pkgs, ... }: {
     services.pulseaudio.enable = false;
     services.pipewire = {
       enable = true;

@@ -1,8 +1,5 @@
 {
   self,
-  lib,
-  config,
-  inputs,
   ...
 }:
 let
@@ -106,7 +103,9 @@ in
         export ANTHROPIC_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/anthropic.age".path})"
         export OPENAI_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/openai.age".path})"
         export GEMINI_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/gemini.age".path})"
-        export GOOGLE_GENERATIVE_AI_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/google-generative-ai.age".path})"
+        export GOOGLE_GENERATIVE_AI_API_KEY="$(cat ${
+          osConfig.age.secrets."modules/zsh/api-keys/google-generative-ai.age".path
+        })"
         export MOONSHOT_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/moonshot.age".path})"
         export TAVILY_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/tavily.age".path})"
         export XAI_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/xai.age".path})"

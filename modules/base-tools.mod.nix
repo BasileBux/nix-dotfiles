@@ -1,4 +1,4 @@
-{ self, ... }: {
+{
   flake.nixosModules.base-tools = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       wget

@@ -4,8 +4,6 @@
 
 {
   inputs,
-  self,
-  config,
   lib,
   ...
 }:

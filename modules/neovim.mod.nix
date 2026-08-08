@@ -1,4 +1,4 @@
-{ self, lib, ... }:
+{ self, ... }:
 let
   treesitterParsers = (with self.pkgs or [ ]; [ ]) # will be resolved at eval time
   ;

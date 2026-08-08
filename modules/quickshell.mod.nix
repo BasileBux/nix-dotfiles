@@ -1,4 +1,4 @@
-{ self, lib, ... }: {
+{ self, ... }: {
   flake.homeModules.desktop = self.homeModules.quickshell;
   flake.homeModules.quickshell =
     {
@@ -44,8 +44,7 @@
           source = ../dotfiles/quickshell;
           recursive = true;
         };
-        xdg.configFile."quickshell/MachineOverrides.qml".text =
-          generateMachineOverrides cfg;
+        xdg.configFile."quickshell/MachineOverrides.qml".text = generateMachineOverrides cfg;
       };
     };
 

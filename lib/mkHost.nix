@@ -22,9 +22,16 @@ inputs.nixpkgs.lib.nixosSystem {
     inputs.home-manager.nixosModules.home-manager
     {
       home-manager.useGlobalPkgs = true;
-      home-manager.extraSpecialArgs = { inherit inputs; settings = settings'; };
+      home-manager.extraSpecialArgs = {
+        inherit inputs;
+        settings = settings';
+      };
       home-manager.users.${settings'.username} = {
-        imports = [ inputs.self.homeModules.default inputs.self.homeModules.secrets ] ++ homeModules;
+        imports = [
+          inputs.self.homeModules.default
+          inputs.self.homeModules.secrets
+        ]
+        ++ homeModules;
         home.stateVersion = settings.nixosVersion;
       };
     }

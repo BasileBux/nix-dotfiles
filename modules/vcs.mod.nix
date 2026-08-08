@@ -1,4 +1,4 @@
-{ self, lib, ... }: {
+{
   flake.homeModules.vcs =
     {
       config,

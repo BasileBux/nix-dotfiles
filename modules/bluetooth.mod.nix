@@ -1,4 +1,4 @@
-{ self, pkgs, ... }: {
+{ self, ... }: {
   flake.nixosModules.desktop = self.nixosModules.bluetooth;
   flake.nixosModules.bluetooth = { pkgs, ... }: {
     hardware.bluetooth.enable = true;

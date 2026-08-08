@@ -1,6 +1,7 @@
-{ config, lib, ... }:
+{ lib, ... }:
 let
-  userModule = { config, pkgs, ... }:
+  userModule =
+    { config, pkgs, ... }:
     let
       username = config.my.settings.username;
       hostname = config.networking.hostName;
@@ -13,7 +14,8 @@ let
         extraGroups = [ "wheel" ];
         shell = pkgs.zsh;
         ignoreShellProgramCheck = true;
-      } // lib.optionalAttrs hasPassword {
+      }
+      // lib.optionalAttrs hasPassword {
         hashedPasswordFile = config.age.secrets.${secretName}.path;
       };
     };

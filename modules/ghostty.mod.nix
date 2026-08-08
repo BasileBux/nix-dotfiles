@@ -1,4 +1,4 @@
-{ self, lib, ... }: {
+{ self, ... }: {
   flake.homeModules.desktop = self.homeModules.ghostty;
   flake.homeModules.ghostty = { config, settings, ... }: {
     imports = [ ];

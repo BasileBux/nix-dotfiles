@@ -1,4 +1,4 @@
-{ self, ... }: {
+{
   flake.nixosModules.smb = { config, pkgs, ... }: {
     environment.systemPackages = with pkgs; [ cifs-utils ];
     fileSystems."/home/${config.my.settings.username}/synology" = {

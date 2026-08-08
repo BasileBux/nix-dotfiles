@@ -2,12 +2,17 @@
   perSystem =
     { pkgs, ... }:
     let
-      mkShell = attrs: pkgs.mkShell (attrs // {
-          shellHook = ''
-            export SHELL=$(getent passwd $USER | cut -d: -f7)
-            exec $SHELL
-          '';
-        });
+      mkShell =
+        attrs:
+        pkgs.mkShell (
+          attrs
+          // {
+            shellHook = ''
+              export SHELL=$(getent passwd $USER | cut -d: -f7)
+              exec $SHELL
+            '';
+          }
+        );
       cShell = mkShell {
         packages = with pkgs; [
           gcc
