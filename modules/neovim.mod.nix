@@ -1,8 +1,4 @@
 { self, ... }:
-let
-  treesitterParsers = (with self.pkgs or [ ]; [ ]) # will be resolved at eval time
-  ;
-in
 {
   flake.homeModules.shell = self.homeModules.neovim;
   flake.homeModules.neovim =
@@ -93,11 +89,12 @@ in
           gcc
           cargo
           rustc
-          luarocks
           nodejs
-          tree-sitter
           imagemagick
           ghostscript
+
+          # LSPs and formatters: I like to always have them but we could do dev env
+          # only and install them only when needed.
           basedpyright
           cmake-language-server
           stylua
@@ -108,7 +105,6 @@ in
           lua-language-server
           nil
           nixfmt
-          nixfmt-tree
           prettier
           kdePackages.qtdeclarative
           tinymist

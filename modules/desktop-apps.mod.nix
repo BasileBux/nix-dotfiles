@@ -3,7 +3,6 @@
   flake.nixosModules.desktop-apps = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       yazi
-      steam
       thunderbird
       imhex
     ];

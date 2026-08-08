@@ -10,6 +10,7 @@
         KbdInteractiveAuthentication = false;
         ClientAliveInterval = 60;
         ClientAliveCountMax = 3;
+        PermitRootLogin = "no";
       };
     };
     programs.ssh.startAgent = true;

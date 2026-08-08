@@ -147,7 +147,6 @@ in
         home.packages = with pkgs; [
           wl-clipboard
           bibata-cursors
-          hyprcursor
           playerctl
           grim
           slurp
