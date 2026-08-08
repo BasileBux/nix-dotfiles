@@ -78,8 +78,7 @@ in
         my.hyprland = hyprland-config;
         my.zsh = zsh-config;
         my.quickshell = quickshell-config;
-      }
-      {
+        my.virtualisation.enable = true; # Disable when not using VMs
         age.identityPaths = [ "/home/basileb/.ssh/simon" ];
       }
       inputs.self.nixosModules.desktop

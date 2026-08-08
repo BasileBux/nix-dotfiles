@@ -9,7 +9,9 @@
           automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=10s,x-systemd.mount-timeout=10s,x-systemd.requires=tailscaled.service,x-systemd.after=tailscaled.service";
         in
         [
-          "${automount_opts},credentials=${config.age.secrets."modules/smb/credentials.age".path},uid=1000,gid=100"
+          "${automount_opts},credentials=${
+            config.age.secrets."modules/smb/credentials.age".path
+          },uid=1000,gid=100"
         ];
     };
   };
