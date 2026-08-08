@@ -42,9 +42,17 @@ in
           age.identityPaths = mkDefault [ ];
         }
 
-        # Register all discovered secrets with their file paths
+        # Register secrets, skipping host secrets that belong to other hosts
         {
-          age.secrets = builtins.mapAttrs (_: v: { file = v.file; }) discoveredSecrets;
+          age.secrets =
+            let
+              hostPrefix = "hosts/${config.networking.hostName}/";
+            in
+            builtins.mapAttrs (_: v: { file = v.file; }) (
+              lib.filterAttrs (name: _:
+                !(lib.hasPrefix "hosts/" name) || lib.hasPrefix hostPrefix name
+              ) discoveredSecrets
+            );
         }
 
         # Module secrets: make them readable by the primary user
