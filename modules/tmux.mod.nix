@@ -12,6 +12,8 @@
         set-option -sa terminal-features ',screen-256color:RGB'
         set -ga terminal-overrides ",screen-256color*:Tc"
         set -sg escape-time 0
+        set -g set-clipboard on
+        set -g allow-passthrough on
         bind r source-file ~/.config/tmux/tmux.conf
         bind -T copy-mode-vi v send-keys -X begin-selection
         bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
