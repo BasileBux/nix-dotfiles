@@ -92,5 +92,7 @@ This config underwent a big rewrite to match the dentride structure, based on
     for my own module set.
 - The age/secrets configuration is copied almost verbatim from ncc, with only minor
     adjustments.
+- The nushell prompt and some of the configs are copied from ncc, with only minor
+    adjustments.
 
 Given how much of this repo derives from ncc, this repo is also licensed MIT.

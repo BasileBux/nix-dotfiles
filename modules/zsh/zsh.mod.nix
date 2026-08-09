@@ -45,7 +45,7 @@ in
 
       aliasContent = {
         edit = "sudo -e";
-        rebuild = "nh os switch --impure";
+        rebuild = "nh os switch";
         gss = "git status";
         vim = "nvim";
         top = "btop";

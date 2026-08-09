@@ -49,34 +49,6 @@ jj_pushall() {
   done
 }
 
-# Uselessly complex completion for the `remote` command (see ./dotfiles/kitty.nix)
-_remote_complete() {
-  local state
-  _arguments \
-    '1:host:->host' \
-    '2:session name:(main ssh dev)'
-
-  case $state in
-    host)
-      local hosts userprefix
-
-      if [[ "$PREFIX" == *@* ]]; then
-        userprefix="${PREFIX%@*}@"
-      else
-        userprefix=""
-      fi
-
-      hosts=(
-        $(grep -oE '^[^, ]+' ~/.ssh/known_hosts 2>/dev/null | grep -v '^\[')
-        $(grep -oP '(?<=^Host )[\w.\-]+' ~/.ssh/config 2>/dev/null)
-      )
-
-      _wanted hosts expl 'remote host' compadd -P "$userprefix" -a hosts
-      ;;
-  esac
-}
-compdef _remote_complete remote
-
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^g' edit-command-line

@@ -23,6 +23,7 @@
           tree-sitter-yaml
           tree-sitter-toml
           tree-sitter-bash
+          tree-sitter-nu
           tree-sitter-python
           tree-sitter-typst
           tree-sitter-nix

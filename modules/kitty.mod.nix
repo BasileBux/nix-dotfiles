@@ -19,7 +19,8 @@
             mode = "no-cursor";
           };
           settings = {
-            font_family = "TX-02";
+            # JetBrainsMono NF, Google Sans Code, TX-02, Iosevka Custom, Mx437 DOS/V re. JPN24
+            font_family = "JetBrainsMono NF";
             disable_ligatures = "cursor";
             font_size = 11;
             tab_bar_style = "powerline";
@@ -62,6 +63,7 @@
           };
           keybindings = {
             "ctrl+shift+." = "change_font_size all 0";
+            "ctrl+shift+[" = "send text all \x1b";
             "f1" = "new_tab_with_cwd";
             "ctrl+h" = "previous_tab";
             "ctrl+l" = "next_tab";

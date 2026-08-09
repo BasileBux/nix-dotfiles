@@ -12,13 +12,13 @@ let
       users.users.${username} = {
         isNormalUser = true;
         extraGroups = [ "wheel" ];
-        shell = pkgs.zsh;
+        shell = pkgs.nushell;
         ignoreShellProgramCheck = true;
       }
       // lib.optionalAttrs hasPassword {
         hashedPasswordFile = config.age.secrets.${secretName}.path;
       };
-      users.defaultUserShell = pkgs.zsh;
+      users.defaultUserShell = pkgs.nushell;
     };
 in
 {
