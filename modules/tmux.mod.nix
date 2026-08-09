@@ -3,17 +3,16 @@
   flake.homeModules.tmux = { ... }: {
     programs.tmux = {
       enable = true;
-      terminal = "screen-256color";
+      terminal = "tmux-256color";
       baseIndex = 1;
       keyMode = "vi";
       mouse = true;
       prefix = "C-a";
       extraConfig = ''
-        set-option -sa terminal-features ',screen-256color:RGB'
-        set -ga terminal-overrides ",screen-256color*:Tc"
         set -sg escape-time 0
         set -g set-clipboard on
         set -g allow-passthrough on
+        set -as terminal-features ',*:clipboard'
         bind r source-file ~/.config/tmux/tmux.conf
         bind -T copy-mode-vi v send-keys -X begin-selection
         bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'xclip -in -selection clipboard'

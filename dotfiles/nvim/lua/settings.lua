@@ -6,27 +6,55 @@ vim.opt.mouse = "a"
 
 vim.opt.showmode = false
 
--- If running in an SSH session, use OSC 52 to share clipboard with OS
+-- Share clipboard with OS
+vim.opt.clipboard = "unnamedplus"
+
 local function is_ssh()
-  return os.getenv("SSH_TTY") ~= nil or os.getenv("SSH_CONNECTION") ~= nil
+	return os.getenv("SSH_TTY") ~= nil or os.getenv("SSH_CONNECTION") ~= nil
+end
+
+local function is_tmux()
+	return os.getenv("TMUX") ~= nil
 end
 
 if is_ssh() then
-  vim.g.clipboard = {
-    name = "OSC 52",
-    copy = {
-      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-    },
-    paste = {
-      ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
-      ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
-    },
-  }
+	if is_tmux() then
+		-- Inside tmux: use tmux buffers + force outer clipboard refresh for paste
+		vim.g.clipboard = {
+			name = "tmux",
+			copy = {
+				["+"] = { "tmux", "load-buffer", "-w", "-" },
+				["*"] = { "tmux", "load-buffer", "-w", "-" },
+			},
+			paste = {
+				["+"] = {
+					"bash",
+					"-c",
+					"tmux refresh-client -l && sleep 0.1 && tmux save-buffer -",
+				},
+				["*"] = {
+					"bash",
+					"-c",
+					"tmux refresh-client -l && sleep 0.1 && tmux save-buffer -",
+				},
+			},
+			cache_enabled = 0, -- important: don't cache, always re-query
+		}
+	else
+		-- Plain SSH (no tmux): pure OSC 52
+		vim.g.clipboard = {
+			name = "OSC 52",
+			copy = {
+				["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+				["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+			},
+			paste = {
+				["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+				["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+			},
+		}
+	end
 end
-
--- Share clipboard with OS
-vim.opt.clipboard = "unnamedplus"
 
 vim.opt.breakindent = true
 
