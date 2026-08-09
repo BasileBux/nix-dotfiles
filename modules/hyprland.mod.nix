@@ -146,13 +146,20 @@ in
       {
         home.packages = with pkgs; [
           wl-clipboard
-          bibata-cursors
           playerctl
           grim
           slurp
           brightnessctl
           zenity
         ];
+
+        home.pointerCursor = {
+          enable = true;
+          gtk.enable = true;
+          package = pkgs.bibata-cursors;
+          name = "Bibata-Modern-Classic";
+          size = 24;
+        };
 
         home.sessionVariables = {
           HYPRLAND_STUBS = "${input-hyprland}/share/hypr/stubs";
