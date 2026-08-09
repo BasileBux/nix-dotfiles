@@ -18,6 +18,7 @@ let
       // lib.optionalAttrs hasPassword {
         hashedPasswordFile = config.age.secrets.${secretName}.path;
       };
+      users.defaultUserShell = pkgs.zsh;
     };
 in
 {

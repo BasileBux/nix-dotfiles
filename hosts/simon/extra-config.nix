@@ -38,6 +38,8 @@
     pciutils
     ryzenadj
     nvtopPackages.amd
+
+    nushell
   ];
 
   programs.nix-ld.enable = true;

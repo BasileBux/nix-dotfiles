@@ -58,6 +58,7 @@
           tinymist
           typstyle
         ];
+        TYPSTDIR = "/home/$USER/.local/share/typst/packages";
       };
       pythonShell = mkShell {
         packages = [

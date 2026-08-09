@@ -22,6 +22,9 @@ let
       default = { };
       description = "Zsh module settings";
     };
+    config = {
+      programs.zsh.enable = true;
+    };
   };
 in
 {
@@ -77,7 +80,8 @@ in
         enableCompletion = true;
         syntaxHighlighting.enable = true;
         shellAliases = aliases;
-        initContent = "source ~/.zsh/secrets-env\n" + builtins.readFile ../../dotfiles/zsh/initContent.zsh;
+        initContent =
+          "source ~/.config/zsh/secrets-env\n" + builtins.readFile ../../dotfiles/zsh/initContent.zsh;
         history = {
           size = 10000;
           save = 10000;
@@ -95,11 +99,7 @@ in
         };
       };
 
-      home.sessionVariables = {
-        TYPSTDIR = "${config.xdg.dataHome}/typst/packages";
-      };
-
-      home.file.".zsh/secrets-env".text = ''
+      xdg.configFile."zsh/secrets-env".text = ''
         export ANTHROPIC_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/anthropic.age".path})"
         export OPENAI_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/openai.age".path})"
         export GEMINI_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/gemini.age".path})"

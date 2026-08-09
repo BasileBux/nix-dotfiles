@@ -5,7 +5,6 @@ local startup = {
 	"systemctl --user stop hyprland-session.target && systemctl --user start hyprland-session.target",
 	"hyprctl setcursor Bibata-Modern-Classic 22",
 	"pkill quickshell; quickshell",
-	"systemctl --user start hyprpolkitagent",
 }
 
 hl.on("hyprland.start", function()

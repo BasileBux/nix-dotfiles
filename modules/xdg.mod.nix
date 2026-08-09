@@ -90,7 +90,7 @@
     {
       xdg.userDirs = {
         enable = true;
-        createDirectories = true;
+        createDirectories = false;
         setSessionVariables = false;
       };
       xdg.mimeApps.enable = true;
