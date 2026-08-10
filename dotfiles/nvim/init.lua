@@ -74,6 +74,7 @@ require("hex_colorizer")
 require("plugins.lsp")
 
 require("plugins.plugins")
+require("plugins.typst")
 
 require("plugins.codecompanion")
 require("codecompanion-commands")
