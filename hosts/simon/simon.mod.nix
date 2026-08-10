@@ -48,23 +48,21 @@ let
       getterCommand = [ "asusctl-profile-get" ];
     };
   };
-  zsh-config = {
+  nushell-config = {
     accentColor = "#fb8b1e";
-    extraShellAliases = {
-      config = "cd $HOME/nixos && nvim flake.nix";
-      nvimconfig = "cd $HOME/nixos/dotfiles/nvim && nvim init.lua";
-      qsconfig = "cd $HOME/nixos/dotfiles/quickshell && nvim shell.qml";
-      hlconfig = "cd $HOME/nixos/dotfiles/hypr && nvim hyprland.lua";
-      vpn = "$HOME/nixos/scripts/tailscale-exit-nodes.sh";
-    };
+    extraConfig = ''
+      alias vpn = sh ($env.HOME)/nixos/scripts/tailscale-exit-nodes.sh
+
+      def --env config [] { cd $env.HOME/nixos; nvim flake.nix }
+      def --env nvimconfig [] { cd $env.HOME/nixos/dotfiles/nvim; nvim init.lua }
+      def --env qsconfig [] { cd $env.HOME/nixos/dotfiles/quickshell; nvim shell.qml }
+      def --env hlconfig [] { cd $env.HOME/nixos/dotfiles/hypr; nvim hyprland.lua }
+    '';
   };
 in
 {
-  flake.nixosConfigurations.simon = (import ../../lib/mkHost.nix { inherit inputs lib; }) {
-    hostName = "simon";
-    homeModules = [
-      inputs.self.homeModules.desktop
-    ];
+  flake.nixosConfigurations.simon = (import ../../lib/mkHost.nix { inherit inputs lib; }) rec {
+
     settings = {
       username = "basileb";
       hostname = "simon";
@@ -72,14 +70,19 @@ in
       gitName = "BasileBux";
       gitEmail = "basile.buxtorf@ik.me";
     };
+    hostName = settings.hostname;
+    system = "x86_64-linux";
+
+    homeModules = [
+      inputs.self.homeModules.desktop
+    ];
     extraModules = [
       ./extra-config.nix
       {
         my.hyprland = hyprland-config;
-        my.zsh = zsh-config;
+        my.nushell = nushell-config;
         my.quickshell = quickshell-config;
-        my.virtualisation.enable = true; # Disable when not using VMs
-        age.identityPaths = [ "/home/basileb/.ssh/simon" ];
+        age.identityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
       }
       inputs.self.nixosModules.desktop
       inputs.self.nixosModules.smb

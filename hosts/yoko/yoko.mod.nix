@@ -14,7 +14,7 @@
       gitEmail = "basile.buxtorf@ik.me";
     };
     extraModules = [
-      { my.zsh.accentColor = "#f57df3"; }
+      { my.zsh.accentColor = "#fb1e8b"; }
       {
         age.identityPaths = [ "/home/eugene/.ssh/yoko" ];
       }

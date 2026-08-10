@@ -17,6 +17,11 @@ let
             default = { };
             description = "Extra shell aliases appended to the built-in set";
           };
+          extraConfig = lib.mkOption {
+            type = lib.types.lines;
+            default = "";
+            description = "Raw nushell code sourced at the end of config.nu";
+          };
         };
       };
       default = { };
@@ -132,6 +137,8 @@ let
         lib.mapAttrsToList (name: body: "alias ${name} = ${body}") aliasContent
       );
 
+      xdg.configFile."nushell/extra-config.nu".text = cfg.extraConfig;
+
       xdg.configFile."nushell/secrets-env.nu".text = secretsNu;
 
       xdg.configFile."nushell/config.nu".text = /* nu */ ''
@@ -143,6 +150,8 @@ let
         source ~/.config/nushell/settings.nu
 
         source ~/.config/nushell/aliases.nu
+
+        source ~/.config/nushell/extra-config.nu
 
         source ~/.config/nushell/secrets-env.nu
 
