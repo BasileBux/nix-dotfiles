@@ -14,19 +14,18 @@ in
       name = "Basile";
       email = "basile.buxtorf@ik.me";
       admin = true;
-      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiS/gxSDgvtbGGm24jbBeETFD2l83MQaDzmAAq6/p4U simon";
+      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPcVamk9ygIcA/3Q731/O1Yg2gIg7COaEfH1cZqRlymt basile.buxtorf@ik.me";
     };
   };
 
+  # Rekey: `ragenix --rules ./secrets.nix --rekey -i ~/.ssh/simon`
   flake.machines = {
     simon.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiS/gxSDgvtbGGm24jbBeETFD2l83MQaDzmAAq6/p4U simon";
     yoko.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICf/SNZc5Z6bsJ5QlfX1WoWStHADD07uAcXteQ/JTovi yoko";
   };
 
-  # All keys merged: people + machines
   flake.keys = mapAttrs (_: { key, ... }: key) (removeAttrs self.people [ "self" ] // self.machines);
 
-  # Admin-only keys (for host secrets: host key + admin keys)
   flake.keys-admin =
     removeAttrs self.people [ "self" ]
     |> filterAttrs (
