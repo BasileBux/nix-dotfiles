@@ -1,11 +1,7 @@
 { lib, inputs, ... }:
 {
-  flake.nixosConfigurations.yoko = (import ../../lib/mkHost.nix { inherit inputs lib; }) {
-    hostName = "yoko";
-    system = "aarch64-linux";
-    homeModules = [
-      inputs.self.homeModules.default
-    ];
+  flake.nixosConfigurations.yoko = (import ../../lib/mkHost.nix { inherit inputs lib; }) rec {
+
     settings = {
       username = "eugene";
       hostname = "yoko";
@@ -13,10 +9,14 @@
       gitName = "BasileBux";
       gitEmail = "basile.buxtorf@ik.me";
     };
+    hostName = settings.hostname;
+    system = "aarch64-linux";
+
+    homeModules = [ ];
     extraModules = [
-      { my.zsh.accentColor = "#fb1e8b"; }
       {
-        age.identityPaths = [ "/home/eugene/.ssh/yoko" ];
+        my.nushell.accentColor = "#fb1e8b";
+        age.identityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
       }
       ./hetzner-config.nix
       inputs.disko.nixosModules.disko
