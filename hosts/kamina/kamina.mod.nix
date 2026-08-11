@@ -1,11 +1,10 @@
 { lib, inputs, ... }:
 {
   flake.nixosConfigurations.kamina = (import ../../lib/mkHost.nix { inherit inputs lib; }) rec {
-    # TODO: Add key encryption key to entities.mod.nix
     settings = {
       username = "basileb";
       hostname = "kamina";
-      nixosVersion = "26.05"; # WARN: check the version before rebuilding
+      nixosVersion = "26.05";
       gitName = "BasileBux";
       gitEmail = "basile.buxtorf@ik.me";
     };
