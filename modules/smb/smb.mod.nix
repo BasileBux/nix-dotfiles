@@ -1,3 +1,5 @@
+let
+in
 {
   flake.nixosModules.smb = { config, pkgs, ... }: {
     environment.systemPackages = with pkgs; [ cifs-utils ];

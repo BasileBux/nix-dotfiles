@@ -38,7 +38,6 @@
     pciutils
     ryzenadj
     nvtopPackages.amd
-    wol
   ];
 
   programs.nix-ld.enable = true;
@@ -63,4 +62,23 @@
     };
   };
   services.asusd.enable = true;
+
+  fileSystems."/mnt/kamina" = {
+    device = "kamina.tail7925e1.ts.net:/home/youruser"; # prefer MagicDNS name
+    fsType = "nfs"; # or "sshfs"
+    options = [
+      "x-systemd.automount" # only mount on first access
+      "noauto"
+      "_netdev"
+      "nofail"
+
+      # Critical for Tailscale
+      "x-systemd.requires=tailscaled.service"
+      "x-systemd.after=tailscaled.service"
+
+      # Optional but nice
+      "x-systemd.idle-timeout=600" # unmount after 10 min idle
+      "x-systemd.mount-timeout=30s" # don't hang forever if server is offline
+    ];
+  };
 }
