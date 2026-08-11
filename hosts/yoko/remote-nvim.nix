@@ -49,13 +49,6 @@ in
     fi
   '';
 
-  services.openssh.extraConfig = ''
-    Match User nvim
-      PasswordAuthentication yes
-      KbdInteractiveAuthentication yes
-      PubkeyAuthentication no
-  '';
-
   services.fail2ban = {
     enable = true;
     maxretry = 10;
