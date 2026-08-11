@@ -11,7 +11,7 @@ local open_pdf = function(filename)
 end
 
 local watch_and_open_pdf = function()
-	if vim.bo.filetype == "typst" then
+	if vim.bo.filetype == "typst" and vim.env.XDG_SESSION_TYPE ~= nil then
 		local file = vim.api.nvim_buf_get_name(0)
 		vim.fn.jobstart({ "typst", "watch", file })
 		local out_file = file:gsub("%.typ$", ".pdf")

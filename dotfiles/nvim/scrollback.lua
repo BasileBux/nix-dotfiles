@@ -51,8 +51,8 @@ local function wait_for_stable_lines(callback, last_count, stable_count)
 	end, 1)
 end
 
-local kitty_pipe = os.getenv("KITTY_PIPE_DATA")
-local input_line_number = os.getenv("INPUT_LINE_NUMER")
+local kitty_pipe = vim.env.KITTY_PIPE_DATA
+local input_line_number = vim.env.INPUT_LINE_NUMER
 if kitty_pipe and input_line_number then
 	-- KITTY_PIPE_DATA={scrolled_by}:{cursor_x},{cursor_y}:{lines},{columns}
 	local _, cursor_x, cursor_y, term_lines = kitty_pipe:match("^(%d+):(%d+),(%d+):(%d+)")

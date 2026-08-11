@@ -10,11 +10,11 @@ vim.opt.showmode = false
 vim.opt.clipboard = "unnamedplus"
 
 local function is_ssh()
-	return os.getenv("SSH_TTY") ~= nil or os.getenv("SSH_CONNECTION") ~= nil
+	return vim.env.SSH_TTY ~= nil or vim.env.SSH_CONNECTION ~= nil
 end
 
 local function is_tmux()
-	return os.getenv("TMUX") ~= nil
+	return vim.env.TMUX ~= nil
 end
 
 if is_ssh() then
@@ -73,7 +73,7 @@ vim.opt.updatetime = 250
 -- Displays which-key popup sooner
 vim.opt.timeoutlen = 300
 
-vim.opt.undodir = os.getenv("NVIM_UNDODIR")
+vim.opt.undodir = vim.env.NVIM_UNDODIR
 
 -- Configure how new splits should be opened
 vim.opt.splitright = true
