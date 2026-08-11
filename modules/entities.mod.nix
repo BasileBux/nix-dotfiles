@@ -21,7 +21,7 @@ in
   # Rekey: `ragenix --rules ./secrets.nix --rekey -i ~/.ssh/simon`
   flake.machines = {
     simon.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiS/gxSDgvtbGGm24jbBeETFD2l83MQaDzmAAq6/p4U simon";
-    kamina.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGVn7PQ92L1HYVvnEZ5D2yG6i3YhSzVCxu8NoJmf0g8S kamina";
+    kamina.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC0w6Y4ZgcSz3fifBDpzB4a4SKgDUT5ZX3CuO8nzXMbR kamina";
     yoko.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICf/SNZc5Z6bsJ5QlfX1WoWStHADD07uAcXteQ/JTovi yoko";
   };
 
