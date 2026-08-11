@@ -5,6 +5,7 @@
   settings,
   homeModules ? [ ],
   extraModules ? [ ],
+  ageIdentityPaths ? [ ],
 }:
 let
   settings' = settings;
@@ -39,6 +40,7 @@ inputs.nixpkgs.lib.nixosSystem {
       networking.hostName = settings'.hostname;
       system.stateVersion = settings'.nixosVersion;
       my.settings = settings';
+      age.identityPaths = ageIdentityPaths;
     }
   ]
   ++ extraModules

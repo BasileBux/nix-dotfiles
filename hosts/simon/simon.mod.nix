@@ -76,13 +76,13 @@ in
     homeModules = [
       inputs.self.homeModules.desktop
     ];
+    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
     extraModules = [
       ./extra-config.nix
       {
         my.hyprland = hyprland-config;
         my.nushell = nushell-config;
         my.quickshell = quickshell-config;
-        age.identityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
       }
       inputs.self.nixosModules.desktop
       inputs.self.nixosModules.smb

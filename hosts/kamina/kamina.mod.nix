@@ -13,10 +13,10 @@
     system = "x86_64-linux";
 
     homeModules = [ ];
+    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
     extraModules = [
       {
         my.nushell.accentColor = "#fbe61e"; # Other possible options: #1eebfb #8b1efb #1efb8b
-        age.identityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
       }
       inputs.self.nixosModules.smb
       inputs.self.nixosModules.tailscale

@@ -13,10 +13,10 @@
     system = "aarch64-linux";
 
     homeModules = [ ];
+    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
     extraModules = [
       {
         my.nushell.accentColor = "#fb1e8b";
-        age.identityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
       }
       ./hetzner-config.nix
       inputs.disko.nixosModules.disko
