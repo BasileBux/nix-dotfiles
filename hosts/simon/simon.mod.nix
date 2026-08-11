@@ -31,6 +31,7 @@ let
     extraConfig = /* lua */ ''
       local mainMod = require("config").mainMod
       hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("nvtop -s > /dev/null"))
+      hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("kitty --config ~/.config/kitty/remote.conf ssh -p 2222 100.100.86.25"))
     '';
   };
   quickshell-config = {
