@@ -20,7 +20,7 @@ pkgs.writeText "prompt.nu" /* nu */ ''
       }
 
       let hostname = if ($env.SSH_CONNECTION? | is-not-empty) {
-        $"(ansi light_green_bold)@(sys host | get hostname)(ansi reset) "
+        $"(highlight_color)@(sys host | get hostname)(ansi reset) "
       } else {
         ""
       }
