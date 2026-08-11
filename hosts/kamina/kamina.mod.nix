@@ -20,6 +20,7 @@
       }
       inputs.self.nixosModules.smb
       inputs.self.nixosModules.tailscale
+      inputs.self.nixosModules.slop
     ];
   };
 }

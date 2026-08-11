@@ -23,7 +23,7 @@
         bind -r k select-pane -U
         bind -r h select-pane -L
         bind -r l select-pane -R
-        bind-key -n F1 new-window
+        bind-key -n F1 new-window -c "#{pane_current_path}"
         set -g pane-border-style 'fg=magenta'
         set -g pane-active-border-style 'fg=green'
         set -g status-style "bg=black fg=white"
