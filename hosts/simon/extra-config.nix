@@ -7,7 +7,10 @@
       efi.canTouchEfiVariables = true;
     };
     kernelPackages = pkgs.linuxPackages_latest;
-    supportedFilesystems = [ "ntfs" ];
+    supportedFilesystems = [
+      "ntfs"
+      "nfs"
+    ];
     kernelModules = [
       "mt7921e"
       "spi_bcm2835"
@@ -64,13 +67,16 @@
   services.asusd.enable = true;
 
   fileSystems."/mnt/kamina" = {
-    device = "kamina.tail7925e1.ts.net:/home/youruser"; # prefer MagicDNS name
+    device = "kamina.tail7925e1.ts.net:/home/basileb";
     fsType = "nfs"; # or "sshfs"
     options = [
       "x-systemd.automount" # only mount on first access
       "noauto"
       "_netdev"
       "nofail"
+
+      # Pin NFSv4 — avoids NFSv3 fallback + random mountd ports
+      "nfsvers=4"
 
       # Critical for Tailscale
       "x-systemd.requires=tailscaled.service"
