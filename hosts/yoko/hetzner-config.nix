@@ -1,11 +1,4 @@
 { pkgs, ... }: {
-  nixpkgs.config.allowUnfree = true;
-
-  fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-    (pkgs.callPackage ../../dotfiles/fonts { }).iosevka-custom
-  ];
-
   boot.loader = {
     grub = {
       enable = true;
@@ -16,11 +9,6 @@
     efi.canTouchEfiVariables = false;
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  environment.systemPackages = with pkgs; [
-    pi-coding-agent
-    typst
-  ];
 
   networking.interfaces.enp1s0.ipv6.addresses = [
     {

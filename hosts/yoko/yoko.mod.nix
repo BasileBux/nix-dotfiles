@@ -13,7 +13,7 @@
     system = "aarch64-linux";
     ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
-    modules = [ ];
+    modules = with inputs.self.flakeModules; [ slop ];
     nixosModules = [
       {
         my.nushell.accentColor = "#fb1e8b";
@@ -21,7 +21,6 @@
       ./hetzner-config.nix
       inputs.disko.nixosModules.disko
       ./disko-config.nix
-      ./remote-nvim.nix
     ];
   };
 }

@@ -84,6 +84,12 @@
 
         users.users.${config.my.settings.username}.openssh.authorizedKeys.keys =
           inputs.self.keys-admin ++ config.my.ssh.extraAuthorizedKeys;
+
+        services.fail2ban = {
+          enable = true;
+          maxretry = 10;
+          bantime = "24h";
+        };
       };
   };
 }
