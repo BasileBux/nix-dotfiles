@@ -7,7 +7,7 @@
         fsType = "cifs";
         options =
           let
-            automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=10s,x-systemd.mount-timeout=10s,x-systemd.requires=tailscaled.service,x-systemd.after=tailscaled.service";
+            automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=10s,x-systemd.mount-timeout=5s,soft,retrans=1,x-systemd.requires=tailscaled.service,x-systemd.after=tailscaled.service";
           in
           [
             "${automount_opts},credentials=${
