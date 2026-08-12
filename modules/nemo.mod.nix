@@ -1,12 +1,9 @@
 {
-  self,
   ...
 }:
 {
-  flake.homeModules.desktop = self.homeModules.nemo;
-  flake.homeModules.nemo = { config, pkgs, ... }: {
-    imports = [ ];
-    config = {
+  flake.module.nemo = {
+    home = { config, pkgs, ... }: {
       home.packages = [
         pkgs.nemo
       ];
@@ -35,11 +32,9 @@
         "inode/directory" = "nemo.desktop";
       };
     };
-  };
-
-  flake.nixosModules.desktop = self.nixosModules.nemo;
-  flake.nixosModules.nemo = { config, pkgs, ... }: {
-    services.gvfs.enable = true;
-    services.udisks2.enable = true;
+    nixos = {
+      services.gvfs.enable = true;
+      services.udisks2.enable = true;
+    };
   };
 }

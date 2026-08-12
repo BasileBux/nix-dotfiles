@@ -1,23 +1,16 @@
 {
-  self,
   inputs,
   ...
 }:
 let
-  hypridleModule = { ... }: {
+  hypridleModule = {
     services.hypridle.enable = true;
   };
 in
 {
-  config = {
-    flake.nixosModules.desktop = self.nixosModules.hyprland;
-    flake.nixosModules.hyprland =
-      {
-        inputs,
-        pkgs,
-        lib,
-        ...
-      }:
+  flake.module.hyprland = {
+    nixos =
+      { pkgs, lib, ... }:
       {
         options.my.hyprland = lib.mkOption {
           type = lib.types.submodule {
@@ -92,8 +85,7 @@ in
         };
       };
 
-    flake.homeModules.desktop = self.homeModules.hyprland;
-    flake.homeModules.hyprland =
+    home =
       {
         config,
         pkgs,

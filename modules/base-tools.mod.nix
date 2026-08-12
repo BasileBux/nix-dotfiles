@@ -1,21 +1,23 @@
 {
-  flake.nixosModules.base-tools = { pkgs, ... }: {
-    environment.systemPackages = with pkgs; [
-      wget
-      curl
-      openssh
+  flake.module.base-tools = {
+    nixos = { pkgs, ... }: {
+      environment.systemPackages = with pkgs; [
+        wget
+        curl
+        openssh
 
-      jq
-      btop
-      file
-      bat
-      xxd
+        jq
+        btop
+        file
+        bat
+        xxd
 
-      unzip
-      zip
+        unzip
+        zip
 
-      man-pages
-      man-pages-posix
-    ];
+        man-pages
+        man-pages-posix
+      ];
+    };
   };
 }

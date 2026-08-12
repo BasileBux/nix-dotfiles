@@ -75,21 +75,16 @@ in
     hostName = settings.hostname;
     system = "x86_64-linux";
 
-    homeModules = [
-      inputs.self.homeModules.desktop
-    ];
-    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
-    extraModules = [
+    modules = with inputs.self.flakeModules; [ desktop smb tailscale ];
+    nixosModules = [
       ./extra-config.nix
       {
         my.hyprland = hyprland-config;
         my.nushell = nushell-config;
         my.quickshell = quickshell-config;
       }
-      inputs.self.nixosModules.desktop
-      inputs.self.nixosModules.smb
-      inputs.self.nixosModules.tailscale
       inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
     ];
+    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
   };
 }

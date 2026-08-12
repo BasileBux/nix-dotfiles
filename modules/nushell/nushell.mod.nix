@@ -1,7 +1,4 @@
-{
-  self,
-  ...
-}:
+{ ... }:
 let
   nushellOptionModule = { lib, ... }: {
     options.my.nushell = lib.mkOption {
@@ -188,14 +185,13 @@ let
     };
 in
 {
-  flake.nixosModules.shell = self.nixosModules.nushell;
-  flake.nixosModules.nushell = { lib, pkgs, ... }: {
-    imports = [
-      nushellOptionModule
-      nushellNixosModule
-    ];
+  flake.module.nushell = {
+    nixos = { lib, pkgs, ... }: {
+      imports = [
+        nushellOptionModule
+        nushellNixosModule
+      ];
+    };
+    home = nushellHomeModule;
   };
-
-  flake.homeModules.shell = self.homeModules.nushell;
-  flake.homeModules.nushell = nushellHomeModule;
 }

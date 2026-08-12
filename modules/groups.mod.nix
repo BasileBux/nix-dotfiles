@@ -1,18 +1,38 @@
 { self, ... }: {
-  flake.nixosModules.default.imports = [
-    self.nixosModules.nix
-    self.nixosModules.users
-    self.nixosModules.security
-    self.nixosModules.ssh-server
-    self.nixosModules.base-tools
-    self.nixosModules.settings
-    self.nixosModules.shell
-    self.nixosModules.xdg
+
+  flake.module.default.imports = with self.flakeModules; [
+    nix
+    users
+    security
+    ssh-server
+    base-tools
+    settings
+    xdg
+    vcs
+    nushell
+    neovim
+    tmux
   ];
 
-  flake.homeModules.default.imports = [
-    self.homeModules.shell
-    self.homeModules.vcs
-    self.homeModules.xdg
+  # Desktop aggregate — pulls in all GUI modules
+  flake.module.desktop.imports = with self.flakeModules; [
+    audio
+    bluetooth
+    desktop-apps
+    fonts
+    hyprland
+    plymouth
+    polkit
+    quickshell
+    radicle
+    theming
+    kitty
+    ghostty
+    nemo
+    vscode
+    browser
+    video
+    images
+    pdf
   ];
 }

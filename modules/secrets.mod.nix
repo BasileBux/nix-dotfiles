@@ -23,79 +23,81 @@ let
   moduleSecretNames = builtins.filter (hasPrefix "modules/") (builtins.attrNames discoveredSecrets);
 in
 {
-  flake.nixosModules.secrets =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
-    {
-      imports = [
-        (mkAliasOptionModule [ "secrets" ] [ "age" "secrets" ])
-        inputs.agenix.nixosModules.age
-      ];
+  flake.module.secrets = {
+    nixos =
+      {
+        config,
+        lib,
+        pkgs,
+        ...
+      }:
+      {
+        imports = [
+          (mkAliasOptionModule [ "secrets" ] [ "age" "secrets" ])
+          inputs.agenix.nixosModules.age
+        ];
 
-      config = mkMerge [
-        {
-          # Avoid cycle with ssh host key generation
-          age.identityPaths = mkDefault [ ];
-        }
+        config = mkMerge [
+          {
+            # Avoid cycle with ssh host key generation
+            age.identityPaths = mkDefault [ ];
+          }
 
-        # Register secrets, skipping host secrets that belong to other hosts
-        {
-          age.secrets =
-            let
-              hostPrefix = "hosts/${config.networking.hostName}/";
-            in
-            builtins.mapAttrs (_: v: { file = v.file; }) (
-              lib.filterAttrs (name: _:
-                !(lib.hasPrefix "hosts/" name) || lib.hasPrefix hostPrefix name
-              ) discoveredSecrets
+          # Register secrets, skipping host secrets that belong to other hosts
+          {
+            age.secrets =
+              let
+                hostPrefix = "hosts/${config.networking.hostName}/";
+              in
+              builtins.mapAttrs (_: v: { file = v.file; }) (
+                lib.filterAttrs (
+                  name: _: !(lib.hasPrefix "hosts/" name) || lib.hasPrefix hostPrefix name
+                ) discoveredSecrets
+              );
+          }
+
+          # Module secrets: make them readable by the primary user
+          (mkIf (config ? my.settings.username) {
+            age.secrets = builtins.listToAttrs (
+              map (name: {
+                inherit name;
+                value = {
+                  owner = config.my.settings.username;
+                  group = "users";
+                  mode = "0400";
+                };
+              }) moduleSecretNames
             );
-        }
+          })
 
-        # Module secrets: make them readable by the primary user
-        (mkIf (config ? my.settings.username) {
-          age.secrets = builtins.listToAttrs (
-            map (name: {
-              inherit name;
-              value = {
-                owner = config.my.settings.username;
-                group = "users";
-                mode = "0400";
-              };
-            }) moduleSecretNames
-          );
-        })
+          # Conditionally mount /media/key if any identity path references it
+          (mkIf (config.age.identityPaths |> builtins.any (hasPrefix "/media/key/")) {
+            boot.initrd.availableKernelModules = {
+              exfat = true;
+              usb_storage = true;
+              uas = true;
+            };
 
-        # Conditionally mount /media/key if any identity path references it
-        (mkIf (config.age.identityPaths |> builtins.any (hasPrefix "/media/key/")) {
-          boot.initrd.availableKernelModules = {
-            exfat = true;
-            usb_storage = true;
-            uas = true;
-          };
+            fileSystems."/media/key" = {
+              device = "/dev/disk/by-label/${config.networking.hostName}.s";
+              fsType = "exfat";
+              options = [
+                "ro"
+                "umask=0077"
+              ];
+              neededForBoot = true;
+            };
+          })
+        ];
+      };
 
-          fileSystems."/media/key" = {
-            device = "/dev/disk/by-label/${config.networking.hostName}.s";
-            fsType = "exfat";
-            options = [
-              "ro"
-              "umask=0077"
-            ];
-            neededForBoot = true;
-          };
-        })
-      ];
-    };
-
-  flake.homeModules.secrets =
-    { pkgs, ... }:
-    {
-      home.packages = [
-        pkgs.ragenix
-        pkgs.age
-      ];
-    };
+    home =
+      { pkgs, ... }:
+      {
+        home.packages = [
+          pkgs.ragenix
+          pkgs.age
+        ];
+      };
+  };
 }

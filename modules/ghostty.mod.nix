@@ -1,8 +1,6 @@
-{ self, ... }: {
-  flake.homeModules.desktop = self.homeModules.ghostty;
-  flake.homeModules.ghostty = { config, settings, ... }: {
-    imports = [ ];
-    config = {
+{ ... }: {
+  flake.module.ghostty = {
+    home = { config, settings, ... }: {
       programs.ghostty = {
         enable = true;
         enableZshIntegration = true;

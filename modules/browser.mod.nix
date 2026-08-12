@@ -32,20 +32,23 @@ in
     description = "Global default browser. Controls my.browser default and WEB_BROWSER env var on all desktop hosts.";
   };
 
-  config = {
-    flake.homeModules.helium = { pkgs, ... }: {
+  config.flake.module.helium = {
+    home = { pkgs, ... }: {
       home.packages = [
         inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
     };
+  };
 
-    flake.homeModules.zen = { ... }: {
+  config.flake.module.zen = {
+    home = { ... }: {
       imports = [ inputs.zen-browser.homeModules.twilight ];
       programs.zen-browser.enable = true;
     };
+  };
 
-    flake.homeModules.desktop = self.homeModules.browser;
-    flake.homeModules.browser =
+  config.flake.module.browser = {
+    home =
       { config, lib, ... }:
       let
         inherit (lib.attrsets) genAttrs;
@@ -53,8 +56,8 @@ in
       in
       {
         imports = [
-          self.homeModules.helium
-          self.homeModules.zen
+          self.flakeModules.helium.home
+          self.flakeModules.zen.home
         ];
 
         options.my.browser = lib.mkOption {

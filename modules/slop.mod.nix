@@ -1,8 +1,6 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.desktop = self.nixosModules.slop;
-  flake.nixosModules.slop =
-    { pkgs, ... }:
-    {
+{ inputs, ... }: {
+  flake.module.slop = {
+    nixos = { pkgs, ... }: {
       nixpkgs.overlays = [
         (final: prev: {
           optmem = inputs.self.packages.${final.stdenv.hostPlatform.system}.optmem;
@@ -15,4 +13,5 @@
         inputs.qq.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
     };
+  };
 }

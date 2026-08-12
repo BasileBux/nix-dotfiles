@@ -22,5 +22,7 @@ let
     };
 in
 {
-  config.flake.nixosModules.users = userModule;
+  flake.module.users = {
+    nixos = userModule;
+  };
 }

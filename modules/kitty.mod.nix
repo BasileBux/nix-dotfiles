@@ -1,92 +1,92 @@
-{ self, ... }: {
-  flake.homeModules.desktop = self.homeModules.kitty;
-  flake.homeModules.kitty =
-    {
-      config,
-      settings,
-      pkgs,
-      ...
-    }:
-    {
-      imports = [ ];
-      config = {
-        programs.kitty = {
-          enable = true;
-          enableGitIntegration = true;
-          shellIntegration = {
-            enableBashIntegration = true;
-            enableZshIntegration = true;
-            mode = "no-cursor";
+{ ... }: {
+  flake.module.kitty = {
+    home =
+      {
+        config,
+        settings,
+        pkgs,
+        ...
+      }:
+      {
+        config = {
+          programs.kitty = {
+            enable = true;
+            enableGitIntegration = true;
+            shellIntegration = {
+              enableBashIntegration = true;
+              enableZshIntegration = true;
+              mode = "no-cursor";
+            };
+            settings = {
+              # JetBrainsMono NF, Google Sans Code, TX-02, Iosevka Custom, Mx437 DOS/V re. JPN24
+              font_family = "JetBrainsMono NF";
+              disable_ligatures = "cursor";
+              font_size = 11;
+              tab_bar_style = "powerline";
+              tab_powerline_style = "slanted";
+              background_opacity = 0.8;
+              window_padding_width = "3 4";
+              enabled_layouts = "splits:split_axis=horizontal,splits:split_axis=vertical,stack";
+              clipboard_control = "write-clipboard write-primary read-clipboard read-primary-ask";
+              cursor_shape = "block";
+              cursor_shape_unfocused = "hollow";
+              cursor_trail = 1;
+              cursor_trail_decay = "0.1 0.4";
+              background = "#16181b";
+              foreground = "#ffffff";
+              cursor = "#d1dd44";
+              cursor_text_color = "#16181a";
+              selection_background = "#d1dd44";
+              color0 = "#747C8B";
+              color8 = "#747C8B";
+              color1 = "#ff6e5e";
+              color9 = "#ff6e5e";
+              color2 = "#5eff6c";
+              color10 = "#5eff6c";
+              color3 = "#f1ff5e";
+              color11 = "#f1ff5e";
+              color4 = "#5ea1ff";
+              color12 = "#5ea1ff";
+              color5 = "#bd5eff";
+              color13 = "#bd5eff";
+              color6 = "#5ef1ff";
+              color14 = "#5ef1ff";
+              color7 = "#ffffff";
+              color15 = "#ffffff";
+              selection_foreground = "#000000";
+              active_tab_foreground = "#000000";
+              active_tab_background = "#ffbd5e";
+              inactive_tab_foreground = "#ffffff";
+              inactive_tab_background = "#16181a";
+              allow_remote_control = true;
+            };
+            keybindings = {
+              "ctrl+shift+." = "change_font_size all 0";
+              "ctrl+shift+[" = "send text all \x1b";
+              "f1" = "new_tab_with_cwd";
+              "ctrl+h" = "previous_tab";
+              "ctrl+l" = "next_tab";
+              "ctrl+;" = "clear_terminal scroll active";
+              "ctrl+shift+enter" = "new_window_with_cwd";
+              "ctrl+shift+j" = "previous_window";
+              "ctrl+shift+k" = "next_window";
+              "ctrl+shift+h" =
+                "launch --type=overlay --stdin-source=@screen_scrollback --stdin-add-formatting ${../scripts/kitty-nvim-scrollback.sh} @input-line-number";
+            };
           };
-          settings = {
-            # JetBrainsMono NF, Google Sans Code, TX-02, Iosevka Custom, Mx437 DOS/V re. JPN24
-            font_family = "JetBrainsMono NF";
-            disable_ligatures = "cursor";
-            font_size = 11;
-            tab_bar_style = "powerline";
-            tab_powerline_style = "slanted";
-            background_opacity = 0.8;
-            window_padding_width = "3 4";
-            enabled_layouts = "splits:split_axis=horizontal,splits:split_axis=vertical,stack";
-            clipboard_control = "write-clipboard write-primary read-clipboard read-primary-ask";
-            cursor_shape = "block";
-            cursor_shape_unfocused = "hollow";
-            cursor_trail = 1;
-            cursor_trail_decay = "0.1 0.4";
-            background = "#16181b";
-            foreground = "#ffffff";
-            cursor = "#d1dd44";
-            cursor_text_color = "#16181a";
-            selection_background = "#d1dd44";
-            color0 = "#747C8B";
-            color8 = "#747C8B";
-            color1 = "#ff6e5e";
-            color9 = "#ff6e5e";
-            color2 = "#5eff6c";
-            color10 = "#5eff6c";
-            color3 = "#f1ff5e";
-            color11 = "#f1ff5e";
-            color4 = "#5ea1ff";
-            color12 = "#5ea1ff";
-            color5 = "#bd5eff";
-            color13 = "#bd5eff";
-            color6 = "#5ef1ff";
-            color14 = "#5ef1ff";
-            color7 = "#ffffff";
-            color15 = "#ffffff";
-            selection_foreground = "#000000";
-            active_tab_foreground = "#000000";
-            active_tab_background = "#ffbd5e";
-            inactive_tab_foreground = "#ffffff";
-            inactive_tab_background = "#16181a";
-            allow_remote_control = true;
-          };
-          keybindings = {
-            "ctrl+shift+." = "change_font_size all 0";
-            "ctrl+shift+[" = "send text all \x1b";
-            "f1" = "new_tab_with_cwd";
-            "ctrl+h" = "previous_tab";
-            "ctrl+l" = "next_tab";
-            "ctrl+;" = "clear_terminal scroll active";
-            "ctrl+shift+enter" = "new_window_with_cwd";
-            "ctrl+shift+j" = "previous_window";
-            "ctrl+shift+k" = "next_window";
-            "ctrl+shift+h" =
-              "launch --type=overlay --stdin-source=@screen_scrollback --stdin-add-formatting ${../scripts/kitty-nvim-scrollback.sh} @input-line-number";
-          };
+          xdg.configFile."kitty/remote.conf".text = ''
+            include kitty.conf
+            map f1 no_op
+            map ctrl+h no_op
+            map ctrl+l no_op
+            cursor_trail 0
+          '';
+          home.packages = with pkgs; [
+            (writeShellScriptBin "remote" ''
+              nohup kitty --config ~/.config/kitty/remote.conf mosh "$1" -- tmux new-session -A -s "$2" > /dev/null 2>&1 &
+            '')
+          ];
         };
-        xdg.configFile."kitty/remote.conf".text = ''
-          include kitty.conf
-          map f1 no_op
-          map ctrl+h no_op
-          map ctrl+l no_op
-          cursor_trail 0
-        '';
-        home.packages = with pkgs; [
-          (writeShellScriptBin "remote" ''
-            nohup kitty --config ~/.config/kitty/remote.conf mosh "$1" -- tmux new-session -A -s "$2" > /dev/null 2>&1 &
-          '')
-        ];
       };
-    };
+  };
 }

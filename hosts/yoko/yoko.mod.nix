@@ -12,9 +12,8 @@
     hostName = settings.hostname;
     system = "aarch64-linux";
 
-    homeModules = [ ];
-    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
-    extraModules = [
+    modules = [ ];
+    nixosModules = [
       {
         my.nushell.accentColor = "#fb1e8b";
       }
@@ -23,5 +22,6 @@
       ./disko-config.nix
       ./remote-nvim.nix
     ];
+    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
   };
 }

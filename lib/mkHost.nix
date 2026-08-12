@@ -3,13 +3,18 @@
   hostName,
   system ? "x86_64-linux",
   settings,
-  homeModules ? [ ],
-  extraModules ? [ ],
+  modules ? [ ],        # unified { nixos, home } modules (from flakeModules)
+  nixosModules ? [ ],   # raw NixOS modules for host-specific config / overrides
+  homeModules ? [ ],    # additional raw Home Manager modules
   ageIdentityPaths ? [ ],
 }:
 let
   settings' = settings;
   hardwarePath = ../hosts/${hostName}/hardware-configuration.nix;
+
+  # Extract nixos and home parts from unified modules
+  unifiedNixos = map (m: m.nixos or { }) modules;
+  unifiedHome  = map (m: m.home or { }) modules;
 in
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;
@@ -32,7 +37,8 @@ inputs.nixpkgs.lib.nixosSystem {
           inputs.self.homeModules.default
           inputs.self.homeModules.secrets
         ]
-        ++ homeModules;
+        ++ homeModules
+        ++ unifiedHome;
         home.stateVersion = settings.nixosVersion;
       };
     }
@@ -43,6 +49,7 @@ inputs.nixpkgs.lib.nixosSystem {
       age.identityPaths = ageIdentityPaths;
     }
   ]
-  ++ extraModules
+  ++ unifiedNixos
+  ++ nixosModules
   ++ lib.optional (builtins.pathExists hardwarePath) hardwarePath;
 }
