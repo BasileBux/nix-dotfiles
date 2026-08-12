@@ -24,7 +24,6 @@
     plymouth
     polkit
     quickshell
-    radicle
     theming
     kitty
     ghostty

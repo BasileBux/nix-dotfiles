@@ -10,14 +10,18 @@
     };
     hostName = settings.hostname;
     system = "x86_64-linux";
+    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
-    modules = with inputs.self.flakeModules; [ smb tailscale slop ];
+    modules = with inputs.self.flakeModules; [
+      smb
+      tailscale
+      slop
+    ];
     nixosModules = [
       ./extra-config.nix
       {
         my.nushell.accentColor = "#fbe61e"; # Other possible options: #1eebfb #8b1efb #1efb8b
       }
     ];
-    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
   };
 }

@@ -2,12 +2,9 @@
   self,
   lib,
   inputs,
-  config,
   ...
 }:
 let
-  defaultBrowser = config.my.defaultBrowser;
-
   mimeTypes = [
     "application/rdf+xml"
     "application/rss+xml"
@@ -21,17 +18,18 @@ let
     "x-scheme-handler/about"
     "x-scheme-handler/unknown"
   ];
+  browserOptionModule = {
+    options.my.defaultBrowser = lib.mkOption {
+      type = lib.types.enum [
+        "helium"
+        "zen-twilight"
+      ];
+      default = "helium";
+      description = "Global default browser and WEB_BROWSER env var on all desktop hosts.";
+    };
+  };
 in
 {
-  options.my.defaultBrowser = lib.mkOption {
-    type = lib.types.enum [
-      "helium"
-      "zen-twilight"
-    ];
-    default = "helium";
-    description = "Global default browser. Controls my.browser default and WEB_BROWSER env var on all desktop hosts.";
-  };
-
   config.flake.module.helium = {
     home = { pkgs, ... }: {
       home.packages = [
@@ -48,11 +46,17 @@ in
   };
 
   config.flake.module.browser = {
+    nixos = browserOptionModule;
     home =
-      { config, lib, ... }:
+      {
+        lib,
+        osConfig,
+        ...
+      }:
       let
         inherit (lib.attrsets) genAttrs;
         inherit (lib.trivial) const;
+        defaultBrowser = osConfig.my.defaultBrowser;
       in
       {
         imports = [
@@ -60,19 +64,10 @@ in
           self.flakeModules.zen.home
         ];
 
-        options.my.browser = lib.mkOption {
-          type = lib.types.enum [
-            "helium"
-            "zen-twilight"
-          ];
-          default = defaultBrowser;
-          description = "Default browser for this host. Both browsers are always installed.";
-        };
-
         config = {
-          home.sessionVariables.WEB_BROWSER = config.my.browser;
+          home.sessionVariables.WEB_BROWSER = defaultBrowser;
 
-          xdg.mimeApps.defaultApplications = genAttrs mimeTypes (const "${config.my.browser}.desktop");
+          xdg.mimeApps.defaultApplications = genAttrs mimeTypes (const "${defaultBrowser}.desktop");
         };
       };
   };

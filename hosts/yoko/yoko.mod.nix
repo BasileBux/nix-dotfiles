@@ -11,6 +11,7 @@
     };
     hostName = settings.hostname;
     system = "aarch64-linux";
+    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
     modules = [ ];
     nixosModules = [
@@ -22,6 +23,5 @@
       ./disko-config.nix
       ./remote-nvim.nix
     ];
-    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
   };
 }

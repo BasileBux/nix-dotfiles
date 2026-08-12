@@ -82,6 +82,7 @@
       in
       {
         home.packages = with pkgs; [
+          # minimal deps to run and build plugins
           neovim-wrapped
           ripgrep
           fd
@@ -126,9 +127,10 @@
           name = "Neovim";
           comment = "Edit text files in Neovim (terminal)";
           exec = "kitty -e nvim %F";
-          terminal = false; # kitty itself is the terminal being launched; this is not the flag you set to true
+          terminal = false; # We execute kitty already
           icon = "nvim";
           type = "Application";
+
           mimeType = [
             "text/plain"
             "text/markdown"

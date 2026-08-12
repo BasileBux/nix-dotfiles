@@ -74,8 +74,16 @@ in
     };
     hostName = settings.hostname;
     system = "x86_64-linux";
+    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
-    modules = with inputs.self.flakeModules; [ desktop smb tailscale ];
+    modules = with inputs.self.flakeModules; [
+      desktop
+      smb
+      tailscale
+      slop
+      radicle
+    ];
+
     nixosModules = [
       ./extra-config.nix
       {
@@ -85,6 +93,5 @@ in
       }
       inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
     ];
-    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
   };
 }

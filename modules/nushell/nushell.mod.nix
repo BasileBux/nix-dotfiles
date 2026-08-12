@@ -94,11 +94,7 @@ let
         pkgs.direnv
       ];
 
-      # ── env vars (session variables resolved at build time) ──
-
       xdg.configFile."nushell/env.nu".source = resolvedEnvNu;
-
-      # ── settings ─────────────────────────────────────────────
 
       xdg.configFile."nushell/settings.nu".text = /* nu */ ''
         $env.config = $env.config | merge deep {

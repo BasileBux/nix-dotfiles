@@ -49,7 +49,7 @@
       in
       {
         imports = [
-          ({
+          {
             options.my.ssh = lib.mkOption {
               type = lib.types.submodule {
                 options.extraAuthorizedKeys = lib.mkOption {
@@ -61,7 +61,7 @@
               default = { };
               description = "SSH module settings";
             };
-          })
+          }
         ];
 
         programs.mosh.enable = true;

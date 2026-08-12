@@ -1,10 +1,26 @@
 {
   flake.module.vcs = {
+    nixos = { config, lib, ... }: {
+      options.my.vcs = lib.mkOption {
+        type = lib.types.submodule {
+          options = {
+            signingkey = lib.mkOption {
+              type = lib.types.str;
+              default = "/home/${config.my.settings.username}/.ssh/id_ed25519.pub";
+              description = "Git and jj signing key path";
+            };
+          };
+        };
+        default = { };
+        description = "VCS module settings";
+      };
+    };
     home =
       {
         config,
         settings,
         pkgs,
+        osConfig,
         ...
       }:
       {
@@ -14,7 +30,7 @@
           settings = {
             user.name = settings.gitName;
             user.email = settings.gitEmail;
-            user.signingkey = "/home/${settings.username}/.ssh/id_ed25519.pub";
+            user.signingkey = osConfig.my.vcs.signingkey;
             core.editor = "nvim";
             alias.pushall = "!git push origin && git push gh main";
           };
@@ -33,12 +49,11 @@
             ui = {
               default-command = "log";
               editor = "nvim";
-              merge-editor = "meld";
             };
             signing = {
               behavior = "own";
               backend = "ssh";
-              key = "/home/${settings.username}/.ssh/id_ed25519.pub";
+              key = osConfig.my.vcs.signingkey;
             };
             git.sign-on-push = true;
           };
