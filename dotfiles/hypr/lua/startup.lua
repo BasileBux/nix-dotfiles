@@ -1,10 +1,8 @@
 local config = require("config")
 
 local startup = {
-	"dbus-update-activation-environment --systemd DISPLAY HYPRLAND_INSTANCE_SIGNATURE WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE",
-	"systemctl --user stop hyprland-session.target && systemctl --user start hyprland-session.target",
 	"hyprctl setcursor Bibata-Modern-Classic 22",
-	"pkill quickshell; quickshell",
+	"systemctl --user restart quickshell.service",
 }
 
 hl.on("hyprland.start", function()

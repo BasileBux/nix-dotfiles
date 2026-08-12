@@ -55,6 +55,7 @@
         settings,
         pkgs,
         osConfig,
+        lib,
         ...
       }:
       let
@@ -92,6 +93,26 @@
           recursive = true;
         };
         xdg.configFile."quickshell/MachineOverrides.qml".text = generateMachineOverrides cfg;
+
+        # Run the shell as a systemd user service, managed by the Wayland
+        # session: started on graphical-session.target (activated by uwsm),
+        # restarted on crash. Reload with: systemctl --user restart quickshell
+        systemd.user.services.quickshell = {
+          Unit = {
+            Description = "Quickshell desktop shell";
+            After = [ "graphical-session.target" ];
+            Slice = "app-graphical.slice";
+          };
+          Service = {
+            Type = "exec";
+            ExecStart = "${lib.getExe pkgs.quickshell}";
+            Restart = "on-failure";
+            RestartSec = 3;
+          };
+          Install = {
+            WantedBy = [ "graphical-session.target" ];
+          };
+        };
       };
   };
 }

@@ -177,6 +177,28 @@ let
             event: { send: HistoryHintComplete }
           }
         ]
+
+        # UWSM auto-start for Hyprland (desktop-only, interactive)
+        def has-cmd [cmd: string] { (which $cmd | is-not-empty) }
+
+        if (
+          ("WAYLAND_DISPLAY" not-in $env)           # not already in a Wayland session
+          and ($env.XDG_VTNR? == "1")               # console login on VT1
+          and (has-cmd hyprland) and (has-cmd uwsm) # desktop packages present
+          and ("/dev/dri" | path exists)            # DRM/GPU present
+        ) {
+          if (uwsm check may-start | complete).exit_code == 0 {
+            print -n "Start Hyprland? [y/N] "
+            let key = (input -n 1)
+            print ""
+            if $key in ["y", "Y"] {
+              print "Starting Hyprland..."
+              exec uwsm start hyprland-uwsm.desktop
+            } else {
+              print "Skipping Hyprland, staying in the TTY."
+            }
+          }
+        }
       '';
     };
 in

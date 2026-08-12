@@ -45,7 +45,7 @@ local monitors_setup = function()
 			mirror = "desc:" .. primary_mon.description,
 		})
 	end
-	hl.exec_cmd("pkill quickshell; quickshell")
+	hl.exec_cmd("systemctl --user restart quickshell.service")
 end
 
 monitors_setup()
