@@ -5,6 +5,8 @@
         yazi
         thunderbird
         imhex
+
+        sage # For the popup calculator
       ];
     };
   };

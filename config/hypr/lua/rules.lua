@@ -69,10 +69,10 @@ hl.window_rule({
 
 hl.workspace_rule({
 	workspace = "special:sagepopup",
-	on_created_empty = "kitty --title='sagepopup' -e sh -c 'sage || python3'",
+	on_created_empty = "kitty --title='sagepopup' -e sh -c 'sage'",
 })
 
 hl.workspace_rule({
 	workspace = "special:scratch",
-	on_created_empty = "kitty --title='scratch' -e sh -c 'nvim ~/tmp/notes/daily-$(date +%d-%b-%Y).md'",
+	on_created_empty = "kitty --title='scratch' -e sh -c 'nvim ~/scratch.md'",
 })
