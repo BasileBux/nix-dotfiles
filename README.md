@@ -13,28 +13,41 @@ cd nixos
 # Create a new host
 mkdir hosts/<hostname>
 touch hosts/<hostname>/<hostname>.nix
-sudo cp /etc/nixos/hardware-configuration.nix hosts/<hostname>
+cp /etc/nixos/hardware-configuration.nix hosts/<hostname>
 ```
 
-Then, in the `<hostname>.nix` file
+Then, in the `<hostname>.nix` file put the values for your specific machines but
+the file should look something like:
 
 ```nix
 { lib, inputs, ... }:
 {
-  flake.nixosConfigurations.john (import ../../lib/mkHost.nix { inherit inputs lib; }) rec {
+  flake.nixosConfigurations.<hostname> = (import ../../lib/mkHost.nix { inherit inputs lib; }) rec {
     settings = {
-      username = "doe";
-      hostname = "john";
+      username = "john";
+      hostname = "<hostname>";
       nixosVersion = "26.05";
-      gitName = "john doe";
+      gitName = "johnDoe";
       gitEmail = "john.doe@example.com";
     };
     hostName = settings.hostname;
     system = "x86_64-linux";
-    ageIdentityPaths = [ "path/to/ssh/key" ];
+    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
-    homeModules = [ ];
-    extraModules = [ ];
+    modules = with inputs.self.flakeModules; [
+
+      # Example modules
+      tailscale
+      slop
+    ];
+
+    # Optional
+    nixosModules = [
+      ./extra-config.nix
+      {
+        my.nushell.accentColor = "#fb8b1e";
+      }
+    ];
   };
 }
 ```
