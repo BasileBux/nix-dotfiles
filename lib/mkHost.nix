@@ -9,7 +9,6 @@
   ageIdentityPaths ? [ ],
 }:
 let
-  settings' = settings;
   hardwarePath = ../hosts/${hostName}/hardware-configuration.nix;
 
   # Extract nixos and home parts from unified modules
@@ -20,7 +19,7 @@ inputs.nixpkgs.lib.nixosSystem {
   inherit system;
   specialArgs = {
     inherit inputs;
-    settings = settings';
+    settings = settings;
   };
   modules = [
     inputs.self.nixosModules.default
@@ -30,9 +29,9 @@ inputs.nixpkgs.lib.nixosSystem {
       home-manager.useGlobalPkgs = true;
       home-manager.extraSpecialArgs = {
         inherit inputs;
-        settings = settings';
+        settings = settings;
       };
-      home-manager.users.${settings'.username} = {
+      home-manager.users.${settings.username} = {
         imports = [
           inputs.self.homeModules.default
           inputs.self.homeModules.secrets
@@ -43,9 +42,9 @@ inputs.nixpkgs.lib.nixosSystem {
       };
     }
     {
-      networking.hostName = settings'.hostname;
-      system.stateVersion = settings'.nixosVersion;
-      my.settings = settings';
+      networking.hostName = settings.hostname;
+      system.stateVersion = settings.nixosVersion;
+      my.settings = settings;
       age.identityPaths = ageIdentityPaths;
     }
   ]
