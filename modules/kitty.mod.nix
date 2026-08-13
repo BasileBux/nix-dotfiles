@@ -19,9 +19,9 @@
             };
             settings = {
               # JetBrainsMono NF, Google Sans Code, TX-02, Iosevka Custom, Mx437 DOS/V re. JPN24
-              font_family = "TX-02";
+              font_family = "Iosevka Custom";
               disable_ligatures = "cursor";
-              font_size = 11;
+              font_size = 12;
               tab_bar_style = "powerline";
               tab_powerline_style = "slanted";
               background_opacity = 0.8;
