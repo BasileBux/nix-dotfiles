@@ -95,8 +95,8 @@ Singleton {
     readonly property int authDialogHeight: 200
 
     readonly property var extras: QtObject {
-        readonly property int remoteWidth: 380
-        readonly property int remoteHeight: 240
+        readonly property int remoteWidth: 440
+        readonly property int remoteHeight: 420
         readonly property string remoteDefaultTmuxSession: "main"
     }
 

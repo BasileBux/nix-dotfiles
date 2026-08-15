@@ -17,6 +17,13 @@ hl.window_rule({
 })
 
 hl.window_rule({
+	name = "remote-ssh",
+	match = { class = "org.quickshell", title = "Remote ssh" },
+	float = true,
+	center = true,
+})
+
+hl.window_rule({
 	name = "emulator-float",
 	match = { class = "Emulator" },
 	float = true,

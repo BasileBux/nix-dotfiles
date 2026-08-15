@@ -83,7 +83,8 @@
           '';
           home.packages = with pkgs; [
             (writeShellScriptBin "remote" ''
-              nohup kitty --config ~/.config/kitty/remote.conf mosh "$1" -- tmux new-session -A -s "$2" > /dev/null 2>&1 &
+              session="''${2:-main}"
+              nohup kitty --config ~/.config/kitty/remote.conf ssh -t "$1" tmux new-session -A -s "$session" > /dev/null 2>&1 &
             '')
           ];
         };
