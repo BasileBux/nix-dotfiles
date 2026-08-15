@@ -166,13 +166,13 @@ in
           NIXOS_OZONE_WL = "1";
         };
 
-        xdg.configFile."hypr/hyprland.lua".source = ../dotfiles/hypr/hyprland.lua;
+        xdg.configFile."hypr/hyprland.lua".source = ../config/hypr/hyprland.lua;
 
         xdg.configFile."hypr/config.lua".text = luaConfig;
 
         xdg.configFile."hypr/host.lua".text = hyprland.extraConfig;
 
-        xdg.configFile."hypr/lua".source = ../dotfiles/hypr/lua;
+        xdg.configFile."hypr/lua".source = ../config/hypr/lua;
 
         home.activation.reloadHyprland = config.lib.dag.entryAfter [ "writeBoundary" ] ''
           if ${pkgs.procps}/bin/pgrep -x "Hyprland" > /dev/null 2>&1; then

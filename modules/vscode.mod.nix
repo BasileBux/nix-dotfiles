@@ -56,8 +56,8 @@
 
           home.activation.vscode-config = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             $DRY_RUN_CMD mkdir -p ~/.config/Code/User
-            $DRY_RUN_CMD cp -f ${../dotfiles/vscode/settings.json} ~/.config/Code/User/settings.json
-            $DRY_RUN_CMD cp -f ${../dotfiles/vscode/keybindings.json} ~/.config/Code/User/keybindings.json
+            $DRY_RUN_CMD cp -f ${../config/vscode/settings.json} ~/.config/Code/User/settings.json
+            $DRY_RUN_CMD cp -f ${../config/vscode/keybindings.json} ~/.config/Code/User/keybindings.json
             $DRY_RUN_CMD chmod +w ~/.config/Code/User/settings.json ~/.config/Code/User/keybindings.json
           '';
         };

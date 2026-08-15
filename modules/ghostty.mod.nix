@@ -22,9 +22,6 @@
             "ctrl+shift+1=increase_font_size:5"
             "ctrl+shift+.=reset_font_size"
           ];
-          custom-shader = [
-            (toString ../dotfiles/misc/ghostty-cursor-warp.glsl)
-          ];
         };
       };
     };

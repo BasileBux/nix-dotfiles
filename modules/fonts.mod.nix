@@ -12,7 +12,7 @@
           inter
         ]
         ++ builtins.attrValues (
-          builtins.removeAttrs (pkgs.callPackage ../dotfiles/fonts { }) [
+          builtins.removeAttrs (pkgs.callPackage ../config/fonts { }) [
             "override"
             "overrideDerivation"
           ]

@@ -15,4 +15,6 @@
       allowedUDPPorts = [ 9 ];
     };
   };
+
+  services.power-profiles-daemon.enable = true;
 }

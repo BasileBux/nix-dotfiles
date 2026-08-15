@@ -60,7 +60,7 @@ in
           r=$(printf '%d' 0x''${accentColor:1:2})
           g=$(printf '%d' 0x''${accentColor:3:2})
           b=$(printf '%d' 0x''${accentColor:5:2})
-          sed -e "s|@accent_rgb@|$r;$g;$b|g" ${../../dotfiles/zsh/basileb.zsh-theme} > $out
+          sed -e "s|@accent_rgb@|$r;$g;$b|g" ${./basileb.zsh-theme} > $out
         '';
 
         zshCustom = pkgs.runCommand "zsh-custom" { } ''
@@ -75,8 +75,7 @@ in
           enableCompletion = true;
           syntaxHighlighting.enable = true;
           shellAliases = aliases;
-          initContent =
-            "source ~/.config/zsh/secrets-env\n" + builtins.readFile ../../dotfiles/zsh/initContent.zsh;
+          initContent = "source ~/.config/zsh/secrets-env\n" + builtins.readFile ./initContent.zsh;
           history = {
             size = 10000;
             save = 10000;

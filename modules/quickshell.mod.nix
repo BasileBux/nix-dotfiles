@@ -89,7 +89,7 @@
           bluez
         ];
         xdg.configFile."quickshell" = {
-          source = ../dotfiles/quickshell;
+          source = ../config/quickshell;
           recursive = true;
         };
         xdg.configFile."quickshell/MachineOverrides.qml".text = generateMachineOverrides cfg;

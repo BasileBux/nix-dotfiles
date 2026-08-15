@@ -121,7 +121,7 @@
           EDITOR = "nvim";
         };
 
-        xdg.configFile."nvim".source = ../dotfiles/nvim;
+        xdg.configFile."nvim".source = ../config/nvim;
 
         xdg.desktopEntries.nvim-terminal = {
           name = "Neovim";
