@@ -16,7 +16,8 @@
   "enableInstallTelemetry": false,
   "packages": [
     "npm:pi-web-access",
-    "npm:pi-notify"
+    "npm:pi-notify",
+    "npm:@ff-labs/pi-fff"
   ],
   "theme": "nightSyscall",
   "compaction": {
