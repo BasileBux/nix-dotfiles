@@ -16,7 +16,6 @@
       smb
       tailscale
       slop
-      polkit
     ];
     nixosModules = [
       ./extra-config.nix
