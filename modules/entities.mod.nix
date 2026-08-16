@@ -25,6 +25,13 @@ in
     yoko.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICf/SNZc5Z6bsJ5QlfX1WoWStHADD07uAcXteQ/JTovi yoko";
   };
 
+  # Service keys are public SSH keys used by narrowly-scoped service accounts.
+  # Keep these separate from `flake.keys`: the latter are age recipients for
+  # NixOS secrets, while service keys must not receive any secrets.
+  flake.serviceKeys = {
+    upsnap = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBKeX4nTrwIVVV5rWbqOqwqZDMtmmw3wHUN7JN308PIP upsnap@raspberrypi";
+  };
+
   flake.keys = mapAttrs (_: { key, ... }: key) (removeAttrs self.people [ "self" ] // self.machines);
 
   flake.keys-admin =

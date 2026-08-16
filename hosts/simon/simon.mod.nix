@@ -55,10 +55,10 @@ let
       alias vpn = sh ($env.HOME)/nixos/scripts/tailscale-exit-nodes.sh
       alias kamina = ssh basileb-pi@raspberrypi -- wakeonlan -i 192.168.1.149 78:55:36:0b:3f:d4
 
-      def --env config [] { cd $env.HOME/nixos; nvim flake.nix }
-      def --env nvimconfig [] { cd $env.HOME/nixos/config/nvim; nvim init.lua }
-      def --env qsconfig [] { cd $env.HOME/nixos/config/quickshell; nvim shell.qml }
-      def --env hlconfig [] { cd $env.HOME/nixos/config/hypr; nvim hyprland.lua }
+      def --env config [] { cd ($env.HOME)/nixos; nvim flake.nix }
+      def --env nvimconfig [] { cd ($env.HOME)/nixos/config/nvim; nvim init.lua }
+      def --env qsconfig [] { cd ($env.HOME)/nixos/config/quickshell; nvim shell.qml }
+      def --env hlconfig [] { cd ($env.HOME)/nixos/config/hypr; nvim hyprland.lua }
     '';
   };
 in
