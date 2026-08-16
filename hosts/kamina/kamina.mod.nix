@@ -22,7 +22,7 @@
       {
         my.nushell.accentColor = "#fbe61e"; # Other possible options: #1eebfb #8b1efb #1efb8b
         my.ssh.extraAuthorizedKeys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3JtMPAdhCamdxtzssUutjNaCyGtsUVltvtLakwuPze"
+          "from=\"100.122.103.5,100.84.142.57\"  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3JtMPAdhCamdxtzssUutjNaCyGtsUVltvtLakwuPze"
         ];
       }
     ];
