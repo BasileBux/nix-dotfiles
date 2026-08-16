@@ -17,6 +17,7 @@
   "packages": [
     "npm:pi-web-access",
     "npm:pi-notify",
+    "npm:pi-subagents",
     "npm:@ff-labs/pi-fff"
   ],
   "theme": "nightSyscall",

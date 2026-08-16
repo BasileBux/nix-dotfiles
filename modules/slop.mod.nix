@@ -38,8 +38,6 @@
           "pi/AGENTS.md".source = ../config/pi/AGENTS.md;
           "pi/themes".source = ../config/pi/themes;
           "pi/extensions".source = ../config/pi/extensions;
-          "pi/agents".source = ../config/pi/agents;
-          "pi/prompts".source = ../config/pi/prompts;
         };
       };
   };
