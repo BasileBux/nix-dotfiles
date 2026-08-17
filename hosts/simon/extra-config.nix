@@ -42,8 +42,6 @@
 
   programs.nix-ld.enable = true;
 
-  environment.sessionVariables.PI_SKIP_VERSION_CHECK = "1";
-
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [

@@ -14,9 +14,6 @@
       ];
     };
 
-    # pi coding agent user config, deployed to $PI_CODING_AGENT_DIR
-    # (~/.config/pi, see modules/xdg.mod.nix). Source files live in
-    # config/pi/ next to the other native-language configs.
     home =
       { pkgs, lib, ... }:
       let
@@ -39,6 +36,11 @@
           "pi/themes".source = ../config/pi/themes;
           "pi/extensions".source = ../config/pi/extensions;
         };
+
+        home.sessionVariables = {
+          PI_SKIP_VERSION_CHECK = "1";
+          OPENCODE_ENABLE_EXA = "1";
+        };
       };
   };
 
@@ -50,6 +52,11 @@
         lib,
         ...
       }:
+      let
+        apiKeySecrets = lib.filter (s: lib.hasPrefix "modules/secrets/env/api-keys/" s.path) (
+          import ./secrets/env-secrets.nix { inherit lib; }
+        );
+      in
       {
 
         options.my.t3Host = lib.mkOption {
@@ -59,12 +66,30 @@
         };
 
         config = {
+          # Refuse to build if no age identity is configured: the API key
+          # secrets (modules/secrets/env/api-keys/*.age) can only be decrypted
+          # with an age identity, and without one the service would silently
+          # start without any keys. Module secrets are encrypted for all entity
+          # keys, so any configured identity path works; agenix activation
+          # remains the hard backstop if the identity can't actually decrypt.
+          # TODO: maybe add a secrets or age setting which atests that you have a valid identity for the secrets
+          assertions = [
+            {
+              assertion = config.age.identityPaths != [ ];
+              message = ''
+                The t3 module needs an age identity to decrypt the API key
+                secrets (modules/secrets/env/api-keys/*.age), but
+                age.identityPaths is empty.
+                Set ageIdentityPaths in hosts/<host>/<host>.mod.nix, e.g.
+                ageIdentityPaths = [ "/home/<user>/.ssh/<host>" ];
+              '';
+            }
+          ];
+
           environment.systemPackages = [
             pkgs.t3code
           ];
 
-          # SHELL is forced to bash because t3code's PATH hydration runs `printenv
-          # PATH || true` through a login shell, which nushell rejects at parse time.
           systemd.services.t3 = {
             description = "T3 Code server";
             wantedBy = [ "multi-user.target" ];
@@ -83,6 +108,22 @@
                 "CODEX_HOME=/home/${config.my.settings.username}/.config/codex"
                 "T3CODE_HOME=/home/${config.my.settings.username}/.config/t3"
               ];
+              RuntimeDirectory = "t3";
+              RuntimeDirectoryMode = "0700";
+              EnvironmentFile = "-/run/t3/env";
+              ExecStartPre = pkgs.writeShellScript "t3-secrets-env" ''
+                set -euo pipefail
+                umask 077
+                envFile=/run/t3/env
+                : > "$envFile"
+                ${lib.concatStringsSep "\n" (
+                  map (s: ''
+                    printf '%s=%s\n' '${s.name}' "$(cat '${
+                      config.age.secrets.${s.path}.path
+                    }' | tr -d '\n')" >> "$envFile"
+                  '') apiKeySecrets
+                )}
+              '';
               ExecStart = "${pkgs.t3code}/bin/t3 serve --host ${config.my.t3Host}";
               Restart = "on-failure";
               RestartSec = 10;
