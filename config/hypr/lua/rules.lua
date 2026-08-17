@@ -76,7 +76,7 @@ hl.window_rule({
 
 hl.workspace_rule({
 	workspace = "special:sagepopup",
-	on_created_empty = "kitty --title='sagepopup' -e sh -c 'sage'",
+	on_created_empty = "kitty --title='sagepopup' -e sh -c 'sage -q'",
 })
 
 hl.workspace_rule({
