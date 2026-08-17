@@ -79,7 +79,7 @@ require("todo-comments").setup({
 
 -- Render-markdown.nvim
 require("render-markdown").setup({
-	file_types = { "markdown", "vimwiki", "codecompanion" },
+	file_types = { "markdown", "vimwiki" },
 	code = {
 		style = "language",
 	},

@@ -47,7 +47,7 @@ vim.pack.add({
 	"https://github.com/nvim-tree/nvim-web-devicons",
 	{
 		src = "https://github.com/MeanderingProgrammer/render-markdown.nvim",
-		ft = { "markdown", "vimwiki", "codecompanion", "drunkdriver" },
+		ft = { "markdown", "vimwiki", "drunkdriver" },
 	},
 	{
 		src = "https://github.com/iamcco/markdown-preview.nvim",
@@ -56,10 +56,6 @@ vim.pack.add({
 
 	-- AI slop
 	"https://github.com/github/copilot.vim",
-	{
-		src = "https://www.github.com/olimorris/codecompanion.nvim",
-		version = vim.version.range("^19.0.0"),
-	},
 })
 
 vim.g.mkdp_filetypes = { "markdown" }
@@ -75,9 +71,6 @@ require("plugins.lsp")
 
 require("plugins.plugins")
 require("plugins.typst")
-
-require("plugins.codecompanion")
-require("codecompanion-commands")
 
 -- rose-pine theme
 require("rose-pine").setup({
