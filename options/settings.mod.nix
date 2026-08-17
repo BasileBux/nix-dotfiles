@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{
   # Register as a NixOS module so that my.settings is available in nixosSystem
   config.flake.module.settings = {
     nixos = { lib, ... }: {

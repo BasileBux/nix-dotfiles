@@ -16,6 +16,8 @@
       smb
       tailscale
       slop
+      ssh-server
+      tmux
     ];
     nixosModules = [
       ./extra-config.nix

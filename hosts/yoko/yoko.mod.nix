@@ -13,7 +13,11 @@
     system = "aarch64-linux";
     ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
-    modules = with inputs.self.flakeModules; [ slop ];
+    modules = with inputs.self.flakeModules; [
+      slop
+      ssh-server
+      tmux
+    ];
     nixosModules = [
       {
         my.nushell.accentColor = "#fb1e8b";
