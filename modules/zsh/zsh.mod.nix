@@ -67,6 +67,8 @@ in
           mkdir -p $out
           cp ${themeFile} $out/basileb.zsh-theme
         '';
+
+        envSecrets = import ../secrets/env-secrets.nix { inherit lib; };
       in
       {
         programs.zsh = {
@@ -93,21 +95,11 @@ in
           };
         };
 
-        xdg.configFile."zsh/secrets-env".text = ''
-          export ANTHROPIC_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/anthropic.age".path})"
-          export OPENAI_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/openai.age".path})"
-          export GEMINI_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/gemini.age".path})"
-          export GOOGLE_GENERATIVE_AI_API_KEY="$(cat ${
-            osConfig.age.secrets."modules/zsh/api-keys/google-generative-ai.age".path
-          })"
-          export MOONSHOT_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/moonshot.age".path})"
-          export TAVILY_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/tavily.age".path})"
-          export XAI_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/xai.age".path})"
-          export GITHUB_TOKEN="$(cat ${osConfig.age.secrets."modules/zsh/github-token.age".path})"
-          export NVIDIA_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/nvidia.age".path})"
-          export DEEPSEEK_API_KEY="$(cat ${osConfig.age.secrets."modules/zsh/api-keys/deepseek.age".path})"
-          export RAD_PASSPHRASE="$(cat ${osConfig.age.secrets."modules/zsh/rad-passphrase.age".path})"
-        '';
+        xdg.configFile."zsh/secrets-env".text = builtins.concatStringsSep "\n" (
+          map (
+            s: "export ${s.name}=\"$(cat ${osConfig.age.secrets.${s.path}.path})\""
+          ) envSecrets
+        );
       };
   };
 }

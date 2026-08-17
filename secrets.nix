@@ -11,9 +11,10 @@ let
     filter
     foldl'
     listToAttrs
-    match
     readDir
     ;
+
+  inherit (import ./modules/secrets/discovery.nix) listFilesRecursive isAge;
 
   singleton = value: [ value ];
   mapAttrs =
@@ -35,26 +36,6 @@ let
     );
   uniq = list: list |> foldl' (acc: item: if elem item acc then acc else acc ++ singleton item) [ ];
 
-  # Recursively list all regular files under a directory, relative to it
-  listFilesRecursive =
-    base: dir:
-    let
-      entries = readDir dir;
-      names = attrNames entries;
-    in
-    names
-    |> concatMap (
-      name:
-      if entries.${name} == "directory" then
-        listFilesRecursive "${base}/${name}" "${dir}/${name}"
-      else if entries.${name} == "regular" then
-        singleton "${base}/${name}"
-      else
-        [ ]
-    );
-
-  isAge = name: match ".*\\.age$" name != null;
-
   # Import entities to get keys — replicate just the attrsets needed to avoid
   # dragging in the full module system (same hack ncc uses)
   entitiesImport =
@@ -64,8 +45,8 @@ let
     }).flake;
 
   # The secret name is the path including .age, e.g.:
-  #   modules/zsh/api-keys/anthropic.age → "modules/zsh/api-keys/anthropic.age"
-  #   hosts/simon/password.age          → "hosts/simon/password.age"
+  #   modules/secrets/env/api-keys/anthropic.age → "modules/secrets/env/api-keys/anthropic.age"
+  #   hosts/simon/password.age                  → "hosts/simon/password.age"
   # The .age suffix is kept so ragenix/agenix CLI can match filenames exactly.
 
   # Host secrets: hosts/<host>/*.age → encrypted for that host + admin keys

@@ -52,7 +52,7 @@ let
           ;
       };
 
-      secretsNu = import ./secrets.nix { inherit osConfig; };
+      secretsNu = import ./secrets.nix { inherit osConfig lib; };
 
       cfg = osConfig.my.nushell;
 
