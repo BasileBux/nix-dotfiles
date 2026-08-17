@@ -41,4 +41,54 @@
         };
       };
   };
+
+  flake.module.t3 = {
+    nixos =
+      {
+        pkgs,
+        config,
+        lib,
+        ...
+      }:
+      {
+
+        options.my.t3Host = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+          description = "The host address to serve t3code on";
+        };
+
+        config = {
+          environment.systemPackages = [
+            pkgs.t3code
+          ];
+
+          # SHELL is forced to bash because t3code's PATH hydration runs `printenv
+          # PATH || true` through a login shell, which nushell rejects at parse time.
+          systemd.services.t3 = {
+            description = "T3 Code server";
+            wantedBy = [ "multi-user.target" ];
+            wants = [ "network-online.target" ];
+            after = [
+              "network-online.target"
+              "tailscaled.service"
+            ];
+            serviceConfig = {
+              Type = "exec";
+              User = config.my.settings.username;
+              Environment = [
+                "HOME=/home/${config.my.settings.username}"
+                "SHELL=/run/current-system/sw/bin/bash"
+                "PATH=/run/current-system/sw/bin"
+                "CODEX_HOME=/home/${config.my.settings.username}/.config/codex"
+                "T3CODE_HOME=/home/${config.my.settings.username}/.config/t3"
+              ];
+              ExecStart = "${pkgs.t3code}/bin/t3 serve --host ${config.my.t3Host}";
+              Restart = "on-failure";
+              RestartSec = 10;
+            };
+          };
+        };
+      };
+  };
 }

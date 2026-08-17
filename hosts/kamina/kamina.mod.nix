@@ -15,9 +15,10 @@
     modules = with inputs.self.flakeModules; [
       smb
       tailscale
-      slop
       ssh-server
       tmux
+      slop
+      t3
     ];
     nixosModules = [
       ./extra-config.nix
@@ -29,6 +30,7 @@
           # upsnap on the raspberry pi through tailscale and eth0/wlan0 LAN
           "from=\"192.168.1.191,192.168.1.190,100.80.171.121\"  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDUZ/0p/7j6gcvZS1Cm8f2PP2dzrNN5WSxvMJQaPLzFv upsnap@raspberrypi"
         ];
+        my.t3Host = "100.100.86.25";
       }
     ];
   };

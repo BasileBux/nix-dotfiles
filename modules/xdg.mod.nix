@@ -83,6 +83,10 @@
           # zsh
           "${stateHome}/zsh"
           "${cacheHome}/zsh"
+
+          # t3 code slop
+          "${configHome}/codex"
+          "${configHome}/t3"
         ];
       in
       {
@@ -167,6 +171,10 @@
 
           # zsh
           ZSH_COMPDUMP = "${cacheHome}/zsh/zcompdump";
+
+          # t3 code slop
+          CODEX_HOME = "${configHome}/codex";
+          T3CODE_HOME = "${configHome}/t3";
         };
       };
   };
