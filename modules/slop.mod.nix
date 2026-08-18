@@ -32,7 +32,8 @@
           "pi/keybindings.json".source = ../config/pi/keybindings.json;
           "pi/models.json".source = ../config/pi/models.json;
           "pi/web-search.json".source = ../config/pi/web-search.json;
-          "pi/AGENTS.md".source = ../config/pi/AGENTS.md;
+          "pi/AGENTS.md".source = ../config/slop/AGENTS.md;
+          "opencode/AGENTS.md".source = ../config/slop/AGENTS.md;
           "pi/themes".source = ../config/pi/themes;
           "pi/extensions".source = ../config/pi/extensions;
         };
