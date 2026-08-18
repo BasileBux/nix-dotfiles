@@ -7,4 +7,7 @@ let
   secretLine = s:
     "$env.${s.name} = (open ${osConfig.age.secrets.${s.path}.path} | str trim)";
 in
-(builtins.concatStringsSep "\n" (map secretLine envSecrets)) + "\n"
+
+lib.optionalString osConfig.my.secrets.enabled (
+  (builtins.concatStringsSep "\n" (map secretLine envSecrets)) + "\n"
+)

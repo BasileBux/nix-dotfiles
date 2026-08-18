@@ -95,10 +95,12 @@ in
           };
         };
 
-        xdg.configFile."zsh/secrets-env".text = builtins.concatStringsSep "\n" (
-          map (
-            s: "export ${s.name}=\"$(cat ${osConfig.age.secrets.${s.path}.path})\""
-          ) envSecrets
+        xdg.configFile."zsh/secrets-env".text = lib.optionalString osConfig.my.secrets.enabled (
+          builtins.concatStringsSep "\n" (
+            map (
+              s: "export ${s.name}=\"$(cat ${osConfig.age.secrets.${s.path}.path})\""
+            ) envSecrets
+          )
         );
       };
   };

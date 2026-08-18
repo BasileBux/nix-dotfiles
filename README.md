@@ -32,7 +32,7 @@ the file should look something like:
     };
     hostName = settings.hostname;
     system = "x86_64-linux";
-    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
+    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ]; # Optional: Only set that if you have an identity capable of decrypting the secrets.
 
     modules = with inputs.self.flakeModules; [
 

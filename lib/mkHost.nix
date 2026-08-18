@@ -3,9 +3,11 @@
   hostName,
   system ? "x86_64-linux",
   settings,
-  modules ? [ ],        # unified { nixos, home } modules (from flakeModules)
-  nixosModules ? [ ],   # raw NixOS modules for host-specific config / overrides
-  homeModules ? [ ],    # additional raw Home Manager modules
+  modules ? [ ], # unified { nixos, home } modules (from flakeModules)
+  nixosModules ? [ ], # raw NixOS modules for host-specific config / overrides
+  homeModules ? [ ], # additional raw Home Manager modules
+  # Secrets opt-in: if you don't give any identity paths, you get no module secrets
+  # at all and everything consuming them is disabled.
   ageIdentityPaths ? [ ],
 }:
 let
@@ -13,7 +15,7 @@ let
 
   # Extract nixos and home parts from unified modules
   unifiedNixos = map (m: m.nixos or { }) modules;
-  unifiedHome  = map (m: m.home or { }) modules;
+  unifiedHome = map (m: m.home or { }) modules;
 in
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;

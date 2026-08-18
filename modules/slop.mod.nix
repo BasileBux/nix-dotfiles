@@ -66,20 +66,13 @@
         };
 
         config = {
-          # Refuse to build if no age identity is configured: the API key
-          # secrets (modules/secrets/env/api-keys/*.age) can only be decrypted
-          # with an age identity, and without one the service would silently
-          # start without any keys. Module secrets are encrypted for all entity
-          # keys, so any configured identity path works; agenix activation
-          # remains the hard backstop if the identity can't actually decrypt.
-          # TODO: maybe add a secrets or age setting which atests that you have a valid identity for the secrets
           assertions = [
             {
-              assertion = config.age.identityPaths != [ ];
+              assertion = config.my.secrets.enabled;
               message = ''
                 The t3 module needs an age identity to decrypt the API key
-                secrets (modules/secrets/env/api-keys/*.age), but
-                age.identityPaths is empty.
+                secrets (modules/secrets/env/api-keys/*.age), but no identity
+                is configured (my.secrets.enabled is false).
                 Set ageIdentityPaths in hosts/<host>/<host>.mod.nix, e.g.
                 ageIdentityPaths = [ "/home/<user>/.ssh/<host>" ];
               '';
