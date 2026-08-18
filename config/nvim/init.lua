@@ -63,6 +63,7 @@ vim.g.mkdp_filetypes = { "markdown" }
 require("settings")
 require("keymaps")
 require("autocommands")
+require("commands")
 require("status-line")
 
 require("hex_colorizer")
