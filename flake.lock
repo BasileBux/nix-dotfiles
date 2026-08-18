@@ -670,8 +670,29 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_4",
         "qq": "qq",
+        "simple-todo": "simple-todo",
         "systems": "systems_3",
         "zen-browser": "zen-browser"
+      }
+    },
+    "simple-todo": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787085146,
+        "narHash": "sha256-DXvSSBaOw9JSL9sH1nHtdDrXlhfQmRju88ZHvR2cEpk=",
+        "owner": "BasileBux",
+        "repo": "simple-todo",
+        "rev": "f17e6c9dcd9ae5fd9674b2e244da31ab498dd2de",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BasileBux",
+        "repo": "simple-todo",
+        "type": "github"
       }
     },
     "systems": {
