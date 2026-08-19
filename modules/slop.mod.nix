@@ -126,4 +126,87 @@
         };
       };
   };
+
+  flake.module.paseo = {
+    nixos =
+      {
+        inputs,
+        pkgs,
+        config,
+        lib,
+        ...
+      }:
+      let
+        apiKeySecrets = lib.filter (s: lib.hasPrefix "modules/secrets/env/api-keys/" s.path) (
+          import ./secrets/env-secrets.nix { inherit lib; }
+        );
+        paseo = inputs.paseo.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      in
+      {
+
+        options.my.paseoHost = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+          description = "The host address to serve passeo on";
+        };
+
+        config = {
+          assertions = [
+            {
+              assertion = config.my.secrets.enabled;
+              message = ''
+                The paseo module needs an age identity to decrypt the API key
+                secrets (modules/secrets/env/api-keys/*.age), but no identity
+                is configured (my.secrets.enabled is false).
+                Set ageIdentityPaths in hosts/<host>/<host>.mod.nix, e.g.
+                ageIdentityPaths = [ "/home/<user>/.ssh/<host>" ];
+              '';
+            }
+          ];
+
+          environment.systemPackages = [
+            paseo
+          ];
+
+          systemd.services.paseo = {
+            description = "Paseo Code server";
+            wantedBy = [ "multi-user.target" ];
+            wants = [ "network-online.target" ];
+            after = [
+              "network-online.target"
+              "tailscaled.service"
+            ];
+            serviceConfig = {
+              Type = "exec";
+              User = config.my.settings.username;
+              Environment = [
+                "HOME=/home/${config.my.settings.username}"
+                "SHELL=/run/current-system/sw/bin/bash"
+                "PATH=/run/current-system/sw/bin"
+                "PASEO_HOME=/home/${config.my.settings.username}/.config/paseo"
+              ];
+              RuntimeDirectory = "paseo";
+              RuntimeDirectoryMode = "0700";
+              EnvironmentFile = "-/run/paseo/env";
+              ExecStartPre = pkgs.writeShellScript "paseo-secrets-env" ''
+                set -euo pipefail
+                umask 077
+                envFile=/run/paseo/env
+                : > "$envFile"
+                ${lib.concatStringsSep "\n" (
+                  map (s: ''
+                    printf '%s=%s\n' '${s.name}' "$(cat '${
+                      config.age.secrets.${s.path}.path
+                    }' | tr -d '\n')" >> "$envFile"
+                  '') apiKeySecrets
+                )}
+              '';
+              ExecStart = "${paseo}/bin/paseo daemon start --listen ${config.my.paseoHost}:6767 --web-ui --no-relay --foreground";
+              Restart = "on-failure";
+              RestartSec = 10;
+            };
+          };
+        };
+      };
+  };
 }

@@ -615,6 +615,26 @@
         "type": "github"
       }
     },
+    "paseo": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787158406,
+        "narHash": "sha256-BEEtZHMKX5jhGBvAF9VCcNCb9iFUTyPeMWnkEd+CO1w=",
+        "owner": "getpaseo",
+        "repo": "paseo",
+        "rev": "4391c476155142d5927be7f92dd5896ff1404b45",
+        "type": "github"
+      },
+      "original": {
+        "owner": "getpaseo",
+        "repo": "paseo",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -669,6 +689,7 @@
         "hyprland": "hyprland",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_4",
+        "paseo": "paseo",
         "qq": "qq",
         "simple-todo": "simple-todo",
         "systems": "systems_3",
