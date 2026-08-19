@@ -1,6 +1,5 @@
 { inputs, lib }:
 {
-  hostName,
   system ? "x86_64-linux",
   settings,
   modules ? [ ], # unified { nixos, home } modules (from flakeModules)
@@ -11,7 +10,7 @@
   ageIdentityPaths ? [ ],
 }:
 let
-  hardwarePath = ../hosts/${hostName}/hardware-configuration.nix;
+  hardwarePath = ../hosts/${settings.hostname}/hardware-configuration.nix;
 
   # Extract nixos and home parts from unified modules
   unifiedNixos = map (m: m.nixos or { }) modules;

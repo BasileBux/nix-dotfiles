@@ -9,7 +9,6 @@
       gitName = "BasileBux";
       gitEmail = "basile.buxtorf@ik.me";
     };
-    hostName = settings.hostname;
     system = "aarch64-linux";
     ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
