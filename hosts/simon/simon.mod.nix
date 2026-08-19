@@ -62,8 +62,8 @@ let
       # Wake or shut down kamina (raspberry pi) through upsnap
       def kamina [action: string] {
           print $action
-          if $action != "on" and $action != "off" {
-              print "Wrong action, usage: kamina on/off"
+          if $action != "on" and $action != "off" and $action != "reboot" {
+              print "Wrong action, usage: kamina on/off/reboot"
               return
           }
 
@@ -87,10 +87,13 @@ let
           let id = ($devices.items | where name == "Kamina" | first | get id)
 
           if $action == "on" {
-              http get $"($url)/api/upsnap/wake/($id)" --headers [Authorization $"Bearer ($token)"]
+              http get $"($url)/api/upsnap/wake/($id)" --headers [Authorization $"Bearer ($token)"] --allow-errors
           }
           if $action == "off" {
               http get $"($url)/api/upsnap/shutdown/($id)" --headers [Authorization $"Bearer ($token)"] --allow-errors
+          }
+          if $action == "reboot" {
+              http get $"($url)/api/upsnap/reboot/($id)" --headers [Authorization $"Bearer ($token)"] --allow-errors
           }
       }
     '';
