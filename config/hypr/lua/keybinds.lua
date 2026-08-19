@@ -76,13 +76,18 @@ hl.bind(
 hl.bind(mainMod .. " + ALT + G", input.swap_lalt_lwin)
 
 -- Special workspaces
-hl.bind(mainMod .. " + semicolon", hl.dsp.workspace.toggle_special("sagepopup"))
-hl.bind(mainMod .. " + apostrophe", hl.dsp.workspace.toggle_special("scratch"))
-hl.bind(mainMod .. " + CTRL + apostrophe", hl.dsp.window.move({ workspace = "special:scratch" }))
-hl.bind(mainMod .. " + slash", hl.dsp.workspace.toggle_special("junk"))
-hl.bind(mainMod .. " + CTRL + slash", hl.dsp.window.move({ workspace = "special:junk", silent = true }))
-hl.bind(mainMod .. " + period", hl.dsp.workspace.toggle_special("multitasking"))
-hl.bind(mainMod .. " + CTRL + period", hl.dsp.window.move({ workspace = "special:multitasking", silent = true }))
+local special_workspaces = {
+	{ key = "semicolon", name = "sagepopup" },
+	{ key = "apostrophe", name = "scratch" },
+	{ key = "Return", name = "quick-ai" },
+	{ key = "slash", name = "todo" },
+	{ key = "period", name = "junk_1" },
+	{ key = "comma", name = "junk_2" },
+}
+for _, ws in ipairs(special_workspaces) do
+	hl.bind(mainMod .. " + " .. ws.key, hl.dsp.workspace.toggle_special(ws.name))
+	hl.bind(mainMod .. " + CTRL + " .. ws.key, hl.dsp.window.move({ workspace = "special:" .. ws.name, silent = true }))
+end
 
 -- Window management
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
