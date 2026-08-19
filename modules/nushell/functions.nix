@@ -48,4 +48,19 @@ pkgs.writeText "functions.nu" /* nu */ ''
     mkdir $path
     cd $path
   }
+
+  # Stolen from ncc
+  # `which`, but with the paths of externals canonicalized.
+  def realwhich [
+    ...applications: string
+    --all (-a) # List all executables.
+  ]: nothing -> table {
+    which --all=$all ...$applications
+    | update path {|row| match $row.type {
+        "external" => { $row.path | path expand }
+        _ => $row.path
+      } }
+  }
 ''
+
+
