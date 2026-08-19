@@ -12,7 +12,6 @@
     ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
     modules = with inputs.self.flakeModules; [
-      smb
       tailscale
       ssh-server
       tmux

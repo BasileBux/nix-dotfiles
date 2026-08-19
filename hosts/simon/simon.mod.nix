@@ -1,4 +1,4 @@
-{ lib, inputs, ... }:
+{ lib, inputs, settings, ... }:
 let
   hyprland-config = {
     monitors = {
@@ -98,6 +98,11 @@ let
       }
     '';
   };
+  smb-config = {
+    host = "100.86.179.75";
+    destination = "/home";
+    mountPoint = "/home/${settings.username}/synology";
+  };
 in
 {
   flake.nixosConfigurations.simon = (import ../../lib/mkHost.nix { inherit inputs lib; }) rec {
@@ -126,6 +131,7 @@ in
         my.hyprland = hyprland-config;
         my.nushell = nushell-config;
         my.quickshell = quickshell-config;
+        my.smb = smb-config;
       }
       {
         age.secrets."hosts/simon/kamina-upsnap-password.age" = {
