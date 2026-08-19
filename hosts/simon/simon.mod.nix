@@ -53,12 +53,46 @@ let
     accentColor = "#fb8b1e";
     extraConfig = /* nu */ ''
       alias vpn = sh ($env.HOME)/nixos/scripts/tailscale-exit-nodes.sh
-      alias kamina = ssh basileb-pi@raspberrypi -- wakeonlan -i 192.168.1.149 78:55:36:0b:3f:d4
 
       def --env config [] { cd ($env.HOME)/nixos; nvim flake.nix }
       def --env nvimconfig [] { cd ($env.HOME)/nixos/config/nvim; nvim init.lua }
       def --env qsconfig [] { cd ($env.HOME)/nixos/config/quickshell; nvim shell.qml }
       def --env hlconfig [] { cd ($env.HOME)/nixos/config/hypr; nvim hyprland.lua }
+
+      # Wake or shut down kamina (raspberry pi) through upsnap
+      def kamina [action: string] {
+          print $action
+          if $action != "on" and $action != "off" {
+              print "Wrong action, usage: kamina on/off"
+              return
+          }
+
+          let url = "https://upsnap.tail7925e1.ts.net"
+          let email = "bazil.bux@gmail.com"
+          # Decrypted by agenix on this host, readable via the age.secrets override below
+          let password = (open /run/agenix/hosts/simon/kamina-upsnap-password.age | str trim)
+
+          let auth = (
+              http post $"($url)/api/collections/_superusers/auth-with-password"
+                  {identity: $email, password: $password}
+                  --content-type application/json
+          )
+          let token = $auth.token
+
+          let devices = (
+              http get $"($url)/api/collections/devices/records?perPage=200"
+                  --headers [Authorization $"Bearer ($token)"]
+          )
+
+          let id = ($devices.items | where name == "Kamina" | first | get id)
+
+          if $action == "on" {
+              http get $"($url)/api/upsnap/wake/($id)" --headers [Authorization $"Bearer ($token)"]
+          }
+          if $action == "off" {
+              http get $"($url)/api/upsnap/shutdown/($id)" --headers [Authorization $"Bearer ($token)"] --allow-errors
+          }
+      }
     '';
   };
 in
@@ -90,6 +124,13 @@ in
         my.hyprland = hyprland-config;
         my.nushell = nushell-config;
         my.quickshell = quickshell-config;
+      }
+      {
+        age.secrets."hosts/simon/kamina-upsnap-password.age" = {
+          owner = settings.username;
+          group = "users";
+          mode = "0400";
+        };
       }
       inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
     ];
