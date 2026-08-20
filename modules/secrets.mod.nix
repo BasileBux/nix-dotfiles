@@ -19,8 +19,9 @@ let
   # Load auto-discovery data
   discoveredSecrets = import ../secrets.nix;
 
-  # Module secrets (paths starting with "modules/") → user-readable
-  moduleSecretNames = builtins.filter (hasPrefix "modules/") (builtins.attrNames discoveredSecrets);
+  userReadableSecretNames = builtins.filter (
+    name: hasPrefix "modules/" name || hasPrefix "packages/fonts/" name
+  ) (builtins.attrNames discoveredSecrets);
 in
 {
   flake.module.secrets = {
@@ -61,10 +62,13 @@ in
 
           # Register secrets. Host secrets (hosts/<host>/*.age) are always
           # registered; they only exist for hosts that own them. Module secrets
-          # (modules/**/*.age) are only registered when this host has an age
-          # identity: without one they can't be decrypted, and registering them
-          # would trip agenix's eval-time assertion (age.identityPaths must be
-          # set) or fail activation.
+          # (modules/**/*.age) and encrypted font payloads
+          # (packages/fonts/**/*.age) are only registered when this host has an
+          # age identity: without one they can't be decrypted, and registering
+          # them would trip agenix's eval-time assertion (age.identityPaths
+          # must be set) or fail activation. Font payloads are decrypted at
+          # activation (not build time) and extracted into ~/.local/share/fonts
+          # by the fonts module.
           {
             age.secrets =
               let
@@ -73,13 +77,12 @@ in
               builtins.mapAttrs (_: v: { file = v.file; }) (
                 lib.filterAttrs (
                   name: _:
-                  lib.hasPrefix hostPrefix name
-                  || (config.my.secrets.enabled && !(lib.hasPrefix "hosts/" name))
+                  lib.hasPrefix hostPrefix name || (config.my.secrets.enabled && !(lib.hasPrefix "hosts/" name))
                 ) discoveredSecrets
               );
           }
 
-          # Module secrets: make them readable by the primary user. Gated on
+          # Module + font secrets: make them readable by the primary user. Gated on
           # my.secrets.enabled so that keyless hosts don't end up with
           # age.secrets entries lacking a `file` (which would re-trigger
           # agenix's identityPaths assertion).
@@ -92,7 +95,7 @@ in
                   group = "users";
                   mode = "0400";
                 };
-              }) moduleSecretNames
+              }) userReadableSecretNames
             );
           })
 

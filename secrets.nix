@@ -47,6 +47,7 @@ let
   # The secret name is the path including .age, e.g.:
   #   modules/secrets/env/api-keys/anthropic.age → "modules/secrets/env/api-keys/anthropic.age"
   #   hosts/simon/password.age                  → "hosts/simon/password.age"
+  #   packages/fonts/TX-02/tx-02.tar.gz.age    → "packages/fonts/TX-02/tx-02.tar.gz.age"
   # The .age suffix is kept so ragenix/agenix CLI can match filenames exactly.
 
   # Host secrets: hosts/<host>/*.age → encrypted for that host + admin keys
@@ -76,5 +77,21 @@ let
         publicKeys = uniq <| attrValues entitiesImport.keys;
       };
     });
+
+  # Font secrets: packages/fonts/**/*.age → encrypted for ALL keys (module-secret
+  # semantics) so any host with an identity can decrypt them. They are rekeyed
+  # alongside everything else but deliberately NOT registered as agenix secrets
+  # (see the filter in modules/secrets.mod.nix): encrypted fonts are decrypted
+  # at build time instead, so agenix never materializes the paid font plaintext.
+  fontSecrets =
+    listFilesRecursive "packages/fonts" ./packages/fonts
+    |> filter isAge
+    |> map (path: {
+      name = path;
+      value = {
+        file = ./. + "/${path}";
+        publicKeys = uniq <| attrValues entitiesImport.keys;
+      };
+    });
 in
-listToAttrs (hostSecrets ++ moduleSecrets)
+listToAttrs (hostSecrets ++ moduleSecrets ++ fontSecrets)
