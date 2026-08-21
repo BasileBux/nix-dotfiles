@@ -70,7 +70,7 @@
               target="$HOME/.local/share/fonts/${f.name}"
               if [[ -f "$secret" ]]; then
                 mkdir -p "$target"
-                ${pkgs.gnutar}/bin/tar -xzf "$secret" -C "$target" --overwrite
+                ${pkgs.gzip}/bin/zcat "$secret" | ${pkgs.gnutar}/bin/tar -x -C "$target" --overwrite
                 ${pkgs.fontconfig}/bin/fc-cache -f "$HOME/.local/share/fonts" >/dev/null 2>&1 || true
               fi
             '';
