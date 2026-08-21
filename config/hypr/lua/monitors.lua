@@ -1,50 +1,107 @@
 local config = require("config")
 
-local monitors_setup = function()
-	local primary_mon = config.monitors.primary
-	local secondary_mon = config.monitors.secondary
-	hl.monitor({
-		output = "desc:" .. primary_mon.description,
-		mode = primary_mon.mode,
-		position = primary_mon.position,
-		scale = primary_mon.scale,
-	})
+local classify = function(mons)
+	local builtin = nil
+	local known = {}
+	local unknowns = {}
 
-	hl.monitor({
-		output = "desc:" .. secondary_mon.description,
-		mode = secondary_mon.mode,
-		position = secondary_mon.position,
-		scale = secondary_mon.scale,
-	})
+	for _, entry in ipairs(config.monitors) do
+		for _, mon in pairs(mons) do
+			if mon.description == entry.description then
+				if entry.builtin then
+					builtin = { entry = entry }
+				else
+					table.insert(known, { entry = entry })
+				end
+			end
+		end
+	end
 
-	local mons = hl.get_monitors()
-	local found_secondary = false
+	local known_descs = {}
+	for _, entry in ipairs(config.monitors) do
+		known_descs[entry.description] = true
+	end
 	for _, mon in pairs(mons) do
-		if mon.description == secondary_mon.description then
-			found_secondary = true
+		if not known_descs[mon.description] then
+			table.insert(unknowns, mon)
+		end
+	end
+
+	return builtin, known, unknowns
+end
+
+local enable = function(entry)
+	hl.monitor({
+		output = "desc:" .. entry.description,
+		mode = entry.mode,
+		position = "0x0",
+		scale = entry.scale,
+	})
+end
+
+local disable_all_except = function(description)
+	for _, mon in pairs(hl.get_monitors()) do
+		if mon.description ~= description then
 			hl.monitor({
-				output = "desc:" .. primary_mon.description,
+				output = "desc:" .. mon.description,
 				disabled = true,
 			})
 		end
 	end
+end
 
-	-- Mirror all monitors which aren't the secondary one
-	if not found_secondary and #mons > 1 then
+local monitors_setup = function()
+	local mons = hl.get_monitors()
+	local builtin, known, unknowns = classify(mons)
+
+	if #known > 0 then
+		-- A known external is always the most important monitor: enable the first
+		-- one in priority order and disable everything else (builtin included).
+		local driver = known[1].entry
+		enable(driver)
+		disable_all_except(driver.description)
+	elseif builtin ~= nil then
+		local b = builtin.entry
+		if #unknowns > 0 and b.mirror ~= nil then
+			-- Unknown outputs (projectors, TVs, ...): drive from the builtin panel
+			-- forced to its 16:9 mirror mode, and mirror every unknown onto it.
+			enable({ description = b.description, mode = b.mirror.mode, scale = b.mirror.scale })
+			hl.monitor({
+				output = "", -- generic rule: applies to all monitors without a specific one
+				mode = "preferred",
+				position = "auto",
+				scale = "auto",
+				mirror = "desc:" .. b.description,
+			})
+		else
+			-- Builtin alone (or unknowns but no mirror config): native mode.
+			enable(b)
+			for _, mon in pairs(unknowns) do
+				hl.monitor({
+					output = "desc:" .. mon.description,
+					disabled = true,
+				})
+			end
+		end
+	elseif #unknowns > 0 then
+		-- No builtin (tower or laptop with panel gone): enable the first unknown
+		-- at its preferred mode, disable any other unknowns. One at a time.
 		hl.monitor({
-			output = "desc:" .. primary_mon.description,
-			mode = primary_mon.mirror.mode, -- To have 16:9 aspect ratio for mirroring
-			scale = primary_mon.mirror.scale,
-			disabled = false,
-		})
-		hl.monitor({
-			output = "",
+			output = "desc:" .. unknowns[1].description,
 			mode = "preferred",
-			position = "auto",
+			position = "0x0",
 			scale = "auto",
-			mirror = "desc:" .. primary_mon.description,
 		})
+		for i, mon in pairs(unknowns) do
+			if i > 1 then
+				hl.monitor({
+					output = "desc:" .. mon.description,
+					disabled = true,
+				})
+			end
+		end
 	end
+
 	hl.exec_cmd("systemctl --user restart quickshell.service")
 end
 

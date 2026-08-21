@@ -10,44 +10,62 @@ in
 {
   flake.module.hyprland = {
     nixos =
-      { pkgs, lib, ... }:
+      {
+        config,
+        pkgs,
+        lib,
+        ...
+      }:
+      let
+        cfg = config.my.hyprland;
+        monitorSubmodule = lib.types.submodule {
+          options = {
+            description = lib.mkOption {
+              type = lib.types.str;
+              description = "EDID description of the monitor (as shown by `hyprctl monitors`).";
+            };
+            mode = lib.mkOption {
+              type = lib.types.str;
+              description = "Native mode, e.g. \"2560x1600@60.00Hz\".";
+            };
+            scale = lib.mkOption {
+              type = lib.types.str;
+            };
+            builtin = lib.mkOption {
+              type = lib.types.bool;
+              default = false;
+              description = "Whether this is a builtin laptop panel. At most one monitor may be builtin.";
+            };
+            mirror = lib.mkOption {
+              type = lib.types.nullOr (
+                lib.types.submodule {
+                  options = {
+                    mode = lib.mkOption {
+                      type = lib.types.str;
+                      description = "16:9 mode the builtin panel advertises, used when mirroring unknown outputs.";
+                    };
+                    scale = lib.mkOption { type = lib.types.str; };
+                  };
+                }
+              );
+              default = null;
+              description = "Mode/scale to force on the builtin panel while mirroring unknown outputs. Only valid on the builtin monitor.";
+            };
+          };
+        };
+      in
       {
         options.my.hyprland = lib.mkOption {
           type = lib.types.submodule {
             options = {
               monitors = lib.mkOption {
-                type = lib.types.submodule {
-                  options = {
-                    primary = lib.mkOption {
-                      type = lib.types.submodule {
-                        options = {
-                          description = lib.mkOption { type = lib.types.str; };
-                          mode = lib.mkOption { type = lib.types.str; };
-                          position = lib.mkOption { type = lib.types.str; };
-                          scale = lib.mkOption { type = lib.types.str; };
-                          mirror = lib.mkOption {
-                            type = lib.types.submodule {
-                              options = {
-                                mode = lib.mkOption { type = lib.types.str; };
-                                scale = lib.mkOption { type = lib.types.str; };
-                              };
-                            };
-                          };
-                        };
-                      };
-                    };
-                    secondary = lib.mkOption {
-                      type = lib.types.submodule {
-                        options = {
-                          description = lib.mkOption { type = lib.types.str; };
-                          mode = lib.mkOption { type = lib.types.str; };
-                          position = lib.mkOption { type = lib.types.str; };
-                          scale = lib.mkOption { type = lib.types.str; };
-                        };
-                      };
-                    };
-                  };
-                };
+                type = lib.types.listOf monitorSubmodule;
+                description = ''
+                  Known monitors, ordered by priority. The first known connected
+                  monitor is always the one enabled; everything else is disabled.
+                  If only unknown outputs are connected and a builtin panel is
+                  present, the builtin drives and all unknowns mirror onto it.
+                '';
               };
               brightness = lib.mkOption {
                 type = lib.types.submodule {
@@ -74,6 +92,16 @@ in
         };
         imports = [ hypridleModule ];
         config = {
+          assertions = [
+            {
+              assertion = lib.length (lib.filter (m: m.builtin) cfg.monitors) <= 1;
+              message = "my.hyprland.monitors: at most one monitor may be marked as builtin";
+            }
+            {
+              assertion = lib.all (m: m.builtin || m.mirror == null) cfg.monitors;
+              message = "my.hyprland.monitors: `mirror` is only valid on the monitor marked as builtin";
+            }
+          ];
           nix.settings = {
             substituters = [ "https://hyprland.cachix.org" ];
             trusted-substituters = [ "https://hyprland.cachix.org" ];
@@ -94,6 +122,7 @@ in
       {
         config,
         pkgs,
+        lib,
         osConfig,
         ...
       }:
@@ -106,28 +135,22 @@ in
 
         luaConfig =
           let
-            m = hyprland.monitors;
+            ms = hyprland.monitors;
             b = hyprland.brightness;
+
+            luaMonitor =
+              m:
+              "\t\t{ description = ${luaString m.description}, mode = ${luaString m.mode}, scale = ${luaString m.scale}, builtin = ${lib.boolToString m.builtin}, mirror = ${
+                if m.mirror == null then
+                  "nil"
+                else
+                  "{ mode = ${luaString m.mirror.mode}, scale = ${luaString m.mirror.scale} }"
+              } }";
           in
           ''
             return {
             	monitors = {
-            		primary = {
-            			description = ${luaString m.primary.description},
-            			mode = ${luaString m.primary.mode},
-            			position = ${luaString m.primary.position},
-            			scale = ${luaString m.primary.scale},
-            			mirror = {
-            				mode = ${luaString m.primary.mirror.mode},
-            				scale = ${luaString m.primary.mirror.scale},
-            			},
-            		},
-            		secondary = {
-            			description = ${luaString m.secondary.description},
-            			mode = ${luaString m.secondary.mode},
-            			position = ${luaString m.secondary.position},
-            			scale = ${luaString m.secondary.scale},
-            		},
+            ${builtins.concatStringsSep ",\n" (map luaMonitor ms)}
             	},
             	brightness = {
             		monitor = ${luaString b.monitor},
