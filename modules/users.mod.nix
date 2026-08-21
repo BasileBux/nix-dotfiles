@@ -3,19 +3,16 @@ let
   userModule =
     { config, pkgs, ... }:
     let
-      username = config.my.settings.username;
-      hostname = config.networking.hostName;
-      secretName = "hosts/${hostname}/${username}.age";
-      hasPassword = config.age.secrets ? "${secretName}";
+      secretName = "hosts/${config.networking.hostName}/password.age";
     in
     {
-      users.users.${username} = {
+      users.users.${config.my.settings.username} = {
         isNormalUser = true;
         extraGroups = [ "wheel" ];
         shell = pkgs.nushell;
         ignoreShellProgramCheck = true;
       }
-      // lib.optionalAttrs hasPassword {
+      // lib.optionalAttrs (config.age.secrets ? "${secretName}") {
         hashedPasswordFile = config.age.secrets.${secretName}.path;
       };
       users.defaultUserShell = pkgs.nushell;
