@@ -101,13 +101,16 @@
           Unit = {
             Description = "Quickshell desktop shell";
             After = [ "graphical-session.target" ];
-            Slice = "app-graphical.slice";
+            # Headroom for monitor-hotplug restart bursts; the default of 5
+            # starts per 10s once latched the unit into a failed state.
+            StartLimitBurst = 15;
           };
           Service = {
             Type = "exec";
             ExecStart = "${lib.getExe pkgs.quickshell}";
             Restart = "on-failure";
             RestartSec = 3;
+            Slice = "app-graphical.slice";
           };
           Install = {
             WantedBy = [ "graphical-session.target" ];

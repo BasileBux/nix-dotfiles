@@ -1,5 +1,14 @@
 local config = require("config")
 
+-- Description of the monitor layout we last converged to. Used to only
+-- restart quickshell when the effective layout actually changes, instead of
+-- on every monitor event.
+local last_key = nil
+
+-- Timestamp (os.time) of the last recovery reload issued by the
+-- `monitor.removed` handler below, used to keep reload cascades from chaining.
+local last_recovery_reload = 0
+
 local classify = function(mons)
 	local builtin = nil
 	local known = {}
@@ -50,6 +59,18 @@ local disable_all_except = function(description)
 	end
 end
 
+local finish = function(key)
+	-- Ignore transient empty states (mid-reload, mid output re-init): there is
+	-- nothing to show a shell on, and restarting quickshell for them would only
+	-- burn through systemd's start limit. Keep `last_key` untouched so the real
+	-- layout that follows still counts as a change.
+	if key == "none" or key == last_key then
+		return
+	end
+	last_key = key
+	hl.exec_cmd("systemctl --user restart quickshell.service")
+end
+
 local monitors_setup = function()
 	local mons = hl.get_monitors()
 	local builtin, known, unknowns = classify(mons)
@@ -60,6 +81,7 @@ local monitors_setup = function()
 		local driver = known[1].entry
 		enable(driver)
 		disable_all_except(driver.description)
+		finish("known:" .. driver.description)
 	elseif builtin ~= nil then
 		local b = builtin.entry
 		if #unknowns > 0 and b.mirror ~= nil then
@@ -73,6 +95,7 @@ local monitors_setup = function()
 				scale = "auto",
 				mirror = "desc:" .. b.description,
 			})
+			finish("mirror:" .. b.description .. ":" .. #unknowns)
 		else
 			-- Builtin alone (or unknowns but no mirror config): native mode.
 			enable(b)
@@ -82,6 +105,7 @@ local monitors_setup = function()
 					disabled = true,
 				})
 			end
+			finish("builtin:" .. b.description)
 		end
 	elseif #unknowns > 0 then
 		-- No builtin (tower or laptop with panel gone): enable the first unknown
@@ -100,19 +124,35 @@ local monitors_setup = function()
 				})
 			end
 		end
+		finish("unknown:" .. unknowns[1].description)
+	else
+		finish("none")
 	end
-
-	hl.exec_cmd("systemctl --user restart quickshell.service")
 end
 
 monitors_setup()
 
 hl.on("monitor.removed", function()
-	local mons = hl.get_monitors()
-	if #mons == 1 then
-		-- We cannot simply run `monitors_setup()` because for some reason it won't
-		-- re-enable the primary monitor if it's disabled
-		hl.exec_cmd("hyprctl reload")
+	-- Only recover when no enabled monitor is left (e.g. the driver was
+	-- unplugged while the builtin panel is disabled). Reacting to removals we
+	-- caused ourselves (disabling the builtin because a known external is
+	-- plugged in) would re-enable it and feed an infinite
+	-- disable -> removed -> reload -> re-enable -> added loop.
+	if #hl.get_monitors() == 0 then
+		-- We cannot simply run `monitors_setup()` because a disabled monitor no
+		-- longer shows up in `get_monitors()`, so there is nothing left to match
+		-- against. A reload makes Hyprland re-apply the config and bring the
+		-- remaining panel back.
+		--
+		-- Cooldown: re-enabling an output can make it re-init, which briefly
+		-- fires another removal with an empty list. Without this guard each such
+		-- removal would trigger yet another full reload (and reset this script's
+		-- state), chaining into a burst of restarts.
+		local now = os.time()
+		if now - last_recovery_reload >= 2 then
+			last_recovery_reload = now
+			hl.exec_cmd("hyprctl reload")
+		end
 	end
 end)
 
