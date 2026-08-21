@@ -47,7 +47,7 @@
             user.name = settings.gitName;
             user.email = settings.gitEmail;
             ui = {
-              default-command = "log";
+              default-command = "log"; # `jj log -r ::` for the full log
               editor = "nvim";
             };
             signing = {
