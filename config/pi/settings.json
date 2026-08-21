@@ -1,6 +1,6 @@
 {
-  "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-flash",
+  "defaultProvider": "openrouter",
+  "defaultModel": "stealth/ox-alpha",
   "defaultThinkingLevel": "high",
   "hideThinkingBlock": true,
   "collapseChangelog": true,
@@ -11,7 +11,8 @@
     "deepseek/deepseek-v4-pro",
     "deepseek/deepseek-v4-flash",
     "google/gemini-3.1-pro-preview",
-    "moonshotai/kimi-k2.7-code"
+    "moonshotai/kimi-k2.7-code",
+    "openrouter/stealth/ox-alpha"
   ],
   "enableInstallTelemetry": false,
   "packages": [
