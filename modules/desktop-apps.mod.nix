@@ -8,6 +8,11 @@
 
         sage # For the popup calculator
       ];
+      nixpkgs.overlays = [
+        (final: prev: {
+          sage = prev.sage.override { requireSageTests = false; };
+        })
+      ];
     };
   };
 }
