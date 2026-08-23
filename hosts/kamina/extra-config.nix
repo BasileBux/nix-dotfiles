@@ -48,6 +48,7 @@ in
 
   environment.systemPackages = [
     todo
+    pkgs.codex
   ];
 
   systemd.services.simple-todo = {
