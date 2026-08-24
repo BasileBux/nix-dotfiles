@@ -1,6 +1,6 @@
 {
-  "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-flash-vision-exp",
+  "defaultProvider": "zai",
+  "defaultModel": "glm-5.3-flash",
   "defaultThinkingLevel": "high",
   "hideThinkingBlock": true,
   "collapseChangelog": true,
@@ -12,8 +12,9 @@
     "deepseek/deepseek-v4-pro",
     "deepseek/deepseek-v4-flash",
     "deepseek-v4-flash-vision-exp",
+    "zai/glm-5.3-flash",
     "google/gemini-3.1-pro-preview",
-    "moonshotai/kimi-k2.7-code",
+    "moonshotai/kimi-k2.7-code"
   ],
   "enableInstallTelemetry": false,
   "packages": [
