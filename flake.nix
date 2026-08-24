@@ -38,6 +38,12 @@
 
     hyprland.url = "github:hyprwm/hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-raspberrypi = {
+      # Pin to the commit our installer artifact was built from (nixpkgs
+      # 26.05.20260820): its kernel/firmware closures are cached against that
+      # exact revision. Bump deliberately; other revs rebuild the rpi kernel.
+      url = "github:nvmd/nixos-raspberrypi/84356fb05fa04cc06df45d479e1e3c6a75540f20";
+    };
     helium.url = "github:amaanq/helium-flake";
     agenix = {
       url = "github:ryantm/agenix";

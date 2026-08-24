@@ -1,5 +1,8 @@
-{ inputs, lib }:
 {
+  inputs,
+  lib,
+  nixosSystem ? inputs.nixpkgs.lib.nixosSystem,
+}: {
   system ? "x86_64-linux",
   settings,
   modules ? [ ], # unified { nixos, home } modules (from flakeModules)
@@ -16,7 +19,7 @@ let
   unifiedNixos = map (m: m.nixos or { }) modules;
   unifiedHome = map (m: m.home or { }) modules;
 in
-inputs.nixpkgs.lib.nixosSystem {
+nixosSystem {
   inherit system;
   specialArgs = {
     inherit inputs;

@@ -40,6 +40,11 @@ let
       hostname = "asbel.xyz";
       port = 2222;
     }
+    {
+      host = "genome";
+      hostname = "genome.tail7925e1.ts.net";
+      port = 2222;
+    }
   ];
 in
 {
@@ -60,6 +65,7 @@ in
       {
         inputs,
         config,
+        lib,
         ...
       }:
       {
@@ -67,10 +73,21 @@ in
           {
             options.my.ssh = lib.mkOption {
               type = lib.types.submodule {
-                options.extraAuthorizedKeys = lib.mkOption {
-                  type = lib.types.listOf lib.types.str;
-                  default = [ ];
-                  description = "Additional SSH public keys added to authorized_keys";
+                options = {
+                  # fail2ban protects SSH from brute force; on by default, but a
+                  # host can disable it (e.g. headless/key-only boxes where a
+                  # misbehaving agent might get the admin IP banned and lock
+                  # everyone out). sshd stays enabled regardless.
+                  enableFail2ban = lib.mkOption {
+                    type = lib.types.bool;
+                    default = true;
+                    description = "Whether to enable fail2ban (SSH jails)";
+                  };
+                  extraAuthorizedKeys = lib.mkOption {
+                    type = lib.types.listOf lib.types.str;
+                    default = [ ];
+                    description = "Additional SSH public keys added to authorized_keys";
+                  };
                 };
               };
               default = { };
@@ -96,7 +113,8 @@ in
         users.users.${config.my.settings.username}.openssh.authorizedKeys.keys =
           inputs.self.keys-admin ++ config.my.ssh.extraAuthorizedKeys;
 
-        services.fail2ban = {
+        # fail2ban SSH jail. See my.ssh.enableFail2ban (on by default).
+        services.fail2ban = lib.mkIf config.my.ssh.enableFail2ban {
           enable = true;
           maxretry = 10;
           bantime = "24h";
