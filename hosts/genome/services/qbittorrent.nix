@@ -32,7 +32,7 @@ in
   networking.firewall.allowedTCPPorts = [ gs.ports.torrentPeers ];
   networking.firewall.allowedUDPPorts = [ gs.ports.torrentPeers ];
 
-  users.users.qbittorrent.extraGroups = [ "users" ];
+  users.users.qbittorrent.extraGroups = [ "media" ];
 
   systemd.services.qbittorrent = {
     path = [ pkgs.openssh pkgs.rsync pkgs.curl pkgs.bash ];

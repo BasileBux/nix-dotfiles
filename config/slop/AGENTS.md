@@ -3,7 +3,8 @@
 This machine runs NixOS. Here is what you need to know:
 
 - **System configuration** lives at `~/nixos/`. That is where the main `flake.nix` and related files are.
-- **Hosts** are defined in `~/nixos/hosts/`. Each time I mention a host (e.g., `kamina`, `simon`, `yoko`), I am referring to a host defined in that directory.
+- **Hosts** are defined in `~/nixos/hosts/`. Each time I mention a host (e.g., `kamina`, `simon`, `yoko`), I am referring to a host defined in that directory. When asked to edit a config, always edit the config on the current host, unless explicitly asked to edit another host.
+- **Simon** host is the desktop machine used to manage all the other machines. If you are running on the simon host, you can, if explicitly allowed, access any other host in the tailnet via `ssh <host>`.
 - **Paths are not standard FHS**: binaries are under `/run/current-system/sw/bin/`, not `/usr/bin`. Do not assume `/bin/bash` — always use `/usr/bin/env` if you need it (it is patched), or better, call programs by name and rely on `PATH`.
 - **Missing software**: if a program you need is not found, you can use `nix-shell -p <package>` to temporarily get it. Example: `nix-shell -p ffmpeg --run "ffmpeg -version"`.
 - **Only use `nix-shell -p` when the user explicitly says "use nixpkgs" or "use nix-shell" in their prompt.** Otherwise, report what is missing and ask.
