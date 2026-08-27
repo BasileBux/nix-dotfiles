@@ -6,22 +6,22 @@ start_action() {
     vpn_ip=$1
     echo "[*] Turning ON tailscale exit node at $vpn_ip..."
     sudo tailscale set --exit-node="$vpn_ip"
-    
+
 }
 
 stop_action() {
     echo -e "\n[*] Turning OFF tailscale exit node at $vpn_ip..."
     sudo tailscale set --exit-node=
-    
+
     exit 0
 }
 
-vpn_ip="100.86.179.75"
+vpn_ip="ch-zrh-wg-201.mullvad.ts.net"
 if [[ -n "$1" ]]; then
   vpn_ip=$(tailscale exit-node list | grep -vE '^\s*#|^\s*IP\b|^\s*$' | jq -R -nc '
   [inputs | capture("^\\s*(?<IP>\\S+)\\s+(?<HOSTNAME>\\S+)\\s+(?<COUNTRY>.*?)\\s{2,}(?<CITY>.*?)\\s{2,}(?<STATUS>\\S+)\\s*$")]
   ' | jq -r '.[] | if .COUNTRY == "-" or .CITY == "-" then "\(.IP)\t\(.HOSTNAME)" else "\(.IP)\t\(.COUNTRY) - \(.CITY)" end' | column -t -s $'\t' | fzf | awk '{print $1}')
-  
+
   if [[ -z "$vpn_ip" ]]; then
     echo "Error: No exit node selected or command failed." >&2
     exit 1

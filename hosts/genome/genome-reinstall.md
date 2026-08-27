@@ -265,6 +265,10 @@ Persist both in the config (so `nixos-rebuild` keeps them):
 
 - Tailscale:
   `sudo tailscale up --advertise-tags=tag:raspberrypi --exit-node=ch-zrh-wg-001.mullvad.ts.net --exit-node-allow-lan-access=true`
+  > ⚠️ **Do NOT set the exit node by hostname** — Mullvad retires node hostnames
+  > (ch-zrh-wg-001 itself died this way, see the 2026-08-27 incident above).
+  > Pick a currently-online node from `tailscale exit-node list` instead, or
+  > better: `sudo tailscale set --auto-exit-node`.
 - Secrets env files at `/var/lib/genome-secrets/<name>.env`
   (vaultwarden, linkwarden, meilisearch, qbittorrent) — see `hosts/genome/services.nix`.
 - Media at `/media/jellyfin` owned `1000:1002`.
@@ -284,7 +288,56 @@ documented above.
 
 ## Recovery / troubleshooting (real incidents)
 
+### 2026-08-27: Dead Mullvad exit node → SSH "kex_exchange_identification: reset"
+
+**The big one.** genome's Mullvad exit node was configured **by hostname**
+(`ch-zrh-wg-001.mullvad.ts.net`, per the post-install task below). Mullvad
+retired that node; the tunnel went dead, and genome became intermittently
+unreachable over SSH for hours:
+
+```
+kex_exchange_identification: read: Connection reset by peer
+Connection reset by 100.82.254.103 port 2222
+```
+
+**Why it looks like sshd is broken (it isn't):** tailscaled's inbound proxy
+accepts the TCP handshake itself (netstack) and only then forwards to the local
+service. When the exit-node tunnel is sick, tailscaled's data plane degrades
+(its own control connection logged `connection reset by peer`), so new inbound
+connections get accepted-then-reset — while ping, established sessions and the
+box itself stay perfectly healthy. Easy to misdiagnose as a wedged sshd or
+dead machine.
+
+**Fix:** clear or re-select the exit node: `sudo tailscale set --exit-node=`
+(or pick a live one from `tailscale exit-node list`). Mullvad rotates/retires
+node hostnames constantly (`ch-zrh-wg-001` → `-002`, etc.), so never pin a
+hostname — prefer `sudo tailscale set --auto-exit-node` and let Tailscale pick.
+
+**Gotcha — the STATUS column lies for Mullvad nodes:** they are bare WireGuard
+endpoints, not full Tailscale peers, so they never answer disco probes:
+`tailscale ping` times out, and `exit-node list` flaps between "selected" and
+"selected but offline" even when the node works fine. Their peer entries have
+zero `lastSeen` and Mullvad WireGuard ports (e.g. `:51820`). Verify with real
+traffic (`curl -m 8 https://am.i.mullvad.net/ip`), not the status column.
+
+**Also note (power button):** short-pressing the case power button does
+NOTHING: `/proc/device-tree/pwr_button` exists (compatible `gpio-keys`, status
+okay) but no gpio-keys/powerkey driver ever binds with the kernelboot DTB, so
+the OS never sees the event. Only the firmware's ~5 s hold (hard PMIC cut)
+works. Shut down via SSH (`sudo poweroff`) — don't wait on a short press, and
+don't misread it as "the machine is wedged".
+
+**Emergency access:** `tailscale-ssh-enable.service` (in
+`services/tailscale-serve.nix`) runs `tailscale set --ssh=true` on every boot,
+so `tailscale ssh basileb@genome` works even with sshd broken. Requires an
+`ssh` grant in the tailnet ACL to actually connect. Also set a password for
+basileb (`sudo passwd basileb`) so the physical console is usable — key-only
+auth means a monitor + keyboard gets you nothing otherwise.
+
 ### fail2ban locking out the admin IP
+
+> This was **suspected** during the 2026-08-27 outage but ruled out — see the
+> exit-node incident above for the real cause.
 
 `modules/ssh.mod.nix` enables fail2ban with an SSH jail that bans a source IP
 after `maxretry` (10) failed auth attempts. If an agent/script connects with a
