@@ -1,20 +1,11 @@
 { config, ... }:
 {
-  my.services.vaultwarden = {
-    enable = true;
-    envFile = config.age.secrets."hosts/genome/vaultwarden.env.age".path;
-  };
+  my.services.vaultwarden.envFile = config.age.secrets."hosts/genome/vaultwarden.env.age".path;
 
-  my.services.linkwarden = {
-    enable = true;
-    secretFiles = {
-      nextauth = config.age.secrets."hosts/genome/nextauth-secret.age".path;
-      meiliMasterKey = config.age.secrets."hosts/genome/meili-master-key.age".path;
-    };
+  my.services.linkwarden.secretFiles = {
+    nextauth = config.age.secrets."hosts/genome/nextauth-secret.age".path;
+    meiliMasterKey = config.age.secrets."hosts/genome/meili-master-key.age".path;
   };
-
-  my.services.jellyfin.enable = true;
-  my.services.upsnap.enable = true;
 
   users.users.${config.my.settings.username}.extraGroups = [ "media" ];
 

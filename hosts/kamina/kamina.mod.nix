@@ -18,6 +18,7 @@
       slop
       # paseo
       t3
+      simple-todo
     ];
     nixosModules = [
       ./extra-config.nix
@@ -29,7 +30,6 @@
           # upsnap on genome (raspberry pi) through tailscale and eth0 LAN
           "from=\"192.168.1.191,100.82.254.103\"  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDUZ/0p/7j6gcvZS1Cm8f2PP2dzrNN5WSxvMJQaPLzFv upsnap@raspberrypi"
         ];
-        my.services.t3.enable = true;
       }
     ];
   };

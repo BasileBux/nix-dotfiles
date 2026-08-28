@@ -10,7 +10,11 @@
       in
       {
         options.my.services.vaultwarden = {
-          enable = lib.mkEnableOption "Vaultwarden password manager (served on the tailnet)";
+          enable = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Whether to enable Vaultwarden password manager (served on the tailnet)";
+          };
 
           port = lib.mkOption {
             type = lib.types.port;

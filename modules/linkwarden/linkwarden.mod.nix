@@ -16,7 +16,11 @@
       in
       {
         options.my.services.linkwarden = {
-          enable = lib.mkEnableOption "Linkwarden bookmark manager (served on the tailnet)";
+          enable = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Whether to enable Linkwarden bookmark manager (served on the tailnet)";
+          };
 
           port = lib.mkOption {
             type = lib.types.port;

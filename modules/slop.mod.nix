@@ -62,7 +62,11 @@
       {
 
         options.my.services.t3 = {
-          enable = lib.mkEnableOption "T3 Code server (served on the tailnet)";
+          enable = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Whether to enable T3 Code server (served on the tailnet)";
+          };
 
           port = lib.mkOption {
             type = lib.types.port;
@@ -151,7 +155,11 @@
       {
 
         options.my.services.paseo = {
-          enable = lib.mkEnableOption "Paseo code agent server (served on the tailnet)";
+          enable = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Whether to enable Paseo code agent server (served on the tailnet)";
+          };
 
           port = lib.mkOption {
             type = lib.types.port;

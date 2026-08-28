@@ -17,7 +17,11 @@
       in
       {
         options.my.services.upsnap = {
-          enable = lib.mkEnableOption "UpSnap wake-on-LAN dashboard (served on the tailnet)";
+          enable = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Whether to enable UpSnap wake-on-LAN dashboard (served on the tailnet)";
+          };
 
           port = lib.mkOption {
             type = lib.types.port;

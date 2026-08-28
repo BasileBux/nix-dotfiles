@@ -12,7 +12,11 @@
       in
       {
         options.my.services.jellyfin = {
-          enable = lib.mkEnableOption "Jellyfin media server (served on the tailnet)";
+          enable = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Whether to enable Jellyfin media server (served on the tailnet)";
+          };
 
           port = lib.mkOption {
             type = lib.types.port;
