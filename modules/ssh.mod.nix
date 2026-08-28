@@ -37,6 +37,7 @@ let
     }
     {
       host = "yoko";
+      user = "eugene";
       hostname = "asbel.xyz";
       port = 2222;
     }

@@ -64,16 +64,6 @@ let
       def --env qsconfig [] { cd ($env.HOME)/nixos/config/quickshell; nvim shell.qml }
       def --env hlconfig [] { cd ($env.HOME)/nixos/config/hypr; nvim hyprland.lua }
 
-      def --env deploy-genome [] {
-        cd ~
-        tar -czf nixos.tar.gz ./nixos/
-        scp ./nixos.tar.gz genome:~
-        ssh genome "tar -xzf ~/nixos.tar.gz -C ~; rm ~/nixos.tar.gz"
-        ssh genome "cd ~/nixos; nh os switch .#genome"
-        ssh genome "rm -rf ~/nixos"
-        rm ./nixos.tar.gz
-      }
-
       # Wake or shut down kamina (raspberry pi) through upsnap
       def kamina [action: string] {
           print $action
