@@ -73,7 +73,7 @@ let
           }
 
           let url = "${upsnapUrl}"
-          let email = "bazil.bux@gmail.com"
+          let email = "basile@genome.tail7925e1.ts.net"
           # Decrypted by agenix on this host, readable via the age.secrets override below
           let password = (open /run/agenix/hosts/simon/kamina-upsnap-password.age | str trim)
 
