@@ -26,6 +26,7 @@
           linkwarden
           jellyfin
           upsnap
+          simple-todo
         ];
 
         nixosModules = [

@@ -18,7 +18,6 @@
       slop
       # paseo
       t3
-      simple-todo
     ];
     nixosModules = [
       ./extra-config.nix

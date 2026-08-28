@@ -54,8 +54,8 @@
             };
           };
 
-          my.services.ports.simple-todo = cfg.port;
-          my.tailscale.serve.simple-todo.port = cfg.port;
+          my.services.ports.todo = cfg.port;
+          my.tailscale.serve.todo.port = cfg.port;
         };
       };
   };
