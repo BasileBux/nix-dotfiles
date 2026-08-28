@@ -2,7 +2,8 @@
   inputs,
   lib,
   nixosSystem ? inputs.nixpkgs.lib.nixosSystem,
-}: {
+}:
+{
   system ? "x86_64-linux",
   settings,
   modules ? [ ], # unified { nixos, home } modules (from flakeModules)
@@ -49,6 +50,8 @@ nixosSystem {
       networking.hostName = settings.hostname;
       system.stateVersion = settings.nixosVersion;
       my.settings = settings;
+      my.tailscale.tailnetDomain = inputs.self.tailnet.domain;
+      my.tailscale.self = inputs.self.machines.${settings.hostname}.tailscale or null;
       age.identityPaths = ageIdentityPaths;
     }
   ]

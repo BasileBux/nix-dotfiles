@@ -4,6 +4,8 @@
     nix
     users
     settings
+    services
+    tailscale-options
 
     security
     ssh-client

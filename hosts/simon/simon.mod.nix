@@ -1,9 +1,11 @@
 {
   lib,
+  self,
   inputs,
   ...
 }:
 let
+  upsnapUrl = "https://upsnap.${self.tailnet.domain}";
   hyprland-config = {
     monitors = [
       {
@@ -80,7 +82,7 @@ let
               return
           }
 
-          let url = "https://upsnap.tail7925e1.ts.net"
+          let url = "${upsnapUrl}"
           let email = "bazil.bux@gmail.com"
           # Decrypted by agenix on this host, readable via the age.secrets override below
           let password = (open /run/agenix/hosts/simon/kamina-upsnap-password.age | str trim)

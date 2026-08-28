@@ -5,8 +5,7 @@
   ...
 }:
 let
-  # kamina's Tailscale address (same IP the t3 service binds to)
-  tailscaleHost = "100.100.86.25";
+  todoPort = 8787;
   todo = inputs.simple-todo.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
@@ -55,16 +54,16 @@ in
     description = "Simple todo web server (markdown file editor/viewer)";
     wantedBy = [ "multi-user.target" ];
     wants = [ "network-online.target" ];
-    after = [
-      "network-online.target"
-      "tailscaled.service"
-    ];
+    after = [ "network-online.target" ];
     serviceConfig = {
       Type = "exec";
       User = config.my.settings.username;
-      ExecStart = "${todo}/bin/todo -host ${tailscaleHost} -port 8787 -file /home/${config.my.settings.username}/todo.md";
+      ExecStart = "${todo}/bin/todo -host 127.0.0.1 -port ${toString todoPort} -file /home/${config.my.settings.username}/todo.md";
       Restart = "on-failure";
       RestartSec = 10;
     };
   };
+
+  my.services.ports.simple-todo = todoPort;
+  my.tailscale.serve.simple-todo.port = todoPort;
 }

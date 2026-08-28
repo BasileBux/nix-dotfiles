@@ -57,16 +57,21 @@
         apiKeySecrets = lib.filter (s: lib.hasPrefix "modules/secrets/env/api-keys/" s.path) (
           import ./secrets/env-secrets.nix { inherit lib; }
         );
+        cfg = config.my.services.t3;
       in
       {
 
-        options.my.t3Host = lib.mkOption {
-          type = lib.types.str;
-          default = "";
-          description = "The host address to serve t3code on";
+        options.my.services.t3 = {
+          enable = lib.mkEnableOption "T3 Code server (served on the tailnet)";
+
+          port = lib.mkOption {
+            type = lib.types.port;
+            default = 3773;
+            description = "Loopback port for the HTTP/WebSocket server (t3code default: 3773)";
+          };
         };
 
-        config = {
+        config = lib.mkIf cfg.enable {
           assertions = [
             {
               assertion = config.my.secrets.enabled;
@@ -88,10 +93,7 @@
             description = "T3 Code server";
             wantedBy = [ "multi-user.target" ];
             wants = [ "network-online.target" ];
-            after = [
-              "network-online.target"
-              "tailscaled.service"
-            ];
+            after = [ "network-online.target" ];
             serviceConfig = {
               Type = "exec";
               User = config.my.settings.username;
@@ -118,11 +120,14 @@
                   '') apiKeySecrets
                 )}
               '';
-              ExecStart = "${pkgs.t3code}/bin/t3 serve --host ${config.my.t3Host}";
+              ExecStart = "${pkgs.t3code}/bin/t3 serve --host 127.0.0.1 --port ${toString cfg.port}";
               Restart = "on-failure";
               RestartSec = 10;
             };
           };
+
+          my.services.ports.t3 = cfg.port;
+          my.tailscale.serve.t3.port = cfg.port;
         };
       };
   };
@@ -141,16 +146,21 @@
           import ./secrets/env-secrets.nix { inherit lib; }
         );
         paseo = inputs.paseo.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        cfg = config.my.services.paseo;
       in
       {
 
-        options.my.paseoHost = lib.mkOption {
-          type = lib.types.str;
-          default = "";
-          description = "The host address to serve passeo on";
+        options.my.services.paseo = {
+          enable = lib.mkEnableOption "Paseo code agent server (served on the tailnet)";
+
+          port = lib.mkOption {
+            type = lib.types.port;
+            default = 6767;
+            description = "Loopback port for the HTTP/WebSocket server";
+          };
         };
 
-        config = {
+        config = lib.mkIf cfg.enable {
           assertions = [
             {
               assertion = config.my.secrets.enabled;
@@ -172,10 +182,7 @@
             description = "Paseo Code server";
             wantedBy = [ "multi-user.target" ];
             wants = [ "network-online.target" ];
-            after = [
-              "network-online.target"
-              "tailscaled.service"
-            ];
+            after = [ "network-online.target" ];
             serviceConfig = {
               Type = "exec";
               User = config.my.settings.username;
@@ -201,11 +208,14 @@
                   '') apiKeySecrets
                 )}
               '';
-              ExecStart = "${paseo}/bin/paseo daemon start --listen ${config.my.paseoHost}:6767 --web-ui --no-relay --foreground";
+              ExecStart = "${paseo}/bin/paseo daemon start --listen 127.0.0.1:${toString cfg.port} --web-ui --no-relay --foreground";
               Restart = "on-failure";
               RestartSec = 10;
             };
           };
+
+          my.services.ports.paseo = cfg.port;
+          my.tailscale.serve.paseo.port = cfg.port;
         };
       };
   };

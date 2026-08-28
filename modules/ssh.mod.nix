@@ -1,5 +1,6 @@
 {
   lib,
+  inputs,
   ...
 }:
 let
@@ -19,30 +20,24 @@ let
     + lib.optionalString (user != null) "  User ${user}\n"
     + extra;
 
-  sshHosts = [
+  tailnetDomain = inputs.self.tailnet.domain;
+
+  # Machines with a tailscale attr in the registry, via MagicDNS name.
+  tailnetSshHosts = lib.mapAttrsToList (name: _: {
+    host = name;
+    hostname = "${name}.${tailnetDomain}";
+    port = 2222;
+  }) (lib.filterAttrs (_: machine: machine ? tailscale) inputs.self.machines);
+
+  sshHosts = tailnetSshHosts ++ [
     {
       host = "buxtorf-synology";
-      hostname = "buxtorf-synology.tail7925e1.ts.net";
-      port = 2222;
-    }
-    {
-      host = "kamina";
-      hostname = "kamina.tail7925e1.ts.net";
-      port = 2222;
-    }
-    {
-      host = "simon";
-      hostname = "simon.tail7925e1.ts.net";
+      hostname = "buxtorf-synology.${tailnetDomain}";
       port = 2222;
     }
     {
       host = "yoko";
       hostname = "asbel.xyz";
-      port = 2222;
-    }
-    {
-      host = "genome";
-      hostname = "genome.tail7925e1.ts.net";
       port = 2222;
     }
   ];
