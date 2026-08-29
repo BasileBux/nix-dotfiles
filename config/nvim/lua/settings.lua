@@ -84,6 +84,9 @@ vim.opt.inccommand = "split"
 -- Show which line your cursor is on
 vim.opt.cursorline = true
 
+-- Hide command line unless needed
+vim.opt.cmdheight=0
+
 vim.opt.winborder = "rounded"
 
 -- Minimal number of screen lines to keep above and below the cursor.
