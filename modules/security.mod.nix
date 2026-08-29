@@ -18,9 +18,12 @@
       security.pam.services.sshd.unixAuth = lib.mkForce true;
 
       boot.kernel.sysctl = {
-        # Disable Magic SysRq key entirely — low-level kernel commands
-        # accessible via keyboard even when the system is hung.
-        "kernel.sysrq" = 0;
+        # Enable Magic SysRq fully (1 = all functions). Low-level kernel
+        # commands accessible via keyboard even when the system is hung —
+        # needed to recover (Alt+SysRq+R E I S U B) from GPU hard-freezes
+        # instead of holding the power button. Nothing is allowed via sysrq
+        # that root could not already do through other means.
+        "kernel.sysrq" = 1;
 
         # Hide kernel pointers even from processes with CAP_SYSLOG.
         # 1 = hidden from unprivileged; 2 = hidden from everyone including root.

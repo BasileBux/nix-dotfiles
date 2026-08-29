@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   boot = {
@@ -14,7 +14,18 @@
       "spidev"
     ];
     initrd.kernelModules = [ "mt7921e" ];
-    kernelParams = [ "transparent_hugepage=never" ];
+    kernelParams = lib.mkMerge [
+      [ "transparent_hugepage=never" ]
+      (lib.mkAfter [
+        # Cancel the aggressive "pcie_aspm.policy=powersupersave" injected by
+        # nixos-hardware's asus-zephyrus-ga402 module (keep it last: the kernel
+        # uses the last occurrence of a duplicate cmdline parameter).
+        # Deep PCIe ASPM (L1 substates) hard-freezes the display engine during
+        # amdgpu BOCO runtime-PM / platform-profile power transitions on this
+        # machine (freeze with audio still playing, nothing in the logs).
+        "pcie_aspm.policy=default"
+      ])
+    ];
     kernel.sysctl."vm.compaction_proactiveness" = 0;
   };
 
