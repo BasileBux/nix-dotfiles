@@ -28,7 +28,7 @@ PanelWindow {
             id: cornerPathTop
             strokeWidth: 0
             strokeColor: "transparent"
-            fillColor: Globals.theme.background
+            fillColor: "black"
             startX: Globals.radius
             startY: 0
 
@@ -49,7 +49,7 @@ PanelWindow {
             id: cornerPathBottom
             strokeWidth: 0
             strokeColor: "transparent"
-            fillColor: Globals.theme.background
+            fillColor: "black"
             startX: Globals.radius
             startY: corners.height
 
