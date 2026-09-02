@@ -16,18 +16,22 @@ in
       admin = true;
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPcVamk9ygIcA/3Q731/O1Yg2gIg7COaEfH1cZqRlymt basile.buxtorf@ik.me";
     };
+
+    kamina = {
+      name = "Kamina";
+      email = "basileb@nixos";
+      admin = true;
+      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOBZdYQlQ4SyaJNlNYRbjOePXhfSFxsudLHjoYQTJ/MR basileb@nixos";
+    };
   };
 
   flake.tailnet.domain = "tail7925e1.ts.net";
 
   # Rekey: `ragenix --rules ./secrets.nix --rekey -i ~/.ssh/simon`
-  # machines.<name>.tailscale = tailnet participation; `ip` is the static
-  # 100.x address for consumers that structurally need an IP, everything else
-  # should prefer MagicDNS names / flake.tailnet.domain.
   flake.machines = {
     simon = {
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiS/gxSDgvtbGGm24jbBeETFD2l83MQaDzmAAq6/p4U simon";
-      tailscale = { }; # add ip via `tailscale ip -4`
+      tailscale = "100.79.180.68";
     };
     kamina = {
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC0w6Y4ZgcSz3fifBDpzB4a4SKgDUT5ZX3CuO8nzXMbR kamina";
