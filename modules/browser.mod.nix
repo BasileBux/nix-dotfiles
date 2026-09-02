@@ -33,7 +33,8 @@ in
   config.flake.module.helium = {
     home = { pkgs, ... }: {
       home.packages = [
-        inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
+        # "default" is built withWidevine = false; use the widevine variant for DRM (Netflix, Spotify, etc.)
+        inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.helium-widevine
       ];
     };
   };
