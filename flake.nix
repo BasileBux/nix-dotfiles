@@ -31,6 +31,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    mediafetch = {
+      url = "github:BasileBux/mediafetch";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     paseo = {
       url = "github:getpaseo/paseo";
       inputs.nixpkgs.follows = "nixpkgs";

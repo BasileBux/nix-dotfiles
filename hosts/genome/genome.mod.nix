@@ -33,6 +33,7 @@
           ./extra-config.nix
           ./services.nix
           ./qbittorrent.nix
+          ./mediafetch.nix
           {
             my.nushell.accentColor = "#fb1e2e";
             my.ssh.enableFail2ban = false;
