@@ -34,8 +34,12 @@ in
       };
       Preferences = {
         WebUI = {
-          Username = "admin";
-          Password_PBKDF2 = "@ByteArray(96J+Eeh3xG+Et8h1teXl9A==:hzJZqeB/3zBFTBhJZQYZNVOwO1ghex4aMfxV2O89S9HsDBecpg6n0ctFlvQn2RxmfVfPvmFIIyFrm+os7J4P0w==)";
+          # Credentials are deliberately NOT set here: a PBKDF2 hash baked into
+          # qBittorrent.conf via pkgs.writeText lands in the world-readable nix
+          # store, gets committed to the repo, and drifts from the agenix env.
+          # Instead, the ExecStartPre below patches WebUI\\Username and
+          # WebUI\\Password_PBKDF2 from QB_USER/QB_PASS (hosts/genome/
+          # qbittorrent.env.age) into the installed config on every start.
           HostHeaderValidation = false;
         };
         General.Locale = "en";
@@ -64,6 +68,14 @@ in
       pkgs.bash
     ];
     serviceConfig.EnvironmentFile = [ config.age.secrets."hosts/genome/qbittorrent.env.age".path ];
+
+    # Runs after the module's own ExecStartPre (which installs the
+    # store-rendered qBittorrent.conf on every start), making the age env the
+    # single source of truth for the WebUI credentials — including across
+    # plain service restarts, not just full boots.
+    serviceConfig.ExecStartPre = lib.mkAfter [
+      "${pkgs.python3}/bin/python3 ${scripts}/bin/qbittorrent-creds.py"
+    ];
   };
 
   environment.systemPackages = [ scripts ];

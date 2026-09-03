@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 # Deterministic qBittorrent WebUI config (idempotent): credentials, categories,
 # syno autorun hook, UPnP off, host-header validation off.
-# Runs on genome against 127.0.0.1:8081. QB_USER/QB_PASS come from the agenix env.
-# First-ever run on a fresh qB needs the session temp password: QB_LOGIN_PASS=<temp>.
+# Runs on genome against 127.0.0.1:8081. QB_USER/QB_PASS come from the agenix env,
+# and are also patched into qBittorrent.conf pre-start by qbittorrent-creds.py,
+# so logging in with QB_PASS should always succeed.
+# QB_LOGIN_PASS=<temp> remains as a fallback for bootstrapping a profile that
+# was created outside this flow.
 set -euo pipefail
 
 QB_HOST=http://127.0.0.1:8081

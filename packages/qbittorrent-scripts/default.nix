@@ -16,6 +16,7 @@ stdenv.mkDerivation {
     runHook preInstall
     mkdir -p $out/bin
     install -m755 ./qbittorrent-init.sh $out/bin/qbittorrent-init.sh
+    install -m755 ./qbittorrent-creds.py $out/bin/qbittorrent-creds.py
     install -m755 ./torrent-done.sh $out/bin/torrent-done.sh
     runHook postInstall
   '';
