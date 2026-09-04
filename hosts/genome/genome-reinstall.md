@@ -334,6 +334,101 @@ so `tailscale ssh basileb@genome` works even with sshd broken. Requires an
 basileb (`sudo passwd basileb`) so the physical console is usable — key-only
 auth means a monitor + keyboard gets you nothing otherwise.
 
+### 2026-09-04: Silent hard hang → total unreachability (not the exit node this time)
+
+**Symptoms:** Tailscale marked genome offline ~08:18. No SSH worked — not
+tailscale ssh, not ssh over tailscale, not ssh over the local network. Power
+light on, ethernet lights flickering. Only a hard power cycle brought it back.
+
+**What the persistent journal showed (boot -1 survived the power cut):**
+
+- The system was healthy all night: no OOM, no thermal, no kernel errors, no
+  control-plane trouble. The journal just **stops mid-routine at 08:13:24** —
+  no shutdown markers, no error, nothing. Classic silent hard hang. Tailscale's
+  "08:18" is the freeze time + tailnet detection lag (Pi has no RTC).
+- **Zero sshd traces for the morning attempts** — connections were never
+  serviced by the OS, i.e. the kernel was already gone, not sshd.
+- No tailscaled control-reconnect spam after 08:13, which rules out a network
+  outage (an ISP/router failure would have flooded the journal with retries).
+- journald on next boot: "corrupted or uncleanly shut down" → power cut.
+
+**Ruled out:** the 2026-08-27 dead-Mullvad-exit-node failure mode (that one
+leaves tailscaled spamming reconnects and the box loggable). The torrent
+`open-conn-track: timeout` spam is routine noise (thousands/day even on good
+days — qBittorrent peers through the Mullvad exit node).
+
+**Root cause (probable):** NVMe/PCIe hang under heavy torrent I/O:
+
+- 2026-09-01 18:46 — the NVMe already threw an I/O timeout and did a **full
+  controller reset** (`nvme nvme0: I/O tag 4 ... timeout, reset controller`).
+- The config forced `pciex1_gen=3` — **out of spec** for the Pi 5 PCIe link.
+  Gen-3 hangs are typically completely silent, exactly what happened.
+
+**Fixes applied (in `hosts/genome/extra-config.nix`):**
+
+1. `pciex1_gen` downgraded 3 → 2 (in spec, still plenty fast). Confirmed live:
+   link trains at 5.0 GT/s (Gen 2).
+2. Hardware watchdog armed via systemd (`systemd.settings.Manager`:
+   `WatchdogDevice=/dev/watchdog`, `RuntimeWatchdogSec=30s`). The BCM2712
+   watchdog is built into this kernel (`CONFIG_BCM2835_WDT=y`), so a future
+   hang auto-reboots the box after ~30 s instead of waiting for a power cycle.
+3. Daily `nvme-health.service`/`.timer`: logs SMART to the journal and fails
+   on `critical_warning != 0`, `media_errors != 0`, or (when reported) spare
+   area below threshold. (`nvme-cli` + `jq` added to systemPackages.) First
+   run: drive healthy, `percent_used=8`, zero media errors.
+
+**4. ramoops/pstore — ATTEMPTED AND REVERTED, DO NOT BLINDLY RE-ADD.** Adding
+`crashkernel=32M@0x3FE000000` + `ramoops.*` cmdline params (to reserve the
+last 32 MiB of RAM for pstore) made the box hard-hang in EARLY KERNEL:
+
+- black screen, never reaches userspace, no journal entries from the failed
+  boots, unreachable on all interfaces;
+- kernel, initrd and DTB on the ESP were **byte-identical** to the known-good
+  generation (verified with `cmp`) — the ONLY deltas were the new cmdline
+  params, so they were the culprit;
+- recovery: boot the installer USB, mount p1+p2, rewrite
+  `nixos/default/cmdline.txt` without the new params (the original is kept
+  next to it as `cmdline.txt.bad.bak`), power cycle. The params are commented
+  out in `extra-config.nix` with the same warning.
+
+Suspects (unproven): the `crashkernel` fixed-address reservation interacting
+with the firmware's `numa=fake=8` cmdline (fake NUMA splits memblock), and/or
+ramoops' memremap of top-of-RAM on BCM2712. To ever retry: attach a serial
+UART console first (enable_uart=1 is set, console=serial0 is already in the
+cmdline — you just need a 3.3 V USB-TTL cable), then re-add **one param at a
+time**, editing `cmdline.txt` directly on the ESP.
+
+### Recovery tricks used (generalize well)
+
+- **Boot a known-good generation without power-cycling decisions:** the
+  kernelboot bootloader reads `os_prefix` from `config.txt` — point it at
+  `nixos/26-default/` to boot the previous generation, or edit
+  `nixos/default/cmdline.txt` in place (one file, one line) to change kernel
+  params for the next boot. Keep the known-good cmdline as `*.bak` on the ESP.
+- **Was it a kernel-stage hang?** Check the persistent journal on the NVMe
+  (mount p2 from the installer): if `journalctl --list-boots` shows no new
+  boot after the failed attempt, the kernel died before userspace — no amount
+  of service-level fixing will help; look at firmware/cmdline/kernel params.
+- The **watchdog now masks this class of failure**: a similar early boot
+  still won't be caught (watchdog isn't armed before userspace), but any
+  post-boot hang auto-reboots within ~30 s.
+
+### Deploy note: the `pciex1_gen` change lands in `config.txt`, so the switch
+must run with the ESP properly mounted at `/boot/firmware` (see the CRITICAL
+warning in the ESP section above). After the deploy + reboot, verify:
+
+```bash
+lspci | grep -i nvme                 # link should still come up
+journalctl -b -k | grep "link up"    # expect 5.0 GT/s (Gen 2)
+systemctl list-timers nvme-health    # timer scheduled
+sudo journalctl -u nvme-health       # SMART line, healthy
+systemd-analyze cat-config systemd/system.conf | grep -i watchdog
+```
+
+**Watch out:** qBittorrent is the main NVMe/IO load on this box. If hangs recur
+even on Gen 2, rate-limit qBittorrent (or move its download dir off the NVMe)
+before suspecting the drive itself.
+
 ### fail2ban locking out the admin IP
 
 > This was **suspected** during the 2026-08-27 outage but ruled out — see the
