@@ -21,7 +21,8 @@
     "npm:pi-web-access",
     "npm:pi-notify",
     "npm:pi-subagents",
-    "npm:@ff-labs/pi-fff"
+    "npm:@ff-labs/pi-fff",
+    "git:github.com/DietrichGebert/ponytail"
   ],
   "theme": "nightSyscall",
   "compaction": {
