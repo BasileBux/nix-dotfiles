@@ -30,6 +30,18 @@ in
       BitTorrent = {
         Session = {
           Interface = config.my.tailscale.self.ip;
+          DefaultSavePath = "/media/jellyfin/";
+
+          # Genome is a Pi 5: keep seeding load bounded. Uncapped upload slots
+          # and default connection limits (500/100) caused heavy CPU + power
+          # spikes through the exit node and crashed the host twice (2026-09-04).
+          GlobalMaxRatio = 1;
+          MaxActiveUploads = 2;
+          GlobalUPSpeedLimit = 8000; # KiB/s
+          MaxConnections = 150;
+          MaxUploads = 6;
+          MaxConnectionsPerTorrent = 40;
+          MaxUploadsPerTorrent = 3;
         };
       };
       Preferences = {
@@ -46,6 +58,7 @@ in
         Downloads = {
           AutorunEnabled = true;
           AutorunProgram = "/run/current-system/sw/bin/torrent-done.sh %I %D %N %L %F";
+          UseCategoryPathsInManualMode = true;
         };
       };
     };
