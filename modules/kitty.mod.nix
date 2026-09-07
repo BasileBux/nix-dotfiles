@@ -58,7 +58,7 @@
               active_tab_background = "#ffbd5e";
               inactive_tab_foreground = "#ffffff";
               inactive_tab_background = "#16181a";
-              allow_remote_control = true;
+              allow_remote_control = false;
             };
             keybindings = {
               "ctrl+shift+." = "change_font_size all 0";
