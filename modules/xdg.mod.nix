@@ -87,7 +87,6 @@
           # slop
           "${configHome}/codex"
           "${configHome}/t3"
-          "${configHome}/paseo"
         ];
       in
       {
@@ -176,7 +175,6 @@
           # slop
           CODEX_HOME = "${configHome}/codex";
           T3CODE_HOME = "${configHome}/t3";
-          PASEO_HOME = "${configHome}/paseo";
         };
       };
   };

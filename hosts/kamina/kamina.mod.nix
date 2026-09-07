@@ -16,8 +16,6 @@
       ssh-server
       tmux
       slop
-      # paseo
-      t3
     ];
     nixosModules = [
       ./extra-config.nix
