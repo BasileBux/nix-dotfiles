@@ -22,8 +22,101 @@
         # `pi install`, /settings), so it is deployed as a writable file rather
         # than a read-only store symlink. The version field is derived from the
         # pinned package instead of being hardcoded in the repo.
+        inherit (lib.attrsets) genAttrs;
+        inherit (lib.trivial) const;
+
         piSettings' = piSettings // {
           lastChangelogVersion = pkgs.pi-coding-agent.version;
+        };
+
+        # READ-ONLY VCS COMMANDS
+        vcsCommands =
+          [
+            "jj bookmark list*"
+            "jj config get*"
+            "jj config list*"
+            "jj config path*"
+            "jj diff*"
+            "jj evolog*"
+            "jj file annotate*"
+            "jj file list*"
+            "jj file search*"
+            "jj file show*"
+            "jj git colocation status*"
+            "jj git remote list*"
+            "jj git root*"
+            "jj help*"
+            "jj interdiff*"
+            "jj log*"
+            "jj op diff*"
+            "jj op log*"
+            "jj op show*"
+            "jj operation diff*"
+            "jj operation log*"
+            "jj operation show*"
+            "jj resolve --list"
+            "jj root*"
+            "jj show*"
+            "jj sparse list*"
+            "jj st*"
+            "jj status*"
+            "jj tag list*"
+            "jj util completion*"
+            "jj util config-schema*"
+            "jj util markdown-help*"
+            "jj version*"
+            "jj workspace list*"
+            "jj workspace root*"
+
+            # git is the fallback for non-jj repos, so allow reading it too.
+            "git status*"
+            "git log*"
+            "git diff*"
+            "git show*"
+            "git blame*"
+            "git shortlog*"
+            "git rev-parse*"
+            "git describe*"
+            "git ls-files*"
+            "git ls-remote*"
+            "git check-ignore*"
+            "git remote -v"
+            "git remote get-url*"
+            "git config --get*"
+            "git branch --show-current"
+            "git branch --list*"
+            "git branch -a"
+            "git branch -v"
+            "git worktree list*"
+            "git help*"
+            "git version*"
+          ];
+
+        opencodeConfig = {
+          "$schema" = "https://opencode.ai/config.json";
+
+          autoupdate = false;
+
+          permission = {
+            "*" = "ask";
+
+            edit = "allow";
+            read = "allow";
+            grep = "allow";
+            glob = "allow";
+            list = "allow";
+            lsp = "allow";
+            task = "allow";
+            todoread = "allow";
+            todowrite = "allow";
+            webfetch = "allow";
+            websearch = "allow";
+
+            # EDIT ANYWHERE
+            external_directory."/**" = "allow";
+
+            bash = genAttrs vcsCommands (const "allow");
+          };
         };
       in
       {
@@ -34,6 +127,11 @@
           "pi/web-search.json".source = ../config/pi/web-search.json;
           "pi/AGENTS.md".source = ../config/slop/AGENTS.md;
           "opencode/AGENTS.md".source = ../config/slop/AGENTS.md;
+
+          # opencode writes model/provider selections back into this file (the
+          # ollama provider above was originally created that way), so it is
+          # deployed as a writable file rather than a read-only store symlink.
+          "opencode/opencode.json".text = (builtins.toJSON opencodeConfig) + "\n";
           "pi/themes".source = ../config/pi/themes;
           "pi/extensions".source = ../config/pi/extensions;
         };
