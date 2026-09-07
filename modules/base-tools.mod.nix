@@ -6,6 +6,8 @@
         curl
         openssh
 
+        devenv
+
         jq
         btop
         file

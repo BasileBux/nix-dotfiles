@@ -94,6 +94,10 @@ let
         pkgs.direnv
       ];
 
+      # nix-direnv: caches `use flake`/`use devenv` in .envrc so activation is fast
+      xdg.configFile."direnv/lib/nix-direnv.sh".source =
+        "${pkgs.nix-direnv}/share/nix-direnv/direnvrc";
+
       xdg.configFile."nushell/env.nu".source = resolvedEnvNu;
 
       xdg.configFile."nushell/settings.nu".text = /* nu */ ''
