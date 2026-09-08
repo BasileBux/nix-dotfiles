@@ -65,15 +65,9 @@ pkgs.writeText "functions.nu" /* nu */ ''
   # Deploy the current flake to any host
   def --env deploy [host: string] {
     if $host == "genome" {
-      let current_pwd = (pwd)
-      cd ~
-      tar -czf nixos.tar.gz ./nixos/
-      scp ./nixos.tar.gz genome:~
-      ssh genome "tar -xzf ~/nixos.tar.gz -C ~; rm ~/nixos.tar.gz"
+      rsync -a --delete --exclude .git --exclude .jj $"(pwd)/" genome:nixos/
       ssh genome "cd ~/nixos; nh os switch .#genome"
       ssh genome "rm -rf ~/nixos"
-      rm ./nixos.tar.gz
-      cd $current_pwd
     } else {
       cd ($env.HOME)/nixos
       nh os switch .#($host) --target-host $"($host)" --build-host $"($host)"

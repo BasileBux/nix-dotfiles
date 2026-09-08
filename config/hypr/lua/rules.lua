@@ -78,22 +78,24 @@ end
 -- WORKSPACE RULES
 -- ----------------
 
+local editor = os.getenv("EDITOR") or "nvim"
+
 hl.workspace_rule({
 	workspace = "special:sagepopup",
-	on_created_empty = "kitty --title='sagepopup' -e sh -c 'sage -q'",
+	on_created_empty = "kitty --title='sagepopup' -e nu -c 'sage -q'",
 })
 
 hl.workspace_rule({
 	workspace = "special:scratch",
-	on_created_empty = "kitty --title='scratch' -e sh -c 'nvim ~/scratch.md'",
+	on_created_empty = "kitty --title='scratch' -e nu -c '" .. editor .. " ~/scratch.md'",
 })
 
 hl.workspace_rule({
 	workspace = "special:todo",
-	on_created_empty = "kitty --title='todo' -e sh -c 'kitten ssh -t genome nvim ~/todo.md'",
+	on_created_empty = "kitty --title='todo' -e nu -c 'kitten ssh -t genome " .. editor .. " ~/todo.md'",
 })
 
 hl.workspace_rule({
 	workspace = "special:quick-ai",
-	on_created_empty = "kitty --title='quick-ai' -d ~/tmp/quick-ai -e sh -c 'pi'",
+	on_created_empty = "kitty --title='quick-ai' -d ~/tmp/quick-ai -e nu -c 'VISUAL=" .. editor .. " pi'",
 })

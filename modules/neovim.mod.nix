@@ -119,6 +119,7 @@
           NVIM_UNDODIR = "${config.home.homeDirectory}/.local/share/nvim/undo";
           SUDO_EDITOR = "nvim";
           EDITOR = "nvim";
+          VISUAL = "nvim";
         };
 
         xdg.configFile."nvim".source = ../config/nvim;
