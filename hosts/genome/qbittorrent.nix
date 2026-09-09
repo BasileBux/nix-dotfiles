@@ -80,6 +80,9 @@ in
       pkgs.curl
       pkgs.bash
     ];
+    # Files land group-writable (rw-rw-r--) so other media-group members can
+    # manage them; setgid on /media/jellyfin supplies the media group.
+    serviceConfig.UMask = "0002";
     serviceConfig.EnvironmentFile = [ config.age.secrets."hosts/genome/qbittorrent.env.age".path ];
 
     # Runs after the module's own ExecStartPre (which installs the
