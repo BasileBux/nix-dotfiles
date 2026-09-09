@@ -58,6 +58,7 @@ BarPart {
             Modules.Network {
                 id: wifiContent
                 moduleRef: wifiModule
+                tsPanel: tailscalePanel
                 popupHeight: wifiModule.popupHeight
                 popupWidth: wifiModule.popupWidth
             }
@@ -96,5 +97,11 @@ BarPart {
                 id: lockContent
             }
         }
+    }
+
+    // Floating tailscale panel, opened from the network popup
+    Modules.TailscalePanel {
+        id: tailscalePanel
+        anchorItem: wifiModule
     }
 }

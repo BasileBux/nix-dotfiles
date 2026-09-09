@@ -24,6 +24,12 @@ hl.window_rule({
 })
 
 hl.window_rule({
+	name = "tailscale-panel",
+	match = { class = "org.quickshell", title = "Tailscale" },
+	float = true,
+})
+
+hl.window_rule({
 	name = "emulator-float",
 	match = { class = "Emulator" },
 	float = true,

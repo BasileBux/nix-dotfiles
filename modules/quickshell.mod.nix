@@ -107,6 +107,9 @@
           };
           Service = {
             Type = "exec";
+            # Native-looking file dialogs through the desktop portal instead of
+            # Qt's fallback light theme (white-on-white against the shell theme)
+            Environment = [ "QT_QPA_PLATFORMTHEME=xdgdesktopportal" ];
             ExecStart = "${lib.getExe pkgs.quickshell}";
             Restart = "on-failure";
             RestartSec = 3;

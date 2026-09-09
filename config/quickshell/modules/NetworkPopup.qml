@@ -14,6 +14,8 @@ Item {
     anchors.leftMargin: Globals.spacing
 
     required property bool popupShown
+    // floating tailscale panel, toggled by the button below
+    required property var tsPanel
 
     // Scan runs only while the popup is open
     onPopupShownChanged: {
@@ -69,13 +71,36 @@ Item {
             Widgets.TintIcon {
                 id: statusIndicator
                 anchors {
-                    right: parent.right
+                    right: tailscaleButton.left
+                    rightMargin: Globals.spacing
                     verticalCenter: parent.verticalCenter
                 }
                 source: root.hasProblem ? "../icons/warning.svg" : "../icons/reboot.svg"
                 width: Globals.fonts.xlarge
                 height: Globals.fonts.xlarge
                 color: root.indicatorColor
+            }
+
+            Widgets.TintIcon {
+                id: tailscaleButton
+                anchors {
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                }
+                source: "../icons/tailscale.svg"
+                width: Globals.fonts.xlarge
+                height: Globals.fonts.xlarge
+                color: root.hasProblem ? Globals.theme.muted : Globals.theme.foreground
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: {
+                        root.tsPanel.toggle();
+                        popup.collapse();
+                        bar.focusGrab.active = false;
+                    }
+                }
             }
         }
 

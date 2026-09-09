@@ -31,6 +31,10 @@
 
   users.users.${config.my.settings.username}.extraGroups = [ ];
 
+  # Let the main user run the tailscale CLI without sudo (tailscaled stays
+  # root; this only allows control of this node's connection)
+  services.tailscale.extraSetFlags = [ "--operator=${config.my.settings.username}" ];
+
   programs.wireshark = {
     enable = true;
     usbmon.enable = true;

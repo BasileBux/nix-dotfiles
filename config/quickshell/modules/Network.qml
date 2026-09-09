@@ -10,6 +10,8 @@ Item {
     anchors.fill: parent
 
     required property var moduleRef
+    // the floating tailscale panel (hosted by the bar's Bot part)
+    property var tsPanel
     required property int popupHeight
     required property int popupWidth
     readonly property alias popup: popup
@@ -49,6 +51,7 @@ Item {
         moduleRef: root.moduleRef
         NetworkPopup {
             popupShown: popup.shown
+            tsPanel: root.tsPanel
         }
     }
 }
