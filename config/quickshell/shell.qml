@@ -1,44 +1,38 @@
 import Quickshell
 import Quickshell.Services.Polkit
 import QtQuick
-import "launcher"
 import "lock"
 import "notification"
-import "extras"
+import "palette"
+import "services" as Services
 
 ShellRoot {
     id: shellRoot
-    Wallpaper {}
-    Bar {
-        id: bar
-        lock: lock
-        notificationPanel: notification.notificationPanel
-        notifDnd: notification.dnd
-        notifCount: notification.notificationCount
+
+    // Keep the low-battery watchdog alive for the whole session; singletons
+    // are lazily instantiated on first access, so it needs one reference here.
+    readonly property bool _batteryWatchdog: Services.Battery.pct >= 0
+
+    Wallpaper {
     }
-
-    Corners {}
-
+    Palette {
+    }
+    VolumeOsd {
+    }
+    LowBatteryOverlay {
+    }
     Notification {
-        id: notification
-        bar: bar
     }
-    PopupLauncher {}
     Lock {
         id: lock
     }
-
     PolkitAgent {
         id: polkitAgent
         // path defaults to /org/quickshell/Polkit
     }
-
     AuthDialog {
         id: authDialog
-        agent: polkitAgent
-    }
 
-    Remote {
-        id: remote
+        agent: polkitAgent
     }
 }

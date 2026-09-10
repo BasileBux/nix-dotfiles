@@ -2,69 +2,64 @@ import Quickshell
 import Quickshell.Services.Notifications
 import QtQuick
 import ".."
+import "../services" as Services
 
+// Toast popups for incoming notifications. The persistent list lives in the
+// palette's Notifications view; this only shows the transient bubbles.
+//
 // nix-shell -p libnotify
 // notify-send "Hello" "This is a test notification from libnotify."
 
 Item {
     id: root
-    property alias notificationPanel: panel
-    required property var bar
 
-    readonly property alias dnd: notificationServer.doNotDisturb
-    readonly property int notificationCount: notificationServer.trackedNotifications.values.length
-    NotificationServer {
-        id: notificationServer
-
-        bodyHyperlinksSupported: true
-        bodyMarkupSupported: true
-        bodyImagesSupported: true
-        actionIconsSupported: true
-        inlineReplySupported: true
-        bodySupported: true
-        persistenceSupported: true
-        imageSupported: true
-        actionsSupported: true
-
-        property bool doNotDisturb: false
-
-        property bool audioEnabled: true
-
-        onNotification: notification => {
-            notification.tracked = true;
-
-            if (!panel.shown && !doNotDisturb) {
-                if (audioEnabled) {
-                    let sound = notification.urgency === NotificationUrgency.Critical ? Globals.sounds.bigPing : Globals.sounds.smallPing;
-                    Globals.playSoundLoud(sound);
-                }
-
-                let wrapper = Qt.createQmlObject('import Quickshell; import QtQuick; NotificationWrapper { }', notificationServer);
-                wrapper.notif = notification;
-
-                notificationDisplay.pushNotification(wrapper);
-            }
-        }
-    }
     NotificationDisplay {
         id: notificationDisplay
     }
-    Item {
-        Popup {
-            id: panel
-            topRight: true
-            popupWidth: Globals.notification.unitWidth + (Globals.padding * 8)
-            popupHeight: Globals.notification.unitHeight * 7 + (Globals.padding * 2)
-            yPos: 0
-            name: "NotificationPanel"
-            ref: root.bar
-            onShownChanged: {
-                notificationDisplay.notifications = [];
-            }
-            NotificationPanel {
-                id: panelContent
-                notificationServer: notificationServer
-            }
+    Component {
+        id: wrapperComponent
+
+        NotificationWrapper {
         }
+    }
+
+    Connections {
+        function dismissIfViewOpen() {
+            if (PaletteState.visible && PaletteState.viewId === "notifications")
+                notificationDisplay.dismissAll();
+        }
+
+        function onVisibleChanged() {
+            dismissIfViewOpen();
+        }
+
+        function onViewIdChanged() {
+            dismissIfViewOpen();
+        }
+
+        target: PaletteState
+    }
+
+    Connections {
+        function onReceived(notification) {
+            // Hidden while the notification center is open — it shows the
+            // same list itself.
+            if (Services.Notifications.doNotDisturb)
+                return;
+            if (PaletteState.visible && PaletteState.viewId === "notifications")
+                return;
+
+            if (Services.Notifications.audioEnabled) {
+                let sound = notification.urgency === NotificationUrgency.Critical ? Globals.sounds.bigPing : Globals.sounds.smallPing;
+                Globals.playSoundLoud(sound);
+            }
+
+            let wrapper = wrapperComponent.createObject(notificationDisplay);
+            wrapper.notif = notification;
+
+            notificationDisplay.pushNotification(wrapper);
+        }
+
+        target: Services.Notifications
     }
 }

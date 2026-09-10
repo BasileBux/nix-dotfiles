@@ -32,6 +32,7 @@ let
   sshHosts = tailnetSshHosts ++ [
     {
       host = "buxtorf-synology";
+      user = "gitt";
       hostname = "buxtorf-synology.${tailnetDomain}";
       port = 2222;
     }

@@ -3,6 +3,31 @@
 This is my personal Quickshell configuration. It is integrated with my NixOS configuration
 and home-manager. However, it can be used independently of nix or any other package manager.
 
+## Architecture
+
+Everything lives in a single command palette (`palette/Palette.qml`): a blurred,
+center-screen layer surface with a search bar on top and one view loaded at a time
+(`palette/views/`). The Home view is a bento dashboard (clock, battery, volume,
+notifications, bluetooth, network, workspaces); every tile opens its own view.
+
+Search prefixes route the query: bare text searches widgets/commands, `:` apps,
+`?` web, `!` shell commands. `Esc` backs out, `Ctrl+letter` on Home
+opens the matching panel.
+
+Global shortcuts: `quickshell:palette` (toggle), `quickshell:lock` (Power view),
+`quickshell:remote`. Extra direct menus: `quickshell ipc call palette openView <id>`.
+The Remote view lists the fleet (hosts defined in `modules/quickshell.mod.nix`,
+rendered into `MachineOverrides.qml`): online status from tailscale peers
+(ssh probe for hosts outside the tailnet), and tmux-only sessions per host
+(default session `main`, attach-or-create). Hosts with `tmux = false`
+(buxtorf-synology) open a plain `kitten ssh` session in the regular kitty
+config instead.
+Hyprland blurs the palette via a `hl.layer_rule` matching the
+`quickshell:palette` layer namespace.
+
+Notification toasts still appear top-right on their own; the persistent
+notification center is a palette view.
+
 ## Credits
 
 This configuration was made from scratch but highliy inspired by the [celestia-shell](https://github.com/caelestia-dots/shell)

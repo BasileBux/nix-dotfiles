@@ -32,17 +32,26 @@ hl.window_rule({
 	float = true,
 })
 
+-- Blur behind the command palette layer surface (its background is translucent).
+hl.layer_rule({
+	name = "palette-blur",
+	match = { namespace = "^quickshell:palette$" },
+	blur = true,
+	ignore_alpha = 0.5,
+})
+
+hl.layer_rule({
+	name = "volume-osd-blur",
+	match = { namespace = "^shell:volume-osd$" },
+	blur = true,
+	ignore_alpha = 0.5,
+})
+
 hl.window_rule({
 	name = "remote-ssh",
 	match = { class = "org.quickshell", title = "Remote ssh" },
 	float = true,
 	center = true,
-})
-
-hl.window_rule({
-	name = "tailscale-panel",
-	match = { class = "org.quickshell", title = "Tailscale" },
-	float = true,
 })
 
 hl.window_rule({

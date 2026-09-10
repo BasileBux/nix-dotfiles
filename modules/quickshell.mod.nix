@@ -61,6 +61,42 @@
       let
         cfg = osConfig.my.quickshell;
 
+        # Hosts shown by the palette's Remote view. target is the ssh alias
+        # (see ssh.mod.nix). allowPower exposes reboot/shutdown buttons for
+        # hosts where wheel has passwordless sudo. Hosts without tmux
+        # (tmux = false) open a plain ssh session instead.
+        remoteHosts = [
+          {
+            name = "kamina";
+            role = "Desktop · VM host";
+            allowPower = true;
+          }
+          {
+            name = "genome";
+            role = "Home server (RPi5)";
+            allowPower = true;
+          }
+          {
+            name = "yoko";
+            role = "VPS · asbel.xyz";
+            allowPower = false;
+          }
+          {
+            name = "buxtorf-synology";
+            role = "NAS";
+            allowPower = false;
+            tmux = false;
+          }
+        ];
+
+        generateRemoteHosts =
+          map (
+            h:
+            ''
+                { name: ${builtins.toJSON h.name}, target: ${builtins.toJSON (h.target or h.name)}, role: ${builtins.toJSON h.role}, allowPower: ${if h.allowPower or false then "true" else "false"}, tmux: ${if h.tmux or true then "true" else "false"} },''
+          )
+          remoteHosts;
+
         generateMachineOverrides =
           c:
           let
@@ -79,6 +115,9 @@
                 readonly property var balancedCommand: ${builtins.toJSON (pp.setCommand ++ [ balanced ])}
                 readonly property var performanceCommand: ${builtins.toJSON (pp.setCommand ++ [ perf ])}
                 readonly property var getterCommand: ${builtins.toJSON pp.getterCommand}
+                readonly property var remoteHosts: [
+${lib.concatStringsSep "\n" generateRemoteHosts}
+                ]
             }
           '';
       in
@@ -87,6 +126,7 @@
           quickshell
           kdePackages.qt5compat
           bluez
+          libnotify
         ];
         xdg.configFile."quickshell" = {
           source = ../config/quickshell;

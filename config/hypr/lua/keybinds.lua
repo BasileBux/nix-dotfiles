@@ -94,10 +94,11 @@ end
 hl.bind(mainMod .. " + ALT + P", toggle_pip_follow)
 
 -- Global shortcuts
-hl.bind(mainMod .. " + ALT + H", hl.dsp.global("quickshell:toggle"))
 hl.bind(mainMod .. " + ALT + L", hl.dsp.global("quickshell:lock"))
-hl.bind(mainMod .. " + D", hl.dsp.global("quickshell:appLauncher"))
+hl.bind(mainMod .. " + D", hl.dsp.global("quickshell:palette"))
 hl.bind(mainMod .. " + SHIFT + R", hl.dsp.global("quickshell:remote"))
+-- Direct palette menus without a dedicated global shortcut, example:
+-- hl.bind(mainMod .. " + ALT + U", hl.dsp.exec_cmd("quickshell ipc call palette openView battery"))
 
 -- Media controls
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("playerctl play-pause"))
@@ -213,16 +214,16 @@ hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Media keys (locked + repeating)
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true })
-
+-- Volume via quickshell global shortcuts (shows the OSD)
+hl.bind("XF86AudioMute", hl.dsp.global("quickshell:volume-mute"), { locked = true })
 hl.bind(
 	"XF86AudioLowerVolume",
-	hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
+	hl.dsp.global("quickshell:volume-down"),
 	{ locked = true, repeating = true }
 )
 hl.bind(
 	"XF86AudioRaiseVolume",
-	hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"),
+	hl.dsp.global("quickshell:volume-up"),
 	{ locked = true, repeating = true }
 )
 hl.bind(

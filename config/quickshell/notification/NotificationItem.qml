@@ -1,170 +1,50 @@
 import Quickshell
-import Quickshell.Services.Notifications
 import Quickshell.Hyprland
+import Quickshell.Services.Notifications
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Layouts
 import "../widgets" as Widgets
 import ".."
 
-// Parent sets width and height additionally to the required stuff
-
+// One notification, used by the toast stack. The palette's Notifications view
+// has its own card: a toast floats over arbitrary windows and needs a more
+// opaque fill than a card sitting on the glass.
+//
+// Parent sets width and height additionally to the required stuff.
 Rectangle {
     id: root
-    required property var notification
-    required property var removeNotification
-    required property bool wrapper
 
     property var notif: wrapper ? notification.notif : notification
+    required property var notification
+    required property var removeNotification
+    readonly property bool critical: notif.urgency === NotificationUrgency.Critical
+    required property bool wrapper
 
-    radius: Globals.radius
+    border.color: cardMouse.containsMouse ? Globals.surfaceHoverBorder : Globals.surfaceBorder
+    border.width: 1
+    clip: true
+    color: Globals.surfaceBackground
+    radius: Globals.cardRadius
 
-    readonly property color urgencyColor: {
-        switch (notif.urgency) {
-            case NotificationUrgency.Critical: return Globals.theme.accent1
-            case NotificationUrgency.Low: return Globals.theme.muted
-            default: return Globals.theme.accent3  // Normal
-        }
-    }
-    border.color: urgencyColor
-    color: Globals.theme.background
-
-    readonly property string iconSource: {
-        if (notif.image && notif.image !== "") return notif.image
-        return "../icons/nixos-original-logo.svg"
-    }
-
-    Image {
-        id: image
-        anchors {
-            left: parent.left
-            leftMargin: Globals.spacing
-            verticalCenter: parent.verticalCenter
-        }
-        source: root.iconSource
-        height: parent.height * 0.6
-        width: parent.height * 0.6
-        fillMode: Image.PreserveAspectFit
-    }
-
-    Text {
-        id: appName
-        anchors {
-            left: image.right
-            leftMargin: Globals.spacing * 2
-            top: summary.bottom
-            topMargin: 1
-            right: closeButton.left
-        }
-        text: notif.appName || ""
-        color: Globals.theme.muted
-        font.pixelSize: Globals.fonts.xsmall
-        font.family: Globals.theme.fontFamily
-        visible: text !== ""
-        maximumLineCount: 1
-        elide: Text.ElideRight
-    }
-
-    Text {
-        id: summary
-        anchors {
-            left: image.right
-            leftMargin: Globals.spacing * 2
-            top: parent.top
-            topMargin: Globals.spacing * 2
-            right: closeButton.left
-        }
-        maximumLineCount: 1
-        color: Globals.theme.foreground
-        text: notif.summary
-        font.pixelSize: Globals.fonts.medium
-        font.family: Globals.theme.fontFamily
-        font.bold: true
-        elide: Text.ElideRight
-    }
-
-    Text {
-        id: body
-        anchors {
-            left: image.right
-            leftMargin: Globals.spacing * 2
-            top: appName.visible ? appName.bottom : summary.bottom
-            topMargin: 2
-            right: closeButton.left
-        }
-        maximumLineCount: 2
-        color: Globals.theme.foreground
-        text: notif.body
-        font.pixelSize: Globals.fonts.small
-        font.family: Globals.theme.fontFamily
-        wrapMode: Text.Wrap
-        elide: Text.ElideRight
-    }
-
-    // Action buttons row, excludes "default"
-    Row {
-        id: actionsRow
-        anchors {
-            left: image.right
-            leftMargin: Globals.spacing * 2
-            right: closeButton.left
-            bottom: parent.bottom
-            bottomMargin: Globals.spacing
-        }
-        spacing: Globals.spacing
-
-        Repeater {
-            model: {
-                var acts = [];
-                for (var i = 0; i < notif.actions.length; i++) {
-                    if (notif.actions[i].identifier !== "default") {
-                        acts.push(notif.actions[i]);
-                    }
-                }
-                return acts;
-            }
-
-            delegate: Rectangle {
-                height: 22
-                width: btnText.implicitWidth + Globals.spacing * 4
-                radius: 4
-                color: Globals.theme.accent2
-
-                Text {
-                    id: btnText
-                    anchors.centerIn: parent
-                    text: modelData.text
-                    color: Globals.theme.foreground
-                    font.pixelSize: Globals.fonts.xsmall
-                    font.family: Globals.theme.fontFamily
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        modelData.invoke();
-                        if (!notif.resident) {
-                            root.removeNotification(root.notification);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Body click -> default action + focus window
+    // Declared first so the buttons below keep their own events: the topmost
+    // item that accepts a press wins.
     MouseArea {
+        id: cardMouse
+
         anchors.fill: parent
+        hoverEnabled: true
+
         onClicked: {
             // Invoke the default action
-            for (var i = 0; i < notif.actions.length; i++) {
-                if (notif.actions[i].identifier === "default") {
-                    notif.actions[i].invoke();
+            for (var i = 0; i < root.notif.actions.length; i++) {
+                if (root.notif.actions[i].identifier === "default") {
+                    root.notif.actions[i].invoke();
                     break;
                 }
             }
 
             // Focus the sending app's window via Hyprland dispatch
-            var desktopEntry = (notif.desktopEntry || "").toLowerCase();
+            var desktopEntry = (root.notif.desktopEntry || "").toLowerCase();
             if (desktopEntry !== "") {
                 for (var j = 0; j < Hyprland.toplevels.values.length; j++) {
                     var tl = Hyprland.toplevels.values[j];
@@ -175,32 +55,150 @@ Rectangle {
                 }
             }
 
-            if (!notif.resident) {
+            if (!root.notif.resident)
                 root.removeNotification(root.notification);
-            }
         }
     }
+    RowLayout {
+        anchors.fill: parent
+        anchors.leftMargin: Globals.margin
+        anchors.rightMargin: Globals.margin
+        anchors.topMargin: actionsRepeater.count > 0 ? Globals.space2 : Globals.margin
+        anchors.bottomMargin: actionsRepeater.count > 0 ? Globals.space2 : Globals.margin
+        spacing: Globals.space2
 
-    Item {
-        id: closeButton
-        anchors {
-            top: parent.top
-            right: parent.right
+        SenderIcon {
+            Layout.preferredHeight: 32
+            Layout.preferredWidth: 32
+            notification: root.notif
         }
-        property int iconSize: 24
-        width: iconSize
-        height: iconSize
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: Globals.space1
 
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: Globals.space1
+                Text {
+                    Layout.fillWidth: true
+                    color: Globals.theme.foreground
+                    elide: Text.ElideRight
+                    font.family: Globals.theme.fontFamily
+                    font.pixelSize: Globals.fonts.body
+                    font.weight: Font.DemiBold
+                    maximumLineCount: 1
+                    text: root.notif.summary
+                }
+                Widgets.TintIcon {
+                    Layout.preferredWidth: 16
+                    Layout.preferredHeight: 16
+                    name: "warning"
+                    color: Globals.colors.danger
+                    visible: root.critical
+                }
+                Text {
+                    text: "Urgent"
+                    color: Globals.colors.dangerText
+                    font.family: Globals.theme.fontFamily
+                    font.pixelSize: Globals.fonts.micro
+                    visible: root.critical
+                }
+            }
+            Text {
+                Layout.fillWidth: true
+                color: Globals.theme.muted
+                elide: Text.ElideRight
+                font.family: Globals.theme.fontFamily
+                font.pixelSize: Globals.fonts.micro
+                maximumLineCount: 1
+                text: root.notif.appName || ""
+                visible: (root.notif.appName || "") !== ""
+            }
+            Text {
+                Layout.fillWidth: true
+                color: Globals.theme.muted
+                elide: Text.ElideRight
+                font.family: Globals.theme.fontFamily
+                font.pixelSize: Globals.fonts.caption
+                maximumLineCount: actionsRepeater.count > 0 ? 1 : 2
+                text: root.notif.body
+                wrapMode: Text.Wrap
+            }
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: Globals.space1
+                visible: actionsRepeater.count > 0
+
+                Repeater {
+                    id: actionsRepeater
+
+                    model: {
+                        var acts = [];
+                        for (var i = 0; i < root.notif.actions.length; i++) {
+                            if (root.notif.actions[i].identifier !== "default")
+                                acts.push(root.notif.actions[i]);
+                        }
+                        return acts;
+                    }
+
+                    delegate: Rectangle {
+                        id: actionButton
+
+                        readonly property bool hovered: actionMouse.containsMouse
+                        required property var modelData
+
+                        border.color: actionButton.hovered ? Globals.surfaceHoverBorder : "transparent"
+                        border.width: 1
+                        color: actionButton.hovered ? Globals.surfaceHover : Globals.surface
+                        implicitHeight: 24
+                        implicitWidth: actionLabel.implicitWidth + Globals.space2 * 2
+                        radius: height / 2
+
+                        Text {
+                            id: actionLabel
+
+                            anchors.centerIn: parent
+                            color: Globals.theme.foreground
+                            font.family: Globals.theme.fontFamily
+                            font.pixelSize: Globals.fonts.caption
+                            text: actionButton.modelData.text
+                        }
+                        MouseArea {
+                            id: actionMouse
+
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            hoverEnabled: true
+
+                            onClicked: {
+                                actionButton.modelData.invoke();
+                                if (!root.notif.resident)
+                                    root.removeNotification(root.notification);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         Widgets.TintIcon {
-            anchors.fill: parent
-            source: "../icons/cross.svg"
-            color: Globals.theme.foreground
-        }
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                notif.tracked = false;
-                root.removeNotification(root.notification);
+            Layout.alignment: Qt.AlignTop
+            Layout.preferredHeight: 18
+            Layout.preferredWidth: 18
+            color: closeMouse.containsMouse ? Globals.theme.foreground : Globals.theme.muted
+            name: "cross"
+
+            MouseArea {
+                id: closeMouse
+
+                anchors.fill: parent
+                anchors.margins: -Globals.space2
+                cursorShape: Qt.PointingHandCursor
+                hoverEnabled: true
+
+                onClicked: {
+                    root.notif.tracked = false;
+                    root.removeNotification(root.notification);
+                }
             }
         }
     }
