@@ -31,6 +31,26 @@
 
   users.users.${config.my.settings.username}.extraGroups = [ ];
 
+  # Encrypted DNS (DoT via Quad9) — simon roams onto untrusted networks;
+  # kamina/genome stay on the trusted home ISP, so they stay on plain DHCP
+  # DNS. Opportunistic: silently falls back to plaintext when 853 is blocked
+  # (captive portals), so portal authentication keeps working. Certificates
+  # are NOT validated in this mode — it protects against passive sniffing,
+  # not active tampering.
+  services.resolved = {
+    enable = true;
+    settings.Resolve = {
+      DNS = [
+        "9.9.9.9#dns.quad9.net"
+        "149.112.112.112#dns.quad9.net"
+        "2620:fe::fe#dns.quad9.net"
+        "2620:fe::9#dns.quad9.net"
+      ];
+      DNSOverTLS = "opportunistic";
+    };
+  };
+  networking.networkmanager.dns = "systemd-resolved";
+
   # Let the main user run the tailscale CLI without sudo (tailscaled stays
   # root; this only allows control of this node's connection)
   services.tailscale.extraSetFlags = [ "--operator=${config.my.settings.username}" ];
