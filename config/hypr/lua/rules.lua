@@ -84,7 +84,7 @@ end
 -- WORKSPACE RULES
 -- ----------------
 
-local editor = os.getenv("EDITOR") or "nvim"
+local editor = "nvim"
 
 hl.workspace_rule({
 	workspace = "special:sagepopup",
