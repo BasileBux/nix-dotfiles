@@ -62,16 +62,24 @@ pkgs.writeText "functions.nu" /* nu */ ''
       } }
   }
 
-  # Deploy the current flake to any host
-  def --env deploy [host: string] {
-    if $host == "genome" {
-      rsync -a --delete --exclude .git --exclude .jj $"(pwd)/" genome:nixos/
-      ssh genome "cd ~/nixos; nh os switch .#genome"
-      ssh genome "rm -rf ~/nixos"
-    } else {
-      cd ($env.HOME)/nixos
-      nh os switch .#($host) --target-host $"($host)" --build-host $"($host)"
-      ssh $host "rm -f ~/result"
+  # Deploy the current flake to any host, or to all remote hosts at once
+  def --env deploy [
+    host: string, # a host name (kamina, genome, yoko), or "all"
+    --reboot (-r) # reboot the host(s) after switching
+  ] {
+    let hosts = if $host == "all" { [kamina genome yoko] } else { [$host] }
+    for h in $hosts {
+      if $h == "genome" {
+        rsync -a --delete --exclude .git --exclude .jj $"(pwd)/" genome:nixos/
+        ssh genome "cd ~/nixos; nh os switch .#genome"
+        ssh genome "rm -rf ~/nixos"
+      } else {
+        nh os switch .#($h) --target-host $"($h)" --build-host $"($h)"
+        ssh $h "rm -f ~/result"
+      }
+      if $reboot {
+        ssh -t $h "sudo reboot"
+      }
     }
   }
 ''

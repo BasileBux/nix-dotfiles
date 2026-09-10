@@ -20,6 +20,8 @@
     nixosModules = [
       {
         my.nushell.accentColor = "#fb1e8b";
+        services.fail2ban.maxretry = 3;
+        services.fail2ban.bantime-increment.enable = true;
       }
       ./hetzner-config.nix
       inputs.disko.nixosModules.disko

@@ -56,6 +56,15 @@
         # program is loaded (even by root), unprivileged BPF is locked until
         # next reboot.
         "kernel.unprivileged_bpf_disabled" = 1;
+
+        # Network hardening. Reject ICMP redirect packets (any LAN device
+        # could otherwise reroute our traffic), enable strict reverse-path
+        # filtering (drop spoofed-source packets), and log malformed ones.
+        "net.ipv4.conf.all.accept_redirects" = false;
+        "net.ipv4.conf.default.accept_redirects" = false;
+        "net.ipv4.conf.all.send_redirects" = false;
+        "net.ipv4.conf.all.rp_filter" = 1;
+        "net.ipv4.conf.default.log_martians" = true;
       };
 
       # https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html

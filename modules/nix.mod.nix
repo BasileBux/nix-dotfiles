@@ -16,7 +16,10 @@
         warn-dirty = false;
       };
 
-      networking.networkmanager.enable = true;
+      networking.networkmanager = {
+        enable = true;
+        wifi.macAddress = "random";
+      };
       time.timeZone = "Europe/Amsterdam";
 
       nixpkgs.config.allowUnfree = true;

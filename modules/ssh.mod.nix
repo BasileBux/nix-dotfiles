@@ -112,8 +112,13 @@ in
         # fail2ban SSH jail. See my.ssh.enableFail2ban (on by default).
         services.fail2ban = lib.mkIf config.my.ssh.enableFail2ban {
           enable = true;
-          maxretry = 10;
-          bantime = "24h";
+          maxretry = lib.mkDefault 10;
+          bantime = lib.mkDefault "24h";
+          ignoreIP = [
+            # Never ban tailscale and LAN IPs
+            "100.64.0.0/10"
+            "192.168.1.0/24"
+          ];
         };
       };
   };
