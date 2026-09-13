@@ -33,11 +33,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    mediafetch = {
-      url = "github:BasileBux/mediafetch";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     hyprland.url = "github:hyprwm/hyprland";
 
     nixos-hardware = {

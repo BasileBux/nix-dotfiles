@@ -161,6 +161,28 @@
       '';
   };
 
+  services.seerr.enable = true;
+  my.services.ports.seerr = 5055;
+  my.tailscale.serve.seerr.port = 5055;
+
+  services.prowlarr.enable = true;
+  my.services.ports.prowlarr = 9696;
+  my.tailscale.serve.prowlarr.port = 9696;
+
+  services.sonarr.enable = true;
+  # Needs write access to /media/jellyfin to import from qBittorrent's
+  # download dir into the library (group media, setgid).
+  # Note: users.users.<name>.extraGroups only edits the group database; the
+  # systemd unit launches with services.<name>.group, so set that here.
+  services.sonarr.group = "media";
+  my.services.ports.sonarr = 8989;
+  my.tailscale.serve.sonarr.port = 8989;
+
+  services.radarr.enable = true;
+  services.radarr.group = "media";
+  my.services.ports.radarr = 7878;
+  my.tailscale.serve.radarr.port = 7878;
+
   systemd.timers.nvme-health = {
     description = "Daily NVMe SMART health check";
     wantedBy = [ "timers.target" ];

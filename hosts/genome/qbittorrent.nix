@@ -9,15 +9,44 @@
 }:
 
 let
-  scripts = pkgs.callPackage ../../packages/qbittorrent-scripts { };
   webuiPort = 8081;
   torrentingPort = 51413;
+
+  # Default categories, seeded once into the profile on first start
+  # (categories are stored in categories.json, not in qBittorrent.conf).
+  # qBittorrent owns the file afterwards, so category edits made through the
+  # WebUI persist across restarts; only a wiped profile gets re-seeded.
+  # Arr-managed downloads (Sonarr/Radarr) must go to /media/downloads/* so the
+  # arrs can import/rename/move them into the library; downloading straight
+  # into the root folders breaks that (files are already "in place").
+  # The jellyfin-* categories are for manual grabs that intentionally skip the
+  # arrs and land directly in the library.
+  categoriesFile = pkgs.writeText "categories.json" (
+    builtins.toJSON {
+      tv.save_path = "/media/downloads/tv";
+      movies.save_path = "/media/downloads/movies";
+      jellyfin-shows.save_path = "/media/jellyfin/shows";
+      jellyfin-movies.save_path = "/media/jellyfin/movies";
+    }
+  );
+
+  # Runs after the module's own ExecStartPre (which installs the
+  # store-rendered qBittorrent.conf on every start).
+  seedCategories = pkgs.writeShellScript "qbittorrent-seed-categories" ''
+    if [ ! -e /var/lib/qBittorrent/qBittorrent/config/categories.json ]; then
+      ${pkgs.coreutils}/bin/install -m600 ${categoriesFile} \
+        /var/lib/qBittorrent/qBittorrent/config/categories.json
+    fi
+  '';
 in
 {
   services.qbittorrent = {
     enable = true;
     user = "qbittorrent";
-    group = "qbittorrent";
+    # The systemd unit launches with this group; users.users.<name>.extraGroups
+    # only edits the group database and is ignored by the unit. Needed to write
+    # into /media/downloads and read the library.
+    group = "media";
     webuiPort = webuiPort;
     torrentingPort = torrentingPort;
     openFirewall = false;
@@ -30,7 +59,12 @@ in
       BitTorrent = {
         Session = {
           Interface = config.my.tailscale.self.ip;
-          DefaultSavePath = "/media/jellyfin/";
+          Port = torrentingPort;
+          UPnP = false;
+          DefaultSavePath = "/media/downloads/";
+
+          # Default Torrent Management Mode = Automatic
+          DisableAutoTMMByDefault = false;
 
           # Genome is a Pi 5: keep seeding load bounded. Uncapped upload slots
           # and default connection limits (500/100) caused heavy CPU + power
@@ -46,20 +80,15 @@ in
       };
       Preferences = {
         WebUI = {
-          # Credentials are deliberately NOT set here: a PBKDF2 hash baked into
-          # qBittorrent.conf via pkgs.writeText lands in the world-readable nix
-          # store, gets committed to the repo, and drifts from the agenix env.
-          # Instead, the ExecStartPre below patches WebUI\\Username and
-          # WebUI\\Password_PBKDF2 from QB_USER/QB_PASS (hosts/genome/
-          # qbittorrent.env.age) into the installed config on every start.
+          # No password: the WebUI is only reachable from localhost, the LAN
+          # and the tailnet (via my.tailscale.serve), all of which bypass auth.
           HostHeaderValidation = false;
+          LocalHostAuth = false;
+          AuthSubnetWhitelistEnabled = true;
+          AuthSubnetWhitelist = "192.168.1.0/24,100.64.0.0/10";
         };
         General.Locale = "en";
-        Downloads = {
-          AutorunEnabled = true;
-          AutorunProgram = "/run/current-system/sw/bin/torrent-done.sh %I %D %N %L %F";
-          UseCategoryPathsInManualMode = true;
-        };
+        Downloads.UseCategoryPathsInManualMode = true;
       };
     };
   };
@@ -71,47 +100,13 @@ in
   my.services.ports.qbittorrent-peers = torrentingPort;
   my.tailscale.serve.qbittorrent.port = webuiPort;
 
-  users.users.qbittorrent.extraGroups = [ "media" ];
-
   systemd.services.qbittorrent = {
-    path = [
-      pkgs.openssh
-      pkgs.rsync
-      pkgs.curl
-      pkgs.bash
-    ];
     # Files land group-writable (rw-rw-r--) so other media-group members can
-    # manage them; setgid on /media/jellyfin supplies the media group.
+    # manage them; the setgid bit on the download dirs supplies the group.
     serviceConfig.UMask = "0002";
-    serviceConfig.EnvironmentFile = [ config.age.secrets."hosts/genome/qbittorrent.env.age".path ];
 
     # Runs after the module's own ExecStartPre (which installs the
-    # store-rendered qBittorrent.conf on every start), making the age env the
-    # single source of truth for the WebUI credentials — including across
-    # plain service restarts, not just full boots.
-    serviceConfig.ExecStartPre = lib.mkAfter [
-      "${pkgs.python3}/bin/python3 ${scripts}/bin/qbittorrent-creds.py"
-    ];
-  };
-
-  environment.systemPackages = [ scripts ];
-
-  systemd.services.qbittorrent-init = {
-    description = "Configure qBittorrent WebUI/categories/torrent-done hook";
-    after = [ "qbittorrent.service" ];
-    wants = [ "qbittorrent.service" ];
-    before = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      User = "qbittorrent";
-      Group = "qbittorrent";
-      EnvironmentFile = [ config.age.secrets."hosts/genome/qbittorrent.env.age".path ];
-      ExecStart = "${pkgs.bash}/bin/bash ${scripts}/bin/qbittorrent-init.sh";
-    };
-    path = with pkgs; [
-      curl
-      bash
-      coreutils
-    ];
+    # store-rendered qBittorrent.conf on every start).
+    serviceConfig.ExecStartPre = lib.mkAfter [ "${seedCategories}" ];
   };
 }
