@@ -86,10 +86,11 @@ require("render-markdown").setup({
 })
 
 -- copilot.vim
-vim.g.copilot_assume_mapped = true
-vim.g.copilot_no_tab_map = true
-vim.keymap.set("i", "<C-f>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-vim.keymap.set("i", "<C-s>", 'copilot#AcceptWord("<CR>")', { silent = true, expr = true })
+-- vim.g.copilot_assume_mapped = true
+-- vim.g.copilot_no_tab_map = true
+-- vim.keymap.set("i", "<C-f>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+-- vim.keymap.set("i", "<C-s>", 'copilot#AcceptWord("<CR>")', { silent = true, expr = true })
+-- vim.b.copilot_enabled = false
 
 -- Telescope
 require("telescope").setup({

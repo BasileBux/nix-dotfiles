@@ -55,7 +55,7 @@ vim.pack.add({
 	},
 
 	-- AI slop
-	"https://github.com/github/copilot.vim",
+	-- "https://github.com/github/copilot.vim",
 })
 
 vim.g.mkdp_filetypes = { "markdown" }
