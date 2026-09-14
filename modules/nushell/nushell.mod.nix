@@ -98,6 +98,12 @@ let
       xdg.configFile."direnv/lib/nix-direnv.sh".source =
         "${pkgs.nix-direnv}/share/nix-direnv/direnvrc";
 
+      # Hide the +VAR/-VAR export diff on env activation
+      xdg.configFile."direnv/direnv.toml".text = ''
+        [global]
+        hide_env_diff = true
+      '';
+
       xdg.configFile."nushell/env.nu".source = resolvedEnvNu;
 
       xdg.configFile."nushell/settings.nu".text = /* nu */ ''
