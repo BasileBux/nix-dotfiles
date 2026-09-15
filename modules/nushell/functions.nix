@@ -5,17 +5,6 @@ pkgs.writeText "functions.nu" /* nu */ ''
     man $name | bat -l man -p -
   }
 
-  # Jump to school directory
-  def --env ba [dir?: string] {
-    let base = $"($env.HOME)/ba6"
-    let target = if ($dir | is-not-empty) {
-      $"($base)/($dir)"
-    } else {
-      $base
-    }
-    cd $target
-  }
-
   # Create a repo hosted on the NAS and add it as a remote
   def git_init [repo_name: string] {
     git remote add origin $"gitt@buxtorf-synology:($repo_name).git"

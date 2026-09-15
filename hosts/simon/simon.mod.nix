@@ -64,6 +64,17 @@ let
       def --env qsconfig [] { cd ($env.HOME)/nixos/config/quickshell; nvim shell.qml }
       def --env hlconfig [] { cd ($env.HOME)/nixos/config/hypr; nvim hyprland.lua }
 
+      # Jump to school directory
+      def --env ba [dir?: string] {
+        let base = $"($env.HOME)/ba7"
+        let target = if ($dir | is-not-empty) {
+          $"($base)/($dir)"
+        } else {
+          $base
+        }
+        cd $target
+      }
+
       # Wake or shut down kamina (raspberry pi) through upsnap
       def kamina [action: string] {
           print $action
