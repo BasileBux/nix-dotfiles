@@ -16,9 +16,16 @@
       ssh-server
       tmux
       slop
+      libvirtd
     ];
     nixosModules = [
       ./extra-config.nix
+      {
+        # VM host: VMs run here, reachable from the tailnet through the
+        # advertised libvirt NAT subnet (see modules/libvirtd.mod.nix)
+        my.libvirtd.enable = true;
+        my.libvirtd.subnetRouter.enable = true;
+      }
       {
         my.nushell.accentColor = "#fbe61e"; # Other possible options: #1eebfb #8b1efb #1efb8b
         my.ssh.extraAuthorizedKeys = [

@@ -134,10 +134,16 @@ in
       tailscale
       slop
       radicle
+      libvirtd
     ];
 
     nixosModules = [
       ./extra-config.nix
+      {
+        # Manage the VMs running on kamina with virt-manager; consoles are
+        # tunnelled over SSH (see modules/libvirtd.mod.nix)
+        my.libvirtd.remoteUris = [ "qemu+ssh://kamina/system" ];
+      }
       {
         my.hyprland = hyprland-config;
         my.nushell = nushell-config;

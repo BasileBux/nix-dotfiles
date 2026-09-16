@@ -39,6 +39,18 @@
             description = "This machine's entry from the machines registry, or null.";
           };
 
+          routes = lib.mkOption {
+            type = with lib.types; listOf str;
+            default = [ ];
+            example = [ "192.168.122.0/24" ];
+            description = ''
+              Subnets to advertise as routes (tailscale set
+              --advertise-routes). Inert unless the tailscale module is
+              enabled. Routes still need tailnet-side approval unless
+              autoApprovers covers them.
+            '';
+          };
+
           serve = lib.mkOption {
             type =
               with lib.types;
@@ -78,6 +90,28 @@
             services.tailscale.useRoutingFeatures = lib.mkDefault "client";
             services.tailscale.openFirewall = lib.mkDefault true;
           }
+
+          (lib.mkIf (config.my.tailscale.routes != [ ]) {
+            systemd.services.tailscale-routes = {
+              description = "Advertise subnet routes through tailscale";
+              after = [
+                "network-online.target"
+                "tailscaled.service"
+                "tailscaled-set.service"
+              ];
+              wants = [ "network-online.target" ];
+              wantedBy = [ "multi-user.target" ];
+
+              serviceConfig = {
+                Type = "oneshot";
+                RemainAfterExit = true;
+                ExecStart = pkgs.writeShellScript "tailscale-routes" ''
+                  set -euo pipefail
+                  ${lib.getExe config.services.tailscale.package} set --advertise-routes=${lib.concatStringsSep "," config.my.tailscale.routes}
+                '';
+              };
+            };
+          })
 
           (lib.mkIf (config.my.tailscale.serve != { }) {
             systemd.services.tailscale-serve = {
