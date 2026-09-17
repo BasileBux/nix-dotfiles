@@ -70,6 +70,7 @@
               "ctrl+shift+enter" = "new_window_with_cwd";
               "ctrl+shift+j" = "previous_window";
               "ctrl+shift+k" = "next_window";
+              "ctrl+alt+v" = "remote_control_script ${../scripts/kitty-paste-image.nu}";
               "ctrl+shift+h" =
                 "launch --type=overlay --stdin-source=@screen_scrollback --stdin-add-formatting ${../scripts/kitty-nvim-scrollback.sh} @input-line-number";
             };
