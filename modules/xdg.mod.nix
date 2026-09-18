@@ -77,9 +77,6 @@
           # pi coding agent
           "${configHome}/pi"
 
-          # optmem
-          "${stateHome}/optmem"
-
           # zsh
           "${stateHome}/zsh"
           "${cacheHome}/zsh"
@@ -165,9 +162,6 @@
 
           # pi coding agent
           PI_CODING_AGENT_DIR = "${configHome}/pi";
-
-          # optmem
-          MEMORY_DIR = "${stateHome}/optmem";
 
           # zsh
           ZSH_COMPDUMP = "${cacheHome}/zsh/zcompdump";
