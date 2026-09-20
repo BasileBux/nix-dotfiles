@@ -80,7 +80,6 @@
             map f1 no_op
             map ctrl+h no_op
             map ctrl+l no_op
-            cursor_trail 0
           '';
           home.packages = with pkgs; [
             (writeShellScriptBin "remote" ''

@@ -36,7 +36,7 @@ let
     extraConfig = /* lua */ ''
       local mainMod = require("config").mainMod
       hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("nvtop -s > /dev/null"))
-      hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("kitty kitten ssh kamina"))
+      hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("kitty --config ~/.config/kitty/remote.conf kitten ssh -t kamina 'tmux new-session -A -s main'"))
     '';
   };
   quickshell-config = {
