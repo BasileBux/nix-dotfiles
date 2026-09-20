@@ -128,6 +128,7 @@
           "opencode/opencode.json".text = (builtins.toJSON opencodeConfig) + "\n";
           "pi/themes".source = ../config/pi/themes;
           "pi/extensions".source = ../config/pi/extensions;
+          "pi/skills".source = ../config/pi/skills;
         };
 
         home.sessionVariables = {
