@@ -1,10 +1,9 @@
-{ inputs, ... }: {
+{
   flake.module.slop = {
     nixos = { pkgs, ... }: {
       environment.systemPackages = with pkgs; [
         pi-coding-agent
         opencode
-        inputs.qq.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
     };
 

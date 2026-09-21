@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ inputs, config, pkgs, lib, ... }:
 
 {
   boot = {
@@ -73,6 +73,8 @@
     pciutils
     ryzenadj
     nvtopPackages.amd
+
+    inputs.qq.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   programs.nix-ld.enable = true;
