@@ -29,8 +29,8 @@
       {
         my.nushell.accentColor = "#fbe61e"; # Other possible options: #1eebfb #8b1efb #1efb8b
         my.ssh.extraAuthorizedKeys = [
-          # ipad / iphone through tailscale (termius)
-          "from=\"100.122.103.5,100.84.142.57\"  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3JtMPAdhCamdxtzssUutjNaCyGtsUVltvtLakwuPze"
+          # ipad / iphone through tailscale (termius), or from home LAN (v4/v6)
+          "from=\"100.122.103.5,100.84.142.57,192.168.1.0/24,2a02:1210:7622:fb00::/64\"  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3JtMPAdhCamdxtzssUutjNaCyGtsUVltvtLakwuPze"
           # upsnap on genome (raspberry pi) through tailscale and eth0 LAN
           "from=\"192.168.1.191,100.82.254.103\"  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDUZ/0p/7j6gcvZS1Cm8f2PP2dzrNN5WSxvMJQaPLzFv upsnap@raspberrypi"
         ];
