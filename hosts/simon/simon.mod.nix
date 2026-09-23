@@ -64,6 +64,11 @@ let
       def --env qsconfig [] { cd ($env.HOME)/nixos/config/quickshell; nvim shell.qml }
       def --env hlconfig [] { cd ($env.HOME)/nixos/config/hypr; nvim hyprland.lua }
 
+      def --env nvim-pack [] {
+        XDG_CONFIG_HOME=/tmp nvim -u ~/nixos/config/nvim/init.lua
+        mv /tmp/nvim/nvim-pack-lock.json ~/nixos/config/nvim/nvim-pack-lock.json
+      }
+
       # Jump to school directory
       def --env ba [dir?: string] {
         let base = $"($env.HOME)/ba7"

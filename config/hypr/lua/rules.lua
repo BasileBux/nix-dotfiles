@@ -98,7 +98,7 @@ hl.workspace_rule({
 
 hl.workspace_rule({
 	workspace = "special:todo",
-	on_created_empty = "kitty --title='todo' -e nu -c 'kitten ssh -t genome " .. editor .. " ~/todo.md'",
+	on_created_empty = "kitty --title='todo' -e nu -c '" .. editor .. " +Todo'",
 })
 
 hl.workspace_rule({

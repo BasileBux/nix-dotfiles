@@ -27,6 +27,7 @@
             tree-sitter-python
             tree-sitter-typst
             tree-sitter-nix
+            tree-sitter-org-nvim
           ])
           ++ [ pkgs.vimPlugins.nvim-treesitter-parsers.qmljs ];
 

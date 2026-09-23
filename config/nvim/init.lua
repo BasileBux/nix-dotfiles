@@ -54,10 +54,14 @@ vim.pack.add({
 		ft = { "markdown" },
 	},
 
+	-- Org
+	"https://github.com/nvim-orgmode/orgmode",
+
 	-- AI slop
 	-- "https://github.com/github/copilot.vim",
 })
 
+vim.cmd("colorscheme nightSyscall")
 vim.g.mkdp_filetypes = { "markdown" }
 
 require("settings")
@@ -79,7 +83,8 @@ require("rose-pine").setup({
 		italic = false,
 	},
 })
-vim.cmd("colorscheme nightSyscall")
+
+require("plugins.org")
 
 -- Better visual panes separation -> must be called at end
 vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#f578d1", bg = "NONE" })
