@@ -137,6 +137,7 @@ in
       desktop
       smb
       tailscale
+      syncthing
       slop
       radicle
       libvirtd
@@ -158,6 +159,7 @@ in
           destination = "/home";
           mountPoint = "/home/${settings.username}/synology";
         };
+        my.syncthing.enable = true;
       }
       {
         age.secrets."hosts/simon/kamina-upsnap-password.age" = {

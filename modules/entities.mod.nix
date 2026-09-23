@@ -31,18 +31,30 @@ in
   flake.machines = {
     simon = {
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiS/gxSDgvtbGGm24jbBeETFD2l83MQaDzmAAq6/p4U simon";
-      tailscale = "100.79.180.68";
+      tailscale.ip = "100.79.180.68";
+      syncthing.id = "AIIKEQV-CSX26XH-ULREMP6-F4Z2PZL-TGQ6NTQ-UYPWU4W-OOTK3QU-I3PWXAR";
     };
     kamina = {
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC0w6Y4ZgcSz3fifBDpzB4a4SKgDUT5ZX3CuO8nzXMbR kamina";
       tailscale.ip = "100.100.86.25";
+      syncthing.id = "63K5FFQ-V3RZ5O4-3KE7QPP-EDS6TC2-IR56E2U-2NR5MPF-B5MSYGG-S4NVRAW";
     };
     genome = {
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFRkXxChHOwya3tDfztdsgCuovhr1hyMiWDDcMBIlrCn genome";
       tailscale.ip = "100.82.254.103";
+      syncthing.id = "ZZ3YA7N-RYW5ZEA-E4FXSR7-2WG5TZH-UEKVQKT-MPQQW5W-KQPUXEN-RAD2IQO";
     };
     yoko.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICf/SNZc5Z6bsJ5QlfX1WoWStHADD07uAcXteQ/JTovi yoko";
   };
+
+  # Syncthing mesh topology (see modules/syncthing.mod.nix). A folder without
+  # an explicit `devices` list is shared by every machine that has a
+  # `syncthing.id`; per-host sync paths default to "~/<folder-name>".
+  flake.syncthing.folders.orgfiles.ignorePatterns = [
+    ".git"
+    ".jj"
+    ".stfolder"
+  ];
 
   flake.keys = mapAttrs (_: { key, ... }: key) (removeAttrs self.people [ "self" ] // self.machines);
 

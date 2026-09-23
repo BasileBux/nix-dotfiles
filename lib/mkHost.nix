@@ -52,6 +52,10 @@ nixosSystem {
       my.settings = settings;
       my.tailscale.tailnetDomain = inputs.self.tailnet.domain;
       my.tailscale.self = inputs.self.machines.${settings.hostname}.tailscale or null;
+
+      my.syncthing.machines = inputs.self.machines or { };
+      my.syncthing.folders = inputs.self.syncthing.folders or { };
+      my.syncthing.selfId = inputs.self.machines.${settings.hostname}.syncthing.id or null;
       age.identityPaths = ageIdentityPaths;
     }
   ]

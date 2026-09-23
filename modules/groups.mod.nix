@@ -6,6 +6,7 @@
     settings
     services
     tailscale-options
+    syncthing-options
 
     security
     ssh-client
