@@ -15,7 +15,8 @@
     "npm:pi-web-access",
     "npm:pi-notify",
     "npm:pi-subagents",
-    "npm:@ff-labs/pi-fff"
+    "npm:@ff-labs/pi-fff",
+    "npm:@juicesharp/rpiv-ask-user-question"
   ],
   "theme": "nightSyscall",
   "compaction": {
