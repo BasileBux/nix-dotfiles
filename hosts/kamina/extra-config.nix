@@ -39,7 +39,6 @@
 
   services.power-profiles-daemon.enable = true;
 
-  environment.systemPackages = [
-    pkgs.codex
-  ];
+  # WARNING: TMP FIX
+  networking.firewall.allowedTCPPorts = [ 5232 ];
 }

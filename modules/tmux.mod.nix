@@ -24,6 +24,27 @@
           bind-key -T copy-mode-vi _ send-keys -X start-of-line
           bind-key -n C-h previous-window
           bind-key -n C-l next-window
+          # kitty-style prefix-less bindings (kitty sends CSI u for these combos,
+          # tmux >= 3.2 recognizes them thanks to extended-keys/extkeys above)
+          bind-key -n C-S-Enter split-window -h -c "#{pane_current_path}"
+          bind-key -n C-S-j select-pane -t:.-1
+          bind-key -n C-S-k select-pane -t:.+1
+          bind-key -n "C-;" clear-history
+          # C-S-l cycles layouts like kitty's next_layout:
+          # side-by-side (even-horizontal) -> stacked (even-vertical) -> stack (zoom)
+          bind-key -n C-S-l run-shell '
+            setst() { tmux set-option -w -t "#{window_id}" @layout-cycle "$1"; }
+            st=$(tmux show-options -qwv -t "#{window_id}" @layout-cycle)
+            if [ "#{window_zoomed_flag}" = "1" ]; then
+              tmux resize-pane -Z -t "#{pane_id}"
+              if [ "$st" = "zv" ]; then setst v; else setst h; fi
+              exit 0
+            fi
+            case "$st" in
+              h) tmux select-layout -t "#{window_id}" even-vertical; setst v ;;
+              v) tmux resize-pane -Z -t "#{pane_id}"; setst zv ;;
+              *) tmux select-layout -t "#{window_id}" even-horizontal; setst h ;;
+            esac'
           bind -r j select-pane -D
           bind -r k select-pane -U
           bind -r h select-pane -L

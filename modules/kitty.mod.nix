@@ -77,9 +77,15 @@
           };
           xdg.configFile."kitty/remote.conf".text = ''
             include kitty.conf
+            # Neutralize bindings that tmux handles instead (must come after the
+            # include so they override the kitty.conf definitions)
             map f1 no_op
             map ctrl+h no_op
             map ctrl+l no_op
+            map ctrl+shift+enter no_op
+            map ctrl+shift+j no_op
+            map ctrl+shift+k no_op
+            map ctrl+; no_op
           '';
           home.packages = with pkgs; [
             (writeShellScriptBin "remote" ''
