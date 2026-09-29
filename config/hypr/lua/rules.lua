@@ -6,8 +6,10 @@ end
 
 hl.window_rule({
 	name = "pip-float",
-	match = { title = "Picture-in-Picture" },
+	match = { title = "Picture.in.[Pp]icture" }, -- regex: matches "Picture-in-Picture" (chrome/firefox) and "Picture in picture" (helium)
 	float = true,
+	no_dim = true,
+	no_anim = true,
 })
 
 hl.window_rule({

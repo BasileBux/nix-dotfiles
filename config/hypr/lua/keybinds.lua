@@ -49,6 +49,50 @@ local close_win = function()
 	end
 end
 
+-- ----------------
+-- PIP FOLLOW
+-- ----------------
+-- Move the PiP window to whatever regular workspace is active, so it follows
+-- you around. Never moves it onto special workspaces. Off by default; toggled
+-- with a keybind (resets to off on every config reload).
+
+local on_workspace_active = function(ws)
+	if ws == nil or ws.special then
+		return
+	end
+
+	local pips = hl.get_windows({ title = "Picture in picture", mapped = true }) -- helium
+	if #pips == 0 then
+		pips = hl.get_windows({ title = "Picture-in-Picture", mapped = true }) -- chrome/firefox
+	end
+	if #pips == 0 then
+		return
+	end
+
+	local pip = pips[1]
+	if pip.workspace ~= nil and pip.workspace.name == ws.name then
+		return
+	end
+
+	hl.dispatch(hl.dsp.window.move({ window = pip, workspace = ws, follow = false }))
+end
+
+local pip_follow_sub = nil
+
+local toggle_pip_follow = function()
+	if pip_follow_sub ~= nil and pip_follow_sub:is_active() then
+		pip_follow_sub:remove()
+		pip_follow_sub = nil
+		hl.notification.create({ text = "PiP follow: off", timeout = 1500 })
+	else
+		pip_follow_sub = hl.on("workspace.active", on_workspace_active)
+		on_workspace_active(hl.get_active_workspace())
+		hl.notification.create({ text = "PiP follow: on", timeout = 1500 })
+	end
+end
+
+hl.bind(mainMod .. " + ALT + P", toggle_pip_follow)
+
 -- Global shortcuts
 hl.bind(mainMod .. " + ALT + H", hl.dsp.global("quickshell:toggle"))
 hl.bind(mainMod .. " + ALT + L", hl.dsp.global("quickshell:lock"))
