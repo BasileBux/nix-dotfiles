@@ -40,6 +40,18 @@ end
 
 Statusline = {}
 
+local function search_count()
+	if vim.v.hlsearch == 0 then
+		return ""
+	end
+	local ok, res = pcall(vim.fn.searchcount, { maxcount = 999, timeout = 50 })
+	if not ok or res.total == 0 then
+		return ""
+	end
+	local total = res.incomplete == 1 and (res.total .. "+") or res.total
+	return string.format("[%d/%s]", res.current, total)
+end
+
 function Statusline.active()
     local win_width = vim.api.nvim_win_get_width(0)
 
@@ -53,11 +65,12 @@ function Statusline.active()
     local left_len = #left
 
     -- Right side: " 100% 42:80 [lua] " — estimate
-    local right = string.format(" %d%%  %d:%d %s ",
+    local right = string.format(" %d%%  %d:%d %s %s ",
         math.floor(vim.fn.line(".") / vim.fn.line("$") * 100),
         vim.fn.line("."),
         vim.fn.col("."),
-        vim.bo.filetype ~= "" and "[" .. vim.bo.filetype .. "]" or ""
+        vim.bo.filetype ~= "" and "[" .. vim.bo.filetype .. "]" or "",
+        search_count()
     )
     local right_len = #right
 

@@ -64,8 +64,33 @@ local watch_and_open_pdf = function()
 	end
 end
 
+local generate_glossary = function()
+	local text = vim.trim(vim.fn.getreg("+"))
+
+	local long, short = text:match("^(.-)%s*%(([^()]+)%)$")
+	if not long or long == "" then
+		error('Clipboard does not match "Long Name (ABBR)": ' .. text)
+	end
+
+	local result = table.concat({
+		"(",
+		'  key: "' .. short:lower() .. '",',
+		'  short: "' .. short .. '",',
+		'  long: "' .. long .. '",',
+		"),",
+	}, "\n")
+
+	vim.fn.setreg("+", result)
+end
+
 vim.api.nvim_create_user_command("Typst", function()
 	watch_and_open_pdf()
 end, {
 	desc = "Watch the current typst file and opens the generated PDF",
+})
+
+vim.api.nvim_create_user_command("Gloss", function()
+	generate_glossary()
+end, {
+	desc = "Takes something of the shape 'SecureMonitor Call (SMC)' from the clipboard and creates a glossary entry",
 })

@@ -25,6 +25,11 @@ require("orgmode").setup({
 				},
 				{
 					type = "tags_todo",
+					org_agenda_overriding_header = "TB",
+					org_agenda_category_filter_preset = "TB",
+				},
+				{
+					type = "tags_todo",
 					org_agenda_overriding_header = "Personal",
 					org_agenda_category_filter_preset = "Personal",
 				},

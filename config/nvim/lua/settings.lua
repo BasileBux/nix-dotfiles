@@ -84,8 +84,12 @@ vim.opt.inccommand = "split"
 -- Show which line your cursor is on
 vim.opt.cursorline = true
 
--- Hide command line unless needed
-vim.opt.cmdheight=0
+-- Hide command line unless needed. Requires the new ui2 messages UI (0.12+),
+-- otherwise errors/search failures trigger "Press ENTER" prompts.
+require("vim._core.ui2").enable()
+vim.opt.cmdheight = 0
+-- Show partial commands and search count ("[2/7]") in the statusline
+vim.opt.showcmdloc = "statusline"
 
 vim.opt.winborder = "rounded"
 

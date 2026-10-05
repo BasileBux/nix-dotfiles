@@ -36,6 +36,10 @@ vim.lsp.config("clangd", {
 	root_markers = { "compile_commands.json", ".clangd", "platformio.ini", ".git" },
 })
 
+vim.lsp.config("tinymist", {
+	settings = { projectResolution = "lockDatabase" },
+})
+
 vim.lsp.enable(lsp_servers)
 
 local map = function(keys, func, desc, mode)
