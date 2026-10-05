@@ -139,8 +139,8 @@ in
       tailscale
       syncthing
       slop
-      radicle
       libvirtd
+      ghostty
     ];
 
     nixosModules = [

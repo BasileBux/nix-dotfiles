@@ -5,6 +5,13 @@ local f_str = function(s, tab)
 end
 
 hl.window_rule({
+  match = {
+    class = ".*"
+  },
+  suppress_event = "maximize"
+});
+
+hl.window_rule({
 	name = "pip-float",
 	match = { title = "Picture.in.[Pp]icture" }, -- regex: matches "Picture-in-Picture" (chrome/firefox) and "Picture in picture" (helium)
 	float = true,

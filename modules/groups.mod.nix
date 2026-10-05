@@ -31,9 +31,7 @@
     quickshell
     theming
     kitty
-    ghostty
     nemo
-    vscode
     browser
     video
     images
