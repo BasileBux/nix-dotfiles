@@ -133,6 +133,8 @@
           # Java / Gradle / Android
           GRADLE_USER_HOME = "${dataHome}/gradle";
           ANDROID_USER_HOME = "${dataHome}/android";
+          ANDROID_AVD_HOME = "${dataHome}/android/avd";
+          ANDROID_EMULATOR_HOME = "${dataHome}/android";
           _JAVA_OPTIONS = "-Djava.util.prefs.userRoot=${configHome}/java";
 
           # ripgrep
