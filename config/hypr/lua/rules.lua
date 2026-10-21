@@ -11,6 +11,13 @@ hl.window_rule({
   suppress_event = "maximize"
 });
 
+-- Chromium follows the fullscreen HDR preference even for SDR pages; opt in per window.
+hl.window_rule({
+	name = "helium-sdr-default",
+	match = { class = "helium", tag = "negative:hdr-enabled" },
+	no_auto_hdr = true,
+})
+
 hl.window_rule({
 	name = "pip-float",
 	match = { title = "Picture.in.[Pp]icture" }, -- regex: matches "Picture-in-Picture" (chrome/firefox) and "Picture in picture" (helium)
@@ -95,22 +102,16 @@ end
 
 local editor = "nvim"
 
-hl.workspace_rule({
-	workspace = "special:sagepopup",
-	on_created_empty = "kitty --title='sagepopup' -e nu -c 'sage -q'",
-})
+local special_ws_commands = {
+	["special:sagepopup"] = "kitty --title='sagepopup' -e nu -c 'sage -q'",
+	["special:scratch"] = "kitty --title='scratch' -e nu -c '" .. editor .. " ~/scratch.md'",
+	["special:todo"] = "kitty --title='todo' -e nu -c '" .. editor .. " +Todo'",
+	["special:quick-ai"] = "kitty --title='quick-ai' -d ~/tmp/quick-ai -e nu -c 'VISUAL=" .. editor .. " pi'",
+}
 
-hl.workspace_rule({
-	workspace = "special:scratch",
-	on_created_empty = "kitty --title='scratch' -e nu -c '" .. editor .. " ~/scratch.md'",
-})
-
-hl.workspace_rule({
-	workspace = "special:todo",
-	on_created_empty = "kitty --title='todo' -e nu -c '" .. editor .. " +Todo'",
-})
-
-hl.workspace_rule({
-	workspace = "special:quick-ai",
-	on_created_empty = "kitty --title='quick-ai' -d ~/tmp/quick-ai -e nu -c 'VISUAL=" .. editor .. " pi'",
-})
+hl.on("workspace.created", function(ws)
+	local cmd = special_ws_commands[ws.name]
+	if ws.is_empty and cmd then
+		hl.exec_cmd(cmd)
+	end
+end)

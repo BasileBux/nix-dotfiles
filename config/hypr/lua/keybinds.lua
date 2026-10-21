@@ -133,6 +133,28 @@ for _, ws in ipairs(special_workspaces) do
 	hl.bind(mainMod .. " + CTRL + " .. ws.key, hl.dsp.window.move({ workspace = "special:" .. ws.name, silent = true }))
 end
 
+-- HDR opt-in lasts for this Helium window; re-enter fullscreen to refresh color feedback.
+hl.bind(mainMod .. " + ALT + H", function()
+	local win = hl.get_active_window()
+	if win == nil or win.class ~= "helium" then
+		return
+	end
+
+	local enabled = false
+	for _, tag in ipairs(win.tags) do
+		if tag == "hdr-enabled" then
+			enabled = true
+			break
+		end
+	end
+
+	hl.dispatch(hl.dsp.window.tag({ window = win, tag = enabled and "-hdr-enabled" or "+hdr-enabled" }))
+	hl.notification.create({
+		text = (enabled and "Helium HDR: off" or "Helium HDR: allowed") .. ". Re-enter fullscreen to apply.",
+		timeout = 4000,
+	})
+end)
+
 -- Window management
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.float({ action = "toggle" }))

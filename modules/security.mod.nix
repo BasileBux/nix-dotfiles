@@ -32,9 +32,6 @@
         # Disable the BPF JIT compiler to eliminate JIT spray attacks.
         "net.core.bpf_jit_enable" = false;
 
-        # Disable ftrace debugging — reduces kernel attack surface.
-        "kernel.ftrace_enabled" = false;
-
         # Prevent kernel address exposure via dmesg for unprivileged users.
         "kernel.dmesg_restrict" = 1;
 
@@ -88,11 +85,23 @@
           "slab_nomerge"
 
           # Require valid signatures on all kernel modules.
-          "module.sig_enforce=1"
+          # DISABLED: broken with nixpkgs' kmodigest per-module signing —
+          # the shipped kernel image contains no signing certificates
+          # (only `linuxPackages.rebuildImage` inserts them and nothing
+          # wires it into the boot path), so with sig_enforce every
+          # module load is rejected and the initrd can't mount root.
+          # Re-enable once upstream boots the certificate-bearing image.
+          # "module.sig_enforce=1"
 
           # Kernel lockdown — confidentiality mode: prevents even root from
           # reading or modifying kernel memory (/dev/mem, /dev/kmem, kexec).
-          "lockdown=confidentiality"
+          # DISABLED alongside sig_enforce above: lockdown gates the final
+          # `security_locked_down(LOCKDOWN_MODULE_SIGNATURE)` check in
+          # module_sig_check(), so it implicitly enforces module signatures
+          # even without sig_enforce — with the kmodigest certs absent from
+          # the boot-path kernel image, every module load is rejected again.
+          # Re-enable both once the boot path ships cert-bearing images.
+          # "lockdown=confidentiality"
 
           # Fill freed pages with poison (0xAA) and check on allocation —
           # detects use-after-free and prevents info leaks from freed memory.
