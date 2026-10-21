@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, lib, ... }:
+{ inputs, config, pkgs, ... }:
 
 {
   boot = {
@@ -14,17 +14,19 @@
       "spidev"
     ];
     initrd.kernelModules = [ "mt7921e" ];
-    kernelParams = lib.mkMerge [
-      [ "transparent_hugepage=never" ]
-      (lib.mkAfter [
-        # Cancel the aggressive "pcie_aspm.policy=powersupersave" injected by
-        # nixos-hardware's asus-zephyrus-ga402 module (keep it last: the kernel
-        # uses the last occurrence of a duplicate cmdline parameter).
-        # Deep PCIe ASPM (L1 substates) hard-freezes the display engine during
-        # amdgpu BOCO runtime-PM / platform-profile power transitions on this
-        # machine (freeze with audio still playing, nothing in the logs).
-        "pcie_aspm.policy=default"
-      ])
+    # nixos-hardware's asus-zephyrus-ga402 module injects
+    # "pcie_aspm.policy=powersupersave" and "mem_sleep_default=deep".
+    # NOTE: if display freezes come back on battery, try re-adding
+    # "pcie_aspm.policy=default" as the LAST kernel param (the kernel uses
+    # the last occurrence of a duplicate cmdline parameter) — deep PCIe ASPM
+    # was previously suspected of hard-freezing the display engine during
+    # amdgpu BOCO runtime-PM / platform-profile power transitions.
+    kernelParams = [
+      "transparent_hugepage=never"
+      # Disable PSR (Panel Self Refresh): on battery the screen would
+      # completely freeze (audio keeps playing, only hard reboot recovers) —
+      # a very common GA402 failure mode. Costs a little idle battery.
+      "amdgpu.dcdebugmask=0x10"
     ];
     kernel.sysctl."vm.compaction_proactiveness" = 0;
   };
