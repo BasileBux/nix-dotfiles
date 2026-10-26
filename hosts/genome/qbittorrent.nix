@@ -12,31 +12,61 @@ let
   webuiPort = 8081;
   torrentingPort = 51413;
 
-  # Default categories, seeded once into the profile on first start
-  # (categories are stored in categories.json, not in qBittorrent.conf).
-  # qBittorrent owns the file afterwards, so category edits made through the
-  # WebUI persist across restarts; only a wiped profile gets re-seeded.
+  # Default categories; the file format matches qBittorrent 5.x's own
+  # categories.json. qBittorrent may add more categories at runtime; the ones
+  # declared here are re-pinned on every start by the reconcile script below.
   # Arr-managed downloads (Sonarr/Radarr) must go to /media/downloads/* so the
   # arrs can import/rename/move them into the library; downloading straight
   # into the root folders breaks that (files are already "in place").
   # The jellyfin-* categories are for manual grabs that intentionally skip the
-  # arrs and land directly in the library.
+  # arrs and land directly in the library. The fam-* categories belong to the
+  # family stack's arrs on the Synology NAS (never reuse tv/movies for them:
+  # two arrs on one category causes grab/import conflicts).
   categoriesFile = pkgs.writeText "categories.json" (
     builtins.toJSON {
       tv.save_path = "/media/downloads/tv";
       movies.save_path = "/media/downloads/movies";
+      "fam-tv".save_path = "/media/downloads/fam/tv";
+      "fam-movies".save_path = "/media/downloads/fam/movies";
       jellyfin-shows.save_path = "/media/jellyfin/shows";
       jellyfin-movies.save_path = "/media/jellyfin/movies";
     }
   );
 
-  # Runs after the module's own ExecStartPre (which installs the
-  # store-rendered qBittorrent.conf on every start).
-  seedCategories = pkgs.writeShellScript "qbittorrent-seed-categories" ''
-    if [ ! -e /var/lib/qBittorrent/qBittorrent/config/categories.json ]; then
-      ${pkgs.coreutils}/bin/install -m600 ${categoriesFile} \
-        /var/lib/qBittorrent/qBittorrent/config/categories.json
+  # qBittorrent auto-creates categories (with an EMPTY save path) the moment
+  # an arr connects using an unknown category name. If that happens before
+  # this file was ever seeded (e.g. the arrs were wired up before a genome
+  # deploy), the old install-if-absent seed never repaired it and torrents
+  # landed in <DefaultSavePath>/<category> (/media/downloads/fam-movies).
+  # So instead of seeding once, reconcile on every start: create missing
+  # declared categories and re-pin their save_path, while leaving everything
+  # else in the file (WebUI-set share limits, extra categories) untouched.
+  reconcileCategories = pkgs.writeShellScript "qbittorrent-reconcile-categories" ''
+    f=/var/lib/qBittorrent/qBittorrent/config/categories.json
+    if [ ! -e "$f" ]; then
+      ${pkgs.coreutils}/bin/install -m600 ${categoriesFile} "$f"
+      exit 0
     fi
+    tmp=$(${pkgs.coreutils}/bin/mktemp)
+    if ${pkgs.jq}/bin/jq --slurpfile s ${categoriesFile} \
+        'reduce ($s[0] | to_entries[]) as $e (.; .[$e.key].save_path = $e.value.save_path)' \
+        "$f" > "$tmp"; then
+      ${pkgs.coreutils}/bin/install -m600 "$tmp" "$f"
+    else
+      # Unparseable file: qBittorrent couldn't use it anyway, re-seed.
+      ${pkgs.coreutils}/bin/install -m600 ${categoriesFile} "$f"
+    fi
+    ${pkgs.coreutils}/bin/rm -f "$tmp"
+  '';
+
+  # tmpfiles 'd' rules only apply ownership/mode at creation, so if someone
+  # recreates these dirs by hand (e.g. while cleaning up a misplaced torrent)
+  # they come back group-read-only and qBittorrent hits "file_open: Permission
+  # denied" on every download. Re-assert owner/mode as root on every start.
+  fixDownloadDirs = pkgs.writeShellScript "qbittorrent-fix-download-dirs" ''
+    for d in /media/downloads/fam /media/downloads/fam/tv /media/downloads/fam/movies; do
+      ${pkgs.coreutils}/bin/install -d -o qbittorrent -g media -m 2775 "$d"
+    done
   '';
 in
 {
@@ -100,6 +130,15 @@ in
   my.services.ports.qbittorrent-peers = torrentingPort;
   my.tailscale.serve.qbittorrent.port = webuiPort;
 
+  # Pre-create the fam-* save paths (setgid + group media, matching what
+  # qBittorrent would create); also makes them visible in the NFS export to
+  # the NAS before the first family torrent lands.
+  systemd.tmpfiles.rules = [
+    "d /media/downloads/fam 2775 qbittorrent media - -"
+    "d /media/downloads/fam/tv 2775 qbittorrent media - -"
+    "d /media/downloads/fam/movies 2775 qbittorrent media - -"
+  ];
+
   systemd.services.qbittorrent = {
     # Files land group-writable (rw-rw-r--) so other media-group members can
     # manage them; the setgid bit on the download dirs supplies the group.
@@ -107,6 +146,9 @@ in
 
     # Runs after the module's own ExecStartPre (which installs the
     # store-rendered qBittorrent.conf on every start).
-    serviceConfig.ExecStartPre = lib.mkAfter [ "${seedCategories}" ];
+    serviceConfig.ExecStartPre = lib.mkAfter [
+      "${reconcileCategories}"
+      "+${fixDownloadDirs}"
+    ];
   };
 }
