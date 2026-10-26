@@ -28,6 +28,7 @@
           upsnap
           simple-todo
           syncthing
+          smb
         ];
 
         nixosModules = [
@@ -42,6 +43,12 @@
             # Mesh topology + device IDs live in modules/entities.mod.nix.
             my.syncthing.enable = true;
             my.syncthing.snapshot.repos = [ "orgfiles" ];
+            my.smb = {
+              host = "100.86.179.75";
+              destination = "/media";
+              mountPoint = "/home/${settings.username}/synology";
+              credentials = "modules/smb/synology.age";
+            };
           }
           inputs.nixos-raspberrypi.nixosModules.raspberry-pi-5.base
         ];

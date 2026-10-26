@@ -35,6 +35,16 @@
                 default = 100;
                 description = "GID to map the SMB share to";
               };
+              credentials = lib.mkOption {
+                type = lib.types.str;
+                description = ''
+                  Name of the age secret holding the credentials file (path
+                  relative to the repo root, e.g. modules/smb/synology.age).
+                  It is auto-registered by the secrets module, so it can live
+                  under modules/smb/ (user-readable everywhere) or
+                  hosts/<host>/ (host-specific).
+                '';
+              };
             };
           };
           default = { };
@@ -45,7 +55,7 @@
           environment.systemPackages = with pkgs; [ cifs-utils ];
 
           fileSystems.${config.my.smb.mountPoint} = lib.mkIf config.my.secrets.enabled {
-            device = "//${config.my.smb.host}/${lib.removePrefix "/" config.my.smb.destination}";
+            device = "//${config.my.smb.host}${config.my.smb.destination}";
             fsType = "cifs";
             options =
               let
@@ -53,7 +63,7 @@
               in
               [
                 "${automount_opts},credentials=${
-                  config.age.secrets."modules/smb/credentials.age".path
+                  config.age.secrets.${config.my.smb.credentials}.path
                 },uid=${toString config.my.smb.uid},gid=${toString config.my.smb.gid}"
               ];
           };

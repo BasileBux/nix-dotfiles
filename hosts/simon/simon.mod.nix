@@ -158,6 +158,7 @@ in
           host = "100.86.179.75";
           destination = "/home";
           mountPoint = "/home/${settings.username}/synology";
+          credentials = "modules/smb/synology.age";
         };
         my.syncthing.enable = true;
       }
