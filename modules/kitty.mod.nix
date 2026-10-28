@@ -77,15 +77,18 @@
           };
           xdg.configFile."kitty/remote.conf".text = ''
             include kitty.conf
-            # Neutralize bindings that tmux handles instead (must come after the
-            # include so they override the kitty.conf definitions)
+            # Keys tmux handles: kitty must not act on them. Plain keys (F1, C-h,
+            # C-l) are passed through as-is; the pane keys have no distinct
+            # legacy encoding, so send the CSI u sequence tmux decodes back into
+            # C-S-<key> (shift+ctrl = 6, ctrl = 5).
             map f1 no_op
             map ctrl+h no_op
             map ctrl+l no_op
-            map ctrl+shift+enter no_op
-            map ctrl+shift+j no_op
-            map ctrl+shift+k no_op
-            map ctrl+; no_op
+            map ctrl+shift+enter send_text all \x1b[13;6u
+            map ctrl+shift+l send_text all \x1b[108;6u
+            map ctrl+shift+j send_text all \x1b[106;6u
+            map ctrl+shift+k send_text all \x1b[107;6u
+            map ctrl+; send_text all \x1b[59;5u
           '';
           home.packages = with pkgs; [
             (writeShellScriptBin "remote" ''

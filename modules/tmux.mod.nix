@@ -17,34 +17,41 @@
           set -g allow-passthrough on
           set -as terminal-features ',*:clipboard:RGB:extkeys'
           set -s extended-keys on
-          set -g extended-keys-format csi-u
+          set -s extended-keys-format csi-u
           bind r source-file ~/.config/tmux/tmux.conf
           bind -T copy-mode-vi v send-keys -X begin-selection
           bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
           bind-key -T copy-mode-vi _ send-keys -X start-of-line
           bind-key -n C-h previous-window
           bind-key -n C-l next-window
-          # kitty-style prefix-less bindings (kitty sends CSI u for these combos,
-          # tmux >= 3.2 recognizes them thanks to extended-keys/extkeys above)
-          bind-key -n C-S-Enter split-window -h -c "#{pane_current_path}"
-          bind-key -n C-S-j select-pane -t:.-1
-          bind-key -n C-S-k select-pane -t:.+1
+          # kitty-style pane keys. These keys have no distinct legacy encoding, so
+          # kitty/remote.conf forwards them as CSI u and tmux decodes them back to
+          # C-S-<key> (tmux always parses CSI u input, no negotiation needed).
+          bind-key -n C-S-Enter if-shell -F '#{window_zoomed_flag}' 'resize-pane -Z' \; if-shell -F '#{==:#{@pane-axis},v}' {
+            split-window -v -c '#{pane_current_path}'
+            select-layout even-vertical
+          } {
+            split-window -h -c '#{pane_current_path}'
+            select-layout even-horizontal
+            set-option -w @pane-axis h
+          }
+          bind-key -n C-S-j select-pane -t :.-
+          bind-key -n C-S-k select-pane -t :.+
           bind-key -n "C-;" clear-history
           # C-S-l cycles layouts like kitty's next_layout:
-          # side-by-side (even-horizontal) -> stacked (even-vertical) -> stack (zoom)
-          bind-key -n C-S-l run-shell '
-            setst() { tmux set-option -w -t "#{window_id}" @layout-cycle "$1"; }
-            st=$(tmux show-options -qwv -t "#{window_id}" @layout-cycle)
-            if [ "#{window_zoomed_flag}" = "1" ]; then
-              tmux resize-pane -Z -t "#{pane_id}"
-              if [ "$st" = "zv" ]; then setst v; else setst h; fi
-              exit 0
-            fi
-            case "$st" in
-              h) tmux select-layout -t "#{window_id}" even-vertical; setst v ;;
-              v) tmux resize-pane -Z -t "#{pane_id}"; setst zv ;;
-              *) tmux select-layout -t "#{window_id}" even-horizontal; setst h ;;
-            esac'
+          # side-by-side (even-horizontal) -> stacked (even-vertical) -> fullscreen (zoom)
+          bind-key -n C-S-l if-shell -F '#{>:#{window_panes},1}' {
+            if-shell -F '#{window_zoomed_flag}' {
+              resize-pane -Z
+              select-layout even-horizontal
+              set-option -w @pane-axis h
+            } {
+              if-shell -F '#{==:#{@pane-axis},v}' 'resize-pane -Z' {
+                select-layout even-vertical
+                set-option -w @pane-axis v
+              }
+            }
+          }
           bind -r j select-pane -D
           bind -r k select-pane -U
           bind -r h select-pane -L
