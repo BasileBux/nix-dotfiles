@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -23,7 +24,7 @@
   # Used for upsnap WOL + remote shutdown
   security.sudo.extraRules = [
     {
-      users = [ "basileb" ];
+      users = [ config.my.settings.username ];
       commands = [
         {
           command = "/run/current-system/sw/bin/poweroff";

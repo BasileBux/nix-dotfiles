@@ -157,11 +157,11 @@
               Type = "exec";
               User = config.my.settings.username;
               Environment = [
-                "HOME=/home/${config.my.settings.username}"
+                "HOME=${config.my.settings.homeDirectory}"
                 "SHELL=/run/current-system/sw/bin/bash"
                 "PATH=/run/current-system/sw/bin"
-                "CODEX_HOME=/home/${config.my.settings.username}/.config/codex"
-                "T3CODE_HOME=/home/${config.my.settings.username}/.config/t3"
+                "CODEX_HOME=${config.my.settings.homeDirectory}/.config/codex"
+                "T3CODE_HOME=${config.my.settings.homeDirectory}/.config/t3"
               ];
               RuntimeDirectory = "t3";
               RuntimeDirectoryMode = "0700";

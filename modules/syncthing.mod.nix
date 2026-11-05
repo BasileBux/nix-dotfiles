@@ -1,11 +1,6 @@
-# Options tier is always imported (via flake.module.default) so service
-# modules can always reference my.syncthing.*; the syncthing module is the
-# opt-in. All fleet knowledge (device IDs, tailscale IPs, folder topology)
-# lives in modules/entities.mod.nix and is plumbed per-host by lib/mkHost.nix
-# (my.syncthing.machines / folders / selfId), so a host only flips
-# my.syncthing.enable and everything else is derived. Sync runs over the
-# tailnet (tcp://<tailscale-ip>:22000) and the home LAN (local discovery);
-# global discovery, relays and NAT traversal are off.
+# Selecting this role enables Syncthing, deriving identities from the host
+# inventory (hosts/<host>/identity.nix) and topology from fleet.nix. Sync uses
+# the tailnet and local discovery, not global discovery, relays or NAT traversal.
 { self, ... }: {
   flake.module.syncthing-options = {
     nixos =
@@ -22,23 +17,13 @@
             description = "Enable the selected Syncthing role.";
           };
 
-          # Fleet plumbing injected by lib/mkHost.nix — do not set by hand.
+          # Defaults come from the shared fleet inventory.
           machines = lib.mkOption {
-            type = lib.types.attrsOf (
-              lib.types.submodule {
-                options = {
-                  key = lib.mkOption { type = lib.types.str; };
-                  tailscale.ip = lib.mkOption {
-                    type = lib.types.nullOr lib.types.str;
-                    default = null;
-                  };
-                  syncthing.id = lib.mkOption {
-                    type = lib.types.nullOr lib.types.str;
-                    default = null;
-                  };
-                };
-              }
-            );
+            type =
+              (import ../lib/fleet-types.nix {
+                inherit lib;
+                defaults = (import ../fleet.nix).defaults;
+              }).machines;
             default = self.machines;
             description = "flake.machines registry (syncthing IDs + tailscale IPs).";
           };
@@ -140,7 +125,7 @@
           assertions = [
             {
               assertion = cfg.selfId != null;
-              message = "my.syncthing.enable is set but ${config.networking.hostName} has no syncthing.id in modules/entities.mod.nix.";
+              message = "my.syncthing.enable is set but ${config.networking.hostName} has no syncthing.id in hosts/${config.networking.hostName}/identity.nix.";
             }
             {
               assertion = hasIdentity;
@@ -148,7 +133,7 @@
             }
             {
               assertion = lib.all machineHasId (lib.flatten (lib.mapAttrsToList (_: f: f.devices) meshFolders));
-              message = "A syncthing folder lists a device without a syncthing.id in modules/entities.mod.nix.";
+              message = "A syncthing folder lists a device whose hosts/<device>/identity.nix has no syncthing.id.";
             }
           ];
 

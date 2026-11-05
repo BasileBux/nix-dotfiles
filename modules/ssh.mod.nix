@@ -74,7 +74,9 @@ in
         programs.mosh.enable = true;
         services.openssh = {
           enable = true;
-          ports = [ 2222 ];
+          ports = [
+            (inputs.self.machines.${config.networking.hostName}.ssh.port or inputs.self.fleet.defaults.ssh.port)
+          ];
           settings = {
             PubkeyAuthentication = true;
             PasswordAuthentication = false;

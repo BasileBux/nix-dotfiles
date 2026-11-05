@@ -52,7 +52,13 @@ in
             assertions = [
               {
                 assertion = selected == { } || cfg.enabled;
-                message = "Host secrets require ageIdentityPaths for ${host}.";
+                message = ''
+                  ${host} has age secrets registered (hosts/${host}/*.age) but no age
+                  identity path, so they cannot be decrypted.
+                  Either give this host an identity (a key in
+                  hosts/${host}/identity.nix, or ageIdentityPaths in its .mod.nix),
+                  or remove the secrets under hosts/${host}/.
+                '';
               }
             ]
             ++ map (name: {

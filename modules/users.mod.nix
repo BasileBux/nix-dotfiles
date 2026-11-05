@@ -8,6 +8,7 @@ let
     {
       users.users.${config.my.settings.username} = {
         isNormalUser = true;
+        home = config.my.settings.homeDirectory;
         extraGroups = [ "wheel" ];
       }
       // lib.optionalAttrs (config.age.secrets ? "${secretName}") {

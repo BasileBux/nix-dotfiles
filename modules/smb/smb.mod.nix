@@ -23,7 +23,7 @@
               };
               mountPoint = lib.mkOption {
                 type = lib.types.str;
-                default = "/home/${config.my.settings.username}/synology";
+                default = "${config.my.settings.homeDirectory}/synology";
                 description = "The local mount point for the share";
               };
               uid = lib.mkOption {

@@ -121,17 +121,10 @@ let
   };
 in
 {
-  flake.nixosConfigurations.simon = (import ../../lib/mkHost.nix { inherit inputs lib; }) rec {
-
-    settings = {
-      username = "basileb";
-      hostname = "simon";
-      stateVersion = "25.05";
-      gitName = "BasileBux";
-      gitEmail = "basile.buxtorf@ik.me";
-    };
+  flake.nixosConfigurations.simon = (import ../../lib/mkHost.nix { inherit inputs lib; }) {
+    name = "simon";
+    stateVersion = "25.05";
     system = "x86_64-linux";
-    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
     modules = with inputs.self.flakeModules; [
       personal
@@ -158,17 +151,16 @@ in
         my.smb = {
           host = "100.86.179.75";
           destination = "/home";
-          mountPoint = "/home/${settings.username}/synology";
           credentials = "modules/smb/synology.age";
         };
       }
-      {
+      ({ config, ... }: {
         age.secrets."hosts/simon/kamina-upsnap-password.age" = {
-          owner = settings.username;
+          owner = config.my.settings.username;
           group = "users";
           mode = "0400";
         };
-      }
+      })
       inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
     ];
   };

@@ -6,7 +6,7 @@
           options = {
             signingkey = lib.mkOption {
               type = lib.types.str;
-              default = "/home/${config.my.settings.username}/.ssh/id_ed25519.pub";
+              default = "${config.my.settings.homeDirectory}/.ssh/id_ed25519.pub";
               description = "Git and jj signing key path";
             };
           };

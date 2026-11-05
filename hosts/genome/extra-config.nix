@@ -1,10 +1,15 @@
-{ pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   # Access is SSH-key only (port 2222, root login off, password auth off) and
   # the machine isn't exposed to the internet, so skip the sudo password.
   security.sudo.wheelNeedsPassword = false;
 
-  home-manager.users.basileb.home.enableNixpkgsReleaseCheck = false;
+  home-manager.users.${config.my.settings.username}.home.enableNixpkgsReleaseCheck = false;
 
   boot = {
     kernelParams = [
@@ -69,12 +74,17 @@
   # Enable the NVMe on the external PCIe connector (Argon NEO 5).
   # dtparam=nvme is handled by the GPU firmware's built-in overlay engine.
   hardware.raspberry-pi.config.all.base-dt-params = {
-    nvme = { enable = true; }; # -> dtparam=nvme
+    nvme = {
+      enable = true;
+    }; # -> dtparam=nvme
     # Gen 3 is out of spec for the Pi 5 PCIe link and the NVMe already threw a
     # controller timeout+reset under load (2026-09-01), then the box hard-hung
     # silently under heavy torrent I/O (2026-09-04). Downgraded to the
     # in-spec Gen 2 — still ~2x faster than the SSD needs for this workload.
-    pciex1_gen = { enable = true; value = 2; }; # -> dtparam=pciex1_gen=2
+    pciex1_gen = {
+      enable = true;
+      value = 2;
+    }; # -> dtparam=pciex1_gen=2
   };
 
   # The bootloader's os_check refuses to boot if the on-disk firmware

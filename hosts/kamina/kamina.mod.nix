@@ -1,15 +1,9 @@
 { lib, inputs, ... }:
 {
-  flake.nixosConfigurations.kamina = (import ../../lib/mkHost.nix { inherit inputs lib; }) rec {
-    settings = {
-      username = "basileb";
-      hostname = "kamina";
-      stateVersion = "26.05";
-      gitName = "BasileBux";
-      gitEmail = "basile.buxtorf@ik.me";
-    };
+  flake.nixosConfigurations.kamina = (import ../../lib/mkHost.nix { inherit inputs lib; }) {
+    name = "kamina";
+    stateVersion = "26.05";
     system = "x86_64-linux";
-    ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
     modules = with inputs.self.flakeModules; [
       personal

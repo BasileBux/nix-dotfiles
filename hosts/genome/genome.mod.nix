@@ -5,17 +5,11 @@
       inherit inputs lib;
       nixosSystem = inputs.nixos-raspberrypi.lib.nixosSystem;
     })
-      rec {
+      {
 
-        settings = {
-          username = "basileb";
-          hostname = "genome";
-          stateVersion = "26.05";
-          gitName = "BasileBux";
-          gitEmail = "basile.buxtorf@ik.me";
-        };
+        name = "genome";
+        stateVersion = "26.05";
         system = "aarch64-linux";
-        ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
         modules = with inputs.self.flakeModules; [
           personal
@@ -42,12 +36,11 @@
             my.ssh.enableFail2ban = false;
 
             # Orgfiles: syncthing hub for the tailnet; hourly jj snapshots.
-            # Mesh topology + device IDs live in modules/entities.mod.nix.
+            # Mesh topology lives in fleet.nix, device IDs in hosts/*/identity.nix.
             my.syncthing.snapshot.repos = [ "orgfiles" ];
             my.smb = {
               host = "100.86.179.75";
               destination = "/media";
-              mountPoint = "/home/${settings.username}/synology";
               credentials = "modules/smb/synology.age";
             };
           }

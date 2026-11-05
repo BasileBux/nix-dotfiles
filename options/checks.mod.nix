@@ -2,6 +2,7 @@
   perSystem =
     { pkgs, system, ... }:
     let
+      inventory = import ../hosts;
       hosts = lib.filterAttrs (
         _: host: host.pkgs.stdenv.hostPlatform.system == system
       ) self.nixosConfigurations;
@@ -11,6 +12,7 @@
         pkgs.runCommand name { } "touch $out";
       simon = self.nixosConfigurations.simon;
       kamina = self.nixosConfigurations.kamina;
+      homeOf = host: host.config.home-manager.users.${host.config.my.settings.username};
       changed = simon.extendModules {
         modules = [
           ({ lib, ... }: {
@@ -33,13 +35,16 @@
           inherit lib;
         })
           {
-            settings = {
-              username = "basileb";
-              hostname = "simon";
-              stateVersion = "25.05";
-            };
+            name = "simon";
+            stateVersion = "25.05";
             modules = [ self.flakeModules.personal ];
           };
+      changedUser = defaults.extendModules {
+        modules = [ ({ lib, ... }: { my.settings.username = lib.mkForce "regression-user"; }) ];
+      };
+      changedHome = simon.extendModules {
+        modules = [ ({ lib, ... }: { my.settings.homeDirectory = lib.mkForce "/srv/fleet-regression"; }) ];
+      };
       keyless = simon.extendModules {
         modules = [
           ({ lib, ... }: {
@@ -61,12 +66,12 @@
         modules = [
           {
             my.hyprland.startup = [ ''notify-send "quoted" 'single' \\backslash'' ];
-            home-manager.users.basileb.home.sessionVariables.CONFIG_REGRESSION =
+            home-manager.users.${simon.config.my.settings.username}.home.sessionVariables.CONFIG_REGRESSION =
               ''spaces "quotes" 'single' \\backslash $literal'';
           }
         ];
       };
-      hm = quoted.config.home-manager.users.basileb;
+      hm = homeOf quoted;
     in
     {
       formatter = pkgs.nixfmt-tree;
@@ -79,12 +84,57 @@
         ) hosts
         // {
           settings = pass "settings-propagation" (
-            changed.config.home-manager.users.basileb.programs.git.settings.user.name == "Settings regression"
+            (homeOf changed).programs.git.settings.user.name == "Settings regression"
           );
           settings-defaults = pass "settings-defaults" (
-            defaults.config.home-manager.users.basileb.programs.git.settings.user.name
-            == defaults.config.my.settings.gitName
-            && defaults.config.home-manager.users.basileb.home.stateVersion == "25.05"
+            (homeOf defaults).programs.git.settings.user.name == defaults.config.my.settings.gitName
+            && (homeOf defaults).home.stateVersion == "25.05"
+          );
+          inventory-defaults = pass "inventory-defaults-and-exceptions" (
+            let
+              # A host with no key and no overrides: identity.nix may be `{ }`.
+              keyless = inventory.resolve "keyless" {
+                tailscale.ip = "100.64.0.1";
+              };
+            in
+            self.machines.simon.username == self.fleet.defaults.username
+            && self.machines.yoko.username == "eugene"
+            && inventory.hosts.yoko.ssh.hostname == "asbel.xyz"
+            && self.nixosConfigurations.yoko.config.my.settings.username == self.machines.yoko.username
+            && keyless.key == null
+            && keyless.ssh.hostname == "keyless.${self.fleet.tailnet.domain}"
+            && keyless.ssh.port == self.fleet.defaults.ssh.port
+            && keyless.ssh.user == self.fleet.defaults.username
+            && keyless.syncthing.id == null
+            && lib.all (
+              name:
+              let
+                host = self.nixosConfigurations.${name};
+                user = host.config.my.settings.username;
+              in
+              user == self.machines.${name}.username
+              && host.config.home-manager.users.${user}.home.username == user
+              && host.config.age.identityPaths == [ "${host.config.users.users.${user}.home}/.ssh/${name}" ]
+              && self.sshHosts.${name}.user == user
+            ) (builtins.attrNames self.nixosConfigurations)
+            &&
+              lib.all
+                (
+                  name:
+                  self.nixosConfigurations.${name}.config.services.openssh.ports == [ self.sshHosts.${name}.port ]
+                )
+                [
+                  "kamina"
+                  "genome"
+                  "yoko"
+                ]
+            && self.sshHosts.buxtorf-synology.user == "gitt"
+            && self.sshHosts.yoko.hostname == "asbel.xyz"
+            && changedUser.config.home-manager.users.regression-user.home.username == "regression-user"
+            && !(builtins.hasAttr defaults.config.my.settings.username changedUser.config.home-manager.users)
+            && (homeOf changedHome).home.homeDirectory == "/srv/fleet-regression"
+            && changedHome.config.age.identityPaths == [ "/srv/fleet-regression/.ssh/simon" ]
+            && changedHome.config.my.smb.mountPoint == "/srv/fleet-regression/synology"
           );
           required-secret = pass "required-secret-assertion" (
             lib.any (
@@ -102,7 +152,7 @@
           keyless = pass "optional-keyless-consumers" (
             keyless.config.my.secrets.requested == [ ]
             && keyless.config.age.secrets == { }
-            && !(keyless.config.home-manager.users.basileb.home.activation ? fonts-tx-02)
+            && !((homeOf keyless).home.activation ? fonts-tx-02)
           );
           tailnet-empty = pass "tailnet-empty-state" (
             emptyTailnet.config.systemd.services ? tailscale-serve

@@ -30,7 +30,7 @@
 
           file = lib.mkOption {
             type = lib.types.path;
-            default = "/home/${config.my.settings.username}/todo.md";
+            default = "${config.my.settings.homeDirectory}/todo.md";
             description = "Markdown file edited/viewed by the service";
           };
         };

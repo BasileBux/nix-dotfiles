@@ -1,0 +1,5 @@
+{
+  key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFRkXxChHOwya3tDfztdsgCuovhr1hyMiWDDcMBIlrCn genome";
+  tailscale.ip = "100.82.254.103";
+  syncthing.id = "ZZ3YA7N-RYW5ZEA-E4FXSR7-2WG5TZH-UEKVQKT-MPQQW5W-KQPUXEN-RAD2IQO";
+}
