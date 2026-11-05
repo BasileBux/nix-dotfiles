@@ -1,8 +1,7 @@
-{
-  ...
-}:
+{ self, ... }:
 {
   flake.module.vaultwarden = {
+    imports = [ self.flakeModules.services ];
     nixos =
       { config, lib, ... }:
       let

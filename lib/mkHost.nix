@@ -9,57 +9,50 @@
   modules ? [ ], # unified { nixos, home } modules (from flakeModules)
   nixosModules ? [ ], # raw NixOS modules for host-specific config / overrides
   homeModules ? [ ], # additional raw Home Manager modules
-  # Secrets opt-in: if you don't give any identity paths, you get no module secrets
-  # at all and everything consuming them is disabled.
+  # Optional secret consumers skip keyless hosts; required consumers assert.
   ageIdentityPaths ? [ ],
 }:
 let
   hardwarePath = ../hosts/${settings.hostname}/hardware-configuration.nix;
 
   # Extract nixos and home parts from unified modules
-  unifiedNixos = map (m: m.nixos or { }) modules;
-  unifiedHome = map (m: m.home or { }) modules;
+  unifiedNixos = map (m: {
+    key = "unified:nixos:${m._name}";
+    imports = [ m.nixos ];
+  }) modules;
+  unifiedHome = map (m: {
+    key = "unified:home:${m._name}";
+    imports = [ m.home ];
+  }) modules;
 in
 nixosSystem {
   inherit system;
-  specialArgs = {
-    inherit inputs;
-    settings = settings;
-  };
+  specialArgs = { inherit inputs; };
   modules = [
-    inputs.self.nixosModules.default
+    inputs.self.nixosModules.base
     inputs.self.nixosModules.secrets
     inputs.home-manager.nixosModules.home-manager
     {
       home-manager.useGlobalPkgs = true;
-      home-manager.extraSpecialArgs = {
-        inherit inputs;
-        settings = settings;
-      };
-      home-manager.users.${settings.username} = {
+      home-manager.extraSpecialArgs = { inherit inputs; };
+      home-manager.users.${settings.username} = { osConfig, ... }: {
         imports = [
-          inputs.self.homeModules.default
+          inputs.self.homeModules.base
           inputs.self.homeModules.secrets
         ]
         ++ homeModules
         ++ unifiedHome;
-        home.stateVersion = settings.nixosVersion;
+        home.stateVersion = osConfig.my.settings.homeStateVersion;
       };
     }
-    {
-      networking.hostName = settings.hostname;
-      system.stateVersion = settings.nixosVersion;
+    ({ config, ... }: {
+      networking.hostName = config.my.settings.hostname;
+      system.stateVersion = config.my.settings.stateVersion;
       my.settings = settings;
-      my.tailscale.tailnetDomain = inputs.self.tailnet.domain;
-      my.tailscale.self = inputs.self.machines.${settings.hostname}.tailscale or null;
-
-      my.syncthing.machines = inputs.self.machines or { };
-      my.syncthing.folders = inputs.self.syncthing.folders or { };
-      my.syncthing.selfId = inputs.self.machines.${settings.hostname}.syncthing.id or null;
       age.identityPaths = ageIdentityPaths;
-    }
+    })
   ]
   ++ unifiedNixos
   ++ nixosModules
-  ++ lib.optional (builtins.pathExists hardwarePath) hardwarePath;
+  ++ [ hardwarePath ];
 }

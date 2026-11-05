@@ -76,7 +76,12 @@
         ];
 
         imports = builtins.filter (lib.strings.hasSuffix ".mod.nix") (
-          lib.filesystem.listFilesRecursive ./.
+          lib.concatMap lib.filesystem.listFilesRecursive [
+            ./modules
+            ./options
+            ./hosts
+            ./shells
+          ]
         );
 
         flake.lib = import ./lib inputs.nixpkgs.lib;

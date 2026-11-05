@@ -1,6 +1,6 @@
-{ ... }:
+{ self, ... }:
 let
-  zshOptionModule = { lib, ... }: {
+  zshOptionModule = { config, lib, ... }: {
     options.my.zsh = lib.mkOption {
       type = lib.types.submodule {
         options = {
@@ -21,11 +21,15 @@ let
     };
     config = {
       programs.zsh.enable = true;
+      my.secrets.requested = lib.mkIf config.my.secrets.enabled (
+        map (s: s.path) (import ../secrets/env-secrets.nix { inherit lib; })
+      );
     };
   };
 in
 {
   flake.module.zsh = {
+    imports = [ self.flakeModules.secrets ];
     nixos = zshOptionModule;
     home =
       {
@@ -97,9 +101,7 @@ in
 
         xdg.configFile."zsh/secrets-env".text = lib.optionalString osConfig.my.secrets.enabled (
           builtins.concatStringsSep "\n" (
-            map (
-              s: "export ${s.name}=\"$(cat ${osConfig.age.secrets.${s.path}.path})\""
-            ) envSecrets
+            map (s: "export ${s.name}=\"$(cat ${osConfig.age.secrets.${s.path}.path})\"") envSecrets
           )
         );
       };

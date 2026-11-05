@@ -5,7 +5,7 @@
     settings = {
       username = "eugene";
       hostname = "yoko";
-      nixosVersion = "24.11";
+      stateVersion = "24.11";
       gitName = "BasileBux";
       gitEmail = "basile.buxtorf@ik.me";
     };
@@ -13,6 +13,7 @@
     ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
     modules = with inputs.self.flakeModules; [
+      personal
       slop
       ssh-server
       tmux

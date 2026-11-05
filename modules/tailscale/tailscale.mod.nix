@@ -3,17 +3,16 @@
 # opt-in. Serving uses the CLI instead of the declarative
 # services.tailscale.serve because set-config cannot express TLS termination
 # on 443 with a plain-HTTP upstream (tailscale#18381, #19724, nixpkgs#530174).
-{
-  ...
-}:
+{ self, ... }:
 {
   flake.module.tailscale-options = {
     nixos =
-      { lib, ... }:
+      { config, lib, ... }:
       {
         options.my.tailscale = {
           tailnetDomain = lib.mkOption {
             type = lib.types.str;
+            default = self.tailnet.domain;
             description = ''
               MagicDNS domain of the tailnet, injected by mkHost. Used to
               derive public service URLs (https://<name>.<tailnetDomain>).
@@ -35,7 +34,7 @@
                   '';
                 };
               });
-            default = null;
+            default = self.machines.${config.networking.hostName}.tailscale or null;
             description = "This machine's entry from the machines registry, or null.";
           };
 
@@ -76,6 +75,7 @@
   };
 
   flake.module.tailscale = {
+    imports = [ self.flakeModules.tailscale-options ];
     nixos =
       {
         config,
@@ -91,7 +91,7 @@
             services.tailscale.openFirewall = lib.mkDefault true;
           }
 
-          (lib.mkIf (config.my.tailscale.routes != [ ]) {
+          {
             systemd.services.tailscale-routes = {
               description = "Advertise subnet routes through tailscale";
               after = [
@@ -105,15 +105,16 @@
               serviceConfig = {
                 Type = "oneshot";
                 RemainAfterExit = true;
+                ExecStop = "${lib.getExe config.services.tailscale.package} set --advertise-routes=";
                 ExecStart = pkgs.writeShellScript "tailscale-routes" ''
                   set -euo pipefail
-                  ${lib.getExe config.services.tailscale.package} set --advertise-routes=${lib.concatStringsSep "," config.my.tailscale.routes}
+                  ${lib.getExe config.services.tailscale.package} set --advertise-routes=${lib.escapeShellArg (lib.concatStringsSep "," config.my.tailscale.routes)}
                 '';
               };
             };
-          })
+          }
 
-          (lib.mkIf (config.my.tailscale.serve != { }) {
+          {
             systemd.services.tailscale-serve = {
               description = "Advertise registered services through tailscale serve";
               after = [
@@ -127,6 +128,7 @@
               serviceConfig = {
                 Type = "oneshot";
                 RemainAfterExit = true;
+                ExecStop = "${lib.getExe config.services.tailscale.package} serve reset";
                 ExecStart = pkgs.writeShellScript "tailscale-serve" (
                   lib.concatStringsSep "\n" (
                     [
@@ -139,13 +141,13 @@
                     ]
                     ++ lib.mapAttrsToList (
                       name: serve:
-                      "${lib.getExe config.services.tailscale.package} serve --service=svc:${name} --https=443 http://127.0.0.1:${toString serve.port}"
+                      "${lib.getExe config.services.tailscale.package} serve --bg --service=svc:${name} --https=443 http://127.0.0.1:${toString serve.port}"
                     ) config.my.tailscale.serve
                   )
                 );
               };
             };
-          })
+          }
         ];
       };
   };

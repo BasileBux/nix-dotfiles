@@ -22,7 +22,7 @@ rec {
     |> concatMap (
       name:
       if entries.${name} == "directory" then
-        listFilesRecursive "${base}/${name}" "${dir}/${name}"
+        listFilesRecursive "${base}/${name}" (dir + "/${name}")
       else if entries.${name} == "regular" then
         singleton "${base}/${name}"
       else

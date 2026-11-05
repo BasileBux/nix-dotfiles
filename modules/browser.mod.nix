@@ -47,6 +47,10 @@ in
   };
 
   config.flake.module.browser = {
+    imports = [
+      self.flakeModules.helium
+      self.flakeModules.zen
+    ];
     nixos = browserOptionModule;
     home =
       {
@@ -60,11 +64,6 @@ in
         defaultBrowser = osConfig.my.defaultBrowser;
       in
       {
-        imports = [
-          self.flakeModules.helium.home
-          self.flakeModules.zen.home
-        ];
-
         config = {
           home.sessionVariables.WEB_BROWSER = defaultBrowser;
 

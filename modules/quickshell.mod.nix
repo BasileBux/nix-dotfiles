@@ -18,7 +18,9 @@
                       description = "Command prefix for setting a power profile. The profile name is appended.";
                     };
                     profiles = lib.mkOption {
-                      type = lib.types.listOf lib.types.str;
+                      type = lib.types.addCheck (lib.types.listOf lib.types.str) (
+                        profiles: builtins.length profiles == 3
+                      );
                       default = [
                         "power-saver"
                         "balanced"
@@ -52,7 +54,6 @@
     home =
       {
         config,
-        settings,
         pkgs,
         osConfig,
         lib,
@@ -89,13 +90,14 @@
           }
         ];
 
-        generateRemoteHosts =
-          map (
-            h:
-            ''
-                { name: ${builtins.toJSON h.name}, target: ${builtins.toJSON (h.target or h.name)}, role: ${builtins.toJSON h.role}, allowPower: ${if h.allowPower or false then "true" else "false"}, tmux: ${if h.tmux or true then "true" else "false"} },''
-          )
-          remoteHosts;
+        generateRemoteHosts = map (
+          h:
+          "{ name: ${builtins.toJSON h.name}, target: ${
+            builtins.toJSON (h.target or h.name)
+          }, role: ${builtins.toJSON h.role}, allowPower: ${
+            if h.allowPower or false then "true" else "false"
+          }, tmux: ${if h.tmux or true then "true" else "false"} },"
+        ) remoteHosts;
 
         generateMachineOverrides =
           c:
@@ -106,19 +108,23 @@
             perf = builtins.elemAt pp.profiles 2;
           in
           ''
-            import Quickshell
-            import QtQuick
+                        import Quickshell
+                        import QtQuick
 
-            QtObject {
-                readonly property var profiles: ${builtins.toJSON pp.profiles}
-                readonly property var ecoCommand: ${builtins.toJSON (pp.setCommand ++ [ eco ])}
-                readonly property var balancedCommand: ${builtins.toJSON (pp.setCommand ++ [ balanced ])}
-                readonly property var performanceCommand: ${builtins.toJSON (pp.setCommand ++ [ perf ])}
-                readonly property var getterCommand: ${builtins.toJSON pp.getterCommand}
-                readonly property var remoteHosts: [
-${lib.concatStringsSep "\n" generateRemoteHosts}
-                ]
-            }
+                        QtObject {
+                            readonly property var profiles: ${builtins.toJSON pp.profiles}
+                            readonly property var ecoCommand: ${builtins.toJSON (pp.setCommand ++ [ eco ])}
+                            readonly property var balancedCommand: ${
+                              builtins.toJSON (pp.setCommand ++ [ balanced ])
+                            }
+                            readonly property var performanceCommand: ${
+                              builtins.toJSON (pp.setCommand ++ [ perf ])
+                            }
+                            readonly property var getterCommand: ${builtins.toJSON pp.getterCommand}
+                            readonly property var remoteHosts: [
+            ${lib.concatStringsSep "\n" generateRemoteHosts}
+                            ]
+                        }
           '';
       in
       {

@@ -4,7 +4,7 @@
     settings = {
       username = "basileb";
       hostname = "kamina";
-      nixosVersion = "26.05";
+      stateVersion = "26.05";
       gitName = "BasileBux";
       gitEmail = "basile.buxtorf@ik.me";
     };
@@ -12,20 +12,20 @@
     ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
     modules = with inputs.self.flakeModules; [
+      personal
       tailscale
       ssh-server
       tmux
       slop
       syncthing
-      libvirtd
+      libvirt-host
+      libvirt-router
     ];
     nixosModules = [
       ./extra-config.nix
       {
         # VM host: VMs run here, reachable from the tailnet through the
         # advertised libvirt NAT subnet (see modules/libvirtd.mod.nix)
-        my.libvirtd.enable = true;
-        my.libvirtd.subnetRouter.enable = true;
       }
       {
         my.nushell.accentColor = "#fbe61e"; # Other possible options: #1eebfb #8b1efb #1efb8b
@@ -35,7 +35,6 @@
           # upsnap on genome (raspberry pi) through tailscale and eth0 LAN
           "from=\"192.168.1.191,100.82.254.103\"  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDUZ/0p/7j6gcvZS1Cm8f2PP2dzrNN5WSxvMJQaPLzFv upsnap@raspberrypi"
         ];
-        my.syncthing.enable = true;
       }
     ];
   };

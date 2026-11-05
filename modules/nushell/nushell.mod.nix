@@ -1,4 +1,4 @@
-{ ... }:
+{ self, ... }:
 let
   nushellOptionModule = { lib, ... }: {
     options.my.nushell = lib.mkOption {
@@ -26,10 +26,20 @@ let
     };
   };
 
-  nushellNixosModule = { pkgs, lib, ... }: {
-    users.defaultUserShell = lib.mkDefault pkgs.nushell;
-    environment.shells = [ pkgs.nushell ];
-  };
+  nushellNixosModule =
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
+    {
+      my.secrets.requested = lib.mkIf config.my.secrets.enabled (
+        map (s: s.path) (import ../secrets/env-secrets.nix { inherit lib; })
+      );
+      users.defaultUserShell = pkgs.nushell;
+      environment.shells = [ pkgs.nushell ];
+    };
 
   nushellHomeModule =
     {
@@ -95,8 +105,7 @@ let
       ];
 
       # nix-direnv: caches `use flake`/`use devenv` in .envrc so activation is fast
-      xdg.configFile."direnv/lib/nix-direnv.sh".source =
-        "${pkgs.nix-direnv}/share/nix-direnv/direnvrc";
+      xdg.configFile."direnv/lib/nix-direnv.sh".source = "${pkgs.nix-direnv}/share/nix-direnv/direnvrc";
 
       # Hide the +VAR/-VAR export diff on env activation
       xdg.configFile."direnv/direnv.toml".text = ''
@@ -214,6 +223,7 @@ let
 in
 {
   flake.module.nushell = {
+    imports = [ self.flakeModules.secrets ];
     nixos = { lib, pkgs, ... }: {
       imports = [
         nushellOptionModule

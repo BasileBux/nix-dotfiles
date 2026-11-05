@@ -10,7 +10,7 @@
         settings = {
           username = "basileb";
           hostname = "genome";
-          nixosVersion = "26.05";
+          stateVersion = "26.05";
           gitName = "BasileBux";
           gitEmail = "basile.buxtorf@ik.me";
         };
@@ -18,6 +18,7 @@
         ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
         modules = with inputs.self.flakeModules; [
+          personal
           slop
           ssh-server
           tmux
@@ -42,7 +43,6 @@
 
             # Orgfiles: syncthing hub for the tailnet; hourly jj snapshots.
             # Mesh topology + device IDs live in modules/entities.mod.nix.
-            my.syncthing.enable = true;
             my.syncthing.snapshot.repos = [ "orgfiles" ];
             my.smb = {
               host = "100.86.179.75";

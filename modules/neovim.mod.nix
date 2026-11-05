@@ -4,7 +4,6 @@
     home =
       {
         config,
-        settings,
         pkgs,
         lib,
         ...

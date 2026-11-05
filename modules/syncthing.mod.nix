@@ -6,46 +6,90 @@
 # my.syncthing.enable and everything else is derived. Sync runs over the
 # tailnet (tcp://<tailscale-ip>:22000) and the home LAN (local discovery);
 # global discovery, relays and NAT traversal are off.
-{
+{ self, ... }: {
   flake.module.syncthing-options = {
-    nixos = {
-      lib,
-      ...
-    }: {
-      options.my.syncthing = {
-        enable = lib.mkEnableOption "Syncthing file synchronisation";
+    nixos =
+      {
+        config,
+        lib,
+        ...
+      }:
+      {
+        options.my.syncthing = {
+          enable = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Enable the selected Syncthing role.";
+          };
 
-        # Fleet plumbing injected by lib/mkHost.nix — do not set by hand.
-        machines = lib.mkOption {
-          type = lib.types.raw;
-          default = { };
-          description = "flake.machines registry (syncthing IDs + tailscale IPs).";
-        };
-        folders = lib.mkOption {
-          type = lib.types.raw;
-          default = { };
-          description = "flake.syncthing.folders mesh topology.";
-        };
-        selfId = lib.mkOption {
-          type = with lib.types; nullOr str;
-          default = null;
-          description = "This machine's syncthing.id from the registry.";
-        };
+          # Fleet plumbing injected by lib/mkHost.nix — do not set by hand.
+          machines = lib.mkOption {
+            type = lib.types.attrsOf (
+              lib.types.submodule {
+                options = {
+                  key = lib.mkOption { type = lib.types.str; };
+                  tailscale.ip = lib.mkOption {
+                    type = lib.types.nullOr lib.types.str;
+                    default = null;
+                  };
+                  syncthing.id = lib.mkOption {
+                    type = lib.types.nullOr lib.types.str;
+                    default = null;
+                  };
+                };
+              }
+            );
+            default = self.machines;
+            description = "flake.machines registry (syncthing IDs + tailscale IPs).";
+          };
+          folders = lib.mkOption {
+            type = lib.types.attrsOf (
+              lib.types.submodule (
+                { name, ... }: {
+                  options = {
+                    path = lib.mkOption {
+                      type = lib.types.str;
+                      default = "~/${name}";
+                    };
+                    devices = lib.mkOption {
+                      type = lib.types.nullOr (lib.types.listOf lib.types.str);
+                      default = null;
+                    };
+                    ignorePatterns = lib.mkOption {
+                      type = lib.types.listOf lib.types.str;
+                      default = [ ];
+                    };
+                  };
+                }
+              )
+            );
+            default = self.syncthing.folders or { };
+            description = "flake.syncthing.folders mesh topology.";
+          };
+          selfId = lib.mkOption {
+            type = with lib.types; nullOr str;
+            default = self.machines.${config.networking.hostName}.syncthing.id or null;
+            description = "This machine's syncthing.id from the registry.";
+          };
 
-        snapshot.repos = lib.mkOption {
-          type = with lib.types; listOf str;
-          default = [ ];
-          description = ''
-            Paths (relative to the user's home) of jj repos to auto-snapshot
-            hourly: when the working copy has uncommitted changes, `jj commit`
-            records them as a new change.
-          '';
+          snapshot.repos = lib.mkOption {
+            type = with lib.types; listOf str;
+            default = [ ];
+            description = ''
+              Paths (relative to the user's home) of jj repos to auto-snapshot
+              hourly: when the working copy has uncommitted changes, `jj commit`
+              records them as a new change.
+            '';
+          };
         };
       };
-    };
   };
 
   flake.module.syncthing = {
+    imports = [
+      self.flakeModules.syncthing-options
+      self.flakeModules.secrets
+    ];
     nixos =
       {
         config,
@@ -62,27 +106,24 @@
         machineIds = lib.filterAttrs (name: _: machineHasId name) machines;
 
         # A folder without an explicit device list is shared by the whole mesh.
-        folderDevices =
-          f:
-          if (f.devices or null) == null then lib.attrNames machineIds else f.devices;
+        folderDevices = f: if (f.devices or null) == null then lib.attrNames machineIds else f.devices;
 
-        meshFolders = lib.mapAttrs (
-          name: f: {
-            path = f.path or "~/${name}";
-            devices = folderDevices f;
-            ignorePatterns = f.ignorePatterns or [ ];
-          }
-        ) cfg.folders;
+        meshFolders = lib.mapAttrs (name: f: {
+          path = f.path or "~/${name}";
+          devices = folderDevices f;
+          ignorePatterns = f.ignorePatterns or [ ];
+        }) cfg.folders;
 
-        meshDevices = lib.mapAttrs (name: _:
+        meshDevices = lib.mapAttrs (
+          name: _:
           let
             ip = machines.${name}.tailscale.ip or null;
           in
           {
             id = machines.${name}.syncthing.id;
             addresses = lib.optionals (ip != null) [ "tcp://${ip}:22000" ] ++ [ "dynamic" ];
-          })
-          machineIds;
+          }
+        ) machineIds;
 
         # Node identity: cert/key age secrets define (and pin) the device ID.
         # Checked statically against the repo (flake source tree) instead of
@@ -167,19 +208,20 @@
               in
               lib.concatStringsSep "\n" (
                 map (repo: ''
-                  cd ${home}/${repo}
+                  cd ${lib.escapeShellArg "${home}/${repo}"}
                   # `jj log` snapshots the working copy first, so `empty` is
                   # evaluated against its current state.
                   if [ "$(${jj} log -r @ --no-graph -T 'empty' 2>/dev/null)" = "false" ]; then
                     echo "snapshotting ${repo}"
                     ${jj} commit -m "auto: sync snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
                   fi
-                '')
-                cfg.snapshot.repos
+                '') cfg.snapshot.repos
               );
           };
 
-          systemd.timers.jj-snapshot.timerConfig.Persistent = lib.mkDefault true;
+          systemd.timers.jj-snapshot = lib.mkIf (cfg.snapshot.repos != [ ]) {
+            timerConfig.Persistent = lib.mkDefault true;
+          };
         };
       };
   };

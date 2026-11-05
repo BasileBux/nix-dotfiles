@@ -1,22 +1,12 @@
-# Based almost verbatim on RGBCube's age/secrets config
-# from https://github.com/RGBCube/ncc/tree/dentride
-# Copyright (c) 2023-present RGBCube, MIT licensed
-
 let
   inherit (builtins)
     attrNames
     attrValues
-    concatMap
-    elem
     filter
-    foldl'
     listToAttrs
+    map
     readDir
     ;
-
-  inherit (import ./modules/secrets/discovery.nix) listFilesRecursive isAge;
-
-  singleton = value: [ value ];
   mapAttrs =
     f: set:
     listToAttrs (
@@ -28,70 +18,39 @@ let
   filterAttrs =
     pred: set:
     listToAttrs (
-      filter (name: pred name set.${name}) (attrNames set)
-      |> map (name: {
+      map (name: {
         inherit name;
         value = set.${name};
-      })
+      }) (filter (name: pred name set.${name}) (attrNames set))
     );
-  uniq = list: list |> foldl' (acc: item: if elem item acc then acc else acc ++ singleton item) [ ];
-
-  # Import entities to get keys — replicate just the attrsets needed to avoid
-  # dragging in the full module system (same hack ncc uses)
-  entitiesImport =
-    (import ./modules/entities.mod.nix {
-      self = entitiesImport;
-      lib.attrsets = { inherit attrValues filterAttrs mapAttrs; };
-    }).flake;
-
-  # The secret name is the path including .age, e.g.:
-  #   modules/secrets/env/api-keys/anthropic.age → "modules/secrets/env/api-keys/anthropic.age"
-  #   hosts/simon/password.age                  → "hosts/simon/password.age"
-  #   packages/fonts/TX-02/tx-02.tar.gz.age    → "packages/fonts/TX-02/tx-02.tar.gz.age"
-  # The .age suffix is kept so ragenix/agenix CLI can match filenames exactly.
-
-  # Host secrets: hosts/<host>/*.age → encrypted for that host + admin keys
-  hostSecrets =
-    attrNames (readDir ./hosts)
-    |> concatMap (
-      host:
-      listFilesRecursive "hosts/${host}" ./hosts/${host}
-      |> filter isAge
-      |> map (path: {
-        name = path;
-        value = {
-          file = ./. + "/${path}";
-          publicKeys = uniq (singleton entitiesImport.keys.${host} ++ entitiesImport.keys-admin);
-        };
-      })
-    );
-
-  # Module secrets: modules/**/*.age → encrypted for ALL keys
-  moduleSecrets =
-    listFilesRecursive "modules" ./modules
-    |> filter isAge
-    |> map (path: {
-      name = path;
-      value = {
-        file = ./. + "/${path}";
-        publicKeys = uniq <| attrValues entitiesImport.keys;
-      };
-    });
-
-  # Font secrets: packages/fonts/**/*.age → encrypted for ALL keys (module-secret
-  # semantics) so any host with an identity can decrypt them. They are rekeyed
-  # alongside everything else but deliberately NOT registered as agenix secrets
-  # (see the filter in modules/secrets.mod.nix): encrypted fonts are decrypted
-  # at build time instead, so agenix never materializes the paid font plaintext.
-  fontSecrets =
-    listFilesRecursive "packages/fonts" ./packages/fonts
-    |> filter isAge
-    |> map (path: {
-      name = path;
-      value = {
-        file = ./. + "/${path}";
-        publicKeys = uniq <| attrValues entitiesImport.keys;
-      };
-    });
+  inventory = import ./lib/inventory.nix {
+    lib.attrsets = { inherit attrValues filterAttrs mapAttrs; };
+  };
+  inherit (import ./modules/secrets/discovery.nix) listFilesRecursive isAge;
+  policy = import ./modules/secrets/policy.nix;
+  unique = builtins.foldl' (acc: key: if builtins.elem key acc then acc else acc ++ [ key ]) [ ];
+  entry = path: recipients: {
+    name = path;
+    value = {
+      file = ./. + "/${path}";
+      publicKeys = unique recipients;
+    };
+  };
+  hostSecrets = builtins.concatMap (
+    host:
+    map (path: entry path ([ inventory.machines.${host}.key ] ++ inventory.keys-admin)) (
+      filter isAge (listFilesRecursive "hosts/${host}" ./hosts/${host})
+    )
+  ) (attrNames (filterAttrs (_: kind: kind == "directory") (readDir ./hosts)));
+  shared = filter isAge (
+    listFilesRecursive "modules" ./modules ++ listFilesRecursive "packages/fonts" ./packages/fonts
+  );
+  sharedSecrets = map (
+    path:
+    if !(policy ? ${path}) then
+      throw "Missing explicit secret policy for ${path}"
+    else
+      entry path (map (host: inventory.machines.${host}.key) policy.${path}.hosts ++ inventory.keys-admin)
+  ) shared;
 in
-listToAttrs (hostSecrets ++ moduleSecrets ++ fontSecrets)
+listToAttrs (hostSecrets ++ sharedSecrets)

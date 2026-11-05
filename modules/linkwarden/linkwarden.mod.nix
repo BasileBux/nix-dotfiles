@@ -1,8 +1,7 @@
-{
-  ...
-}:
+{ self, ... }:
 {
   flake.module.linkwarden = {
+    imports = [ self.flakeModules.services ];
     nixos =
       {
         inputs,

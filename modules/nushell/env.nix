@@ -42,13 +42,24 @@ let
     builtins.replaceStrings [ "$(id -u)" "$HOME" "\${HOME}" ] [ uid homeDir homeDir ] (toString val);
 
   varDefs = concatLines (
-    lib.mapAttrsToList (name: value: "${name}=${resolveShellRefs value}") allSessionVars
+    lib.mapAttrsToList (
+      name: value:
+      "${name}=${
+        if builtins.hasAttr name config.home.sessionVariables then
+          lib.escapeShellArg (resolveShellRefs value)
+        else
+          resolveShellRefs value
+      }"
+    ) allSessionVars
   );
   varNames = builtins.attrNames allSessionVars;
 in
 pkgs.runCommand "nushell-resolved-env.nu"
   {
-    nativeBuildInputs = [ pkgs.bash ];
+    nativeBuildInputs = [
+      pkgs.bash
+      pkgs.jq
+    ];
     HOME = config.home.homeDirectory;
   }
   (/* bash */ ''
@@ -70,8 +81,7 @@ pkgs.runCommand "nushell-resolved-env.nu"
 
     # Output nushell-compatible env vars (escaping " and \)
     for varname in ${lib.concatStringsSep " " (map lib.escapeShellArg varNames)}; do
-      printf '$env.%s = "%s"\n' \
-        "$varname" \
-        "''${!varname//\\/\\\\}"
+      printf '$env.%s = ' "$varname"
+      printf '%s' "''${!varname}" | jq -Rs .
     done > "$out"
   '')

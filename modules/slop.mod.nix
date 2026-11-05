@@ -1,4 +1,4 @@
-{
+{ self, ... }: {
   flake.module.slop = {
     nixos = { pkgs, ... }: {
       environment.systemPackages = with pkgs; [
@@ -10,76 +10,72 @@
       { pkgs, lib, ... }:
       let
         piSettings = builtins.fromJSON (builtins.readFile ../config/pi/settings.json);
-        # settings.json is written by pi itself (changelog version tracking,
-        # `pi install`, /settings), so it is deployed as a writable file rather
-        # than a read-only store symlink. The version field is derived from the
-        # pinned package instead of being hardcoded in the repo.
+        # Settings are declarative; change them in the repository, not in Pi.
         piSettings' = piSettings // {
           lastChangelogVersion = pkgs.pi-coding-agent.version;
         };
 
         # READ-ONLY VCS COMMANDS
-        vcsCommands =
-          [
-            "jj bookmark list*"
-            "jj config get*"
-            "jj config list*"
-            "jj config path*"
-            "jj diff*"
-            "jj evolog*"
-            "jj file annotate*"
-            "jj file list*"
-            "jj file search*"
-            "jj file show*"
-            "jj git colocation status*"
-            "jj git remote list*"
-            "jj git root*"
-            "jj help*"
-            "jj interdiff*"
-            "jj log*"
-            "jj op diff*"
-            "jj op log*"
-            "jj op show*"
-            "jj operation diff*"
-            "jj operation log*"
-            "jj operation show*"
-            "jj resolve --list"
-            "jj root*"
-            "jj show*"
-            "jj sparse list*"
-            "jj st*"
-            "jj status*"
-            "jj tag list*"
-            "jj util completion*"
-            "jj util config-schema*"
-            "jj util markdown-help*"
-            "jj version*"
-            "jj workspace list*"
-            "jj workspace root*"
+        vcsCommands = [
+          "jj bookmark list*"
+          "jj config get*"
+          "jj config list*"
+          "jj config path*"
+          "jj diff*"
+          "jj evolog*"
+          "jj file annotate*"
+          "jj file list*"
+          "jj file search*"
+          "jj file show*"
+          "jj git colocation status*"
+          "jj git remote list*"
+          "jj git root*"
+          "jj help*"
+          "jj interdiff*"
+          "jj log*"
+          "jj op diff*"
+          "jj op log*"
+          "jj op show*"
+          "jj operation diff*"
+          "jj operation log*"
+          "jj operation show*"
+          "jj resolve --list"
+          "jj root*"
+          "jj show*"
+          "jj sparse list*"
+          "jj st*"
+          "jj status*"
+          "jj tag list*"
+          "jj util completion*"
+          "jj util config-schema*"
+          "jj util markdown-help*"
+          "jj version*"
+          "jj workspace list*"
+          "jj workspace root*"
 
-            # git is the fallback for non-jj repos, so allow reading it too.
-            "git status*"
-            "git log*"
-            "git diff*"
-            "git show*"
-            "git blame*"
-            "git shortlog*"
-            "git rev-parse*"
-            "git describe*"
-            "git ls-files*"
-            "git ls-remote*"
-            "git check-ignore*"
-            "git remote -v"
-            "git remote get-url*"
-            "git config --get*"
-            "git branch --show-current"
-            "git branch --list*"
-            "git branch -a"
-            "git branch -v"
-            "git worktree list*"
-            "git help*"
-            "git version*"
-          ];
+          # git is the fallback for non-jj repos, so allow reading it too.
+          "git status*"
+          "git log*"
+          "git diff*"
+          "git show*"
+          "git blame*"
+          "git shortlog*"
+          "git rev-parse*"
+          "git describe*"
+          "git ls-files*"
+          "git ls-remote*"
+          "git check-ignore*"
+          "git remote -v"
+          "git remote get-url*"
+          "git config --get*"
+          "git branch --show-current"
+          "git branch --list*"
+          "git branch -a"
+          "git branch -v"
+          "git worktree list*"
+          "git help*"
+          "git version*"
+        ];
       in
       {
         xdg.configFile = {
@@ -100,6 +96,10 @@
   };
 
   flake.module.t3 = {
+    imports = [
+      self.flakeModules.services
+      self.flakeModules.secrets
+    ];
     nixos =
       {
         pkgs,
@@ -143,6 +143,7 @@
             }
           ];
 
+          my.secrets.requested = map (s: s.path) apiKeySecrets;
           environment.systemPackages = [
             pkgs.t3code
           ];

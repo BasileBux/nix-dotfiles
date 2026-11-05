@@ -1,8 +1,7 @@
-{
-  ...
-}:
+{ self, ... }:
 {
   flake.module.upsnap = {
+    imports = [ self.flakeModules.services ];
     nixos =
       {
         inputs,

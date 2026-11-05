@@ -1,5 +1,6 @@
-{ lib, ... }: {
+{ lib, self, ... }: {
   flake.module.fonts = {
+    imports = [ self.flakeModules.secrets ];
     nixos =
       {
         pkgs,
@@ -33,23 +34,16 @@
           ]
           ++ regular;
 
-        assertions = lib.mkIf (encrypted != [ ]) [
-          {
-            assertion = config.my.secrets.enabled;
-            message = ''
-              The fonts module installs encrypted fonts (${
-                lib.concatStringsSep ", " (map (f: f.name) encrypted)
-              }), which are decrypted by agenix at activation, but this host
-              has no age identity (my.secrets.enabled is false).
-              Set ageIdentityPaths in hosts/<host>/<host>.mod.nix, e.g.
-              ageIdentityPaths = [ "/home/<user>/.ssh/<host>" ];
-            '';
-          }
-        ];
+        my.secrets.requested = lib.mkIf config.my.secrets.enabled (map (f: f.secretName) encrypted);
       };
 
     home =
-      { pkgs, lib, ... }:
+      {
+        pkgs,
+        lib,
+        osConfig,
+        ...
+      }:
       let
         catalog = pkgs.callPackage ../packages/fonts { };
         encrypted = builtins.filter (f: f ? __encryptedFont) (
@@ -66,7 +60,7 @@
           map (f: {
             name = "fonts-${f.name}";
             value = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-              secret=/run/agenix/${f.secretName}
+              secret=${lib.escapeShellArg osConfig.age.secrets.${f.secretName}.path}
               target="$HOME/.local/share/fonts/${f.name}"
               if [[ -f "$secret" ]]; then
                 mkdir -p "$target"
@@ -74,7 +68,7 @@
                 ${pkgs.fontconfig}/bin/fc-cache -f "$HOME/.local/share/fonts" >/dev/null 2>&1 || true
               fi
             '';
-          }) encrypted
+          }) (lib.optionals osConfig.my.secrets.enabled encrypted)
         );
       };
   };

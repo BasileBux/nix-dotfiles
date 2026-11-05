@@ -1,6 +1,6 @@
 { ... }: {
   perSystem =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     let
       mkShell =
         attrs:
@@ -14,14 +14,16 @@
           }
         );
       cShell = mkShell {
-        packages = with pkgs; [
-          gcc
-          gcc_multi
-          cmake
-          gnumake
-          clang
-          gdb
-        ];
+        packages =
+          with pkgs;
+          [
+            gcc
+            cmake
+            gnumake
+            clang
+            gdb
+          ]
+          ++ lib.optionals pkgs.stdenv.hostPlatform.isx86 [ pkgs.gcc_multi ];
       };
       rustShell = mkShell {
         packages = with pkgs; [

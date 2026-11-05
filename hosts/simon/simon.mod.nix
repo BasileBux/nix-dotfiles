@@ -126,7 +126,7 @@ in
     settings = {
       username = "basileb";
       hostname = "simon";
-      nixosVersion = "25.05";
+      stateVersion = "25.05";
       gitName = "BasileBux";
       gitEmail = "basile.buxtorf@ik.me";
     };
@@ -134,12 +134,13 @@ in
     ageIdentityPaths = [ "/home/${settings.username}/.ssh/${settings.hostname}" ];
 
     modules = with inputs.self.flakeModules; [
+      personal
       desktop
       smb
       tailscale
       syncthing
       slop
-      libvirtd
+      libvirt-client
       ghostty
     ];
 
@@ -160,7 +161,6 @@ in
           mountPoint = "/home/${settings.username}/synology";
           credentials = "modules/smb/synology.age";
         };
-        my.syncthing.enable = true;
       }
       {
         age.secrets."hosts/simon/kamina-upsnap-password.age" = {

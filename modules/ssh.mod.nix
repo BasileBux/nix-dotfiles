@@ -20,29 +20,7 @@ let
     + lib.optionalString (user != null) "  User ${user}\n"
     + extra;
 
-  tailnetDomain = inputs.self.tailnet.domain;
-
-  # Machines with a tailscale attr in the registry, via MagicDNS name.
-  tailnetSshHosts = lib.mapAttrsToList (name: _: {
-    host = name;
-    hostname = "${name}.${tailnetDomain}";
-    port = 2222;
-  }) (lib.filterAttrs (_: machine: machine ? tailscale) inputs.self.machines);
-
-  sshHosts = tailnetSshHosts ++ [
-    {
-      host = "buxtorf-synology";
-      user = "gitt";
-      hostname = "buxtorf-synology.${tailnetDomain}";
-      port = 2222;
-    }
-    {
-      host = "yoko";
-      user = "eugene";
-      hostname = "asbel.xyz";
-      port = 2222;
-    }
-  ];
+  sshHosts = lib.mapAttrsToList (host: endpoint: endpoint // { inherit host; }) inputs.self.sshHosts;
 in
 {
   flake.module.ssh-client = {

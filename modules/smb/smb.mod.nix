@@ -1,5 +1,6 @@
-{
+{ self, ... }: {
   flake.module.smb = {
+    imports = [ self.flakeModules.secrets ];
     nixos =
       {
         config,
@@ -27,12 +28,16 @@
               };
               uid = lib.mkOption {
                 type = lib.types.int;
-                default = 1000;
+                default =
+                  let
+                    uid = config.users.users.${config.my.settings.username}.uid;
+                  in
+                  if uid == null then 1000 else uid;
                 description = "UID to map the SMB share to";
               };
               gid = lib.mkOption {
                 type = lib.types.int;
-                default = 100;
+                default = config.users.groups.${config.users.users.${config.my.settings.username}.group}.gid;
                 description = "GID to map the SMB share to";
               };
               credentials = lib.mkOption {
@@ -52,6 +57,13 @@
         };
 
         config = {
+          my.secrets.requested = lib.mkIf config.my.secrets.enabled [ config.my.smb.credentials ];
+          assertions = [
+            {
+              assertion = config.services.tailscale.enable;
+              message = "The SMB tailnet mount requires the tailscale module.";
+            }
+          ];
           environment.systemPackages = with pkgs; [ cifs-utils ];
 
           fileSystems.${config.my.smb.mountPoint} = lib.mkIf config.my.secrets.enabled {

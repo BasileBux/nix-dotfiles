@@ -1,10 +1,10 @@
 {
-  lib,
-  config,
+  self,
   ...
 }:
 {
   flake.module.services = {
+    imports = [ self.flakeModules.tailscale-options ];
     nixos =
       { lib, config, ... }:
       {
@@ -33,7 +33,13 @@
           lib.mapAttrsToList (port: names: {
             assertion = false;
             message = "Port collision: ${lib.concatStringsSep ", " names} all registered port ${port} in my.services.ports";
-          }) collisions;
+          }) collisions
+          ++ [
+            {
+              assertion = config.my.tailscale.serve == { } || config.services.tailscale.enable;
+              message = "Registered tailnet services require the tailscale module.";
+            }
+          ];
       };
   };
 }

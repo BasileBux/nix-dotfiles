@@ -1,10 +1,9 @@
 # Owns the shared "media" group; other consumers (e.g. a host-local
 # qBittorrent) join via users.users.<name>.extraGroups = [ "media" ].
-{
-  ...
-}:
+{ self, ... }:
 {
   flake.module.jellyfin = {
+    imports = [ self.flakeModules.services ];
     nixos =
       { config, lib, ... }:
       let
@@ -18,10 +17,10 @@
             description = "Whether to enable Jellyfin media server (served on the tailnet)";
           };
 
-          port = lib.mkOption {
+          upstreamPort = lib.mkOption {
             type = lib.types.port;
             default = 8096;
-            description = "Loopback port for the web UI/API";
+            description = "Existing Jellyfin HTTP listener port, configured separately in Jellyfin. This option only selects the proxy target; it does not configure Jellyfin networking.";
           };
         };
 
@@ -31,8 +30,8 @@
           users.groups.media = { };
           users.users.jellyfin.extraGroups = [ "media" ];
 
-          my.services.ports.jellyfin = cfg.port;
-          my.tailscale.serve.jellyfin.port = cfg.port;
+          my.services.ports.jellyfin = cfg.upstreamPort;
+          my.tailscale.serve.jellyfin.port = cfg.upstreamPort;
         };
       };
   };

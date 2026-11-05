@@ -1,8 +1,7 @@
-{
-  ...
-}:
+{ self, ... }:
 {
   flake.module.simple-todo = {
+    imports = [ self.flakeModules.services ];
     nixos =
       {
         inputs,
@@ -48,7 +47,7 @@
             serviceConfig = {
               Type = "exec";
               User = config.my.settings.username;
-              ExecStart = "${todo}/bin/todo -host 127.0.0.1 -port ${toString cfg.port} -file ${cfg.file}";
+              ExecStart = "${todo}/bin/todo -host 127.0.0.1 -port ${toString cfg.port} -file ${lib.escapeShellArg cfg.file}";
               Restart = "on-failure";
               RestartSec = 10;
             };

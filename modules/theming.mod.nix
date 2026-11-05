@@ -3,7 +3,6 @@
     home =
       {
         config,
-        settings,
         pkgs,
         ...
       }:

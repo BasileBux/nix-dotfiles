@@ -1,6 +1,6 @@
 { ... }: {
   flake.module.ghostty = {
-    home = { config, settings, ... }: {
+    home = { ... }: {
       programs.ghostty = {
         enable = true;
         enableZshIntegration = true;

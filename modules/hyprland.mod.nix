@@ -131,7 +131,9 @@ in
 
         inherit (osConfig.my) hyprland;
 
-        luaString = v: ''"${v}"'';
+        luaString =
+          v:
+          ''"${builtins.replaceStrings [ "\\" "\"" "\n" "\r" "\t" ] [ "\\\\" "\\\"" "\\n" "\\r" "\\t" ] v}"'';
 
         luaConfig =
           let
@@ -199,7 +201,7 @@ in
 
         home.activation.reloadHyprland = config.lib.dag.entryAfter [ "writeBoundary" ] ''
           if ${pkgs.procps}/bin/pgrep -x "Hyprland" > /dev/null 2>&1; then
-            ${pkgs.hyprland}/bin/hyprctl reload
+            ${input-hyprland}/bin/hyprctl reload
           fi
         '';
       };

@@ -18,7 +18,6 @@
     home =
       {
         config,
-        settings,
         pkgs,
         osConfig,
         ...
@@ -28,8 +27,8 @@
           enable = true;
           lfs.enable = true;
           settings = {
-            user.name = settings.gitName;
-            user.email = settings.gitEmail;
+            user.name = osConfig.my.settings.gitName;
+            user.email = osConfig.my.settings.gitEmail;
             user.signingkey = osConfig.my.vcs.signingkey;
             core.editor = "nvim";
             alias.pushall = "!git push origin && git push gh main";
@@ -44,8 +43,8 @@
         programs.jujutsu = {
           enable = true;
           settings = {
-            user.name = settings.gitName;
-            user.email = settings.gitEmail;
+            user.name = osConfig.my.settings.gitName;
+            user.email = osConfig.my.settings.gitEmail;
             ui = {
               default-command = "log"; # `jj log -r ::` for the full log
               editor = "nvim";
