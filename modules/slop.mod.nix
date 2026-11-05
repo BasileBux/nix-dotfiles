@@ -3,7 +3,6 @@
     nixos = { pkgs, ... }: {
       environment.systemPackages = with pkgs; [
         pi-coding-agent
-        opencode
       ];
     };
 
@@ -15,9 +14,6 @@
         # `pi install`, /settings), so it is deployed as a writable file rather
         # than a read-only store symlink. The version field is derived from the
         # pinned package instead of being hardcoded in the repo.
-        inherit (lib.attrsets) genAttrs;
-        inherit (lib.trivial) const;
-
         piSettings' = piSettings // {
           lastChangelogVersion = pkgs.pi-coding-agent.version;
         };
@@ -84,33 +80,6 @@
             "git help*"
             "git version*"
           ];
-
-        opencodeConfig = {
-          "$schema" = "https://opencode.ai/config.json";
-
-          autoupdate = false;
-
-          permission = {
-            "*" = "ask";
-
-            edit = "allow";
-            read = "allow";
-            grep = "allow";
-            glob = "allow";
-            list = "allow";
-            lsp = "allow";
-            task = "allow";
-            todoread = "allow";
-            todowrite = "allow";
-            webfetch = "allow";
-            websearch = "allow";
-
-            # EDIT ANYWHERE
-            external_directory."/**" = "allow";
-
-            bash = genAttrs vcsCommands (const "allow");
-          };
-        };
       in
       {
         xdg.configFile = {
@@ -119,12 +88,6 @@
           "pi/models.json".source = ../config/pi/models.json;
           "pi/web-search.json".source = ../config/pi/web-search.json;
           "pi/AGENTS.md".source = ../config/slop/AGENTS.md;
-          "opencode/AGENTS.md".source = ../config/slop/AGENTS.md;
-
-          # opencode writes model/provider selections back into this file (the
-          # ollama provider above was originally created that way), so it is
-          # deployed as a writable file rather than a read-only store symlink.
-          "opencode/opencode.json".text = (builtins.toJSON opencodeConfig) + "\n";
           "pi/themes".source = ../config/pi/themes;
           "pi/extensions".source = ../config/pi/extensions;
           "pi/skills".source = ../config/pi/skills;
@@ -132,7 +95,6 @@
 
         home.sessionVariables = {
           PI_SKIP_VERSION_CHECK = "1";
-          OPENCODE_ENABLE_EXA = "1";
         };
       };
   };

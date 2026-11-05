@@ -103,7 +103,7 @@
           clang-tools
           gopls
           gotools
-          ltex-ls
+          ltex-ls-plus
           lua-language-server
           nil
           nixfmt
