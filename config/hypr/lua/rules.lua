@@ -79,13 +79,13 @@ local center = function(width)
 	return (1 - width) / 2
 end
 
-local sagepopup_width = 0.6
+local calcpopup_width = 0.6
 hl.window_rule({
-	name = "sagepopup",
-	match = { title = "sagepopup" },
+	name = "calcpopup",
+	match = { title = "calcpopup" },
 	float = true,
-	size = f_str("(monitor_w*${width}) (monitor_h*${height})", { width = sagepopup_width, height = 0.3 }),
-	move = f_str("(monitor_w*${x_off}) (monitor_h*${y_off})", { x_off = center(sagepopup_width), y_off = 0.02 }),
+	size = f_str("(monitor_w*${width}) (monitor_h*${height})", { width = calcpopup_width, height = 0.3 }),
+	move = f_str("(monitor_w*${x_off}) (monitor_h*${y_off})", { x_off = center(calcpopup_width), y_off = 0.02 }),
 })
 
 local popup_width = 0.8
@@ -112,7 +112,7 @@ end
 local editor = "nvim"
 
 local special_ws_commands = {
-	["special:sagepopup"] = "kitty --title='sagepopup' -e nu -c 'sage -q'",
+	["special:calcpopup"] = "kitty --title='calcpopup' -e nu -c 'qalc'",
 	["special:scratch"] = "kitty --title='scratch' -e nu -c '" .. editor .. " ~/scratch.md'",
 	["special:todo"] = "kitty --title='todo' -e nu -c '" .. editor .. " +Todo'",
 	["special:quick-ai"] = "kitty --title='quick-ai' -d ~/tmp/quick-ai -e nu -c 'VISUAL=" .. editor .. " pi'",

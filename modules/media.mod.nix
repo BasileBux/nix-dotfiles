@@ -30,8 +30,6 @@
       in
       {
         home.packages = with pkgs; [
-          ffmpeg-full
-          openh264
           haruna
         ];
         xdg.mimeApps.defaultApplications = genAttrs mimeTypes (const "org.kde.haruna.desktop");

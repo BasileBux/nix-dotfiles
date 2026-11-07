@@ -94,23 +94,13 @@
           imagemagick
           ghostscript
 
-          # LSPs and formatters: I like to always have them but we could do dev env
-          # only and install them only when needed.
-          basedpyright
-          cmake-language-server
+          # LSPs and formatters useful everywhere (scripting, note taking);
+          # language-specific ones come from devshells/devenv. The nvim config
+          # auto-enables whichever servers are on PATH.
           stylua
-          clang-tools
-          gopls
-          gotools
-          ltex-ls-plus
           lua-language-server
           nil
           nixfmt
-          prettier
-          kdePackages.qtdeclarative
-          tinymist
-          typescript-language-server
-          typstyle
           marksman
           bash-language-server
         ];

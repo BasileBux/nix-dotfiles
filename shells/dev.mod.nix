@@ -22,6 +22,8 @@
             gnumake
             clang
             gdb
+            clang-tools
+            cmake-language-server
           ]
           ++ lib.optionals pkgs.stdenv.hostPlatform.isx86 [ pkgs.gcc_multi ];
       };
@@ -38,6 +40,8 @@
         packages = with pkgs; [
           nodejs
           bun
+          typescript-language-server
+          prettier
         ];
       };
       goShell = mkShell {
@@ -54,6 +58,9 @@
           lua-language-server
         ];
       };
+      qmlShell = mkShell {
+        packages = with pkgs; [ kdePackages.qtdeclarative ];
+      };
       typstShell = mkShell {
         packages = with pkgs; [
           typst
@@ -62,10 +69,15 @@
         ];
         TYPSTDIR = "/home/$USER/.local/share/typst/packages";
       };
-      pythonShell = mkShell {
+      mathShell = mkShell {
         packages = [
           (pkgs.sage.override { requireSageTests = false; })
+        ];
+      };
+      pythonShell = mkShell {
+        packages = [
           pkgs.python314
+          pkgs.basedpyright
         ];
       };
     in
@@ -76,15 +88,19 @@
         node = nodeShell;
         go = goShell;
         lua = luaShell;
+        qml = qmlShell;
         typst = typstShell;
         python = pythonShell;
+        math = mathShell;
         dev = mkShell {
+          # Everything except math: sage alone is enormous.
           inputsFrom = [
             cShell
             rustShell
             nodeShell
             goShell
             luaShell
+            qmlShell
             typstShell
             pythonShell
           ];

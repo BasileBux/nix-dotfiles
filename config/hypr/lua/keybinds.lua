@@ -122,7 +122,7 @@ hl.bind(mainMod .. " + ALT + G", input.swap_lalt_lwin)
 
 -- Special workspaces
 local special_workspaces = {
-	{ key = "semicolon", name = "sagepopup" },
+	{ key = "semicolon", name = "calcpopup" },
 	{ key = "apostrophe", name = "scratch" },
 	{ key = "Return", name = "quick-ai" },
 	{ key = "slash", name = "todo" },

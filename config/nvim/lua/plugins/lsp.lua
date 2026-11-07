@@ -40,7 +40,18 @@ vim.lsp.config("tinymist", {
 	settings = { projectResolution = "lockDatabase" },
 })
 
-vim.lsp.enable(lsp_servers)
+-- Only enable servers whose binary is on PATH, so language-specific LSPs
+-- can live in devshells/devenv and activate when entering those environments.
+-- Note: `vim.lsp.config[server]` resolves lazily and `cmd` can be a function
+-- for some servers, so fall back to the server name as the binary to check.
+for _, server in ipairs(lsp_servers) do
+	local config = vim.lsp.config[server]
+	local cmd = config and config.cmd
+	local bin = (type(cmd) == "table" and cmd[1]) or server
+	if vim.fn.executable(bin) == 1 then
+		vim.lsp.enable(server)
+	end
+end
 
 local map = function(keys, func, desc, mode)
 	mode = mode or "n"
