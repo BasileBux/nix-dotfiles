@@ -23,11 +23,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    qq = {
-      url = "github:BasileBux/qq";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     simple-todo = {
       url = "github:BasileBux/simple-todo";
       inputs.nixpkgs.follows = "nixpkgs";

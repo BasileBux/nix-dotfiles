@@ -75,8 +75,7 @@
     pciutils
     ryzenadj
     nvtopPackages.amd
-
-    inputs.qq.packages.${pkgs.stdenv.hostPlatform.system}.default
+    vulkan-tools
   ];
 
   programs.nix-ld.enable = true;

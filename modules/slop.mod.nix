@@ -1,6 +1,4 @@
 { self, ... }: {
-  flake.module.slop.imports = with self.flakeModules; [ pi-fix ];
-
   flake.module.slop = {
     nixos = { pkgs, ... }: {
       environment.systemPackages = with pkgs; [

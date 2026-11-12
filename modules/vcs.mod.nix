@@ -54,7 +54,7 @@
               backend = "ssh";
               key = osConfig.my.vcs.signingkey;
             };
-            git.sign-on-push = true;
+            revsets.git-sign-on-push = "~signed() & mine()";
           };
         };
         home.packages = with pkgs; [
